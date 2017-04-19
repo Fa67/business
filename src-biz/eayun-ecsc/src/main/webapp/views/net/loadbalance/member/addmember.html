@@ -1,0 +1,183 @@
+<style type="text/css">
+	.cidr-div{
+		border: 1px solid #ccc;
+		border-radius:4px;
+	}
+	.cidr-error{
+		border: 1px solid #EA3200;
+		border-radius:4px;
+	}
+	.cidr-show{
+		text-align: left!important;
+		height: 20px;
+	}
+	.cidr-show-error{
+		text-align: left!important;
+		height: 20px;
+		color: #EA3200;
+	}
+</style>
+<div class="modal-header">
+	<span class="modal-title">添加成员</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 760px;">
+	<div class="ey-content-progress" style="margin-bottom: 20px;"  ng-if="pool.mode=='1'">
+		<ul style="margin-bottom: 0px;">
+			<li>1.主节点无法设置优先级，从节点无法设置权重</li>
+			<li>2.优先级数值范围为0~255之间的整数，优先级数值越小，优先级越高</li>
+			<li>3.若多个成员的优先级设定重复，则这些成员内的优先级将按照受管子网IP重新排列，受管子网IP32位二进制越小优先级越高</li>
+			<li>4.若多个优先级仍然重复，则根据相同监听端口进行重新排列，port越小优先级越高。</li>
+		</ul>
+	</div>
+<form class="form-horizontal" name="myForm" novalidate>
+	<div class="form-group">
+	<label class="col-sm-12 control-label" style="text-align: left;">
+		子网名称：{{subnet.subnetName}}({{subnet.cidr}})
+	</label>
+  	<label class="col-sm-8 control-label"
+		   style="font-weight: bold;text-align: left;"
+		   data-ng-show="!members || members.length == 0">
+		该子网下暂无主机!
+	</label>
+		<div class="col-sm-12" style="padding-top: 20px" data-ng-show="members.length != 0">
+			<div class="col-sm-12"
+				 data-ng-class="isTabErr?'cidr-error':'cidr-div'"
+				 style="padding-left: 0px;padding-right: 0px;text-align:left;">
+				<eayun-table  ng-if="pool.mode=='1'">
+					<table class="ey-table-muliti" style="margin-bottom: 0px;;    box-shadow: 0 0 0 0px #DCDCDC;margin-left: 0px; margin-right: 0px;width: 100%;">
+						<thead>
+							<tr>
+								<th style="width: 10px;border-right: 0px;"></th>
+								<th style="width: 75px;">名称</th>
+								<th style="width: 61px;">受管子网IP</th>
+								<th style="width: 57px;">监听端口</th>
+								<th style="width: 115px;" >角色</th>
+								<th style="width: 58px;">权重</th>
+								<th style="width: 72px;">优先级</th>
+							</tr>
+						</thead>
+						<tbody class="ey-table-overflow"  style="width:717px;">
+						<tr class="control-label" style="padding-top: 10px;text-align: left;" data-ng-repeat="member in members">
+							<td style="height: 50px;width: 55px; padding-right:0px;   border-bottom: 1px solid #DCDCDC;">
+								<div class="ey-form-checkbox">
+									<input id="member{{$index}}"
+										   type="checkbox"
+										   style="width: 16px;height: 16px;"
+										   data-ng-model="member.isCheck"
+										   data-ng-click="changeCheckMember(member)">
+									<label for="member{{$index}}"></label>
+								</div>
+							</td>
+							<td style="text-align: left;height: 50px;width: 90px;  padding-left:0px;  padding-right:0px;  border-bottom: 1px solid #DCDCDC;" title="{{member.vmName}}">
+								{{member.vmName.length > 8 ? member.vmName.substr(0,8) + '...' : member.vmName}}
+							</td>
+							<td style="text-align: left;height: 50px;width: 70px;    border-bottom: 1px solid #DCDCDC;">
+								{{member.memberAddress}}
+							</td>
+							<td style="width: 70px;height: 50px;width: 70px;    border-bottom: 1px solid #DCDCDC;"
+								data-ng-class="(member.isPortError || member.isPortExsit) ? 'ey-has-error' : ''">
+								<input type="text"
+									   class="ey-form-input"
+									   style="height: 30px; min-width: 70px; width: 70px; "
+									   data-ng-model="member.protocolPort"
+									   maxlength="5" data-ng-disabled="!member.isEdit"
+									   data-ng-change="checkPort(member)" data-ng-focus="checkPort(member)">
+							</td>
+							<td style="height: 50px;width: 100px;    border-bottom: 1px solid #DCDCDC;" ng-if="pool.mode=='1'">
+								<div class="ey-form-radio">
+									<input id="{{$index}}+a"  type="radio" name="{{$index}}+role" data-ng-change="changeRole(member)" data-ng-disabled="!member.isRadio"
+										   data-ng-model="member.role" value="Active">
+									<label for="{{$index}}+a" style="width: 70px;">主节点</label>
+									<input id="{{$index}}+b" type="radio" name="{{$index}}+role" data-ng-change="changeRole(member)" data-ng-disabled="!member.isRadio"
+										   data-ng-model="member.role" value="Backup">
+									<label for="{{$index}}+b" style="width: 70px;">从节点</label>
+								</div>
+							</td>
+							<td style="width: 50px;height: 50px;width: 60px;    border-bottom: 1px solid #DCDCDC;"
+								data-ng-class="member.isWeightError ? 'ey-has-error' : ''">
+								<input type="text" name="weight" class="ey-form-input"
+									   style="height: 30px; min-width: 50px; width: 30px;"
+									   data-ng-model="member.memberWeight"
+									   maxlength="3" data-ng-disabled="!member.isEdit||member.role=='Backup'"
+									   data-ng-change="checkWeight(member)" data-ng-focus="checkWeight(member)">
+							</td>
+							<td style="height: 50px;width: 110px;    border-bottom: 1px solid #DCDCDC;" data-ng-class="member.isPriorityError ? 'ey-has-error' : ''" ng-if="pool.mode=='1'">
+								<input type="text" name="priority" class="ey-form-input"
+									   style="height: 30px; min-width: 50px; width: 30px;"
+									   data-ng-model="member.priority"
+									   maxlength="3" data-ng-disabled="!member.isEdit||member.role=='Active'"
+									   data-ng-change="checkPriority(member)" data-ng-focus="checkPriority(member)">
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</eayun-table>
+				
+				<eayun-table  ng-if="pool.mode!='1'" >
+					<table class="ey-table-muliti" style="margin-bottom: 0px;box-shadow: 0 0 0 0px #DCDCDC;margin-left: 0px; margin-right: 0px;width: 100%;">
+						<thead>
+							<tr>
+								<th style="width: 10px;border-right: 0px;"></th>
+								<th style="width: 73px;">名称</th>
+								<th style="width: 70px;">受管子网IP</th>
+								<th style="width: 70px;">监听端口</th>
+								<th style="width: 67px;">权重</th>
+							</tr>
+						</thead>
+						<tbody class="ey-table-overflow"  style="width:717px;">
+						<tr class="control-label" style="padding-top: 10px;text-align: left;" data-ng-repeat="member in members">
+							<td style="width: 80px;height: 50px;border-bottom: 1px solid #DCDCDC;">
+								<div class="ey-form-checkbox">
+									<input id="member{{$index}}"
+										   type="checkbox"
+										   style="width: 16px;height: 16px;"
+										   data-ng-model="member.isCheck"
+										   data-ng-click="changeCheckMember(member)">
+									<label for="member{{$index}}"></label>
+								</div>
+							</td>
+							<td style="text-align: left;height: 50px;width: 180px;border-bottom: 1px solid #DCDCDC;" title="{{member.vmName}}">
+								{{member.vmName.length > 8 ? member.vmName.substr(0,8) + '...' : member.vmName}}
+							</td>
+							<td style="text-align: left;height: 50px;width: 169px;border-bottom: 1px solid #DCDCDC;">
+								{{member.memberAddress}}
+							</td>
+							<td style="width: 70px;height: 50px;width: 169px;border-bottom: 1px solid #DCDCDC;"
+								data-ng-class="(member.isPortError || member.isPortExsit) ? 'ey-has-error' : ''">
+								<input type="text"
+									   class="ey-form-input"
+									   style="height: 30px; min-width: 70px; width: 80px;"
+									   data-ng-model="member.protocolPort"
+									   maxlength="5" data-ng-disabled="!member.isEdit"
+									   data-ng-change="checkPort(member)" data-ng-focus="checkPort(member)">
+							</td>
+							<td style="height: 50px;width: 163px;border-bottom: 1px solid #DCDCDC;"
+								data-ng-class="member.isWeightError ? 'ey-has-error' : ''">
+								<input type="text" name="weight" class="ey-form-input"
+									   style="height: 30px; min-width: 50px; width: 80px;"
+									   data-ng-model="member.memberWeight"
+									   maxlength="3" data-ng-disabled="!member.isEdit||member.role=='Backup'"
+									   data-ng-change="checkWeight(member)" data-ng-focus="checkWeight(member)">
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</eayun-table>
+				
+			</div>
+			<label class="col-sm-6 control-label"
+				   data-ng-class="isErr ? 'cidr-show-error' : 'cidr-show'"
+				   data-ng-show="isTabErr">
+				{{showErrMsg}}
+			</label>
+		</div>
+	</div>
+</form>
+</div>
+<!-- 按钮区域 -->
+<div class="ey-modal-footer" >
+  <div class="ey-btn-group">
+	<button type="button" class="ey-btn ey-btn-primary" data-ng-click="commit()" data-ng-disabled="!members||members.length==0||isTabErr||checkBtn||!isSelected">确  定</button>
+	<button type="button" class="ey-btn ey-btn-default" data-ng-click="cancel()">取  消</button>
+  </div>
+</div>

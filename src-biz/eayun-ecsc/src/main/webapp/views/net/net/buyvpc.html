@@ -1,0 +1,159 @@
+<ul class="ey-nav-bread">
+    <li data-ui-sref="app.net.netbar.net">私有网络</li>
+    <li>创建私有网络</li>
+</ul>
+<nav class="ey-nav-online">
+    <a data-ng-class="buyVpc.vpc.payType == '1' ? 'active' : ''" data-ng-click="buyVpc.typeChoose('1')">包年包月</a>
+    <a data-ng-class="buyVpc.vpc.payType == '2' ? 'active' : ''" data-ng-click="buyVpc.typeChoose('2')">按需付费</a>
+</nav>
+<div class="row">
+    <form class="ey-form-purchase col-lg-8" name="buyForm" novalidate>
+        <fieldset style="margin-bottom: 200px;">
+            <div class="ey-form-group">
+                <label>数据中心：</label>
+                <span class="ey-mark ey-mark-width"
+                      data-ng-repeat="datacenter in buyVpc.datacenters"
+                      data-ng-class="buyVpc.vpc.dcId == datacenter.dcId ? 'active' : ''"
+                      data-ng-click="buyVpc.selectDcPrj(datacenter)"
+                      data-ng-bind="datacenter.dcName">
+                </span>
+            </div>
+            <div class="ey-form-group"
+                 data-ng-class="(buyForm.vpcName.$dirty || buyVpc.fromOrder == 'backFromOrder')
+                            && buyVpc.netQuotas > 0
+                            && (buyForm.vpcName.$invalid || buyVpc.isNameExist) ? 'ey-has-error' : ''">
+                <label class="ey-form-label ey-required">网络名称：</label>
+                <input type="text" name="vpcName" class="ey-form-input" placeholder="请输入名称"
+                       data-ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/'
+                       data-ng-model="buyVpc.vpc.netName" data-ng-change="buyVpc.checkVpcNameExist()" required>
+                <span class="ey-text-tip ey-text-error" data-ng-show="buyVpc.netQuotas < 1">
+                    私有网络数量配额不足
+                </span>
+                <span class="ey-text-tip ey-text-error"
+                      data-ng-show="buyForm.vpcName.$dirty && buyVpc.netQuotas > 0 && buyForm.vpcName.$invalid">
+                    请输入1-20位字符,支持数字、中英文、下划线、空格
+                </span>
+                <span class="ey-text-tip ey-text-error"
+                      data-ng-show="(buyForm.vpcName.$dirty || buyVpc.fromOrder == 'backFromOrder')
+                                && buyVpc.netQuotas > 0
+                                && buyForm.vpcName.$valid
+                                && buyVpc.isNameExist">
+                    该私有网络名称已存在
+                </span>
+            </div>
+            <div class="ey-form-group" style="margin-bottom: 0px;">
+                <label class="ey-form-label ey-required">带宽：</label>
+                <eayun-progress class="ey-form-w8"
+                                data-ng-class="(buyVpc.vpc.rate > buyVpc.bandQuotas
+                                            || (buyForm.bandRate.$dirty && !buyVpc.rateValid))
+                                            ? 'ey-has-error' : ''"
+                                name="bandRate"
+                                data-ng-model="buyVpc.vpc.rate"
+                                on-value-change="buyVpc.changeRate($value)"
+                                max-value="100"
+                                min-value="0"
+                                text="Mbps"></eayun-progress>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="buyVpc.vpc.rate > buyVpc.bandQuotas">
+                    带宽配额不足
+                </span>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="buyForm.bandRate.$dirty
+                                && !buyVpc.rateValid">
+                    带宽必须为正整数
+                </span>
+            </div>
+            <div class="ey-form-group">
+                <span class="ey-text-tip">
+                    1Mbps - 100Mbps
+                </span>
+            </div>
+            <div class="ey-form-group" data-ng-if="buyVpc.vpc.payType == '1'">
+                <label>付款方式：</label>
+                <eayun-select class="ey-form-w3"
+                              data-ng-model="buyVpc.vpc.cycleType"
+                              data-ng-change="buyVpc.changeCycleType()"
+                              required>
+                    <eayun-option data-ng-repeat="cycleType in buyVpc.cycleTypeList"
+                                  value="cycleType.value"
+                                  text="{{cycleType.text}}"></eayun-option>
+                </eayun-select>
+                <eayun-select class="ey-form-w3"
+                              data-ng-model="buyVpc.vpc.buyCycle"
+                              data-ng-change="buyVpc.changeBuyCycle()">
+                    <eayun-option data-ng-repeat="buyCycle in buyVpc.cycleList"
+                                  value="buyCycle.value"
+                                  text="{{buyCycle.text}}"></eayun-option>
+                </eayun-select>
+            </div>
+        </fieldset>
+    </form>
+    <div class="ey-set">
+        <h5>已选配置</h5>
+        <fieldset>
+            <ul>
+                <li>
+                    数据中心：
+                    <span class="ey-color-default" data-ng-bind="buyVpc.vpc.dcName"></span>
+                </li>
+                <li>
+                    带宽：
+                    <span class="ey-color-default" data-ng-bind="(buyVpc.vpc.rate > 0 ? buyVpc.vpc.rate : 0) + 'Mbps'"></span>
+                </li>
+                <li>
+                    购买量：
+                    <span class="ey-color-default" data-ng-if="buyVpc.vpc.payType == '1'">
+                        {{buyVpc.vpc.buyCycle < 12 ? (buyVpc.vpc.buyCycle + '个月') : (buyVpc.vpc.buyCycle / 12 + '年')}}×1个
+                    </span>
+                    <span class="ey-color-default" data-ng-if="buyVpc.vpc.payType == '2'">
+                        1个
+                    </span>
+                </li>
+            </ul>
+            <p class="ey-font-size-big" data-ng-if="buyVpc.vpc.payType == '1'">
+                总计：
+                <span class="ey-color-default" data-ng-if="buyVpc.hasGotPrice">￥&nbsp;</span>
+                <span class="ey-font-size-super ey-color-red"
+                      data-ng-if="buyVpc.hasGotPrice">
+                    {{buyVpc.vpc.price | thousand}}
+                </span>
+                <span class="ey-color-red"
+                      data-ng-if="!buyVpc.hasGotPrice"
+                      data-ng-bind="buyVpc.priceMsg"></span>
+            </p>
+            <p class="ey-font-size-big" data-ng-if="buyVpc.vpc.payType == '2'">
+                总计：
+                <span class="ey-color-default" data-ng-if="buyVpc.hasGotPrice">￥&nbsp;</span>
+                <span class="ey-font-size-super ey-color-red"
+                      data-ng-if="buyVpc.hasGotPrice">
+                    {{buyVpc.vpc.price | thousand:true}}
+                </span>
+                <span class="ey-color-default" data-ng-if="buyVpc.hasGotPrice">&nbsp;/小时</span>
+                <span class="ey-color-red"
+                      data-ng-if="!buyVpc.hasGotPrice"
+                      data-ng-bind="buyVpc.priceMsg"></span>
+            </p>
+            <span class="ey-color-red" data-ng-if="buyVpc.vpc.payType == '2'">
+                开通按需付费的云服务，您的账户余额不得低于{{buyVpc.buyCondition}}元，请充值后再开通，
+                <a class="ey-color-blue pointer" data-ng-click="buyVpc.recharge()">立即充值</a>
+            </span>
+        </fieldset>
+        <button class="ey-btn"
+                data-ng-disabled="buyForm.$invalid
+                                || buyVpc.checkBuyBtn
+                                || buyVpc.netQuotas < 1
+                                || buyVpc.vpc.rate > buyVpc.bandQuotas
+                                || buyVpc.isNameExist
+                                || !buyVpc.hasGotPrice
+                                || !buyVpc.rateValid
+                                || buyVpc.vpc.payType == '2' && buyVpc.isNSF"
+                data-ng-click="buyVpc.buyAtOnce()">
+            立即购买
+        </button>
+        <fieldset data-ng-if="buyVpc.vpc.payType == '2' && buyVpc.isNSF">
+            <span class="ey-color-red">
+                您的账户余额不足{{buyVpc.buyCondition}}元，请立即充值
+            </span>
+        </fieldset>
+    </div>
+</div>

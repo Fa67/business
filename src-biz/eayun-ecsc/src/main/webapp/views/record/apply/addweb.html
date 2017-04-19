@@ -1,0 +1,491 @@
+<div class = "modal-header">
+<span class=" ef-back eayunfont ey-color-blue"></span>
+    <span class = "modal-title"><a ng-click="webmodel.cancel()">返回</a></span>
+    <span class="ey-text-tip ey-font-huge">&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span>
+    <span class = "modal-title">填写信息</span>
+</div>
+<div class="ey-panel-body" >
+<form class="form-horizontal ey-form" name="myForm" novalidate>
+    <h4>网站基本信息</h4>
+    <div class="ey-form-group " data-ng-class="(myForm.webName.$dirty && myForm.webName.$error.required) ? 'ey-has-error' : ''">
+        <label class="ey-form-label ey-required">网站名称：</label>
+            <input type="text" class="ey-form-input ey-form-w7" name="webName"
+                data-ng-focus="webmodel.doFocus($event)" data-ng-blur="webmodel.doBlur($event,myForm.webName.$error.required)" 
+                data-ng-model="webmodel.model.webName" placeholder="请输入网站名称" maxlength="100" required > 
+            <!-- <span class="ey-color-red" ng-show="myForm.webName.$dirty && myForm.webName.$error.required">请输入网站名称</span> -->
+            <br/>
+            <div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">
+                请输入网站名称，例如“易云捷讯科技（北京）股份有限公司”
+            </div>
+    </div>
+
+    <div class="ey-form-group " style="margin-bottom:10px;">
+        <label class="ey-form-label ey-required">网站域名：</label>
+            <input type="text" name="domainName" class="ey-form-input ey-form-w7" placeholder="请输入网站域名" data-ng-class="(myForm.domainName.$dirty && myForm.domainName.$invalid) ? 'ey-has-error' : ''" 
+                data-ng-focus="webmodel.doFocus($event)" data-ng-blur="webmodel.doBlur($event,myForm.domainName.$invalid)" style="margin-bottom: 10px;"
+                data-ng-model="webmodel.model.domainName" maxlength="100" required ng-pattern='/^\w+\.((com)|(net)|(org)|(gov\.cn)|(info)|(cc)|(com\.cn)|(net\.cn)|(org\.cn)|(name)|(biz)|(tv)|(cn)|(mobi)|(name)|(sh)|(ac)|(io)|(tw)|(com\.tw)|(hk)|(com\.hk)|(ws)|(travel)|(us)|(tm)|(la)|(me\.uk)|(org\.uk)|(ltd\.uk)|(plc\.uk)|(in)|(eu)|(it)|(jp))$/'> 
+            <button ng-click="webmodel.copy()" data-ng-disabled="webmodel.divlistvalue.length>=19" class="eayunfont ey-font-size-superior ey-cursor ey-color-blue ef-add-r clearfix ey-addweb-btn"></button>
+            <br/>
+            <div data-ng-repeat="divlistvalue in webmodel.divlistvalue" class=" ey-float-none ey-margin" style="clear:both;">
+                 <input type="text" name="domainName{{$index}}" class="ey-form-input ey-form-w7" placeholder="请输入网站域名" style="margin-right: 7px;" data-ng-class="((myForm.domainName{{$index}}.$dirty && myForm.domainName{{$index}}.$invalid) || divlistvalue.chekefag) ? 'ey-has-error' : ''" 
+                    data-ng-focus="webmodel.dofFocus($event)" data-ng-blur="webmodel.dofBlur($event,divlistvalue,'domainname',$index)"
+                    data-ng-model="divlistvalue.domain" maxlength="100" required ng-pattern='/^\w+\.((com)|(net)|(org)|(gov\.cn)|(info)|(cc)|(com\.cn)|(net\.cn)|(org\.cn)|(name)|(biz)|(tv)|(cn)|(mobi)|(name)|(sh)|(ac)|(io)|(tw)|(com\.tw)|(hk)|(com\.hk)|(ws)|(travel)|(us)|(tm)|(la)|(me\.uk)|(org\.uk)|(ltd\.uk)|(plc\.uk)|(in)|(eu)|(it)|(jp))$/'> 
+                <span ng-click="webmodel.deletediv($index)"  class="eayunfont ey-font-size-superior ey-cursor ey-color-red ef-cancel-r ey-middle ey-margin"> </span>
+                <span class="ey-color-red" ng-show="divlistvalue.chekefag">网站域名重复</span>
+                
+                <br/>
+            </div>
+            <div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">
+                请输入域名，不要加“www”，例如eayun.com<br/>
+            </div>
+    </div>
+  
+  <div class="ey-form-group " style="margin-bottom:10px;">
+        <label class=" ey-form-label ey-required">网站首页URL：</label>
+                <input type="text" class="ey-form-input ey-form-w7" name="domainUrl" data-ng-class="(myForm.domainUrl.$dirty && myForm.domainUrl.$invalid) ? 'ey-has-error' : ''"
+                       data-ng-focus="webmodel.doFocus($event)" data-ng-blur="webmodel.doBlur($event,myForm.domainUrl.$invalid)" style="margin-bottom: 10px;"
+                       data-ng-model="webmodel.model.domainUrl" placeholder="请输入网站首页URL" maxlength="100" required ng-pattern='/^w{3}\.\w+\.((com)|(net)|(org)|(gov\.cn)|(info)|(cc)|(com\.cn)|(net\.cn)|(org\.cn)|(name)|(biz)|(tv)|(cn)|(mobi)|(name)|(sh)|(ac)|(io)|(tw)|(com\.tw)|(hk)|(com\.hk)|(ws)|(travel)|(us)|(tm)|(la)|(me\.uk)|(org\.uk)|(ltd\.uk)|(plc\.uk)|(in)|(eu)|(it)|(jp))$/'>
+                <button ng-click="webmodel.homePagecopy()" data-ng-disabled="webmodel.homePage.length>=19" class="eayunfont ey-font-size-superior ey-cursor ey-color-blue ef-add-r clearfix ey-addweb-btn"></button>
+
+
+
+            <div data-ng-repeat="homepage in webmodel.homePage" class=" ey-float-none ey-margin" style="clear:both;">
+                 <input type="text" class="ey-form-input ey-form-w7" name="domainUrl{{$index}}" data-ng-class="((myForm.domainUrl{{$index}}.$dirty && myForm.domainUrl{{$index}}.$invalid) || homepage.chekefag) ? 'ey-has-error' : ''"
+                    data-ng-focus="webmodel.dofFocus($event)" data-ng-blur="webmodel.dofBlur($event,homepage,'domainurl',$index)" style="margin-right: 7px;" 
+                    data-ng-model="homepage.domainUrl" placeholder="请输入网站首页URL" maxlength="100" required ng-pattern='/^w{3}\.\w+\.((com)|(net)|(org)|(gov\.cn)|(info)|(cc)|(com\.cn)|(net\.cn)|(org\.cn)|(name)|(biz)|(tv)|(cn)|(mobi)|(name)|(sh)|(ac)|(io)|(tw)|(com\.tw)|(hk)|(com\.hk)|(ws)|(travel)|(us)|(tm)|(la)|(me\.uk)|(org\.uk)|(ltd\.uk)|(plc\.uk)|(in)|(eu)|(it)|(jp))$/'> 
+                	<span ng-click="webmodel.deleteHomePage($index)"  class="eayunfont ey-font-size-superior ey-cursor ey-color-red ef-cancel-r ey-middle ey-margin"></span>
+                   <span class="ey-color-red"  ng-show="homepage.chekefag">网站首页URL重复</span>
+                <br/>
+            </div>
+            <div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">
+                请输入网站首页URL，不要添加http://，例如www.eayun.com
+            </div>
+    </div>
+
+        <div class="ey-form-group ">
+            <label class=" ey-form-label ey-required">备案云服务：</label>
+            <div data-ng-repeat="ipservice in webmodel.ipList" class="ey-float-none ey-margin">
+                <eayun-select placeholder="请选择数据中心" name="dcId{{$index}}"
+                    data-ng-focus="webmodel.doFocus($event)"
+                    data-ng-change="webmodel.changeServiceIP($index)"
+                    data-ng-blur="webmodel.doBlur($event,myForm.dcId$index.$error.required)"
+                    class="ey-form-select ey-form-w3" data-ng-model="ipservice.dcId"
+                    required> 
+                    <eayun-option value="{{dc.dcId}}" text="{{dc.dcName}}" ng-repeat="dc in webmodel.cloudprojectList"></eayun-option>
+                </eayun-select>
+                <eayun-select placeholder="请选择所需备案的云服务" name="webService{{$index}}" ng-disabled="ipservice.dcId==null"
+                    data-ng-model="ipservice.webService"
+                    data-ng-change="webmodel.selectIP(ipservice.dcId,ipservice.webService,$index)"
+                    class="ey-form-select ey-form-w4" required> 
+                    <eayun-option value="1" text="云主机"></eayun-option> 
+                    <eayun-option value="2" text="负载均衡"></eayun-option> 
+                </eayun-select>
+                <eayun-select class="ey-form-select ey-form-w3" placeholder="请选择" ng-disabled="ipservice.dcId==null" name="serviceIp{{$index}}"
+                    data-ng-model="ipservice.ip" required data-ng-change="webmodel.reomveIP(ipservice.ip,$index)" data-ng-click="webmodel.getIP(ipservice.ip)"> 
+                    <eayun-option value="'{{ip}}'" text="{{ip}}" ng-repeat="ip in webmodel.ips[$index]"></eayun-option>
+                </eayun-select>
+                <button ng-click="webmodel.copyIPservice()" data-ng-if="$index==0" class="eayunfont ey-font-size-superior ey-cursor ey-color-blue ef-add-r ey-middle ey-addweb-btn" data-ng-disabled="webmodel.ipList.length>=5"></button>
+                <span ng-click="webmodel.deleteIPservice($index)" data-ng-if="$index!=0"  class="eayunfont ey-font-size-superior ey-cursor ey-color-red ef-cancel-r ey-middle"></span>
+                <br />
+            </div>
+            <div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float: none; display: none;">
+                选择您需要备案的云服务先选择数据中心，再选择需要备案的云服务，例如云主机、负载均衡，然后再选择对应的IP
+            </div>
+        </div>
+
+        <div class="ey-form-group " style="position:relative;">
+        <label class=" ey-form-label ey-required">网站服务内容：</label>
+          <div class="ey-form-checkbox ey-form-w2">
+              <input type="checkbox"  data-ng-true-value="'即时通信'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[0]" id="check1">
+              <label for="check1">即时通信</label>
+          </div>
+          <div class="ey-form-checkbox ey-form-w2">
+              <input type="checkbox"   data-ng-true-value="'搜索引擎'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[1]" id="check2">
+              <label for="check2">搜索引擎</label>
+          </div>
+          <div class="ey-form-checkbox ey-form-w2">
+              <input type="checkbox"  data-ng-true-value="'综合门户'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[2]" id="check3">
+              <label for="check3">综合门户</label>
+          </div>
+          <div class="ey-form-checkbox ey-form-w3">
+              <input type="checkbox"  data-ng-true-value="'网上邮局'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[3]" id="check4">
+              <label for="check4">网上邮局</label>
+          </div>
+          <div class="ey-btn ey-btn-more ey-addweb">
+              <span class="eayunfont ey-font-size-big  ng-isolate-scope"  data-ng-click="active = !active" ng-class="active?'ef-triangle-up':'ef-triangle'"
+                    data-toggle="collapse" data-target="#webService" data-expander-show="true" aria-expanded="true"></span>
+          </div>
+
+        <span class="ey-color-red" data-ng-show="webmodel.isShowContent">请选择网站服务内容</span>
+  </div>
+    <div class="ey-form-group collapse" style="width:700px;margin-top:-20px;" id="webService" aria-expanded="true">
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'网络新闻'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[4]" id="check5">
+            <label for="check5">网络新闻</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'博客/个人空间'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[5]" id="check6">
+            <label for="check6">博客/个人空间</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'网络广告/信息'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[6]" id="check7">
+            <label for="check7">网络广告/信息</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w3">
+            <input type="checkbox"  data-ng-true-value="'单位门户网站'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[7]" id="check8">
+            <label for="check8">单位门户网站</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'网络购物'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[8]" id="check9">
+            <label for="check9">网络购物</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'网上支付'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[9]" id="check10">
+            <label for="check10">网上支付</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'网上银行'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[10]" id="check11">
+            <label for="check11">网上银行</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w3">
+            <input type="checkbox"  data-ng-true-value="'网上炒股/股票基金'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[11]" id="check12">
+            <label for="check12">网上炒股/股票基金</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'网络游戏'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[12]" id="check13">
+            <label for="check13">网络游戏</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'网络音乐'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[13]" id="check14">
+            <label for="check14">网络音乐</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'网络影视'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[14]" id="check15">
+            <label for="check15">网络影视</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w3">
+            <input type="checkbox"  data-ng-true-value="'网络图片'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[15]" id="check16">
+            <label for="check16">网络图片</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'网络软件/下载'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[16]" id="check17">
+            <label for="check17">网络软件/下载</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'网上求职'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[17]" id="check18">
+            <label for="check18">网上求职</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'网上交友/婚介'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[18]" id="check19">
+            <label for="check19">网上交友/婚介</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w3">
+            <input type="checkbox"  data-ng-true-value="'网上房产'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[19]" id="check20">
+            <label for="check20">网上房产</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'网络教育'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[20]" id="check21">
+            <label for="check21">网络教育</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'网站建设'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[21]" id="check22">
+            <label for="check22">网站建设</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'WAP'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[22]" id="check23">
+            <label for="check23">WAP</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'其他'" data-ng-false-value="''" data-ng-model="webmodel.serviceContents[23]" id="check24">
+            <label for="check24">其他</label>
+        </div>
+    </div>
+  
+  <div class="ey-form-group " style="position:relative;" >
+    <label class=" ey-form-label ey-required">网站语言：</label>
+
+      <div class="ey-form-checkbox ey-form-w2">
+          <input type="checkbox"  data-ng-true-value="'中文简体'" data-ng-false-value="''" data-ng-model="webmodel.webLanguages[0]" id="check25">
+          <label for="check25">中文简体</label>
+      </div>
+      <div class="ey-form-checkbox ey-form-w2">
+          <input type="checkbox"  data-ng-true-value="'中文繁体'" data-ng-false-value="''" data-ng-model="webmodel.webLanguages[1]" id="check26">
+          <label for="check26">中文繁体</label>
+      </div>
+      <div class="ey-form-checkbox ey-form-w2">
+          <input type="checkbox"  data-ng-true-value="'维吾尔语'" data-ng-false-value="''" data-ng-model="webmodel.webLanguages[2]" id="check27">
+          <label for="check27">维吾尔语</label>
+      </div>
+      <div class="ey-form-checkbox ey-form-w3">
+          <input type="checkbox"  data-ng-true-value="'哈萨克语'" data-ng-false-value="''" data-ng-model="webmodel.webLanguages[3]" id="check28">
+          <label for="check28">哈萨克语</label>
+      </div>
+      <div  class="ey-btn ey-btn-more ey-addweb">
+          <span class="eayunfont ey-font-size-big" data-ng-click="collapsed = !collapsed" ng-class="collapsed?'ef-triangle-up':'ef-triangle'"
+                data-toggle="collapse" data-target="#webLanguage" data-expander-show="true" aria-expanded="true"></span>
+      </div>
+      <span class="ey-color-red" data-ng-show="webmodel.isShowLanguages">请选择网站语言</span>
+</div>
+    <div class="ey-form-group collapse" style="width:700px;margin-top:-20px;" id="webLanguage" aria-expanded="false">
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'柯尔克孜语'" data-ng-false-value="''" data-ng-model="webmodel.webLanguages[4]" id="check29">
+            <label for="check29">柯尔克孜语</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'蒙古语'" data-ng-false-value="''" data-ng-model="webmodel.webLanguages[5]" id="check30">
+            <label for="check30">蒙古语</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'藏语'" data-ng-false-value="''" data-ng-model="webmodel.webLanguages[6]" id="check31">
+            <label for="check31">藏语</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w3">
+            <input type="checkbox"  data-ng-true-value="'壮语'" data-ng-false-value="''" data-ng-model="webmodel.webLanguages[7]" id="check32">
+            <label for="check32">壮语</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'朝鲜语'" data-ng-false-value="''" data-ng-model="webmodel.webLanguages[8]" id="check33">
+            <label for="check33">朝鲜语</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'彝文'" data-ng-false-value="''" data-ng-model="webmodel.webLanguages[9]" id="check34">
+            <label for="check34">彝文</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'苗语'" data-ng-false-value="''" data-ng-model="webmodel.webLanguages[10]" id="check35">
+            <label for="check35">苗语</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w3">
+            <input type="checkbox"  data-ng-true-value="'英语'" data-ng-false-value="''" data-ng-model="webmodel.webLanguages[11]" id="check36">
+            <label for="check36">英语</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'日语'" data-ng-false-value="''" data-ng-model="webmodel.webLanguages[12]" id="check37">
+            <label for="check37">日语</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'法语'" data-ng-false-value="''" data-ng-model="webmodel.webLanguages[13]" id="check38">
+            <label for="check38">法语</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'俄罗斯语'" data-ng-false-value="''" data-ng-model="webmodel.webLanguages[14]" id="check39">
+            <label for="check39">俄罗斯语</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w3">
+            <input type="checkbox"  data-ng-true-value="'西班牙语'" data-ng-false-value="''" data-ng-model="webmodel.webLanguages[15]" id="check40">
+            <label for="check40">西班牙语</label>
+        </div>
+        <div class="ey-form-checkbox ey-form-w2">
+            <input type="checkbox"  data-ng-true-value="'阿拉伯语'" data-ng-false-value="''" data-ng-model="webmodel.webLanguages[16]" id="check41">
+            <label for="check41">阿拉伯语</label>
+        </div>
+    </div>
+  
+  <div class="ey-form-group " >
+    <label class=" ey-form-label">前置或专项内容审批：</label>
+      <eayun-select name="webSpecial" data-ng-model="webmodel.model.webSpecial" data-ng-focus="webmodel.doFocus($event)" data-ng-blur="webmodel.doBlur($event,false)" 
+       class="ey-form-select ey-form-w7" placeholder="请选择内容审批">
+        <eayun-option value="" text="  请选择  "></eayun-option>
+        <eayun-option value="1" text="新闻"></eayun-option>
+        <eayun-option value="2" text="出版"></eayun-option>
+        <eayun-option value="3" text="教育"></eayun-option>
+        <eayun-option value="4" text="医疗保健"></eayun-option>
+        <eayun-option value="5" text="药品和医疗器械"></eayun-option>
+        <eayun-option value="6" text="文化"></eayun-option>
+        <eayun-option value="7" text="广播电影电视节目"></eayun-option>
+      </eayun-select>
+       <br/>
+        <div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">
+                网站从事新闻、出版、教育、医疗保健、药品和医疗器械、文化、广播电影电视节目等互联网信息服务，应提供相关主管部门审核同意的文件（加盖公章）；网站从事电子公告服务的，应提供专项许可文件（加盖公章）。如不涉及以上内容，请勿填写
+        </div>
+  </div>
+  
+  <div class="ey-form-group " ng-if="webmodel.model.webSpecial==null || webmodel.model.webSpecial==''" >
+    <label class=" ey-form-label">前置审批号：</label>
+      <input type="text" class="ey-form-input ey-form-w7" name="specialNo" data-ng-focus="webmodel.doFocus($event)" data-ng-blur="webmodel.doBlur($event,false)" data-ng-model="webmodel.model.specialNo"  placeholder="请输入前置审批号" ng-disabled="true" >
+        <br/>
+        <div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">{{webmodel.model.specialNo=''}}
+            如果选择前置或专项内容，请填写对应的前置审批号
+        </div>
+  </div>
+  
+   <div class="ey-form-group "  data-ng-class="(myForm.specialNo.$dirty && myForm.specialNo.$error.required) ? 'ey-has-error' : ''" ng-if="webmodel.model.webSpecial!=null && webmodel.model.webSpecial!=''">
+    <label class=" ey-form-label">前置审批号：</label>
+      <input type="text" class="ey-form-input ey-form-w7" data-ng-focus="webmodel.doFocus($event)" data-ng-blur="webmodel.doBlur($event,myForm.specialNo.$error.required)" maxlength="100" name="specialNo" data-ng-model="webmodel.model.specialNo"  placeholder="请输入前置审批号"  required>
+      <!-- <span class="ey-color-red" ng-if="myForm.specialNo.$dirty && myForm.specialNo.$error.required">前置审批号不能为空</span> -->
+      <br/>
+        <div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">
+            如果选择前置或专项内容，请填写对应的前置审批号
+        </div>
+  </div>
+  <div class="ey-form-group">
+        <label class=" ey-form-label ">备注：</label>
+        <input type="text" class="ey-form-input ey-form-w7" name="remark" data-ng-focus="webmodel.doFocus($event)" data-ng-blur="webmodel.doBlur($event,false)"  data-ng-model="webmodel.model.remark" maxlength="200">
+        <br/>
+        <div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">
+            若您在同一IP下有多个域名需要进行备案，请将其余的域名填写到备注输入框内，并以英文“;”隔开
+        </div>
+    </div>
+  <br>
+  <h4>网站负责人基本信息&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  <span class="ey-btn ey-btn-xs" data-ng-click="webmodel.copyunit()">复制主体人信息</span></h4>
+    
+    <div class="ey-form-group " data-ng-class="(myForm.webDutyName.$dirty && myForm.webDutyName.$error.required) ? 'ey-has-error' : ''">
+        <label class=" ey-form-label ey-required">网站负责人姓名：</label>
+            <input type="text" class="ey-form-input ey-form-w7" name="webDutyName"
+                data-ng-focus="webmodel.doFocus($event)" data-ng-blur="webmodel.doBlur($event,myForm.webDutyName.$error.required)"
+                data-ng-model="webmodel.model.webDutyName" placeholder="请输入网站负责人姓名" maxlength="100"
+                required> 
+            <!-- <span class="ey-color-red" ng-show="myForm.webDutyName.$dirty && myForm.webDutyName.$error.required">请输入1-100位字符</span> -->
+            <br/>
+        <div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">
+            请填写网站负责人证件上的姓名
+        </div>
+    </div>
+    <div class="ey-form-group " data-ng-class="(myForm.dutyCertificateType.$dirty && myForm.dutyCertificateType.$error.required) ? 'ey-has-error' : ''">
+    <label class=" ey-form-label ey-required">有效证件类型：</label>
+      <eayun-select name="dutyCertificateType" class="ey-form-select ey-form-w7" data-ng-model="webmodel.model.dutyCertificateType"
+       data-ng-focus="webmodel.doFocus($event)" data-ng-blur="webmodel.doBlur($event,myForm.dutyCertificateType.$error.required)" placeholder="请选择负责人证件类型" required>
+        <eayun-option value="1" text="身份证"></eayun-option>
+        <eayun-option value="2" text="护照"></eayun-option>
+        <eayun-option value="3" text="台胞证"></eayun-option>
+        <eayun-option value="4" text="军官证"></eayun-option>
+      </eayun-select>
+     <!--  <span class="ey-color-red" ng-show="myForm.dutyCertificateType.$dirty && myForm.dutyCertificateType.$error.required">负责人证件类型不能为空</span> -->
+      <br/>
+        <div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">
+            护照、身份证、台胞证、军官证
+        </div>
+  </div>
+    <div class="ey-form-group " data-ng-class="(myForm.dutyCertificateNo.$dirty && myForm.dutyCertificateNo.$error.required) ? 'ey-has-error' : ''">
+        <label class=" ey-form-label ey-required">有效证件号码：</label>
+            <input type="text" class="ey-form-input ey-form-w7" name="dutyCertificateNo"
+                data-ng-focus="webmodel.doFocus($event)" data-ng-blur="webmodel.doBlur($event,myForm.dutyCertificateNo.$error.required)"
+                data-ng-model="webmodel.model.dutyCertificateNo" placeholder="请输入负责人证件号" maxlength="100" required> 
+            <!-- <span class="ey-color-red" ng-show="myForm.dutyCertificateNo.$dirty && myForm.dutyCertificateNo.$error.required">请根据证件类型，填写一致的证件号码</span> -->
+            <br/>
+        <div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">
+            请根据证件类型，填写一致的证件号码
+        </div>
+    </div>
+    <div class="ey-form-group " data-ng-class="(myForm.phone.$dirty && myForm.phone.$invalid) ? 'ey-has-error' : ''">
+        <label class=" ey-form-label ey-required">办公室电话：</label>
+            <input type="text" class="ey-form-input ey-form-w7" name="phone"
+                data-ng-focus="webmodel.doFocus($event)" data-ng-blur="webmodel.doBlur($event,myForm.phone.$invalid)"
+                data-ng-model="webmodel.model.phone" placeholder="请输入办公室电话" maxlength="23" required ng-pattern='/086-\d{3}-\d{8}|086-\d{4}-\d{7,8}/'> 
+            <span class="ey-color-red" ng-show="myForm.phone.$dirty && myForm.phone.$invalid">请输入正确的号码 如：086-010-12345678</span>
+            <br/>
+        <div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">
+            电话格式：086-010-12345678-123（分机号可不填写）。请填写真实准确的联系电话，并保证电话畅通，否则可能会影响您的备案审核。
+        </div>
+    </div>
+    <div class="ey-form-group " data-ng-class="(myForm.dutyPhone.$dirty && myForm.dutyPhone.$invalid) ? 'ey-has-error' : ''">
+        <label class=" ey-form-label ey-required">手机号码：</label>
+            <input type="text" class="ey-form-input ey-form-w7" name="dutyPhone"
+                data-ng-focus="webmodel.doFocus($event)" data-ng-blur="webmodel.doBlur($event,myForm.dutyPhone.$invalid)"
+                data-ng-model="webmodel.model.dutyPhone" placeholder="请输入手机号码" maxlength="11" required ng-pattern='/^1[34578]\d{9}$/'> 
+            <span class="ey-color-red" ng-show="myForm.dutyPhone.$dirty && myForm.dutyPhone.$invalid">请输入正确的手机号码</span>
+            <br/>
+        <div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">
+            请确保填写的手机号码归属地和备案主体保持一致，并保持畅通，否则可能会影响到您的备案审核
+        </div>
+    </div>
+    <div class="ey-form-group " data-ng-class="(myForm.dutyEmail.$dirty && myForm.dutyEmail.$invalid) ? 'ey-has-error' : ''">
+        <label class=" ey-form-label ey-required">电子邮箱：</label>
+            <input type="text" class="ey-form-input ey-form-w7" name="dutyEmail"
+                data-ng-focus="webmodel.doFocus($event)" data-ng-blur="webmodel.doBlur($event, myForm.dutyEmail.$invalid)"
+                data-ng-model="webmodel.model.dutyEmail" placeholder="请输入电子邮箱" maxlength="100" required ng-pattern='/^[a-zA-Z0-9_-]+[\.a-zA-Z0-9_-]+[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/'> 
+            <span class="ey-color-red" ng-show="myForm.dutyEmail.$dirty && myForm.dutyEmail.$invalid">请输入正确的电子邮箱</span>
+            <br/>
+        <div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">
+            此邮箱用于接收备案进度，以及驳回原因等通知。也可填写与主体负责人信息相同的邮箱，请认真填写
+        </div>
+    </div>
+    <div class="ey-form-group">
+        <label class=" ey-form-label ">QQ账号：</label>
+        <input type="text" class="ey-form-input ey-form-w7" name="dutyQQ" data-ng-model="webmodel.model.dutyQQ"
+            data-ng-focus="webmodel.doFocus($event)" data-ng-blur="webmodel.doBlur($event,false)" maxlength="20">
+            <br/>
+        <div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">
+            QQ账号
+        </div>
+    </div>
+    
+    <br>
+    <h4>上传资料</h4>
+    <div class="clearfix ey-form-group">
+        <p class="ey-form-w12" style="padding-left:0;float: none;">重要：上传资料前，请认真阅读上传文件须知！</p>
+        <div class="ey-border ey-form-w11 clearfix">
+            <div  class="ey-form-w3" style="float: left;padding-left:14px;">
+                <p class="ey-form-label ey-required ey-font-normal" style="margin:0 0 0 -31px;">网站负责人身份证照片</p><br/>
+                <button type="button" class="ey-btn ey-btn-sm" ng-disabled="!webmodel.isdutyshangchuan" 
+                    ng-class="(webmodel.model.dutyFileId!=null && webmodel.model.dutyFileId!='') ? 'ey-btn-primary' : 'ey-btn-default'"
+                    ngf-select="webmodel.uploadFiles($file,'duty')" ngf-pattern="'.'+webmodel.fileTypes.join(',.')"  accept="{{'.'+webmodel.fileTypes.join(',.')}}">
+                    <span class="eayunfont ef-paperclip"></span>| 
+                        <span data-ng-if="webmodel.model.dutyFileId==null || webmodel.model.dutyFileId==''">上传文件</span>
+                        <span class="ey-ellipsis" style="width:90px;display: inline-block;"  data-ng-if="webmodel.model.dutyFileId!=null && webmodel.model.dutyFileId!=''" title="{{webmodel.model.dutyFile}}">{{webmodel.model.dutyFile.length>10?webmodel.model.dutyFile.substring(0,10)+'...':webmodel.model.dutyFile}}</span>
+                </button>
+                <p class="ey-text-tip ey-margin">
+                    <span data-ng-if="webmodel.model.dutyFileId==null || webmodel.model.dutyFileId=='' || !webmodel.isdutyagain">重新上传</span>
+                    <a class="ey-text-link" data-ng-if="webmodel.model.dutyFileId!=null && webmodel.model.dutyFileId!='' && webmodel.isdutyagain" ngf-select="webmodel.updateRecordFile($file,webmodel.model.dutyFileId,'duty')" ngf-pattern="'.'+webmodel.fileTypes.join(',.')"  accept="{{'.'+webmodel.fileTypes.join(',.')}}">重新上传</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <!-- <a class="ey-text-link ey-color-red" data-ng-if="webmodel.model.dutyFileId!=null && webmodel.model.dutyFileId!='' && webmodel.isdutydeleteFile" data-ng-click="webmodel.deleteRecordFile(webmodel.model.dutyFileId,'duty')">删除</a>
+                    <span data-ng-if="webmodel.model.dutyFileId==null || webmodel.model.dutyFileId=='' || !webmodel.isdutydeleteFile">删除</span> -->
+                </p>
+             </div>
+
+            <div class="ey-apply-divide"></div>
+             <div  class="ey-form-w3" style="float: left;">
+                 <p class="ey-form-label ey-required ey-font-normal" style="margin:0 0 0 -79px;">域名证书照片</p><br/>
+                <button type="button" class="ey-btn ey-btn-sm" ng-disabled="!webmodel.isdomainshangchuan" 
+                    ng-class="webmodel.model.domainFileId!=null && webmodel.model.domainFileId!='' ? 'ey-btn-primary' : 'ey-btn-default'"
+                    ngf-select="webmodel.uploadFiles($file,'domain')" ngf-pattern="'.'+webmodel.fileTypes.join(',.')"  accept="{{'.'+webmodel.fileTypes.join(',.')}}">
+                    <span class="eayunfont ef-paperclip"></span>|
+                        <span data-ng-if="webmodel.model.domainFileId==null || webmodel.model.domainFileId==''">上传文件</span>
+                        <span  class="ey-ellipsis" style="width:90px;display: inline-block;"   data-ng-if="webmodel.model.domainFileId!=null && webmodel.model.domainFileId!=''" title="{{webmodel.model.domainFile}}">{{webmodel.model.domainFile.length>10?webmodel.model.domainFile.substring(0,10)+'...':webmodel.model.domainFile}}</span>
+                </button>
+                 <p class="ey-text-tip ey-margin">
+                     <span data-ng-if="webmodel.model.domainFileId==null || webmodel.model.domainFileId=='' || !webmodel.isdomainagain">重新上传</span>
+                     <a class="ey-text-link" data-ng-if="webmodel.model.domainFileId!=null && webmodel.model.domainFileId!='' && webmodel.isdomainagain" ngf-select="webmodel.updateRecordFile($file,webmodel.model.domainFileId,'domain')" ngf-pattern="'.'+webmodel.fileTypes.join(',.')"  accept="{{'.'+webmodel.fileTypes.join(',.')}}">重新上传</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     <!-- <a class="ey-text-link ey-color-red" data-ng-if="webmodel.model.domainFileId!=null && webmodel.model.domainFileId!='' && webmodel.isdomaindeleteFile" data-ng-click="webmodel.deleteRecordFile(webmodel.model.domainFileId,'domain')">删除</a>
+                     <span data-ng-if="webmodel.model.domainFileId==null || webmodel.model.domainFileId=='' || !webmodel.isdomaindeleteFile">删除</span> -->
+                 </p>
+             </div>
+            <div class="ey-apply-divide"></div>
+             <div  class="ey-form-w3" style="position: relative;float: left;">
+                 <p class="ey-form-label ey-font-normal" style="margin:0 0 0 -55px;">审批文件扫描照片</p><br/>
+                 <div class="ey-text-tip" style="position: absolute;left:11px;top:17px;"> </div>
+                <button type="button" class="ey-btn ey-btn-sm" ng-disabled="!webmodel.isspecialshangchuan" 
+                    ng-class="webmodel.model.specialFileId!=null && webmodel.model.specialFileId!='' ? 'ey-btn-primary' : 'ey-btn-default'"
+                    ngf-select="webmodel.uploadFiles($file,'special')" ngf-pattern="'.'+webmodel.fileTypes.join(',.')"  accept="{{'.'+webmodel.fileTypes.join(',.')}}">
+                    <span class="eayunfont ef-paperclip"></span>|
+                        <span data-ng-if="webmodel.model.specialFileId==null || webmodel.model.specialFileId==''">上传文件</span>
+                        <span  class="ey-ellipsis" style="width:90px;display: inline-block;"   data-ng-if="webmodel.model.specialFileId!=null && webmodel.model.specialFileId!=''" title="{{webmodel.model.specialFile}}">{{webmodel.model.specialFile.length>10?webmodel.model.specialFile.substring(0,10)+'...':webmodel.model.specialFile}}</span>
+                </button>
+                 <p class="ey-text-tip ey-margin">
+                     <span data-ng-if="webmodel.model.specialFileId==null || webmodel.model.specialFileId=='' || !webmodel.isspecialagain">重新上传</span>
+                     <a class="ey-text-link" data-ng-if="webmodel.model.specialFileId!=null && webmodel.model.specialFileId!='' && webmodel.isspecialagain" ngf-select="webmodel.updateRecordFile($file,webmodel.model.specialFileId,'special')" ngf-pattern="'.'+webmodel.fileTypes.join(',.')"  accept="{{'.'+webmodel.fileTypes.join(',.')}}">重新上传</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                     <!-- <a class="ey-text-link ey-color-red" data-ng-if="webmodel.model.specialFileId!=null && webmodel.model.specialFileId!='' && webmodel.isspecialdeleteFile" data-ng-click="webmodel.deleteRecordFile(webmodel.model.specialFileId,'special')">删除</a>
+                     <span data-ng-if="webmodel.model.specialFileId==null || webmodel.model.specialFileId=='' || !webmodel.isspecialdeleteFile">删除</span> -->
+                 </p>
+             </div>
+        </div>
+
+        <div class="col-sm-8 ey-color-default ey-content-notice ey-margin">
+            <h5>上传文件须知</h5>
+            1.请确保您上传的资料<span class="ey-color-blue">完整、清晰、无污物</span><br/>
+            2.上传图片要求<span class="ey-color-blue">不大于100KB</span>,且格式为<span class="ey-color-blue">JPG</span><br/>
+            3.身份证可为<span class="ey-color-blue">原件照片</span>或<span class="ey-color-blue">彩色扫描件</span>，要求<span class="ey-color-blue">正反两面均在同一张照片</span>里。<br/>
+            4.域名证书需要你联系域名商获取上传，注意<span class="ey-color-blue">域名证书上面的域名所有者必须跟备案的主体或主体法人保持一致</span><br/>
+            5.如果选择前置或专项内容，请您上传审批文件扫描件，若不涉及请忽略该项。
+        </div>
+
+    </div>
+
+    <!-- 按钮区域 -->
+    <div class="ey-btn-group">
+        <button type="button" class="ey-btn ey-btn-primary" ng-click="webmodel.tijiao()" ng-disabled="!myForm.$valid||webmodel.commitfag">完成</button>
+        <button type="button" class="ey-btn ey-btn-default" ng-click="webmodel.cancel()">取  消</button>
+    </div>
+    <div class="ey-btn-group"><p class="ey-font-normal ey-required ey-text-tip" ><span style="color: #EA3200;">*</span>请您确认你的资料填写无误后再提交</p></div>     
+
+</form>
+</div>

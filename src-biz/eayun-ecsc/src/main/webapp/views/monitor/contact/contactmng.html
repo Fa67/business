@@ -1,0 +1,45 @@
+<!-- Tab panes -->
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active" id="contactList">
+  		<div class = "ey-search-bar ey-search-bar-white">
+			<button class="ey-btn ey-btn-primary" data-ng-click="addContact()">
+			<span class="eayunfont ef-plus" aria-hidden="true"></span><span>创建联系人</span>
+			</button>
+			<eayun-search-text value="contactName" search="queryContact()" placeholder="请输入姓名搜索"></eayun-search-text>
+		</div>
+
+    <eayun-table data-api="contactTable.api" data-ajax-source="contactTable.source" data-param="contactTable.getParams"
+                data-result="contactTable.result">
+      <table class="ey-table">
+		<thead>
+	        <tr>
+	          <th>姓名</th>
+	          <th>手机号</th>
+	          <th>电子邮件</th>
+	          <th>通知方式</th>
+	          <th>操作</th>
+	        </tr>
+        </thead>
+        <tbody><tr data-ng-repeat="contact in contactTable.result">
+	          <td>{{contact.name}}</td>
+	          <td>{{contact.phone}}</td>
+	          <td>{{contact.email.length>50?contact.email.substring(0,49):contact.email}}</td>
+	          <td>
+	          	<input type="checkbox" name="isSmsNotify" data-ng-model="contact.smsNotify" 
+	          		ng-checked="isSmsNotify(contact.smsNotify)" ng-click="updateSmsSelection($event,contact.id,contact.name)"/>短信通知&nbsp;&nbsp;
+	          	<input type="checkbox" name="isMailNotify" data-ng-model="contact.mailNotify" 
+	          		ng-checked="isMailNotify(contact.mailNotify)" ng-click="updateMailSelection($event,contact.id,contact.name)"/>邮件通知
+			  </td>
+	          <td>
+	          	<div class = "ey-btn-group">
+				  <button  class="ey-btn" data-ng-click="editContact(contact)">编辑</button>
+				  <button  class="ey-btn" data-ng-click="deleteContact(contact)"
+				  	data-ng-disabled="contact.linkedToAlarmRule==true || contact.isAdmin==1"><span class = "ey-text-error">删除</span></button>
+				 </div>
+	          </td>
+	        </tr></tbody>
+      </table>
+      <eayun-table-page></eayun-table-page>
+    </eayun-table>
+  </div>
+</div>

@@ -1,0 +1,205 @@
+<div class="clearfix">
+    <div class="">
+        <h4>网络详情</h4>
+        <!-- 详情 -->
+        <div class="details">
+            <div class="row">
+                <div class="col-sm-6 ">
+                    <div class="details-group">
+                        <div class="details-name"
+                             hint="views/net/net/editnetworkname.html"
+                             hint-show="hintNameShow"
+                             tooltip-class="tooltip-edit"
+                             tooltip-placement="right">网络名称：
+                        </div>
+                        <div class="details-value">{{netWork.netName}}</div>
+                        <span class="badge"
+                              data-ng-class="netNameEditable ? 'hide' : 'show'"
+                              data-ng-show="modulePower.isEditNet && netWork.chargeState == '0'"
+                              data-ng-click="editNetworkName()">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </span>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">状态：</div>
+                        <div class="details-value">
+                            <span class="state-block" data-ng-class="vmStatusClass!=''?vmStatusClass:''"></span>
+                            {{netWork.netStatusName}}
+                        </div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">带宽：</div>
+                        <div class="details-value">{{netWork.rate}}Mbps</div>
+                        <span class="details-value"
+                              data-ng-class="netWork.routeId != null ? 'ey-text-link' : 'ey-text-tip'"
+                              data-ng-show="modulePower.isBandWidth && netWork.chargeState == '0'"
+                              data-ng-click="changeBand(netWork)"
+                              style="float: right;">
+                            更改
+                        </span>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">所属数据中心：</div>
+                        <div class="details-value">{{netWork.dcName}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">创建时间：</div>
+                        <div class="details-value">{{netWork.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="details-group">
+                        <div class="details-name">网络ID：</div>
+                        <div class="details-value">{{netWork.netId}}</div>
+                    </div>
+                    <!-- <div class="details-group">
+                        <div class="details-name">管理员状态：</div>
+                        <div class="details-value">{{netWork.adminStateup=='1'?'UP':'DOWN'}}</div>
+                    </div> -->
+                    <div class="details-group">
+                        <div class="details-name">已有标签：</div>
+                        <div class="details-value" ng-if="resourceTags.gt2Tags">
+                            <span>{{resourceTags.twoTagsString}}</span>
+
+                            <div class="detail-icon ellipsis pointer"
+                                 ng-mouseenter="openPopBox({value:resourceTags.allTagsString,type:'tagName'})"
+                                 ng-mouseleave="closePopBox('tagName')"
+                                 hint="views/cloudhost/volume/volumedescription.html"
+                                 hint-show="tagShow"
+                                 tooltip-class="tooltip-description"
+                                 tooltip-placement="bottom">
+                            </div>
+                        </div>
+                        <div class="details-value" ng-if="!resourceTags.gt2Tags">
+                            <span>{{resourceTags.allTagsString}}</span>
+                        </div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">外网网关：</div>
+                        <div class="details-value">
+                            {{netWork.gatewayIp&&netWork.gatewayIp!='null'?netWork.gatewayIp:''}}
+                        </div>
+                    </div>
+                    <!--<div class="details-group">
+                        <div class="details-name">所属项目：</div>
+                        <div class="details-value">{{netWork.prjName}}</div>
+                    </div>-->
+                    <div class="details-group">
+                        <div class="details-name">计费状态：</div>
+                        <div class="details-value">
+                            <span>{{netWork.payTypeStr}}</span>
+                        </div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">到期时间：</div>
+                        <div class="details-value">
+                            <span data-ng-if="netWork.payType == '1'">{{netWork.endTime|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                            <span data-ng-if="netWork.payType == '2'">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="ey-divider"></div>
+<div class="clearfix" style="margin-top:20px;">
+    <div class="">
+        <h4>子网列表</h4>
+        <form class="ey-search-bar ey-search-bar-white">
+            <button class="ey-btn ey-btn-primary ey-btn-sm"
+                    data-ng-show="modulePower.isCreSubNet"
+                    data-ng-disabled="netWork.chargeState != '0'"
+                    data-ng-click="addOrEditSubNetWork(netWork,null,'add1')">
+                <span class="eayunfont ef-plus" aria-hidden="true"></span>
+                <span>增加子网</span>
+            </button>
+        </form>
+        <!-- 表格 -->
+        <eayun-table data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams"
+                     data-result="myTable.result">
+            <table class="ey-table-muliti">
+                <thead>
+                <tr>
+                    <th>名称</th>
+                    <th>网络地址</th>
+                    <!-- <th>IP版本</th> -->
+                    <th>类型</th>
+                    <th>网关IP</th>
+                    <th>路由状态</th>
+                    <th class="col-sm-3">操作</th>
+                </tr>
+                </thead>
+                <tbody><tr data-ng-repeat="item in myTable.result">
+                    <td title="{{item.subnetName}}">{{item.subnetName}}</td>
+                    <td>{{item.cidr}}</td>
+                    <!-- <td>IPv{{item.ipVersion}}</td> -->
+                    <td>{{item.subnetTypeStr}}</td>
+                    <td>{{item.gatewayIp}}</td>
+                    <!--<td ng-show="tags.gt2Tags" ng-init="tags=netJson(item.tagName)">
+                        <span>{{tags.twoTagsString}}</span>
+
+                        <div class="tag-icon ellipsis pointer"
+                             ng-mouseenter="openTableBox({value:tags.allTagsString,type:'tagName',index:$index})"
+                             ng-mouseleave="closeTableBox({type:'tagName',index:$index})"
+                             hint="views/directives/ellipsispop.html"
+                             hint-show="hintTagShow[$index]"
+                             tooltip-class="tooltip-tag"
+                             tooltip-placement="bottom">
+                        </div>
+                    </td>
+                    <td ng-show="!tags.gt2Tags">{{tags.allTagsString}}</td>-->
+                    <td data-ng-if="item.subnetType == '1'">{{item.routeId == null ? '未连接' : '已连接'}}</td>
+                    <td data-ng-if="item.subnetType == '0'">--</td>
+                    <td class="ey-table-operation">
+                        <div class="ey-btn-group">
+                            <button class="ey-btn"
+                                    data-ng-click="addOrEditSubNetWork(netWork,item,'edit')"
+                                    data-ng-disabled="netWork.chargeState != '0'"
+                                    data-ng-show="modulePower.isEditSubNet">
+                                编辑
+                            </button>
+                            <div class="ey-btn ey-btn-more"
+                                 eayun-toggle="open"
+                                 data-ng-show="modulePower.isSubNetRoute || modulePower.isDelSubNet">
+                                更多操作 <span class="eayunfont ef-triangle"></span>
+                                <ul class="ey-drop-menu">
+                                    <li data-ng-if="item.routeId == null && netWork.chargeState == '0'"
+                                        data-ng-show="item.subnetType == '1' && modulePower.isSubNetRoute"
+                                        data-ng-click="bindRoute(netWork, item)">
+                                        <a>
+                                            连接路由
+                                        </a>
+                                    </li>
+                                    <li data-ng-if="item.routeId != null"
+                                        data-ng-show="item.subnetType == '1' && modulePower.isSubNetRoute"
+                                        data-ng-click="unbindRoute(netWork, item)">
+                                        <a>
+                                            断开路由
+                                        </a>
+                                    </li>
+                                    <!--<li data-ng-show="modulePower.isSubNetTag">
+                                        <a data-ng-click="tagResource('subNetwork',item.subnetId)">
+                                            标签
+                                        </a>
+                                    </li>-->
+                                    <li data-ng-show="modulePower.isDelSubNet"
+                                        data-ng-click="deleteCloudSubNet(item)">
+                                        <a class="ey-text-error">
+                                            删除
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <span data-ng-show="!modulePower.isEditSubNet
+                                             && !modulePower.isSubNetTag
+                                             && !modulePower.isDelSubNet">
+                                ----
+                            </span>
+                        </div>
+                    </td>
+                </tr></tbody>
+            </table>
+        </eayun-table>
+    </div>
+</div>

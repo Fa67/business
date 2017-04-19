@@ -1,0 +1,81 @@
+<div class="ey-search-bar ey-search-bar-white">
+  <button  data-ng-show = "buttonPower.isCreate" class="ey-btn ey-btn-primary ey-btn-sm"  data-ng-click="buyVolume()" >
+  <span class="eayunfont ef-plus"></span>
+  <span>创建云硬盘</span>
+  </button>
+  <eayun-search class="eayun-table-search" data-ng-model="search" options="options"></eayun-search>
+</div>
+<!-- 表格 -->
+<eayun-table data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams" data-result="myTable.result">
+      <table class="ey-table-muliti">
+        <thead>
+        <tr>
+          <th>云硬盘名称</th>
+          <th style="width:110px;">状态</th>
+          <th style="width:80px;">硬盘属性</th>
+          <th style="width:80px;">容量</th>
+          <th>挂载的云主机</th>
+          <th style="width:220px;">计费状态</th>
+          <th style="width:150px;">创建时间</th>
+          <th style="width:180px;">操作</th>
+        </tr>
+        </thead>
+        <tbody><tr data-ng-repeat="vol in myTable.result">
+          <td  class="click-td" data-ng-click="findVolumeById(vol)" title="{{vol.volName}}" >
+          	{{vol.volName}}
+          </td>
+          <td class="vm-table-td-left">
+	         <span class ="eayunfont ef-square" data-ng-class="volStatusClass!=''?volStatusClass:''" ng-init="volStatusClass = getVolumeStatus(vol)"></span>
+	         {{vol.statusForDis}}
+	  	  </td>
+          <td>{{"1"==vol.volBootable?"系统盘":"数据盘"}}</td>
+          <td>{{vol.volSize}}GB</td>
+          <td data-ng-if="null!=vol.vmName&&'null'!=vol.vmName&&''!=vol.vmName" class="click-td" data-ng-click="goToVm(vol.vmId)" title="{{'null'==vol.vmName?'':vol.vmName}}">{{"null"==vol.vmName?"":vol.vmName}}</td>   
+          <td data-ng-if="null==vol.vmName||'null'==vol.vmName||''==vol.vmName"></td>        
+          <td  data-ng-if="vol.payType=='1'" title="到期时间：{{vol.endTime|date:'yyyy-MM-dd HH:mm:ss'}}">
+             {{vol.payType=='1'?'包年包月':''}}<br>
+      	     {{vol.payType=='1'?'到期时间：'+(vol.endTime|date:'yyyy-MM-dd HH:mm:ss'):''}}
+          </td>
+          <td  data-ng-if="vol.payType!='1'">
+             {{vol.payType!='1'?'按需付费':''}}
+          </td>
+          <td>{{vol.createTime|date:'yyyy-MM-dd HH:mm:ss':''}}</td>
+          <td class="ey-table-operation" data-ng-if="(buttonPower.addSnap||buttonPower.isDebind||buttonPower.isBind||buttonPower.isRenew||buttonPower.isSetUp||buttonPower.isTag||buttonPower.delDisk)&&vol.volBootable!='1'">
+                <div class="ey-btn-group">
+                    <button class="ey-btn" data-ng-show="buttonPower.addSnap"
+                            data-ng-click="buySnapshot(vol)" data-ng-disabled="vol.volStatus!='AVAILABLE'&&vol.volStatus!='IN-USE'||vol.chargeState!='0'">创建备份
+                    </button>
+                    <div class="ey-btn ey-btn-more" eayun-toggle="open" data-ng-show="buttonPower.isDebind||buttonPower.isBind||buttonPower.isRenew||buttonPower.isSetUp||buttonPower.delDisk"> 更多操作 <span class="eayunfont ef-triangle"></span>
+                        <ul class="ey-drop-menu">
+                            <li data-ng-if="buttonPower.isDebind&&vol.volStatus=='IN-USE'"  data-ng-click="debindVolume(vol)">
+                                <a>解绑</a>
+                            </li>
+                            <li data-ng-if="buttonPower.isBind&&vol.volStatus=='AVAILABLE'&&vol.chargeState=='0'"  data-ng-click="bindVolume(vol)">
+                                <a>挂载</a>
+                            </li>
+                            <li data-ng-if="buttonPower.isRenew && vol.payType =='1'&&vol.volStatus!='DELETING'" data-ng-click="renewVolume(vol)">
+                                <a>续费</a>
+                            </li>
+                            
+                            <!-- data-ng-disabled="vol.volStatus!='AVAILABLE'&&vol.volStatus!='IN-USE'&&vol.volStatus!='ERROR'||vol.chargeState!='0'" -->
+                            <li data-ng-if="buttonPower.isSetUp&&vol.chargeState=='0'&&(vol.volStatus=='AVAILABLE'||vol.volStatus=='IN-USE'||vol.volStatus=='ERROR')" data-ng-click="extendVolume(vol)" >
+                                <a>扩容</a>
+                            </li>
+                            <li data-ng-if="buttonPower.isTag&&vol.volStatus!='DELETING'&&vol.chargeState=='0'" data-ng-click="tagResource('volume',vol.volId)">
+                                <a>标签</a>
+                            </li>
+                            
+                            <!-- (vol.payType=='1'&&vol.chargeState=='0')||vol.volStatus=='CREATING' -->
+                            <li data-ng-if="buttonPower.delDisk&&(vol.payType!='1'||vol.chargeState!='0')&&vol.volStatus!='CREATING'"   data-ng-click="deleteVolume(vol)">
+                                <a  class="ey-text-error">删除</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+     </td>
+     <td data-ng-if="(!buttonPower.addSnap&&!buttonPower.isDebind&&!buttonPower.isBind&&!buttonPower.isRenew&&!buttonPower.isSetUp&&!buttonPower.isTag&&!buttonPower.delDisk)||vol.volBootable=='1'">----</td>
+    </tr></tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

@@ -1,0 +1,64 @@
+<div class="modal-header">
+    <span class="modal-title">查看配置文件</span>
+    <span class="eayunfont ef-close ey-font-huge" data-ng-click="showDetail.cancel()"></span>
+</div>
+<div class="modal-body" style="width: 820px;">
+    <div class="ey-row">
+        <span class="ey-font-size-bigger" ng-bind="showDetail.configType"></span>
+        <span class="ey-font-size-bigger">：</span>
+        <span class="ey-font-size-bigger" ng-bind="showDetail.configName"></span>
+        <div class="ey-btn-group" style=" float: right;">
+                <button type="button" class="ey-btn ey-btn-primary" ng-click="showDetail.editFunction()"
+                        data-ng-disabled="!((!showDetail.isDefaultConfigFile)&&(!showDetail.isNowEdit)&&showDetail.canUpdate)">编辑</button>
+                <button type="button" class="ey-btn ey-btn-primary" ng-click="showDetail.confirmUpdate()"
+                        data-ng-disabled="!(showDetail.isNowEdit&&showDetail.canUpdate)">保存</button>
+                <!--<button type="button" class="ey-btn ey-btn-primary" ng-click="showDetail.cancelEdit()" ng-show="showDetail.isNowEdit">取消</button>-->
+        </div>
+    </div>
+    <div class="ey-content-notice" style="margin-bottom: 5px;margin-top: 10px;">
+        <ul style="margin-top: 10px;">
+            <li>修改参数值将会影响到所有使用该配置文件的数据库</li>
+        </ul>
+    </div>
+    <div>
+        <eayun-table>
+        <table class="ey-table"  style="margin-top: 20px;">
+            <thead>
+                <tr>
+                    <th style="text-align: left;width: 208px;">参数名</th>
+                    <th style="text-align: left;width: 60px;">类型</th>
+                    <th style="text-align: left;width: 198px;">参数值</th>
+                    <th style="text-align: left;width: 138px;">&nbsp;</th>
+                    <th style="text-align: left;width: 177px;" >参数范围</th>
+                </tr>
+            </thead>
+            <tbody class="ey-table-overflow "  style="width: 779px;height: 500px">
+                <tr data-ng-repeat="param in showDetail.paramsList">
+
+                    <td style="text-align: left;width: 208px;" ng-bind="param.name"></td>
+                    <td style="text-align: left;width: 60px;" ng-bind="param.type"></td>
+                    <td style="text-align: left;width: 198px;overflow: visible">
+                        <input type="text" ng-if="param.type=='int'" class="ey-form-input" string-to-number ng-model="param.currentParamValue"
+                               required ng-disabled="!showDetail.isNowEdit"/>
+                        <!--当参数为字符串类型，且有一个可选值的范围的时候，则此时改为用下拉列表的组件形式来展示-->
+                        <eayun-select ng-if="param.type=='string'" name=""
+                                      data-ng-model="param.currentParamValue"
+                                      data-ng-change=""
+                                      placeholder="对应参数值" required
+                                      data-ng-disabled="!showDetail.isNowEdit">
+                            <eayun-option value="p" text="{{p}}" data-ng-repeat="p in param.optionValues.split(';')"></eayun-option>
+                        </eayun-select>
+                    </td>
+                    <td style="text-align: left;width: 138px; color: #dd8200;" ng-if="param.restart=='1'">修改后数据库会重启</td>
+                    <td style="text-align: left;width: 138px;" ng-if="param.restart=='0'">&nbsp;</td>
+                    <td style="text-align: left;width: 177px;"  ng-if="param.type=='int'"><span ng-bind="(param.minSize + ' - ' + param.maxSize)|showInfo" title="{{(param.minSize + ' - ' + param.maxSize)}}"></span></td>
+                    <td style="text-align: left;width: 177px;" ng-if="param.type=='string'"><span ng-bind="param.optionValues|showInfo" title="{{param.optionValues}}"></span></td>
+                </tr>
+            </tbody>
+        </table>
+        </eayun-table>
+    </div>
+    <div class="ey-btn-group" style="text-align: center">
+        <button type="button" class="ey-btn ey-btn-primary" ng-click="showDetail.cancel()">关闭</button>
+    </div>
+</div>

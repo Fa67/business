@@ -1,0 +1,36 @@
+<div>
+	<form name="editHostNameTable" novalidate="novalidate">
+	<div class="col-md-10" data-ng-class="vmNameEditable&&(editHostNameTable.vmName.$dirty&&(editHostNameTable.vmName.$invalid||!checkVmName)) ? 'ey-has-error' : ''" style="padding-left: 0px;">
+		<input class="ey-form-input" name="vmName" type="text" maxlength="20" placeholder="请输入云主机名称" data-ng-model="model.vmName" ng-change="checkVmNameExist()"
+		ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/' required>
+		<span class="ey-text-tip ey-text-error hide" style="padding-top:17px;"
+			  data-ng-class="(vmNameEditable
+							&& editHostNameTable.vmName.$dirty
+							&& editHostNameTable.vmName.$invalid) ? 'show' : 'hide'">
+			<span>请输入1-20位字符,支持数字、中英文、下划线、空格</span>
+		</span>
+		<span class="ey-text-tip ey-text-error hide" style="padding-top:17px;"
+			  data-ng-class="(editHostNameTable.vmName.$dirty
+			  				&& editHostNameTable.vmName.$valid
+			  				&& !checkVmName) ? 'show' : 'hide'">
+			<span>云主机名称已存在</span>
+		</span>
+	</div>
+	<span class="badge hide"
+		  style="margin-left:10px;background-color:green;color:#ffffff;"
+		  data-ng-class="vmNameEditable
+					&& (editHostNameTable.vmName.$dirty
+					&& (editHostNameTable.vmName.$valid
+					&& checkVmName && checkEditBtn))
+					? 'show' : 'hide'"
+		  data-ng-click="saveEdit('vmName')">
+      	<span class="glyphicon glyphicon-ok">
+     	</span>
+    </span>
+	<span class="badge" data-ng-click="cancleEdit('vmName')">
+      	<span class="glyphicon glyphicon-remove">
+      	</span> 
+    </span>
+    </form>
+</div>
+	

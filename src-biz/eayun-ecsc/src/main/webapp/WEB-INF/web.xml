@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	metadata-complete="true" version="3.0">
+	<display-name>Eayun Cloud Self Center</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath*:spring/*.xml
+		</param-value>
+	</context-param>
+	<context-param>
+		<param-name>spring.profiles.default</param-name>
+		<param-value>production</param-value>
+	</context-param>
+	<listener>
+		<listener-class>com.eayun.common.controller.InitController</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+	<!-- session监听器 -->
+	<listener>
+		<listener-class>com.eayun.common.listener.SessionListener</listener-class>
+	</listener>
+	<filter>
+		<filter-name>openEntityManagerInViewFilter</filter-name>
+		<filter-class>
+			org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>openEntityManagerInViewFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<servlet>
+		<servlet-name>springServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring-mvc.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>springServlet</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+
+	<!-- 验证码信息配置开始 -->
+	<servlet>
+		<servlet-name>validateImg</servlet-name>
+		<servlet-class>com.eayun.common.servlet.VerifyCodeServlet</servlet-class>
+		<load-on-startup>4</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>validateImg</servlet-name>
+		<url-pattern>/action/validetImg</url-pattern>
+	</servlet-mapping>
+	<!-- 验证码信息配置结束 -->
+
+	<!--登路拦截器开始 -->
+	<filter>
+		<filter-name>CheckSession</filter-name>
+		<filter-class>com.eayun.common.filter.CheckSessionFilter</filter-class>
+		<init-param>
+			<param-name>unfilterurl</param-name>
+			<param-value>
+				sys/login/login.do;
+				sys/login/getPassKey.do;
+				sys/register/getTeleCode.do;
+				sys/register/checkCondition.do;
+				sys/register/register.do;
+				sys/forgotcode/firstCheck.do;
+				sys/forgotcode/secondCheck.do;
+				sys/forgotcode/modifyPassword.do;
+				sys/forgotcode/getTeleCode.do;
+				obs/storage/getEayunObsHost.do;
+				sys/user/validMail/;
+				pay/alipay/tradeNotify.do;
+				pay/alipay/tradeReturn.do;
+			</param-value>
+		</init-param>
+		<init-param>
+			<param-name>name</param-name>
+			<param-value>permission</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CheckSession</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+
+    <!--登路拦截器结束-->
+    
+	<!-- 检查冻结拦截器开始 -->
+	<filter>
+		<filter-name>CheckCusBlockFilter</filter-name>
+		<filter-class>com.eayun.common.filter.CheckCusBlockFilter</filter-class>
+		<init-param>
+			<param-name>unfilterurl</param-name>
+			<param-value>
+				sys/login/login.do;
+				sys/login/logout.do;
+				sys/login/getPassKey.do;
+				obs/obsOpen/getObsState.do;
+			</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CheckCusBlockFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping>
+	<!--检查冻结拦截器结束-->
+	
+    <!-- 金额相关的权限过滤器开始 -->
+    <filter>
+        <filter-name>CheckAmountAuthority</filter-name>
+        <filter-class>com.eayun.common.filter.CheckAmountAuthorityFilter</filter-class>
+        <init-param>
+            <param-name>filterName</param-name>
+            <param-value>CheckAmountAuthorityFilter</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>CheckAmountAuthority</filter-name>
+        <url-pattern>/order/payorder.do</url-pattern>
+    </filter-mapping>
+    <!-- 金额相关的权限过滤器结束 -->
+
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/404.html</location>
+	</error-page>
+
+	<!-- druid配置开始，上线前需要删掉 -->
+	<servlet>
+		<servlet-name>DruidStatView</servlet-name>
+		<servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DruidStatView</servlet-name>
+		<url-pattern>/druid/*</url-pattern>
+	</servlet-mapping>
+	<filter>
+		<filter-name>druidWebStatFilter</filter-name>
+		<filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
+		<init-param>
+			<param-name>exclusions</param-name>
+			<param-value>/public/*,*.js,*.css,/druid*,*.jsp,*.swf</param-value>
+		</init-param>
+		<init-param>
+			<param-name>principalSessionName</param-name>
+			<param-value>sessionInfo</param-value>
+		</init-param>
+		<init-param>
+			<param-name>profileEnable</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>druidWebStatFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<!-- druid配置结束，上线前需要删掉 -->
+</web-app>

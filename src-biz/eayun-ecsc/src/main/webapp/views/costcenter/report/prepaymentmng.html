@@ -1,0 +1,46 @@
+		<div class="form-inline">
+			  <div class="ey-search-bar">
+		  		<label>计费时间：</label>
+				<date-range start-date="beginTime" end-date="endTime" data-show-time="false" max-date="maxDate" class="ey-form-w4"></date-range>
+			  	<label>产品名称：</label>
+			  	<input class="ey-form-control" type="text" style="margin-left:10px;" placeholder="请输入产品名称" ng-model="productName">
+				<button class="ey-btn ey-btn-default" style="margin-left:15px;" type="button" data-ng-click="queryReport()"><span>查&nbsp;&nbsp;&nbsp;询</span></button>
+			  	<button class="ey-btn ey-btn-default-light ey-color-blue pull-right" ng-if="buttonPower.isReportExcel"  style="margin-top:7px;" ng-click="createExcel()">
+					<span class="eayunfont ef-export"></span>
+					<span>导出</span>
+				</button>
+			  	<div style="display: none;">
+					<iframe id="report-export-iframe" frameborder="0"></iframe>
+				</div>
+			  </div>
+		</div>
+	    <!-- 表格 -->
+                <div class="ey-table-title">
+                    <span style="margin-left: -5px;">{{begin|date:"yyyy-MM-dd"}}至{{end|date:"yyyy-MM-dd"}}预付费资源消费总计：<span class="color-blue">￥ {{totalCost|number:2}}</span></span>
+                </div>
+                    <eayun-table data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams" data-result="myTable.result">
+					    <table class="ey-table">
+					      <thead>
+					      <tr>
+					      	<th>计费时间 </th>
+					        <th>产品名称</th>
+					        <th>订单号</th>
+					       	<th>付款方式</th>
+					       	<th>应付金额</th>
+					        <th>操作</th>
+					      </tr>
+					      </thead>
+					
+					      <tbody><tr data-ng-repeat="model in myTable.result" style="height:45px;">
+					      	<td>{{model.monTime|date:"yyyy-MM-dd HH:mm:ss"}}</td>
+					      	<td>{{model.productName}}</td>
+					      	<td>{{model.orderNo}}</td>
+					      	<td>{{model.payType=='1'?'预付费':'后付费'}}</td>
+					      	<td><span class="color-blue">￥ {{model.prepaymentMoney|number:2}}</span></td>
+					      	<td><button class="ey-btn" data-ng-click="detail(model.orderNo)">查看详情</button></td>
+					      </tr></tbody>
+					    </table>
+   						<eayun-table-page></eayun-table-page>
+  					</eayun-table>
+
+

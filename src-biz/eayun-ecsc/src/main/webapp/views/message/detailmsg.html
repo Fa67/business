@@ -1,0 +1,59 @@
+<div style="width: 100%;">
+	<!-- <div class="col-sm-12" style="padding-left:0px;">
+    <label class="col-sm-4 control-label" style="padding-left:0px;text-align:left;font-size:12px;">发件人：<span style="color:#0077cc;">{{model.sendPerson}}</span></label>
+  </div> -->
+	<div class="ey-panel-title" style="height: 80px;margin:-20px;">
+		<div class="col-sm-12" style="padding:10px 0 0 0;">
+			<label class="ey-font-size-bigger">
+				<h4 style="margin: 0;">{{model.data.newsTitle}}</h4>
+			</label>
+		</div>
+		<span class="ey-form-w4" style="display: inline-block;">
+			<label class="ey-text-tip ey-font-size" style="font-weight: normal">发件人：
+				<span class="ey-color-blue">{{model.data.sendPerson}}</span>
+			</label>
+		</span>
+		<span class="ey-form-w4" style="display: inline-block;">
+			<label class="ey-text-tip ey-font-size" style="font-weight: normal">发件时间：{{model.data.sendDate}}</label>
+		</span>
+	</div>
+
+	<!-- </div> -->
+	<!--<div class="col-sm-12 divider"></div>-->
+	<div class="col-sm-12" style="padding: 40px 0;">
+
+		
+		<div>
+		
+		
+		<div ng-if="model.data.issyssend=='1'">
+		
+			<p >
+				尊敬的 客户，您好:
+			</p>
+			<br>
+	
+
+			<p >
+				欢迎您使用易云公有云服务，
+			</p>
+			<br>
+
+			</div>
+
+			<div ng-bind-html="model.data.memo" style="line-height:20px;"></div>
+
+		
+			
+			<br>
+			<br>
+			
+
+
+		</div>
+
+
+	</div>
+
+	<img class="logo"  src="images/logo6.png">
+</div>

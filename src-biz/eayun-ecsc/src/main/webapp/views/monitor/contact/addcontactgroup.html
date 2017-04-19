@@ -1,0 +1,24 @@
+<div class="modal-header">
+    <span class="modal-title">创建联系组</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 600px;">
+	<form class="ey-form" novalidate name="addctcgrp">
+	    <div class="ey-form-group" data-ng-class="(addctcgrp.name.$dirty && addctcgrp.name.$invalid ) ? 'ey-has-error' : ''">
+	        <label class="ey-form-w3 ey-form-label ey-required">联系组名称：</label>
+	
+	            <input type="text" class="ey-form-input ey-form-w6" placeholder="请输入联系组名"  name="name"
+	                   data-ng-model="contactGroupModel.name"  required
+	                   data-ajax-valid="checkContactGroupName(value)" maxlength=15/> 
+	      		<span ng-show="addctcgrp.name.$dirty && addctcgrp.name.$error.required && !nameflag">联系组名称不能为空</span>
+	      		<span ng-show="addctcgrp.name.$dirty && addctcgrp.name.$error.ajaxValid && !nameflag">联系组名称已存在</span>
+	     		<span ng-if="nameflag">请输入正确的组名</span>
+	    </div>
+	</form>
+</div>
+<!-- 按钮区域 -->
+  <div class="ey-modal-footer">
+      <div class="ey-btn-group">
+  		<button type="button" class="ey-btn ey-btn-primary" ng-click="commit()"  ng-disabled="!addctcgrp.$valid">确定</button>
+    	<button type="button" class="ey-btn ey-btn-default" ng-click="cancel()">取  消</button>
+  	  </div>
+  </div>

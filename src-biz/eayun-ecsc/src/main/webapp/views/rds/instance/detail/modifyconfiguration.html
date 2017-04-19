@@ -1,0 +1,42 @@
+<div class="modal-header" style="width: 600px;">
+    <span class="modal-title">更改配置文件</span> 
+    <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body">
+	<form class="ey-form " name="myForm" novalidate>
+		<fieldset>
+		  	<div class ="ey-form-group" >
+		  		<label class = "ey-form-label">数据库版本号：</label>
+		  		<span>{{model.type == 'mysql'?'MySQL ':''}}{{model.version}}</span>
+		  	</div>
+		  	
+		  	<div class="ey-form-group">
+				<label class="ey-form-label">配置文件：</label>
+				<eayun-select class="ey-form-w6" 
+							  name="configId" 
+							  data-ng-model="model.configId" 
+							  placeholder="请选择配置文件">
+					<eayun-option value="configuration.configId" text = "{{configuration.configName}}" data-ng-repeat="configuration in configurations"></eayun-option>
+				</eayun-select>
+				<div class="dialog-clear-left ey-form-w6" style="line-height: 22px;margin-top: 6px;">
+					<span>更改配置文件需要重启实例后才会生效</span>
+					<div class="ey-form-checkbox" style="float:right;padding-top:4px;">
+						<input id="check2" type="checkbox" data-ng-model ="isAccept">
+						<label for="check2" class="ey-text-tip">重启</label>
+		   			</div>
+				</div>
+			</div>
+		  </fieldset>
+		
+	</form>
+</div>
+
+<!-- 按钮区域 -->
+<div class="ey-modal-footer ey-instance-footer">
+	<div class="ey-btn-group">
+		<button type="button" class="ey-btn ey-btn-primary" ng-click="commit()" 
+			data-ng-disabled="!isAccept || checkBtn">确定</button>
+		<button type="button" class="ey-btn ey-btn-default"
+			ng-click="cancel()">取 消</button>
+	</div>
+</div>

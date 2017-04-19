@@ -1,0 +1,22 @@
+<div class="title-inline">
+  <ul class="ey-nav-bread">
+	<li data-ui-sref={{item.route}} data-ng-repeat="item in navLists">{{item.name}}</li>
+</ul>
+</div>
+<div class="ey-divider"></div>
+<div class="ey-panel ey-panel-full">
+  <!-- 导航页签 -->
+  <div class="ey-panel-title">
+    <nav class="ey-nav-underline">
+      <a ui-sref-active="active" data-ui-sref="app.auth.customer" data-ng-show = "modulePower.isCustomer">公司信息</a>
+      <a ui-sref-active="active" data-ui-sref="app.auth.user" data-ng-show = "modulePower.isUser">个人账号信息</a>
+      <a ui-sref-active="active" data-ui-sref="app.auth.applymng">配额信息</a>
+      <a ui-sref-active="active" data-ui-sref="app.auth.usermanage" data-ng-show = "modulePower.isUsermng">用户管理</a>
+    </nav>
+  </div>
+
+  <!-- 子页面展示区 -->
+    <div class="ey-panel-body">
+      <div data-ui-view=""></div>
+    </div>
+</div>

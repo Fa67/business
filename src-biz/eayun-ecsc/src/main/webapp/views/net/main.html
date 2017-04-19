@@ -1,0 +1,34 @@
+<div class="ey-nav">
+    <eayun-select ng-cloak
+                  class="ey-form-w3"
+                  data-ng-model="model.projectvoe"
+                  data-ng-if="viewType != 'detail'"
+                  show-length="14">
+        <eayun-option ng-repeat="project in cloudprojectList" value="project" text="{{project.dcName}}"></eayun-option>
+    </eayun-select>
+    <ul class="ey-nav-bread">
+        <li data-ui-sref={{router.router}} data-ng-repeat="router in routerList">{{router.name}}</li>
+        <li>{{routerName}}</li>
+    </ul>
+</div>
+<!-- 子页面展示区 <div data-ui-view=""></div>-->
+<div class="ey-divider"></div>
+<div class="ey-panel ey-panel-full">
+    <!--<div class="ey-panel-title" data-ng-if="viewType != 'detail'">
+        <eayun-select ng-cloak class="form-control location" data-ng-model="model.projectvoe" show-length="14">
+            <eayun-option ng-repeat="project in cloudprojectList" value="project" text="{{project.dcName}}"></eayun-option>
+        </eayun-select>
+    </div>
+    <div class="ey-divider"></div>-->
+    <div class="ey-panel-title" data-ng-if="viewType != 'detail'">
+        <nav class="ey-nav-underline">
+            <a ui-sref-active="active" data-ui-sref="app.net.netbar.net">私有网络</a>
+            <a ui-sref-active="active" data-ui-sref="app.net.netbar.loadbalance" data-ng-show = "modulePower.isLdBalance">负载均衡</a>
+            <a ui-sref-active="active" data-ui-sref="app.net.netbar.floatip" data-ng-show = "modulePower.isFloatView">弹性公网IP</a>
+            <a ui-sref-active="active" data-ui-sref="app.net.netbar.vpn" data-ng-show="modulePower.isVpnView">VPN</a>
+        </nav>
+    </div>
+    <div class="ey-panel-body">
+        <div data-ui-view=""></div>
+    </div>
+</div>

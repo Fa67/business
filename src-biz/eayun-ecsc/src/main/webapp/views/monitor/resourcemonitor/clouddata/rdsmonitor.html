@@ -1,0 +1,74 @@
+<div class = "ey-search-bar ey-search-bar-white">
+	<eayun-select data-ng-model = "ProModel" show-length = "13">
+   		<eayun-option value="pro"  text = "{{pro.dcName}}"data-ng-repeat="pro in cloudproList"></eayun-option>
+	</eayun-select>
+	<eayun-search-text value="params.instanceName" search="query()" placeholder="请输入实例名称搜索"></eayun-search-text>
+</div>
+
+<eayun-table data-api="rdsPageTable.api" data-ajax-source="rdsPageTable.source" data-param="rdsPageTable.getParams"
+                data-result="rdsPageTable.result">
+      <table class="ey-table">
+		<thead>
+	        <tr>
+	          <th>实例名称</th>
+	          <th width="125px">
+	          		<eayun-table-filter list-data="dataVersion" text-field="text" item-clicked="verClicked($item, $event)"></eayun-table-filter>
+			  </th>
+	          <th>CPU利用率</th>
+	          <th>内存占用率</th>
+	          <th>磁盘使用率</th>
+	          <th width = "14%">网卡下行速率(Mb/s)</th>
+	          <th width = "14%">网卡上行速率(Mb/s)</th>
+	          <th width = "13%">磁盘写吞吐(MB/s)</th>
+	          <th width = "13%">磁盘读吞吐(MB/s)</th>
+	        </tr>
+        </thead>
+        <tbody><tr data-ng-repeat="model in rdsPageTable.result">
+	          <td title= "{{model.instanceName}}" class="click-td" data-ng-click="goRdsMonitorDetail(model.instanceId)" >{{model.instanceName}}</td>
+	          <td title= "{{model.dataVersionName=='null'?'':model.dataVersionName}}">{{model.dataVersionName=='null'?'':model.dataVersionName}}</td>
+	          <td>
+	          		<label class = "control-label diff-enlarge" data-ng-show = "model.cpuDiff==1" style = "font-size:12px;">{{model.cpu | number:1}}%&nbsp;&nbsp;↑</label>
+	          		<label class = "control-label diff-reduce" data-ng-show = "model.cpuDiff==-1" style = "font-size:12px;">{{model.cpu | number:1}}%&nbsp;&nbsp;↓</label>
+	          		<label class = "control-label" data-ng-show = "model.cpuDiff==0" style = "font-size:12px;">{{model.cpu | number:1}}%&nbsp;&nbsp;</label>
+	          		<label class = "control-label" data-ng-show = "model.cpuDiff==0">—</label>
+	          </td>
+	          <td>
+	          		<label class = "control-label diff-enlarge" data-ng-show = "model.ramDiff==1" style = "font-size:12px;">{{model.ram | number:1}}%&nbsp;&nbsp;↑</label>
+	          		<label class = "control-label diff-reduce" data-ng-show = "model.ramDiff==-1" style = "font-size:12px;">{{model.ram | number:1}}%&nbsp;&nbsp;↓</label>
+	          		<label class = "control-label" data-ng-show = "model.ramDiff==0" style = "font-size:12px;">{{model.ram | number:1}}%&nbsp;&nbsp;</label>
+	          		<label class = "control-label" data-ng-show = "model.ramDiff==0">—</label>
+	          </td>
+	          <td>
+	          		<label class = "control-label diff-enlarge" data-ng-show = "model.volumeUsedDiff==1" style = "font-size:12px;">{{model.volumeUsed | number:1}}%&nbsp;&nbsp;↑</label>
+	          		<label class = "control-label diff-reduce" data-ng-show = "model.volumeUsedDiff==-1" style = "font-size:12px;">{{model.volumeUsed | number:1}}%&nbsp;&nbsp;↓</label>
+	          		<label class = "control-label" data-ng-show = "model.volumeUsedDiff==0" style = "font-size:12px;">{{model.volumeUsed | number:1}}%&nbsp;&nbsp;</label>
+	          		<label class = "control-label" data-ng-show = "model.volumeUsedDiff==0">—</label>
+	          </td>
+	          <td><!--网卡下行速率  -->
+	          		<label class = "control-label diff-enlarge" data-ng-show = "model.netoutDiff==1" style = "font-size:12px;">{{model.netOut | number:4}}&nbsp;&nbsp;↑</label>
+	          		<label class = "control-label diff-reduce" data-ng-show = "model.netoutDiff==-1" style = "font-size:12px;">{{model.netOut | number:4}}&nbsp;&nbsp;↓</label>
+	          		<label class = "control-label" data-ng-show = "model.netoutDiff==0" style = "font-size:12px;">{{model.netOut | number:4}}&nbsp;&nbsp;</label>
+	          		<label class = "control-label" data-ng-show = "model.netoutDiff==0" style = "">—</label>
+	          </td>
+	          <td><!--网卡上行速率  -->
+	          		<label class = "control-label diff-enlarge" data-ng-show = "model.netinDiff==1" style = "font-size:12px;">{{model.netIn | number:4}}&nbsp;&nbsp;↑</label>
+	          		<label class = "control-label diff-reduce" data-ng-show = "model.netinDiff==-1" style = "font-size:12px;">{{model.netIn | number:4}}&nbsp;&nbsp;↓</label>
+	          		<label class = "control-label" data-ng-show = "model.netinDiff==0" style = "font-size:12px;">{{model.netIn | number:4}}&nbsp;&nbsp;</label>
+	          		<label class = "control-label" data-ng-show = "model.netinDiff==0">—</label>
+	          </td>
+	          <td>
+	          		<label class = "control-label diff-enlarge" data-ng-show = "model.writeDiff==1" style = "font-size:12px;">{{model.diskWrite | number:4}}&nbsp;&nbsp;↑</label>
+	          		<label class = "control-label diff-reduce" data-ng-show = "model.writeDiff==-1" style = "font-size:12px;">{{model.diskWrite | number:4}}&nbsp;&nbsp;↓</label>
+	          		<label class = "control-label" data-ng-show = "model.writeDiff==0" style = "font-size:12px;">{{model.diskWrite | number:4}}&nbsp;&nbsp;</label>
+	          		<label class="control-label" data-ng-show = "model.writeDiff==0">—</label>
+	          </td>
+	          <td>
+	          		<label class = "control-label diff-enlarge" data-ng-show = "model.readDiff==1" style = "font-size:12px;">{{model.diskRead | number:4}}&nbsp;&nbsp;↑</label>
+	          		<label class = "control-label diff-reduce" data-ng-show = "model.readDiff==-1" style = "font-size:12px;">{{model.diskRead | number:4}}&nbsp;&nbsp;↓</label>
+	          		<label class = "control-label" data-ng-show = "model.readDiff==0" style = "font-size:12px;">{{model.diskRead | number:4}}&nbsp;&nbsp;</label>
+	          		<label class = "control-label" data-ng-show = "model.readDiff==0">—</label>
+	          </td>
+	        </tr></tbody>
+      </table>
+      <eayun-table-page></eayun-table-page>
+</eayun-table>

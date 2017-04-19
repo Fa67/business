@@ -1,0 +1,83 @@
+<form class="ey-search-bar ey-search-bar-white">
+    <button class="ey-btn ey-btn-primary ey-btn-sm" data-ng-click="vpn.buyVpn()" data-ng-show="buttonPower.isAddVpn">
+        <span class="eayunfont ef-plus" aria-hidden="true"></span>
+        <span>创建VPN</span>
+    </button>
+    <eayun-search-text value="vpn.vpnName" search="vpn.search()" placeholder="请输入名称搜索"></eayun-search-text>
+</form>
+<eayun-auto-refresh refresh="vpn.refresh" interval="5000"></eayun-auto-refresh>
+<eayun-table data-api="vpn.table.api" data-ajax-source="vpn.table.source" data-param="vpn.table.getParams"
+             data-result="vpn.table.result">
+    <table class="ey-table-muliti">
+        <thead>
+        <th>名称</th>
+        <th style="width: 110px;">状态</th>
+        <th>本端VPC</th>
+        <th>本端子网</th>
+        <th>对端网关</th>
+        <th>对端子网</th>
+        <th style="width: 215px;">计费状态</th>
+        <th style="width: 155px;">创建时间</th>
+        <th>操作</th>
+        </thead>
+        <tbody><tr data-ng-repeat="item in vpn.table.result">
+            <td data-ng-bind="::item.vpnName"
+                title="{{item.vpnName}}"
+                class="click-td"
+                data-ng-click="vpn.getVpnInfo(item.vpnId)"></td>
+            <td style="text-align: left;">
+                <span class="state-block"
+                      data-ng-class="vpn.vpnStatusClass[$index] != '' ? vpn.vpnStatusClass[$index] : ''"
+                      data-ng-init="vpn.vpnStatusClass[$index] = vpn.getVpnStatus(item)">
+                </span>
+                <span data-ng-bind="item.vpnStatusStr"></span>
+            </td>
+            <td data-ng-bind="::item.networkName+'('+item.gatewayIp+')'"
+                title="{{item.networkName+'('+item.gatewayIp+')'}}"></td>
+            <td data-ng-bind="::item.subnetName+'('+item.subnetCidr+')'"
+                title="{{item.subnetName+'('+item.subnetCidr+')'}}"></td>
+            <td data-ng-bind="::item.peerAddress"
+                title="{{item.peerAddress}}"></td>
+            <td data-ng-bind="::item.peerCidrs"
+                title="{{item.peerCidrs}}"></td>
+            <td>
+                <span data-ng-bind="::item.payTypeStr"></span><br>
+                <span data-ng-if="item.payType == 1">
+                    到期时间：<span data-ng-bind="item.endTime|date:'yyyy-MM-dd HH:mm:ss'"></span>
+                </span>
+            </td>
+            <td data-ng-bind="::item.createTime|date:'yyyy-MM-dd HH:mm:ss'"></td>
+            <td>
+                <div class="ey-btn-group">
+                    <button class="ey-btn"
+                            data-ng-show="buttonPower.isRenew && item.payType == '1'"
+                            data-ng-click="vpn.renewVpn(item)">
+                        <span>
+                            续费
+                        </span>
+                    </button>
+                    <button class="ey-btn"
+                            data-ng-show="buttonPower.isEditVpn"
+                            data-ng-disabled="item.chargeState != '0'"
+                            data-ng-click="vpn.editVpn(item)">
+                        <span>
+                            编辑
+                        </span>
+                    </button>
+                    <button class="ey-btn"
+                            data-ng-show="buttonPower.isDelVpn"
+                            data-ng-disabled="item.payType == '1' && item.chargeState == '0'"
+                            data-ng-click="vpn.deleteVpn(item)">
+                        <span class="ey-text-error">
+                            删除
+                        </span>
+                    </button>
+                    <span data-ng-show="!buttonPower.isRenew && !buttonPower.isEditVpn && !buttonPower.isDelVpn">
+                        ----
+                    </span>
+                </div>
+            </td>
+        </tr></tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

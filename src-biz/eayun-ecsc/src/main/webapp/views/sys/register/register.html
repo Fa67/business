@@ -1,0 +1,101 @@
+<div style="background-color: #FFFFFF;position: fixed;top: 0;bottom: 0;left: 0;right: 0;overflow: auto;">
+  <div ng-include="'views/sys/top.html'"></div>
+  <div class="container">
+    <form class="ey-form ey-register" style="width: 700px;margin: 0 auto;" name ="myForm" novalidate>
+      <fieldset>
+        <div class="ey-form-group row" data-ng-class="(myForm.email.$dirty && (myForm.email.$invalid||!checkEmail))?'ey-has-error' : ''">
+          <label class="ey-form-label col-md-2"><font class="ec_star">*</font>电子邮箱：</label>
+	      <input type="text" data-ng-model ="model.cusEmail" name="email" maxlength ="50"
+	            ng-pattern="/^[a-zA-Z0-9_-]+[\.a-zA-Z0-9_-]+[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/" ng-change="checkCondition('email')"
+	             class="ey-form-input ey-form-w5" placeholder="请输入邮箱" required>
+	       <span class="" ng-show="myForm.email.$dirty && myForm.email.$error.required">请输入邮箱地址</span>
+	       <span class="" ng-show="myForm.email.$dirty && myForm.email.$invalid&&!myForm.email.$error.required">请输入正确的邮箱地址</span>
+	       <span class="" ng-show="myForm.email.$dirty && myForm.email.$valid&&!checkEmail">邮箱已注册</span>
+        </div>
+        <div class="ey-form-group row"  data-ng-class="(myForm.telephone.$dirty && (myForm.telephone.$invalid||!checkPhone))?'ey-has-error' : ''">
+          <label class="ey-form-label col-md-2"><font class="ec_star">*</font>手机号码：</label>
+	      <input type="text" data-ng-model ="model.cusPhone" maxlength="11"
+	            ng-pattern="/^1[3|5|8|7][0-9]\d{8}$/" ng-change="checkCondition('telephone')"
+	            name ="telephone" placeholder="请输入手机号码" class="ey-form-input ey-form-w5" required>
+	      <span class="" ng-show="myForm.telephone.$dirty && myForm.telephone.$error.required">请输入手机号</span>
+	      <span class="" ng-show="myForm.telephone.$dirty && myForm.telephone.$invalid&&!myForm.telephone.$error.required">请输入正确的手机号</span>
+	      <span class="" ng-show="myForm.telephone.$dirty && myForm.telephone.$valid&&!checkPhone">手机号已注册 </span>
+        </div>
+        <div class="ey-form-group row"  data-ng-class="(myForm.phoneCode.$dirty && myForm.phoneCode.$invalid)?'ey-has-error' : ''">
+          <label class="ey-form-label col-md-2"><font class="ec_star">*</font>手机验证码：</label>
+          <input type="text" data-ng-model="model.teleCode" name="phoneCode" maxlength="6"
+	                placeholder="请输入手机验证码" class="ey-form-input ey-form-w3" required>
+          <button type="button" ng-disabled="myForm.telephone.$invalid||!teleCodeFlag||!checkPhone" data-ng-click="refreshTelephone()" class="ey-btn ey-btn-primary">{{teleCodeName}}</button>
+	       <span style="margin-left:10px;" ng-show="myForm.phoneCode.$dirty && myForm.phoneCode.$error.required">请输入手机验证码</span>
+        </div>
+      </fieldset>
+      <fieldset>
+        <div class="ey-form-group row"  data-ng-class="(myForm.custName.$dirty && myForm.custName.$invalid)?'ey-has-error' : ''">
+          <label class="ey-form-label col-md-2"><font class="ec_star">*</font>客户姓名：</label>
+	      <input type="text" class="ey-form-input ey-form-w8" maxlength="20" data-ng-model="model.cusName"
+	              ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/" 
+	              name="custName" placeholder="请输入客户名称" required>
+	      <span class="" ng-show="myForm.custName.$dirty && myForm.custName.$invalid && !myForm.custName.$error.required">请输入1-20位字符,支持数字、中英文、下划线、空格</span>
+	      <span class="" ng-show="myForm.custName.$dirty && myForm.custName.$error.required">请输入客户名称</span>
+        </div>
+        <div class="ey-form-group row"  data-ng-class="(myForm.companyCn.$dirty && (myForm.companyCn.$invalid||!checkCompanyCn))?'ey-has-error' : ''">
+          <label class="ey-form-label col-md-2"><font class="ec_star">*</font>公司中文名：</label>
+	      <input type="text" class="ey-form-input ey-form-w8" maxlength="100" ng-change="checkCondition('company')"
+	            data-ng-model="model.cusCpname" name="companyCn" placeholder="请输入公司中文名" required>
+	      <span class="" ng-show="myForm.companyCn.$dirty && myForm.companyCn.$error.required">请输入公司中文名</span>
+	      <span class="" ng-show="myForm.companyCn.$dirty && myForm.companyCn.$valid&&!checkCompanyCn">公司名称已注册</span>
+        </div>
+        <div class="ey-form-group row">
+          <label class="ey-form-label col-md-2">公司英文名：</label>
+          <input type="text" class="ey-form-input ey-form-w8" maxlength="100" data-ng-model="model.cusCpename" name="companyEn" placeholder="请输入公司英文名">
+        </div>
+        <div class="ey-form-group row">
+          <label class="ey-form-label col-md-2">公司简介：</label>
+          <textarea class="ey-form-textarea ey-form-w11" data-ng-model="model.cusSynopsis"  maxlength="2000" name="companyProfile" placeholder="请输入公司简介"></textarea>
+        </div>
+        <div class="ey-form-group row">
+          <label class="ey-form-label col-md-2">所属部门：</label>
+            <input type="text" class="ey-form-input ey-form-w5" data-ng-model="model.cusDept" maxlength="20" name="dept" placeholder="请输入所属部门">
+        </div>
+        <div class="ey-form-group row">
+          <label class="ey-form-label col-md-2">所属职位：</label>
+            <input type="text" class="ey-form-input ey-form-w5" maxlength="20" data-ng-model="model.cusPesition" name="position" placeholder="请输入所属职位">
+        </div>
+      </fieldset>
+      <fieldset>
+        <div class="ey-form-group row">
+          <label class="ey-form-label col-md-2">注册原因：</label>
+            <textarea class="ey-form-textarea ey-form-w11" data-ng-model="model.cusDesc" maxlength="2000" name="reason" placeholder="请输入注册原因"></textarea>
+        </div>
+        <div class="ey-form-group row">
+          <label class="ey-form-label col-md-2"><font class="ec_star">*</font>图片验证码：</label>
+           <div class="" data-ng-class="(myForm.imageCode.$dirty && myForm.imageCode.$invalid)?'ey-has-error' : ''">
+             <input type="text" class="ey-form-input ey-form-w3" maxlength="4" data-ng-model="model.imageCode"
+             name="imageCode" placeholder="请输入图片验证码" required>
+           </div>
+           <div class="" style="padding-left: 0px;padding-right: 0px;">
+             <img class="img-responsive mousecp pointer" style="height: 34px;" id="imageCode" data-ng-click="changeCode()" title="看不清？点击图片后刷新">
+           </div>
+         <div class ="" style="padding-left: 20px;padding-right: 0px;line-height: 32px;height: 32px">
+         	<p >看不清，<span class="color-info pointer" data-ng-click="changeCode()">点击图片刷新</span></p>
+         </div>
+        <div class="" style="line-height:32px;" data-ng-class="(myForm.imageCode.$dirty && myForm.imageCode.$invalid)?'ey-has-error' : ''">
+        	<span class="" ng-show="myForm.imageCode.$dirty && myForm.imageCode.$error.required">请输入图片验证码</span>
+        </div>
+        </div>
+      </fieldset>
+      <fieldset>
+        <div class="ey-form-group row">
+              <div class="tab-content ey-btn-group" style="padding: 0;margin:0;">
+                <button type="submit" ng-disabled="myForm.$invalid ||!checkPhone||!checkEmail||!checkCompanyCn||isCommitted"
+                 ng-click="commit()" class="ey-btn ey-btn-lg ey-btn-primary">提 交</button>
+                <a class="ey-btn ey-btn-lg ey-btn-default" ng-click="cancle()">取 消</a>
+              </div>
+        </div>
+      </fieldset>
+    </form>
+
+    <footer ng-include="'views/sys/bottom.html'"></footer>
+  </div>
+</div>
+

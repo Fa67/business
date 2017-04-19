@@ -1,0 +1,73 @@
+<div class="ey-form-payment" style="margin-top:15px;margin-bottom:25px;">
+	<lable style="font-size:16px;">余额：{{costCenterAccount.balance.balance}}</lable>
+	<lable style="font-size:16px;"
+		data-ng-class="costCenterAccount.balance.money<0?'ey-text-error':'color-blue'">￥ </lable>
+	<label style="font-size:24px;" class="ey-text-error"
+		data-ng-show="costCenterAccount.balance.money<0">-</label>
+	<lable style="font-size:24px" ng-if="buttonPower.isAccountView"
+		ng-bind="costCenterAccount.balance.balancePositive|number:2"
+		data-ng-class="costCenterAccount.balance.money<0?'ey-text-error':'color-blue'"></lable>
+	<lable style="font-size:12px" class="ey-text-error"
+		ng-if="costCenterAccount.balance.money<0">(已欠费)</lable>
+	<button class="ey-btn ey-btn-sm"
+		style="margin-left:15px;margin-bottom:10px;margin-top:7px;" ng-if="buttonPower.isAccountRecharge"
+		ng-click="costCenterAccount.recharge()">账户充值</button>
+</div>
+<div class="ey-panel-body ey-divider" style="margin-bottom:-20px;"></div>
+<h4>交易记录</h4>
+<div class="form-inline">
+	<div class="ey-search-bar">
+		<label>交易时间：</label>
+		<date-range start-date="costCenterAccount.time.beginTime" end-date="costCenterAccount.time.endTime" max-date="costCenterAccount.time.maxTime" data-show-time="false" class="ey-form-w4"></date-range>
+		<button class="ey-btn ey-btn-default" style="margin-left:15px;"ng-if="buttonPower.isAccountRecord"
+			ng-click="costCenterAccount.query()">查&nbsp;&nbsp;询</button>
+		<button class="ey-btn ey-btn-default-light ey-color-blue pull-right"
+			ng-click="costCenterAccount.createExcel()" style="margin-top:7px;" ng-if="buttonPower.isAccountExcel">
+			<span class="eayunfont ef-export"></span> <span>导出</span>
+		</button>
+		<div style="display: none;">
+			<iframe id="record-export-iframe" frameborder="0"></iframe>
+		</div>
+	</div>
+</div>
+<eayun-table data-api="myTable.api" data-ajax-source="myTable.source"
+	data-param="myTable.getParams" data-result="myTable.result">
+<table class="ey-table ey-table-muliti">
+	<thead>
+		<tr>
+			<th>流水号</th>
+			<th>交易时间</th>
+			<th>
+				<eayun-table-filter list-data="status" text-field="text" item-clicked="itemClicked($item, $event)"></eayun-table-filter>
+			</th>
+			<th>交易备注</th>
+			<th>交易金额</th>
+			<th>账户余额</th>
+		</tr>
+	</thead>
+	<tbody><tr data-ng-repeat="model in myTable.result" data-ng-show="true"
+			style="height:45px;">
+			<td><span class="ey-color-blue" ng-bind="model.serialNumber">{{model}}</span></td>
+			<td><span ng-bind="model.monTime|date:'yyyy-MM-dd HH:mm:ss'"></span></td>
+			<td><span ng-bind="model.incomeType=='1'?'收入':'支出'"></span></td>
+			<td ng-if="model.operType=='1'||model.operType=='3'"><span
+				ng-bind="model.monEcscRemark"></span></td>
+			<td ng-if="model.operType=='2'"><span
+				ng-bind="model.monEcscRemark"></span><br>订单号:<span
+				ng-bind="model.orderNo"></span></td>
+			<td ng-if="model.operType=='4'||model.operType=='5'" ><span
+				ng-bind="model.monEcscRemark"></span>
+			</td>
+			<td ng-if="model.incomeType=='1'"><span
+				class="color-blue">￥ +<span class="color-blue"
+					ng-bind="model.money|number:3"></span></span></td>
+			<td ng-if="model.incomeType=='2'"><span
+				class="ey-text-error">￥ -<span class="ey-text-error"
+					data-ng-bind="model.money|number:3"></span></span></td>
+			<td ng-if="model.accountBalance>=0"><span class="color-blue">￥ <span
+					class="color-blue" data-ng-bind="model.accountBalance|number:3"></span></span></td>
+			<td ng-if="model.accountBalance<0"><span class="ey-text-error">￥ -<span
+					class="ey-text-error" data-ng-bind="model.balancePositive|number:3"></span></span></td>
+		</tr></tbody>
+</table>
+<eayun-table-page></eayun-table-page> </eayun-table>

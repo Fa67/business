@@ -1,0 +1,126 @@
+<div class="panel panel-default clearfix">
+<div class="panel-body">
+<h4>路由详情</h4>
+<!-- 详情 -->
+<div class="details">
+  <form class="row">
+    <div class="col-lg-6">
+      <div class="details-group">
+        <div class="details-name">路由名称：</div>
+        <div class="details-value">
+          <span data-ng-class="isEdit('name')?'hide':'show'">{{model.routeName}}</span>
+        </div>
+     
+      </div>
+      <div class="details-group">
+        <div class="details-name">状态：</div>
+        <div class="details-value">
+        	<span class ="state-block" data-ng-class="routeStatusClass!=''?routeStatusClass:''"></span>
+            {{model.statusForRoute}}
+        </div>
+      </div>
+      <div class="details-group">
+        <div class="details-name">所属项目：</div>
+        <div class="details-value">
+          {{model.prjName}}
+        </div>
+      </div>
+      <div class="details-group">
+        <div class="details-name">已有标签：</div>
+        <div class="details-value" ng-show="resourceTags.gt2Tags">
+          <span>{{resourceTags.twoTagsString}}</span>
+          <div class="detail-icon ellipsis pointer"
+        		ng-mouseenter="openPopBox({value:resourceTags.allTagsString,type:'tagName'})"
+        		ng-mouseleave="closePopBox('tagName')"
+				hint="views/cloudhost/volume/volumedescription.html"
+        		hint-show="hintTagShow"
+        		tooltip-class="tooltip-description"
+        		tooltip-placement="bottom">
+          </div>
+        </div>
+        <div class="details-value" ng-show="!resourceTags.gt2Tags">
+        	<span>{{resourceTags.allTagsString}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="details-group">
+        <div class="details-name">路由ID：</div>
+        <div class="details-value">
+          {{model.routeId}}
+        </div>
+      </div>
+      <div class="details-group">
+        <div class="details-name">外部网关信息：</div>
+        <div class="details-value">
+          <span data-ng-class="isEdit('desc')?'hide':'show'">{{model.netName=='null'?'':'已连接外部网络  '+model.netName}}</span>
+        </div>
+      </div>
+      <div class="details-group">
+        <div class="details-name">所属数据中心：</div>
+        <div class="details-value">
+          {{model.dcName}}
+        </div>
+      </div>
+      <div class="details-group">
+        <div class="details-name">路由带宽：</div>
+        <div class="details-value">
+          {{model.rate}} Mbps
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+</div>
+</div>
+<div class="panel panel-default clearfix">
+<div class="panel-body">
+<h4>路由子网列表</h4>
+<!-- 表格 -->
+<eayun-table data-api="routeDetailTable.api" data-ajax-source="routeDetailTable.source" data-param="routeDetailTable.getParams" data-result="routeDetailTable.result">
+  <table class="table table-eayun">
+    <thead>
+    <tr>
+    	<th class="col-sm-2">名称</th>
+        <th class="col-sm-2">网络地址</th>
+<!--         <th class="col-sm-2">IP版本</th> -->
+        <th class="col-sm-2">网关IP</th>
+        <th class="col-sm-2">已有标签</th>
+        <th class="col-sm-2">操作</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    	
+    <tr data-ng-repeat="item in routeDetailTable.result">
+      <td class="col-sm-2">{{item.subnetName}}</td>
+      <td class="col-sm-2">{{item.cidr}}</td>
+<!--       <td class="col-sm-2">{{item.ipVersion}}</td> -->
+      <td class="col-sm-2">{{item.gatewayIp}}</td>
+      <td class="col-sm-2" ng-show="tags.gt2Tags" ng-init="tags = routeJson(item.tagName)">
+      	<span>{{tags.twoTagsString}}</span>
+      	<div class="tag-icon ellipsis pointer"
+			ng-mouseenter="openTableBox({value:tags.allTagsString,type:'tagName',index:$index})"
+			ng-mouseleave="closeTableBox({type:'tagName',index:$index})"
+			hint="views/directives/ellipsispop.html"
+       		hint-show="tableTagShow[$index]"
+       		tooltip-class="tooltip-tag"
+       		tooltip-placement="bottom">
+       	</div>
+   	  </td>
+   	  <td class="col-sm-2" ng-show="!tags.gt2Tags">
+   	  	<span>{{tags.allTagsString}}</span>
+   	  </td>
+      <td class="col-sm-2" ng-if="buttonPower.isSubNetTag &&buttonPower.isDetachSub">
+      	<button class="btn btn-tablemng" type="button" data-ng-click ="tagResource('subNetwork',item.subnetId)" data-ng-show ="buttonPower.isSubNetTag">标签</button>
+		<button class="btn btn-tablemng btn-left" type="button" data-ng-click="detachSubNet(item)" data-ng-show ="buttonPower.isDetachSub">解绑</button>
+      </td>
+      <td class="col-sm-2" ng-if="!buttonPower.isSubNetTag &&!buttonPower.isDetachSub">----
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  
+</eayun-table>
+</div>
+</div>

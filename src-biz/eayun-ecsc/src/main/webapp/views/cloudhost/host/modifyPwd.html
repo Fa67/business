@@ -1,0 +1,48 @@
+<div class="modal-header" style="width: 650px;">
+    <span class="modal-title">修改主机密码</span> 
+    <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body">
+	<form class="ey-form " name="myForm" novalidate>
+		<fieldset>
+		  	<div class="ey-form-group" data-ng-class="isPwdOnFocus && checkPasswordFlag ? 'ey-has-error' : ''">
+		  		 <label class="ey-form-label ey-required">密码：</label>
+		  		 <div class="ey-form-input-group ey-form-w6">
+			  		 <input type="password" name="pwd" data-ng-model="model.password" placeholder="请输入密码" 
+			  		 ng-focus="focus('pwd')" ng-blur="passBlur()" maxlength="30" required >
+		  		 </div>
+		  		 <div class="dialog-clear-left">
+			      	<span class="ey-text-tip" ng-class="isPwdOnFocus && checkPasswordFlag ? 'ey-has-error':''">8-30个字符，且同时包含数字、大写字母、小写字母和特殊字符中的三项</span>
+		  		 </div>
+		  	</div>
+		  	
+		  	<div class="ey-form-group" data-ng-class="isRePwdOnFocus ? 'ey-has-error' : ''">
+		  		 <label class="ey-form-label ey-required">确认密码：</label>
+		  		 <div class="ey-form-input-group ey-form-w6">
+			  		 <input type="password" name="repwd" data-ng-model="model.repassword" placeholder="请输入确认密码" 
+			  		 ng-focus="focus('rePwd')" ng-blur="repassBlur()" maxlength="30" required >
+		  		 </div>
+		  		 <div class="dialog-clear-left">
+			      	<span class="ey-text-tip ey-has-error" ng-if="isRePwdOnFocus">确认密码和密码不一致</span>
+		  		 </div>
+		  	</div>
+		  	<div style="text-align: center;">
+		  		<span class="ey-text-tip">注意：密码修改后，主机需要重启后才能生效。修改密码常见问题详见
+		  		<a href="" target="_blank"><span class="ey-text-link">参考文档</span></a></span>
+		  	</div>
+		  	
+		</fieldset>
+		
+	</form>
+</div>
+
+<!-- 按钮区域 -->
+<div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<button type="button" class="ey-btn ey-btn-primary"
+			ng-click="commit()" ng-disabled="!myForm.$valid || (isPwdOnFocus && checkPasswordFlag) 
+			|| isRePwdOnFocus || checkToken">确定</button>
+		<button type="button" class="ey-btn ey-btn-default"
+			ng-click="cancel()">取 消</button>
+	</div>
+</div>

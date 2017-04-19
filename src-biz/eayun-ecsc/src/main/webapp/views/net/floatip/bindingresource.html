@@ -1,0 +1,80 @@
+<div class="modal-header">
+    <span class="modal-title">绑定</span>
+    <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+
+<div class="modal-body" style="width: 600px;">
+	<form class="ey-form" name = "myForm" novalidate>
+	  <div class="ey-form-group">
+	    <label class="ey-form-label">网络：</label>
+	
+	    <div class="col-sm-8" data-ng-class="(myForm.network.$dirty && myForm.network.$invalid) ? 'has-error' : ''">
+	      <eayun-select name="network" class="ey-form-w6" 
+	      				data-ng-model="model.network" 
+	      				ng-change="changeSubnet()" 
+	      				placeholder="请选择网络"
+	      				required >
+	        <eayun-option value="network.netId" text="{{network.netName}}" data-ng-repeat="network in networks"></eayun-option>
+	      </eayun-select>
+	      
+	      <!-- js验证项目选择是否为空 -->
+	      <label class="ey-prompt hide" data-ng-class="(myForm.network.$dirty && myForm.network.$error.required) ? 'show' : 'hide'">网络不能为空</label>
+	    </div>
+	  </div>
+	    <div class="ey-form-group">
+	    <label class="ey-form-label">受管子网：</label>
+	
+	    <div class="col-sm-8" data-ng-class="(myForm.subnet.$dirty && subnet.prjName.$invalid) ? 'has-error' : ''">
+	      <eayun-select name="subnet" class="ey-form-w6" data-ng-model="model.subnet" required ng-change="changeResource()" placeholder="请选择子网" show-format="substrSubnetName(text)">
+	        <eayun-option value="subnet.subnetId" text="{{subnet.subnetName}}({{subnet.cidr}})" data-ng-repeat="subnet in subnets"></eayun-option>
+	      </eayun-select>
+	      
+	      <!-- js验证项目选择是否为空 -->
+	      <label class="ey-prompt hide" data-ng-class="(myForm.subnet.$dirty && myForm.subnet.$error.required) ? 'show' : 'hide'">子网不能为空</label>
+	    </div>
+	  </div>
+	
+		<div class="ey-form-group">
+			<label class="ey-form-label">对象类型：</label>
+			<div class="col-sm-8 checkbox-inline" style="font-size:12px;">
+				<div class="ey-form-radio">
+					<input id="vm" type="radio" data-ng-model="model.resourceType" name="resourceType" value="vm" ng-change="changeResource()">
+					<label for="vm" style="margin-right: 20px;">云主机</label>
+					<input id="lb" type="radio" data-ng-model="model.resourceType" name="resourceType" value="lb" ng-change="changeResource()">
+					<label for="lb">负载均衡</label>
+				</div>
+				<!--<span class="col-sm-3" style="padding-bottom: 0px;padding-left: 0px;">
+					<input type="radio" data-ng-model="model.resourceType" name="resourceType" value="vm" ng-change="changeResource()">云主机
+				</span>
+				<span class="col-sm-4">
+					<input type="radio" data-ng-model="model.resourceType" name="resourceType" value="lb" ng-change="changeResource()">负载均衡
+				</span>-->
+			</div>
+		</div>
+	   <div class="ey-form-group">
+	    <label class="ey-form-label">选择对象：</label>
+	
+	    <div class="col-sm-8" data-ng-class="(myForm.resourceId.$dirty && myForm.resourceId.$invalid) ? 'has-error' : ''">
+	      <eayun-select name="resourceId" class="ey-form-w6" data-ng-model="model.resource" required placeholder="请选择对象" show-format="substrSubnetName(text)">
+	        <eayun-option value="resource" text="{{resource.resourceName}}({{resource.subnetIp}})" data-ng-repeat="resource in resources" ></eayun-option>
+	      </eayun-select>
+	      
+	      <!-- js验证项目选择是否为空 -->
+	      <label class="ey-prompt hide" data-ng-class="(myForm.resourceId.$dirty && myForm.resourceId.$error.required) ? 'show' : 'hide'">对象不能为空</label>
+	    </div>
+	  </div>
+	   <!-- 按钮区域 -->
+	  <!-- <div class="modal-footer ey-btn-group" >
+	    <button type="button" class="ey-btn ey-btn-primary btn-modal" ng-click="commit()"  ng-disabled="!myForm.$valid ||floatUsedCount>=floatQuatoCount||checked">确  定</button>
+	    <button type="button" class="ey-btn ey-btn-default btn-modal"  ng-click="cancel()">取  消</button>
+	  </div> -->
+	</form>
+</div>
+<div class="ey-modal-footer">
+    <div class="ey-btn-group">
+        <button class="ey-btn" data-ng-click="commit()"
+                data-ng-disabled="!myForm.$valid || floatUsedCount >= floatQuatoCount || checked">确&nbsp;&nbsp;定
+        </button>
+        <button class="ey-btn ey-btn-default" data-ng-click="cancel()">取&nbsp;&nbsp;消</button>
+    </div>
+</div>

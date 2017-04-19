@@ -1,0 +1,185 @@
+<div class="">
+    <!-- 详情 -->
+    <h4>VPN基本配置</h4>
+    <div class="details">
+        <form class="row">
+            <div class="col-sm-6 ">
+                <div class="details-group">
+                    <div class="details-name">名称：</div>
+                    <div class="details-value">{{detail.vpnModel.vpnName}}</div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name">本端网络：</div>
+                    <div class="details-value">{{detail.vpnModel.networkName + '(' + detail.vpnModel.gatewayIp + ')'}}</div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name">本端子网：</div>
+                    <div class="details-value">{{detail.vpnModel.subnetName + '(' + detail.vpnModel.subnetCidr + ')'}}</div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name">VPN类型：</div>
+                    <div class="details-value">IPsec</div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name">预共享密钥：</div>
+                    <!-- <div class="details-value">{{detail.vpnModel.pskKey}}</div> -->
+                    <div class="details-value">
+			          <span data-ng-class="show">
+			          	{{(detail.vpnModel.pskKey.length>30 ? detail.vpnModel.pskKey.substring(0,30):detail.vpnModel.pskKey)}}
+			          </span>
+			        </div>
+			        <div data-ng-show="detail.vpnModel.pskKey.length > 30" 
+			             class="detail-icon ellipsis pointer"
+			        	 data-ng-mouseenter="openPopBox(detail.vpnModel.pskKey)"
+			        	 data-ng-mouseleave="closePopBox()"
+			        	 hint="views/net/vpn/vpnpskkey.html"
+			          	 data-hint-show="pskKeyShow"
+			          	 data-tooltip-class="tooltip-description"
+			          	 data-tooltip-placement="bottom">
+			         </div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name">创建时间：</div>
+                    <div class="details-value">
+                        {{detail.vpnModel.createTime|date:'yyyy-MM-dd HH:mm:ss'}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="details-group">
+                    <div class="details-name">所属数据中心：</div>
+                    <div class="details-value">{{detail.vpnModel.dcName}}</div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name">状态：</div>
+                    <div class="details-value">
+                        <span class ="state-block"
+                              data-ng-class="detail.vpnStatusClass != '' ? detail.vpnStatusClass : ''">
+                        </span>
+                        {{detail.vpnModel.vpnStatusStr}}
+                    </div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name">对端网关：</div>
+                    <div class="details-value">{{detail.vpnModel.peerAddress}}</div>
+                </div>
+                <!--<div class="details-group">
+                    <div class="details-name">对端路由ID：</div>
+                    <div class="details-value" title="{{detail.vpnModel.peerId}}">{{detail.vpnModel.routerId}}</div>
+                </div>-->
+                <div class="details-group">
+                    <div class="details-name">对端子网：</div>
+                    <div class="details-value ey-ellipsis" title="{{detail.vpnModel.peerCidrs}}">{{detail.vpnModel.peerCidrs}}</div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name">计费状态：</div>
+                    <div class="details-value">{{detail.vpnModel.payTypeStr}}</div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name">到期时间：</div>
+                    <div class="details-value" data-ng-if="detail.vpnModel.payType == '1'">
+                        {{detail.vpnModel.endTime|date:'yyyy-MM-dd HH:mm:ss'}}
+                    </div>
+                    <div class="details-value" data-ng-if="detail.vpnModel.payType == '2'">
+                        --
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <h4 style="margin-top: 20px;">IKE策略</h4>
+    <div class="details">
+        <form class="row">
+            <div class="col-sm-6 ">
+                <div class="details-group">
+                    <div class="details-name">版本：</div>
+                    <div class="details-value">{{detail.vpnModel.ikeVersion}}</div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name">协商模式：</div>
+                    <div class="details-value">{{detail.vpnModel.ikeNegotiation}}</div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name">认证算法：</div>
+                    <div class="details-value">{{detail.vpnModel.ikeAuthAlgorithm}}</div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="details-group">
+                    <div class="details-name">加密算法：</div>
+                    <div class="details-value">{{detail.vpnModel.ikeEncryption}}</div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name">DH算法：</div>
+                    <div class="details-value">{{detail.vpnModel.ikeDhAlgorithm}}</div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name">生命周期：</div>
+                    <div class="details-value">{{detail.vpnModel.ikeLifetimeValue}}</div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <h4 style="margin-top: 20px;">IPsec策略</h4>
+    <div class="details">
+        <form class="row">
+            <div class="col-sm-6 ">
+                <div class="details-group">
+                    <div class="details-name">传输协议：</div>
+                    <div class="details-value">{{detail.vpnModel.ipSecTransform}}</div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name">封装模式：</div>
+                    <div class="details-value">{{detail.ipSecEncapsulation}}</div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name">认证算法：</div>
+                    <div class="details-value">{{detail.vpnModel.ipSecAuthAlgorithm}}</div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="details-group">
+                    <div class="details-name">加密算法：</div>
+                    <div class="details-value">{{detail.vpnModel.ipSecEncryption}}</div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name">DH算法：</div>
+                    <div class="details-value">{{detail.vpnModel.ipSecDhAlgorithm}}</div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name">生命周期：</div>
+                    <div class="details-value">{{detail.vpnModel.ipSecLifetimeValue}}</div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <h4 style="margin-top: 20px;">可选参数</h4>
+    <div class="details">
+        <form class="row">
+            <div class="col-sm-6 ">
+                <div class="details-group">
+                    <div class="details-name">最大传输单元：</div>
+                    <div class="details-value">{{detail.vpnModel.mtu}}</div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name">失效处理：</div>
+                    <div class="details-value">{{detail.dpdAction}}</div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name">检测时间（秒）：</div>
+                    <div class="details-value">{{detail.vpnModel.dpdInterval}}</div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="details-group">
+                    <div class="details-name">超时（秒）：</div>
+                    <div class="details-value">{{detail.vpnModel.dpdTimeout}}</div>
+                </div>
+                <div class="details-group">
+                    <div class="details-name">发起状态：</div>
+                    <div class="details-value">{{detail.initiatorCn}}</div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

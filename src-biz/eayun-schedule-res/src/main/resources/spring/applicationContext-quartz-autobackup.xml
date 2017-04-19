@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    
+	<!-- 云数据库自动备份计划任务 -->
+	<bean id="rdsAutoBackupJob"
+        class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.eayun.database.backup.job.RDSAutoBackupJob"></property>
+        <property name="durability" value="true"></property>
+    </bean>
+    <!-- 云数据库实例已被删除的备份清理计划任务 -->
+	<bean id="rdsBackupCleanJob"
+        class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.eayun.database.backup.job.RDSBackupCleanJob"></property>
+        <property name="durability" value="true"></property>
+    </bean>
+
+	<bean id="rdsAutoBackupTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="rdsAutoBackupJob"></property>
+		<property name="cronExpression" value="0 0 0/1 * * ? *"></property>
+	</bean>
+	<bean id="rdsBackupCleanTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="rdsBackupCleanJob"></property>
+        <!-- for test -->
+		<property name="cronExpression" value="0 0 3 * * ? *"></property>
+	</bean>
+
+	<!-- 定时任务调度器 -->
+	<bean class="com.eayun.common.job.EayunSchedulerFactoryBean" id="RDSAutoBackupFactory">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+		<property name="configLocation" value="classpath:quartz.properties" />
+		<property name="triggers">
+			<list>
+                 <ref bean="rdsAutoBackupTrigger"/>
+                 <ref bean="rdsBackupCleanTrigger"/>
+			</list>
+		</property>
+	</bean>
+</beans>

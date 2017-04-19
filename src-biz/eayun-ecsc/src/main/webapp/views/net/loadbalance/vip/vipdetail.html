@@ -1,0 +1,117 @@
+<!-- 详情 -->
+<div class="details" style="font-size: 12px;">
+  <form class="row" name="myForm">
+    <div class="col-lg-12">
+    
+    <div class="details-group">
+        <div class="details-name">名称：</div>
+        <div class="details-value" ng-if="model.vipName.length>20">
+         <span>{{model.vipName.substring(0,19)}}</span>
+         <div class="detail-icon ellipsis pointer"
+       	      ng-mouseenter="openPopBox({value:model.vipName,type:'vipName'})"
+       		  ng-mouseleave="closePopBox('vipName')"
+			  hint="views/cloudhost/volume/volumedescription.html"
+       		  hint-show="volNameShow"
+       		  tooltip-class="tooltip-description"
+       		  tooltip-placement="bottom">
+       	  </div>
+        </div>
+        <div class="details-value" ng-if="model.vipName.length<=20">
+        	<span>{{model.vipName}}</span>
+        </div>
+      </div>
+    <div class="details-group">
+        <div class="details-name">状态：</div>
+        <div class="details-value">
+        <span class ="state-block" data-ng-class="vipStatusClass!=''?vipStatusClass:''"></span>
+		{{"null"!=model.statusForVip?model.statusForVip:""}}
+        </div>
+    </div>
+    <div class="details-group">
+        <div class="details-name">IP地址：</div>
+        <div class="details-value">
+          <span >{{model.vipAddress}}</span>
+        </div>
+      </div>
+    
+      
+     <div class="details-group">
+        <div class="details-name col-sm-4">协议：</div>
+        <div class="details-value col-sm-8">
+          {{model.vipProtocol}}
+        </div>
+      </div> 
+      
+      
+      
+      <div class="details-group">
+        <div class="details-name">协议端口：</div>
+        <div class="details-value">
+		{{model.protocolPort}}
+        </div>
+      </div>
+      
+      
+      <div class="details-group">
+        <div class="details-name">子网：</div>
+        <div class="details-value">
+         {{model.subnetName}}
+        </div>
+      </div>
+      <div class="details-group">
+        <div class="details-name">网关：</div>
+        <div class="details-value">
+         {{model.gatewayIp}}
+        </div>
+      </div>
+      
+   <div class="details-group">
+        <div class="details-name">资源池：</div>
+        <div class="details-value" ng-if="model.poolName.length>20">
+         <span>{{model.poolName.substring(0,19)}}</span>
+         <div class="detail-icon ellipsis pointer"
+       	      ng-mouseenter="openPopBox({value:model.poolName,type:'poolName'})"
+       		  ng-mouseleave="closePopBox('poolName')"
+			  hint="views/cloudhost/volume/volumedescription.html"
+       		  hint-show="volNameShow"
+       		  tooltip-class="tooltip-description"
+       		  tooltip-placement="bottom">
+       	  </div>
+        </div>
+        <div class="details-value" ng-if="model.poolName.length<=20">
+        	<span>{{model.poolName}}</span>
+        </div>
+    </div>
+    
+    <div class="details-group">
+        <div class="details-name">连接限制数：</div>
+        <div class="details-value">
+         {{model.connectionLimit}}
+        </div>
+      </div>
+    <div class="details-group">
+        <div class="details-name">已有标签：</div>
+        <div class="details-value" ng-if="tags.gt2Tags">
+         <span>{{tags.twoTagsString}}</span>
+         <div class="detail-icon ellipsis pointer"
+       	      ng-mouseenter="openPopBox({value:tags.allTagsString,type:'tagName'})"
+       		  ng-mouseleave="closePopBox('tagName')"
+			  hint="views/cloudhost/volume/volumedescription.html"
+       		  hint-show="tagShow"
+       		  tooltip-class="tooltip-description"
+       		  tooltip-placement="bottom">
+       	  </div>
+        </div>
+        <div class="details-value" ng-show="!tags.gt2Tags">
+        	<span>{{tags.allTagsString}}</span>
+        </div>
+      </div>
+      
+      
+      
+   </div>
+  </form>
+</div>
+  <div class="modal-footer" >
+    <button class="btn btn-default btn-modal" ng-click="cancel()">关闭</button>
+  </div>

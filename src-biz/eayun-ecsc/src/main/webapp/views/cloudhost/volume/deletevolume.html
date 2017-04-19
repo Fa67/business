@@ -1,0 +1,33 @@
+<div class="delete-confirm-container">
+    <div class="modal-header">
+		<span class="modal-title"> </span> <img data-ng-click="cancel()" src="images/close.png">
+	</div>
+	
+	<form class="ey-form delete-confirm-form" name="myForm">
+		<div class="vm-delete-label">
+			<label style="line-height:30px;word-break: break-all;" >确认删除云硬盘<span class="delete-resoure-color">{{model.volName}}</span>?</label>
+		</div>
+
+
+		<div class="ey-form-checkbox delete-checkbox">
+				<input id="check1" type="checkbox" data-ng-model="deleteSnapshot">
+				<label for="check1">删除云硬盘，同时删除其备份文件</label>
+			</div>
+			
+			<div class="ey-form-checkbox delete-checkbox" >
+				<input id="check2" type="checkbox" data-ng-model="overDelete" data-ng-disabled="isShow">
+				<label for="check2">彻底删除，不进入回收站</label>
+			</div>
+
+
+
+		<!-- 按钮区域 -->
+		<div class="modal-footer delete-page-footer">
+			<button type="button" class="btn btn-primary btn-modal"
+				data-ng-click="commit()" ng-disabled="checkBtn">确 定</button>
+			<button type="button" class="btn btn-default btn-modal"
+				data-ng-click="cancel()" style="margin-left: 15px;">取 消</button>
+		</div>
+	</form>
+
+</div>

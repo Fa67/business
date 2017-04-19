@@ -1,0 +1,66 @@
+<div class="tab-content ey-panel-body">
+  <div role="tabpanel" class="tab-pane active" id="appCloudhostHDTable">
+    
+    <!-- 表格 -->
+	<div class="ey-content-progress">
+    	<h5>状态：输入信息</h5>
+		<p>备案提交后将不得修改，请您在提交前谨慎检查信息是否有遗漏或错误</p>
+	</div>
+    <h4>备案网站信息</h4>
+    <form class="form-inline">
+      	<button type="button" class="ey-btn ey-btn-primary ey-btn-sm"  data-ng-disabled="unitNewRecord.addwebfag" data-ng-click="unitNewRecord.addRecordWeb()">
+      		<span class="eayunfont ef-plus" aria-hidden="true"></span>
+        	备案网站
+      	</button>
+    </form>
+    <div style="width: 100%;height: 300px;overflow-y:auto;">
+      <table class="ey-table">
+        <thead>
+	        <tr>
+	          <th>网站域名</th>
+	          <th>IP</th>
+	          <th>网站负责人</th>
+	          <th class="col-sm-3">操作</th>
+	        </tr>
+        </thead>
+        <tbody>
+        	<tr ng-if="unitNewRecord.webList!=null || unitNewRecord.webList.length>0" data-ng-repeat="web in unitNewRecord.webList" >
+          		<td title="{{web.domainName.split(';').join('\n')}}">{{web.domainName.length>30?web.domainName.substring(0,30)+'...':web.domainName}}</td>
+           		<td>
+          		    <div style="margin-top: 11px;">
+                        <div data-ng-repeat="ips in web.ipList">
+                            <p>{{ips.ip}};</p>
+                        </div>
+                    </div>
+          		</td>
+          		<td title="{{web.webDutyName}}">
+          			{{web.webDutyName}}
+          		</td>
+          		<td class="col-sm-2">
+	          		<div class="ey-btn-group">
+	          	  		<a class="ey-btn" data-ng-click="unitNewRecord.updateRecordWeb(web)">修改</a>
+	          	  		<a class="ey-btn ey-color-red" data-ng-click="unitNewRecord.deleteWeb(web)">删除</a>
+          	  		</div>
+          		</td>
+        	</tr>
+        	
+        	<tr ng-if="unitNewRecord.webList==null || unitNewRecord.webList.length<=0" class="ey-table-noRecord">
+	           	<td class="col-sm-12" colspan="4" style="text-align: center;">当前没有备案网站，请<a data-ui-sref="app.record.addunitNewRecord({id:unitNewRecord.unitId})">创建备案网站</a></td>
+	        </tr>
+        </tbody>
+      </table>
+ 	</div>
+  </div>
+  <div style="text-align: center;">
+	  	<form class="ey-btn-group">
+	      	<button type="button" class="ey-btn ey-btn-primary ey-btn-sm" ng-disabled="unitNewRecord.webList==null || unitNewRecord.webList.length<=0 || !unitNewRecord.istijiao" data-ng-click="unitNewRecord.addFirstRecord()">
+	        	提交
+	      	</button>
+	      	
+	      	<button type="button" class="ey-btn ey-btn-default"  data-ng-click="unitNewRecord.cancel()">
+	        	取消
+	      	</button>
+	    </form>
+  </div>
+  <div role="tabpanel" class="tab-pane" id="appCloudhostHDSnapshot">profile</div>
+</div>

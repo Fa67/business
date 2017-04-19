@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #555;
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <path id="jiankong.svg" class="cls-1" d="M22.5,29A6.5,6.5,0,1,1,16,35.5,6.5,6.5,0,0,1,22.5,29Zm0,2A4.5,4.5,0,1,1,18,35.5,4.5,4.5,0,0,1,22.5,31ZM22,35l-5,7H28l-5-7H22Zm0.5-2A2.5,2.5,0,1,1,20,35.5,2.5,2.5,0,0,1,22.5,33ZM21,39l-4,3H28l-4-3H21Z" transform="translate(-16 -29)"/>
+</svg>

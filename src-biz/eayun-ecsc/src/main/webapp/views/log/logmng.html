@@ -1,0 +1,47 @@
+<h4>操作日志</h4>
+<div class="form-inline">
+	<div class="ey-search-bar">
+   	<span style="font-size:14px;">时间范围：</span>
+   		<date-range start-date="data.beginTime" end-date="data.endTime" data-show-time="true" class="ey-form-w6"></date-range>
+	<span style="margin-left:15px;font-size:14px;">操作项：</span>
+	<input type="text" style="margin-left:10px;" class="form-control" placeholder="请输入操作项" data-ng-model="data.actItem">
+	<button class="ey-btn ey-btn-default" style="margin-left:15px;"
+			 data-ng-click="queryLogList()">查&nbsp;&nbsp;询</button>
+	<button class="ey-btn ey-btn-default-light pull-right ey-color-blue" data-ng-click="createExcel()" data-ng-show = "buttonPower.isExport" style="margin-top:7px;">
+			<span class="eayunfont ef-export"></span> <span>导出</span>
+		</button>
+	<div style="display: none;">
+		<iframe id="file-export-iframe" frameborder="0"></iframe>
+	</div>
+  </div>
+</div>
+  <!-- 表格 -->
+  <eayun-table data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams" data-result="myTable.result">
+    <table class="ey-table">
+      <thead>
+      <tr>
+      	<th width = "18%">操作时间</th>
+        <th width = "18%">操作项</th>
+        <th><eayun-table-filter list-data="dcStatus" text-field="text" item-clicked="dcItemClicked($item, $event)"></eayun-table-filter></th>
+        <th width = "9%">资源类型</th>
+        <th>资源名称</th>
+        <th>
+            <eayun-table-filter list-data="oper" text-field="text" item-clicked="operClicked($item, $event)"></eayun-table-filter>
+        </th>
+        <th style = "width:140px;">
+            <eayun-table-filter list-data="status" text-field="text" item-clicked="itemClicked($item, $event)"></eayun-table-filter>
+        </th>
+      </tr>
+      </thead>
+      <tbody><tr data-ng-repeat="model in myTable.result" data-ng-show="true" style="height:45px;">
+      	<td>{{model.actTime|date:"yyyy-MM-dd HH:mm:ss"}}</td>
+        <td>{{model.actItem}}</td>
+        <td>{{model.dcName==null || model.dcName=='null' ? "--" : model.dcName}}</td>
+        <td title = "{{model.resourceType}}">{{model.resourceType==null || model.resourceType=='null'? "--" : model.resourceType}}</td>
+        <td title = "{{model.resourceName}}">{{model.resourceName==null ? "--" : model.resourceName}}</td>
+        <td>{{model.actPerson}}</td>
+        <td data-ng-class="model.statu=='1'?'light-font-color':'red-font-color'" style = "text-align:center;">{{model.statu=='1'?"已完成":"失败"}}</td>
+      </tr></tbody>
+    </table>
+   <eayun-table-page></eayun-table-page>
+  </eayun-table>

@@ -1,0 +1,125 @@
+<ul class="ey-nav-bread">
+	<span data-ng-if="item.orderType =='0'">
+		<a class="ey-text-link" data-ng-click="backToVm()">返回修改配置</a>
+		<span class="ey-text-tip">|</span>
+	</span>
+	<li data-ui-sref="app.cloud.cloudhost.host">云主机</li>
+	<li>{{title}}</li>
+</ul>
+<h4>订单确认</h4>
+<div class="ey-warm" data-ng-if="errorMsg || warnMsg">
+	<span class="eayunfont ef-warning ey-font-size-big"></span>
+	<span data-ng-if="errorMsg">{{errorMsg}}</span>
+	<span data-ng-if="warnMsg">{{warnMsg}}</span>
+</div>
+<table class="ey-order-table">
+	<tbody>
+		<tr>
+			<td>产品名称</td>
+			<td>{{item.prodName}}</td>
+			<td>产品数量</td>
+			<td>{{item.count}}台</td>
+		</tr>
+		<tr>
+			<td>购买周期</td>
+			<td>{{(item.orderType == '0'&& item.payType == '1')?(item.buyCycle>=12?(item.buyCycle/12+'年'):(item.buyCycle+'个月')):'--'}}</td>
+			<td>付款方式</td>
+			<td>{{('1' == item.payType)?'预付费':'后付费'}}</td>
+		</tr>
+		<tr>
+			<td>具体配置</td>
+			<td colspan="3" data-ng-if="item.orderType == '0'">
+				<p>数据中心 ：{{item.dcName}}</p>
+				<p>私有网络 ：{{item.netName}}</p>
+				<p>受管子网：{{item.subnetName+'('+item.cidr+')'}}</p>
+				<p>自管子网：{{item.selfSubnetId?(item.selfSubnetName+'('+item.selfCidr+')'):'未分配'}}</p>
+				<p>公网 IP ：{{('1' == item.buyFloatIp)?'已购买':'未购买'}}</p>
+				<p>主机规格 ：{{item.cpu+'核/'+item.ram/1024+'GB'}}</p>
+				<p>系统盘 ：{{item.sysTypeAs}}{{item.disk+'GB'}}</p>
+				<p>数据盘 ：{{item.dataTypeAs}}{{item.dataDisk+'GB'}}</p>
+				<p>镜像：{{item.imageName}}</p>
+			</td>
+			<td colspan="3" data-ng-if="item.orderType == '2'">
+				<p>数据中心 ：{{item.dcName}}</p>
+				<p>云主机ID ：{{item.vmId}}</p>
+				<p>云主机名称：{{item.vmName}}</p>
+				<p>系统：{{item.sysType}}</p>
+				<p>当前CPU和内存 ：{{item.vmCpu+'核/'+item.vmRam/1024+'GB'}}</p>
+				<p>调整后CPU和内存 ：{{item.cpu+'核/'+item.ram/1024+'GB'}}</p>
+			</td>
+		</tr>
+		<tr>
+			<td>金额</td>
+			<td colspan="3" class="ey-color-red">
+				<span>￥&nbsp;</span>
+				<span>{{('1' == item.payType)?(item.paymentAmount | number:2):((item.paymentAmount | number:2))}}</span>
+				<span class="ey-text-tip ey-color-default" data-ng-if="item.payType == '2'">&nbsp;/小时</span>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<div data-ng-class="item.payType == '1'?'ey-pay-panel':''"> 
+	<div class="ey-pay-body" data-ng-if="item.payType == '1'">
+		<table>
+			<tbody>
+				<tr>
+					<td width="30px">
+						<span class="eayunfont ef-wallet ey-font-hugest ey-color-yellow-dark"></span>
+					</td>
+					<td width="110px">使用余额支付：</td>
+					<td width="20px">
+						<div class="ey-form-checkbox">
+								<input id="check1" type="checkbox" data-ng-model="model.useAccount" data-ng-change="useAccountPay()" data-ng-disabled="account <= 0">
+							<label for="check1"></label>
+						</div>
+					</td>
+					<td width="60px">余额支付</td>
+					<td width="20px">
+						<span class="ey-text-tip">|</span>
+					</td>
+					<td width="180px">
+						<span class="ey-text-tip">可用金额</span>
+						<span class="ey-color-blue">￥ {{account | number:2}}</span>
+					</td>
+					<td width="110px" ng-if="model.useAccount">
+						<span class="ey-text-tip">扣除</span>
+						<span class="ey-color-red">￥ {{model.accountPayment | number:2}}</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<p data-ng-if="item.payType == '2'">
+		<span class="ey-color-red">*</span>
+		<span class="ey-text-tip">按需付费的资源，采用先使用后扣费的模式，扣费时精确到厘，具体扣费请以账单为准。</span>
+	</p>
+	<ul class="ey-order-list">
+		<li class="ey-font-size-big" data-ng-if="item.payType == '1'">
+			<span>产品金额：</span>
+			<span>￥ {{item.paymentAmount | number:2}}</span>
+		</li>
+		<li class="ey-font-size-big" data-ng-if="item.payType == '1'">
+			<span>余额支付：</span>
+			<span>￥ -{{model.accountPayment | number:2}}</span>
+		</li>
+		<div class="divider" data-ng-if="item.payType == '1'"></div>
+		<li class="ey-font-size-bigger ey-font-bold">
+			<span>应付款：</span>
+			<span class="ey-text-tip">
+				<span>￥&nbsp;</span>
+				<span class="ey-color-red ey-font-size-superior">{{('1' == item.payType)?(model.thirdPartPayment | number:2):(0 |number:2)}}</span>
+			</span>
+		</li>
+		<li>
+			<button class="ey-btn ey-btn-primary" ng-disabled ="!model.isAccept || errorMsg || checkBtn" data-ng-click= "commitOrder()">提交订单</button>
+		</li>
+		<li>
+			<div class="ey-form-checkbox">
+				<input id="check2" type="checkbox" data-ng-model ="model.isAccept">
+				<label for="check2" class="ey-text-tip">我同意</label>
+			</div>
+			<a href="http://www.eayun.com/document/product/ech.html" target="_blank"><span class="ey-text-link">《云主机ECH服务条款》</span></a>
+		</li>
+	</ul>
+</div>

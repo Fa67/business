@@ -1,0 +1,155 @@
+<ul class="ey-nav-bread">
+	<li data-ui-sref="app.cloud.cloudhost.volume">云硬盘</li>
+	<li data-ui-sref="app.cloud.cloudhost.volume.snapshot" data-ng-if="fromVolId==null||fromVolId==''">云硬盘备份</li>
+	<li data-ng-click="goToDetail()" data-ng-if="fromVolId!=null&&fromVolId!=''">云硬盘详情</li>
+	<li>创建云硬盘</li>
+</ul>
+<!-- <h4>购买云硬盘</h4> -->
+<div class="ey-content-notice">
+   <h5 class="ey-font-sizt-big">注意</h5>
+   <ul>
+   <li>1.依据备份创建出来的云硬盘，其大小、数据都与备份来源硬盘一致。</li>
+   <li>2.云硬盘支持按需付费和包年包月付费。</li>
+   <li>3.按需付费，根据资源的实际使用量收费，每小时整点定时扣费。</li>
+   </ul>
+</div>
+
+
+<nav class="ey-nav-online" style="margin-top:20px;">
+	<a data-ng-click="buyVol('1')" data-ng-class="model.payType=='1'?'active':''">包年包月</a>
+	<a data-ng-click="buyVol('2')" data-ng-class="model.payType=='2'?'active':''">按需付费</a>
+</nav>
+
+
+<div class="row">
+	<form class="ey-form-purchase col-lg-8" name="myForm" novalidate="novalidate">
+		<fieldset>
+			<legend>基本参数</legend>
+			<div class="ey-form-group">
+				<label>数据中心：</label>	
+				<span class="ey-mark ey-mark-width"  data-ng-class="'active'" >{{model.dcName}}</span>
+			</div>
+			
+			<div class="ey-form-group" >
+				<label>备份名称：</label>	
+				<span>{{model.snapName}}</span>
+			</div>
+			
+			<div class="ey-form-group" data-ng-if="model.volNumber<=1" data-ng-class="(myForm.volName.$dirty && (myForm.volName.$invalid||!checkVolName))?'ey-has-error' : ''">
+				<label class="ey-form-label ey-required">云硬盘名称：</label>	
+				<input class="ey-form-input ey-form-w6" type="text" placeholder="请输入云硬盘名称" data-ng-model="model.volName"  name="volName" data-ng-change="checkVolNameExist(value)"
+				data-ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,61}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/" maxlength="63" required>
+				<span class="ey-text-tip ey-has-error" data-ng-if="myForm.volName.$dirty && myForm.volName.$invalid">请输入1-63位字符,支持数字、中英文、下划线、空格</span>
+				<span class="ey-text-tip ey-has-error" data-ng-if="myForm.volName.$dirty && myForm.volName.$valid&&!checkVolName">云硬盘名称已存在</span>
+				<span class="ey-text-tip ey-has-error" data-ng-if="(!(myForm.volName.$dirty && myForm.volName.$invalid))&&''!=QuotaMsg&&checkVolName">{{QuotaMsg}}</span>
+			</div>
+			
+			<div class="ey-form-group">
+			   <label class="ey-form-label">类型：</label>
+				   <div class="ey-form-radio" data-ng-repeat="data in volumeTypeList">
+				     <input id="radio{{$index}}"  type="radio" name="radio"  value="{{data.typeId}}" data-ng-model="model.volTypeId" data-ng-click="selectVolType(data)">
+				     <label for="radio{{$index}}">{{data.volumeTypeAs}}</label>
+				   </div>
+				   <div class="ey-form-group" data-ng-if="typeSure">
+				     <label>&nbsp;</label>
+				     <span class="ey-text-tip ey-has-error">服务器异常，请稍后重试或联系客服</span>
+			       </div>	   
+		   </div>
+			
+
+		   <div class="ey-form-group">
+                <label>云硬盘容量：</label>
+                <span>{{model.volSize}}GB</span>
+            </div>
+		   
+		 
+			
+		 <div class="ey-form-group">
+				<label>描述：</label>	
+				<textarea class="ey-form-textarea ey-form-w6" data-ng-model="model.volDescription" placeholder="请输入描述" maxlength="200"></textarea>
+		 </div>
+		
+		</fieldset>
+	
+
+		<fieldset data-ng-if="model.payType == '1'">
+			<legend>购买量</legend>
+			<div class="ey-form-group">
+				<label>付款方式：</label>
+				<eayun-select class="ey-form-w3"  data-ng-model="model.cycleType" required data-ng-change="changeCycleType()">
+					<eayun-option ng-repeat="data in cycleTypeList" value="data.nodeId" text="{{data.nodeName}}"></eayun-option>
+				</eayun-select>
+				<eayun-select class="ey-form-w3"  data-ng-model="model.buyCycle" required data-ng-change="calcBuyCycle()">
+					<eayun-option ng-repeat="data in cycleList" value="data.nodeNameEn" text="{{data.nodeName}}"></eayun-option>
+				</eayun-select>
+			</div>
+		</fieldset>
+	</form>
+	<div class="ey-set" style="top: 240px;">
+		<h5>已选配置</h5>
+		<fieldset data-ng-if="model.payType == '1'">
+		<ul>
+				<li>
+					数据中心：
+					<span class="ey-color-default">{{model.dcName}}</span>
+				</li>
+				<li>
+					类型：
+					<span class="ey-color-default">{{model.volumeTypeAs}}</span>
+				</li>
+				<li>
+					云硬盘容量：
+					<span class="ey-color-default">{{model.volSize>0?model.volSize:0}}GB</span>
+				</li>
+				<li>
+					购买量：
+					<span class="ey-color-default">{{model.buyCycle>=12?model.buyCycle/12+'年':model.buyCycle+'个月'}}×{{model.volNumber}}块</span>
+				</li>
+			</ul>
+			<p class="ey-font-size-big">
+				总计：
+				<span class="ey-font-size-big ey-text-tip ey-color-default" data-ng-if="!priceError">￥&nbsp;</span>
+				<span class="ey-font-size-super ey-color-red" data-ng-if="!priceError">{{priceDetails.totalPrice | thousand}}</span>
+				<span class="ey-color-red" data-ng-if="priceError">{{priceError}}</span>
+			</p>
+		</fieldset>
+		<fieldset data-ng-if="model.payType == '2'">
+			<ul>
+				<li>
+					数据中心：
+					<span class="ey-color-default">{{model.dcName}}</span>
+				</li>
+				<li>
+					类型：
+					<span class="ey-color-default">{{model.volumeTypeAs}}</span>
+				</li>
+				<li>
+					云硬盘容量：
+					<span class="ey-color-default">{{model.volSize>0?model.volSize:0}}GB</span>
+				</li>
+				<li>
+					购买量：
+					<span class="ey-color-default">1块</span>
+				</li>
+			</ul>
+			<p class="ey-font-size-big">
+				总计：
+				<span class="ey-font-size-big ey-text-tip ey-color-default" data-ng-if="!priceError">￥&nbsp;</span>
+				<span class="ey-font-size-super ey-color-red" data-ng-if="!priceError">{{priceDetails.totalPrice | thousand:true}}</span>
+				<span class="ey-color-default" data-ng-if="!priceError">&nbsp;/小时</span>
+				<span class="ey-color-red" data-ng-if="priceError">{{priceError}}</span>
+			</p>
+			<span class="ey-color-red" data-ng-if="'2'==model.payType">
+				开通按需付费的云服务，您的账户余额不得低于{{payAfpterPayment}}元，请充值后再开通，
+				<a class="ey-color-blue pointer" data-ng-click="recharge()">立即充值</a>
+			</span>
+		</fieldset>
+		<button class="ey-btn ey-btn-primary" data-ng-disabled="myForm.$invalid || !checkVolName||isNSF||QuotaMsg||priceError||typeSure"
+		data-ng-click="commitBuyVolume()"
+		>立即购买</button>
+		<fieldset data-ng-if="model.payType == '2' && isNSF">
+			<span class="ey-color-red">您的账户余额不足{{payAfpterPayment}}元，请充值后操作</span>
+		</fieldset>
+	</div>
+</div>
+

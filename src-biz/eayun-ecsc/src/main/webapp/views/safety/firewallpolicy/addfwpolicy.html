@@ -1,0 +1,30 @@
+<form class="form-horizontal" name="myForm">
+<input type="hidden" data-ng-model="model.from">
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 ey-label">所属项目：</label>
+    <div class="col-sm-8" data-ng-class="(myForm.prjName.$dirty && myForm.prjName.$invalid) ? 'has-error' : ''">
+      <eayun-select name="prjName" class="form-control" data-ng-model="model.project"  ng-change="changePrj()"  placeholder="请选择项目"  required>
+        <!-- <eayun-option value="''" text="全部"></eayun-option> -->
+        <eayun-option value="project" text="{{project.prjName}}" data-ng-repeat="project in projects" ></eayun-option>
+      </eayun-select>
+    </div>
+    <label class="ey-prompt" ng-show="myForm.prjName.$dirty && myForm.prjName.$error.required">项目不能为空</label>
+  </div>
+
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 ey-label">防火墙策略名称：</label>
+    <div class="col-sm-8" data-ng-class="(myForm.name.$dirty && myForm.name.$invalid) ? 'has-error' : ''">
+      <input type="text" class="ey-form-control" name="name" data-ng-model="model.name"  placeholder="请输入防火墙策略名称" maxlength="20" required  ajax-valid="checkFwpName(value)">
+      <label class="ey-prompt" ng-show="myForm.name.$dirty && myForm.name.$error.required&&!flag">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+      <label class="ey-prompt" ng-show="myForm.name.$dirty && myForm.name.$error.ajaxValid&&!flag">策略名称已存在</label>
+      <label class="ey-prompt" ng-if="flag">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+    </div>
+  </div>
+  
+
+ <!-- 按钮区域 -->
+  <!-- <div class="modal-footer" >
+    <button type="button" class="btn btn-primary btn-modal" ng-click="commit()"  ng-disabled="!myForm.$valid">确  定</button>
+    <button type="button" class="btn btn-default btn-modal" ng-click="cancel()">取  消</button>
+  </div> -->
+</form>

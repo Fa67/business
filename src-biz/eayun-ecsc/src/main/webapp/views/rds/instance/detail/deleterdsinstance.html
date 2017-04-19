@@ -1,0 +1,22 @@
+<div class="delete-confirm-container">
+	<div class="modal-header">
+		<span class="modal-title"> </span> <img ng-click="cancel()" src="images/close.png">
+	</div>
+
+	<form class="ey-form delete-confirm-form" name="myForm" novalidate="novalidate">
+		<div class="vm-delete-label">
+			<label>确认删除数据库实例<span class="delete-resoure-color">{{model.rdsName}}</span>?</label>
+		</div>
+
+		<!-- 按钮区域 -->
+		<div class="modal-footer delete-page-footer">
+			<button type="button" 
+					class="btn btn-primary btn-modal"
+					data-ng-disabled="checkBtn"
+					data-ng-click="commit()">确 定</button>
+			<button type="button" class="btn btn-default btn-modal"
+				data-ng-click="cancel()" style="margin-left: 15px;">取 消</button>
+		</div>
+	</form>
+
+</div>

@@ -1,0 +1,54 @@
+ <div class="panel-body">
+<h4>费用概要</h4>
+<table class="ey-order-table">
+        <tbody>
+        <tr>
+            <td style="font-weight:bold;">订单编号</td>
+            <td><span data-ng-bind="pyDetail.model.orderNo"></span></td>
+            <td style="font-weight:bold;">产品名称</td>
+            <td><span data-ng-bind="pyDetail.model.productName"></span></td>
+        </tr>
+        <tr>
+            <td style="font-weight:bold;">计费时间</td>
+            <td><span data-ng-bind="pyDetail.model.monTime|date:'yyyy-MM-dd HH:mm:ss'"></span></td>
+            <td style="font-weight:bold;">费用起止时间</td>
+            <td class="ng-binding"><span data-ng-bind="pyDetail.model.monStart|date:'yyyy-MM-dd HH:mm:ss'"></span> 至 <span data-ng-bind="pyDetail.model.monEnd|date:'yyyy-MM-dd HH:mm:ss'"></span></td>
+        </tr>
+        <tr>
+            <td style="font-weight:bold;">金额</td>
+            <td colspan="3"><span class="color-blue" style="font-weight:bold;">￥ <span data-ng-bind="pyDetail.model.money|number:3"></span></span></td>
+        </tr>
+        </tbody>
+    </table>
+<h4 style="margin-top:30px;">费用详情</h4>
+<label data-ng-bind="pyDetail.model.dcName"></label>
+<div class="panel panel-default">
+    <div class="panel-heading" style="background-color: white">
+        <div class="row" style="font-size:14px;margin-bottom:-5px;">
+            <div class="col-lg-6" ng-if="pyDetail.model.resourceType!='5'&&pyDetail.model.resourceType!='6'"><span data-ng-bind="pyDetail.model.resourceTypeStr"></span>：<span data-ng-bind="pyDetail.model.resourceName"></span>(ID：<span data-ng-bind="pyDetail.model.resourceId"></span>)</div>
+            <div class="col-lg-6" ng-if="pyDetail.model.resourceType=='5'"><span data-ng-bind="pyDetail.model.resourceTypeStr"></span>：<span data-ng-bind="pyDetail.model.resourceName"></span></div>
+            <div class="col-lg-6" ng-if="pyDetail.model.resourceType=='6'"><span data-ng-bind="pyDetail.model.resourceTypeStr"></span></div> 
+            <div class="text-right pull-right" style="width:100px;text-align:center">
+                <expander data-target="#overview_dclist_0" data-expander-show="true">
+                <label class="pointer color-blue" ng-click="pyDetail.$$active = !pyDetail.$$active"
+                        ng-init="(pyDetail.$$active=true)" ng-bind="pyDetail.$$active?'收起详情':'展开详情'" style="font-size:14px;font-weight: normal;margin-right:10px;"></label>
+                </expander>
+            </div>
+            <div class="pull-right" style="height:20px;border:1px solid #dbdbdb;margin-top:-3px;"></div>
+            <div class="col-lg-4 text-right pull-right"><span>应付金额小计：</span><span style="font-weight:bold" class="color-blue">￥ </span><span class="color-blue" data-ng-bind="pyDetail.model.money|number:3"></span></div>
+        </div>
+    </div>
+    <div class="collapse post-pay-detail" id="overview_dclist_0" ng-class="'in'">
+        <div class="panel-body" style="background-color: #f8f8f8;">
+         <table class="table table-eayun-info" style = "margin-bottom:0px;margin-top: -20px;">
+                            <tbody>
+                                <tr data-ng-repeat="list in pyDetail.model.configList">
+                                    <td style="text-align:left;border-top: 0px solid;padding-left:0px;width:50%;"><span data-ng-bind-html="::list.name"></span></td>
+                                    <td style="text-align:left;border-top: 0px solid;"><span data-ng-bind="::list.units"></span></td>
+                                    <td style="text-align:right;border-top: 0px solid;"><span class="color-blue">￥ </span><span class="color-blue" data-ng-bind="::list.price|number:3"></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+    	</div>
+	</div>
+</div>

@@ -1,0 +1,31 @@
+<form class="form-horizontal" name = "editHost">
+
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 control-label">类型名称：</label>
+    <div class="col-sm-7" data-ng-class="(editHost.modelName.$dirty && editHost.modelName.$invalid) ? 'has-error' : ''">
+      <input type="text" required class="form-control" name = "modelName" data-ng-model="model.modelName" data-ajax-valid="checkName(value)" maxlength="20"
+      ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/'>
+      <label class="control-label" ng-show="editHost.modelName.$dirty && editHost.modelName.$error.ajaxValid">云主机类型名称已存在</label>
+      <label class="control-label" ng-show="editHost.modelName.$dirty && editHost.modelName.$error.pattern">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+      <label class="control-label" ng-show="editHost.modelName.$dirty && editHost.modelName.$error.required">类型名称不能为空</label>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-3 control-label">CPU：</label>
+    <div class="col-md-4">
+    	<eayun-select class="form-control" required data-ng-model="model.modelVcpus" data-ng-change = "changeCPU(model.modelVcpus)">
+    		<eayun-option ng-repeat="cpu in cpuList" value="cpu.nodeName.substr(0, cpu.nodeName.length-1)" text = "{{cpu.nodeName}}" ></eayun-option>
+     	</eayun-select>
+    </div>
+  </div>
+  
+  <div class="form-group row">
+    <label class="col-sm-3 control-label" >内存：</label>
+    <div class="col-md-4">
+     	<eayun-select class="form-control" data-ng-model="model.modelRam" required>
+     		<eayun-option ng-repeat="ram in ramList" value="ram.nodeName" text = "{{ram.viewName}}" ></eayun-option>
+     	</eayun-select>
+    </div>
+  </div>
+  
+</form>

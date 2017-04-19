@@ -1,0 +1,70 @@
+<div class="ey-search-bar ey-search-bar-white">
+    <eayun-search class="eayun-table-search" data-ng-model="search" options="options"></eayun-search>
+</div>
+
+<eayun-auto-refresh refresh="refresh" interval="5000"></eayun-auto-refresh>
+<eayun-table data-api="backup.table.api" data-ajax-source="backup.table.source" data-param="backup.table.getParams"
+             data-result="backup.table.result" >
+    <table class="ey-table-muliti">
+        <thead>
+        <tr>
+            <th style="width:18%">备份名称</th>
+            <th style="width:10%">状态</th>
+            <th style="width:10%">
+                <eayun-table-filter list-data="backup.backupCategoryList" text-field="nodeName"
+                                    item-clicked="selectBackupCategory($item, $event)"></eayun-table-filter>
+            </th>
+            <th style="width:10%">来源实例</th>
+            <th style="width:10%">
+                <eayun-table-filter list-data="backup.rdsVersionList" text-field="nodeName" item-clicked="selectRdsVersion($item, $event)"></eayun-table-filter>
+            </th>
+            <th style="width:10%">备份大小</th>
+            <th>备份时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+
+        <tbody><tr data-ng-repeat="b in backup.table.result">
+
+            <td title="{{b.name}}">
+                {{b.name}}
+            </td>
+            <td class="vm-table-td-left">
+                <span class="eayunfont ef-square" data-ng-class="bakStatusClass!=''?bakStatusClass:''"
+                      ng-init="bakStatusClass = checkBackupStatus(b)">
+                </span>
+                {{b.statusCN}}
+            </td>
+            <td>
+                {{b.category=='MANUAL'?'手动备份':'自动备份'}}
+            </td>
+            <td ng-show="b.instanceExist=='1'" class="click-td ng-binding"
+                data-ng-click="jumpIntoInstance(b.instanceId)">
+                {{b.instanceName}}
+            </td>
+            <td ng-show="b.instanceExist=='0'" class="ey-text-error">已删除</td>
+            <td>
+                {{b.versionType}} {{b.version}}
+            </td>
+            <td>
+                {{b.size}}GB
+            </td>
+            <td>{{b.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td>
+                <div class="ey-btn-group">
+                    <button class="ey-btn" data-ng-click="createInstanceByBackup(b)"
+                            data-ng-show = "modulePower.rdsBackupCreateInstance"
+                            data-ng-disabled="b.status != 'COMPLETED'">创建新实例</button>
+                    <button class="ey-btn" data-ng-if="b.category=='MANUAL'"
+                            data-ng-click="deleteBackup(b)"
+                            data-ng-show = "modulePower.rdsBackupDelete"
+                            data-ng-disabled="b.status == 'NEW'|| b.status == 'BUILDING'"><a class="ey-text-error">删除</a>
+                    </button>
+                </div>
+            </td>
+        </tr></tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>
+
+

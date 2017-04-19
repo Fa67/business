@@ -1,0 +1,48 @@
+<h4>API密钥管理</h4>
+
+<!-- Form表单 -->
+<div class="form-inline">
+	<label class="control-label" style="float: left;">API密钥是您访问易云API的密钥，具有该账户的完整权限，请您妥善保管。</label>
+	<br/><br/>
+	<div class="ey-search-bar ey-search-bar-white">
+		<button type="button" class="ey-btn ey-btn-primary ey-btn-sm"
+			data-ng-click="addAcck()" id="newModel" data-ng-disabled="akCount=='1'">
+			<span class="eayunfont ef-plus" aria-hidden="true"></span>&nbsp;创建密钥
+		</button>
+	</div>
+	
+</div>
+
+<!-- 表格 -->
+<eayun-table data-api="akTable.api" data-ajax-source="akTable.source"
+	data-param="akTable.getParams" data-result="akTable.result">
+<table class="ey-table">
+	<thead>
+		<tr>
+			<th width="25%">密钥ID</th>
+			<th width="40%">密钥密码</th>
+			<th width="15%">状态</th>
+			<th width="20%">创建时间</th>
+			<th width="120px">操作</th>
+		</tr>
+	</thead>
+
+	<tbody><tr data-ng-repeat="model in akTable.result.result">
+			<td>{{model.accessKey}}</td>
+			<td  class="col-sm-4" data-ng-show="{{model.acckIsShow==0?true:false}}">{{model.secretKey}}<a role="button" data-ng-click = "changeIsShow(model)">&nbsp;&nbsp;&nbsp;隐藏</a></td>
+			<td data-ng-show="{{model.acckIsShow==1?true:false}}"><a role="button" data-ng-click = "changeIsShow(model)">显示</a></td>
+			<td>{{model.acckState==0?'启用':'停用'}}</td>
+			<td class="col-sm-2">{{model.creDate}}</td>
+			<td class="col-sm-2">
+				<button type="button" class="ey-btn" ng-show="true"
+					data-ng-click="updateAccessKey(model)">{{model.acckState==1?'启用':'停用'}}</button>
+				<button type="button" class="ey-btn btn-left"
+					ng-show="true" data-ng-click="deleteAccessKey(model)"><span class="ey-text-error">删除</span></button>
+			</td>
+		</tr></tbody>
+	
+</table>
+<div>
+<label class="control-label" style="float: left;">您当前还可以建立<span class="ey-color-blue">{{3-akTable.result.totalCount}}</span>个密钥</label>
+</div>
+</eayun-table>

@@ -1,0 +1,40 @@
+<!-- Form表单 -->
+<div class="ey-search-bar ey-search-bar-white" >
+  <button type="button" class="ey-btn ey-btn-primary ey-btn-sm" data-ng-click="createBucket()" ng-if="buttonPower.isBucketCreate">
+  <span class="eayunfont ef-plus" aria-hidden="true"></span> 创建Bucket
+  </button>
+  
+    <eayun-search-text value="bucketName" class="pull-right" search="search($value,$event)" placeholder="请输入查询条件"></eayun-search-text>
+	   
+	  
+</div>
+<!-- 表格 -->
+<eayun-table data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams" data-result="myTable.result"  >
+  <table class="ey-table"  >
+    <thead>
+    <tr>
+      <th class="col-sm-4">Bucket名称</th>
+      <th class="col-sm-2">Bucket类型</th>
+      <th class="col-sm-2">创建时间</th>
+      <!-- <th class="col-sm-1">CDN状态</th> -->
+      <th class="col-sm-3">操作</th>
+    </tr>
+    </thead>
+
+    <tbody><tr data-ng-repeat="item in myTable.result">
+      <td class="col-sm-4 click-td" data-ng-click="showBucketDetail(item.bucketName)" >{{item.bucketName}}</td>
+      <td class="col-sm-2">{{item.permission}}</td>
+      <td class="col-sm-2">{{item.creationDate}}</td>
+      <!-- <td class="col-sm-1"><span class ="state-block" data-ng-class="StatusClass!=''?StatusClass:''" ng-init="StatusClass = checkStatusClass(item)"></span>
+      {{item.cdnStatus==2?"已加速":(item.cdnStatus==1?"设置中":"未加速")}}</td> -->
+      <td class="col-sm-3">
+      	<button class="ey-btn btn-left" type="button" data-ng-click="showBucketDetail(item.bucketName)">查看文件</button>
+		<button class="ey-btn btn-left" type="button" data-ng-click="bucketDetail(myTable.result,item)" ng-if="buttonPower.isBucketDetails">详情</button>
+		<button class="ey-btn btn-left" type="button" data-ng-click="deleteBucket(item)" ng-if="buttonPower.isBucketDelete"><span class="ey-text-error">删除</span></button>
+      </td>
+    </tr></tbody>
+  </table>
+  <eayun-table-page></eayun-table-page>
+</eayun-table>
+
+

@@ -1,0 +1,18 @@
+<div data-ng-if="workRoute==null">
+	<ul class="ey-nav-bread">
+		<li>{{name}}管理</li>
+	</ul>
+</div>
+<div data-ng-if="workRoute!=null">
+	<ul class="ey-nav-bread">
+		<li><a style="cursor: pointer;" href="{{workRoute}}">{{name}}管理</a></li>
+		<li><span>{{childname}}</span></li>
+	</ul>
+</div>
+<div class="ey-divider"></div>
+<!-- 子页面展示区 -->
+<div class="ey-panel ey-panel-full clearfix">
+  <div class="ey-panel-body">
+   	<div data-ui-view=""></div>
+  </div>
+</div>

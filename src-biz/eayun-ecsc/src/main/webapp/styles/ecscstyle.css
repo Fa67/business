@@ -1,0 +1,179 @@
+/*ECSC 自定义样式（非公共样式） */
+.non-line .footer {
+	border-top-width: 0;
+	height: 120px;
+}
+
+.eayun-table-search {
+	float: right;
+}
+.vm-buy-error {
+	margin-top: 5px;
+}
+.ey-old-dialog-font{
+	font-size: 12px;
+}
+/* IP */
+.form-control-ip {
+	width:60px;
+	height:32px;
+	padding:6px 12px;
+	font-size:14px;
+	line-height:1.42857143;
+	border:1px solid #ccc;
+	border-radius:4px;
+}
+.form-control-p {
+	width:55px;
+	height:32px;
+	padding:6px 12px;
+	font-size:14px;
+	line-height:1.42857143;
+	border:1px solid #ccc;
+	border-radius:4px;
+}
+.ipadress-error {
+	border-color: #EA3200;
+	/*color: #EA3200;*/
+}
+.ipadress-td {
+	margin: 5px 5px;
+}
+/* ip end */
+
+/* vm List Column Width begin */
+.vm-table-td-left{
+	text-align: left !important;
+}
+.vm-table-td-btn{
+	width: 120px;
+}
+
+.vm-table-td-date{
+	width: 160px;
+}
+.vm-table-td-ips{
+	width: 200px;
+}
+.vm-table-td-charge{
+	width: 215px;
+}
+.vm-table-td-sys{
+	width: 240px;
+}
+
+/* vm List Column Width end */
+
+/* Recycle VM Column Width begin*/
+.recycle-vm-table-status {
+	width: 100px;
+}
+.recycle-vm-table-ips {
+	width: 185px;
+}
+.recycle-vm-table-date {
+	width: 210px;
+}
+.recycle-vm-table-btn {
+	width: 100px;
+}
+
+/* Recycle VM Column Width end*/
+
+/* vm delete page begin */
+.vm-delete-label {
+	font-size: 16px;
+}
+.delete-confirm-form{
+	margin: 40px 60px 10px 60px;
+}
+.delete-confirm-container {
+	min-width: 420px;
+	max-width: 720px;
+}
+.delete-resoure-color {
+	color: #0077cc;
+}
+.delete-checkbox {
+	margin-left: 30px;
+}
+.delete-page-footer {
+	margin-top: 20px;
+}
+.delete-page-msg {
+	word-break:break-all;
+	word-wrap:break-all;
+	font-size: 16px;
+	text-align: left;
+}
+/* vm delete page end */
+.dialog-clear-left {
+	clear: left;
+}
+.vm-detail-modsub {
+	line-height: 32px;
+}
+
+/*安全组单独定义的样式*/
+.addrule > div:first-child {
+	float: left;
+	border-right: 1px solid #dcdcdc;
+	margin-right: 30px;
+	margin-left: -20px;
+	padding-right: 30px;
+}
+.addrule .ey-btn-group{
+	margin-top: 10px !important;
+
+}
+
+/* ===========obs begin===============*/
+.obs-url{
+	word-break: break-all;
+	margin-top: 5px;
+}
+.obs-line-height{
+	line-height: 25px;
+}
+.obs-whiteFont {
+		color: white;
+}
+.obsopen {
+	min-width: 1500px;
+    position: static;
+}
+
+@media (max-width: 1500px) {
+  .obsopen {
+    padding-right:0;
+  }
+}
+/*=============obs end=================*/
+
+.post-pay-detail .panel-body{
+	padding-bottom:0;
+}
+.post-pay-detail .table-eayun-info tr:last-child td{
+	border-bottom-width:0;
+}
+
+
+.repeat-payerr{
+	height: 230px;
+	margin: 0;
+	line-height: 230px;
+}
+.ey-success>.repeat-payerr{
+	margin: 0;
+}
+.ey-success>.repeat-payerr>.eayunfont{
+	font-size: 50px;
+}
+
+.tooltip.tooltip-edit {
+	z-index: 100;
+}
+
+.record-apply .tooltip.tooltip-work .tooltip-inner {
+	width: 520px;
+}

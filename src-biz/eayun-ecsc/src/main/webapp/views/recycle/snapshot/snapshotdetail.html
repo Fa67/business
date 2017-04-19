@@ -1,0 +1,95 @@
+<!-- 详情 -->
+<div class="details" style="font-size: 12px;">
+  <form class="row" name="myForm">
+    <div class="col-lg-12">
+    
+	    <div class="details-group">
+		    <div class="details-name col-sm-4">所属数据中心：</div>
+		    <div class="details-value col-sm-8">
+		      {{item.dcName}}
+		    </div>
+	    </div>
+	    
+	    <div class="details-group">
+		    <div class="details-name col-sm-4">云硬盘备份名称：</div>
+		    <div class="details-value col-sm-8">
+		      {{item.snapName}}
+		    </div>
+	    </div>
+	    
+	    <div class="details-group">
+		    <div class="details-name col-sm-4">云硬盘备份ID：</div>
+		    <div class="details-value col-sm-8">
+		      {{item.snapId}}
+		    </div>
+	    </div>
+	    
+	   
+	      
+      <div class="details-group">
+        <div class="details-name">备份大小：</div>
+        <div class="details-value">
+          <span >{{item.snapSize}}GB</span>
+        </div>
+      </div>
+      
+      
+       <div class="details-group">
+		    <div class="details-name col-sm-4">状态：</div>
+		    <div class="details-value col-sm-8">
+		      <span class ="eayunfont ef-square" data-ng-class="snapStatusClass!=''?snapStatusClass:''"></span>
+              {{(item.snapStatus=='DELETING'&&'2'==item.isDeleted)?'删除中':'已删除'}}
+		    </div>
+	    </div>
+	      
+	      
+	      <div class="details-group">
+	        <div class="details-name">分类：</div>
+	        <div class="details-value">
+	          <span>数据盘备份</span>
+	        </div>
+	      </div>
+	      
+
+        <div class="details-group">
+		    <div class="details-name col-sm-4">源硬盘ID：</div>
+		    <div class="details-value col-sm-8">
+		      {{item.volId=='null'?'--':item.volId}}
+		    </div>
+	    </div>
+	    
+	    
+	      
+	      <div class="details-group">
+	        <div class="details-name">源硬盘名称：</div>
+	        <div class="details-value" title="{{item.volName}}" data-ng-if="item.volName != 'null'">
+	          <span >{{item.volName.length > 20 ? item.volName.substring(0, 19) + '...' : item.volName}}</span>
+	        </div>
+	        
+	        <div class="details-value" data-ng-if="item.volName == 'null'">
+	        	<span>--</span>
+	        </div>
+	      </div>
+	      
+	      
+	      
+	      <div class="details-group">
+	        <div class="details-name">创建时间：</div>
+	        <div class="details-value">
+		        <span >{{item.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</span>  
+	       </div>
+	      </div>
+	      
+	      <div class="details-group">
+	        <div class="details-name">删除时间：</div>
+	        <div class="details-value">
+		        <span >{{item.deleteTime|date:'yyyy-MM-dd HH:mm:ss'}}</span>  
+	        </div>
+	      </div>
+	      
+   </div>
+  </form>
+</div>
+  <div class="modal-footer" >
+    <!-- <button class="btn btn-default btn-modal" ng-click="cancel()">关闭</button> -->
+  </div>

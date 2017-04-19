@@ -1,0 +1,22 @@
+<div class="modal-header">
+	<span class="modal-title">获取地址</span><span
+		class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 800px;">
+			<div class="ey-form-group">
+				<label class="ey-form-label">文件名：</label> 
+				<span class="ey-form-w10" ng-bind="::storage.obsName"></span>
+			</div>
+			<div class="ey-form-group" >
+				<label class="ey-form-label">链接地址：</label> 
+				<span class="obs-url obs-line-height ey-form-w10">
+					<a href="{{url}}">{{url}}</a>
+				</span> 
+				
+			</div>
+</div>
+<div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<button class="ey-btn ey-btn-default" ng-click="cancel()">关闭</button>
+	</div>
+</div>

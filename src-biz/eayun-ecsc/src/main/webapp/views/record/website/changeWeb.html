@@ -1,0 +1,75 @@
+
+<div class="tab-content ey-panel-body">
+  <div role="tabpanel" class="tab-pane active" id="appCloudhostHDTable">
+<div class="ey-content-progress"><p>备案提交后将不得修改，请您在提交前谨慎检查信息是否有遗漏或错误</p></div>
+
+<h4>已备案网站信息</h4>
+
+<table class="ey-table ey-table-auto">
+	<thead >
+    	<tr>
+      		<th>网站域名</th>
+      		<th>IP</th>
+      		<th>网站负责人</th>
+      		<th>创建时间</th>
+      		<th class="col-sm-3">操作</th>
+    	</tr>
+   	</thead>
+   	<tbody>
+   		<tr data-ng-repeat="model in change.models">
+     		<td title="{{model.domainName.split(';').join('\n')}}">{{model.domainName.length>30?model.domainName.substring(0,30)+'...':model.domainName}}</td>
+      		<td><div style="margin-top: 11px;">
+                        <div data-ng-repeat="ips in model.ipList">
+                            <p>{{ips.ip}};</p>
+                        </div>
+                    </div></td>
+      		<td>{{model.webDutyName}}</td>
+     		<td>{{model.crateTime|date : 'yyyy-MM-dd HH:mm:ss'}}</td>
+     		<td class="col-sm-2">
+     	  		<a class="ey-btn" data-ng-if="model.isChange=='1'" data-ng-click="change.change(model)">变更</a>
+     	  		<p data-ng-if="model.isChange!='1'">已变更</p>
+     		</td>
+     	</tr>
+    </tbody>
+</table>
+
+<h4>变更网站信息</h4>
+<div style="width: 100%;height: 300px;overflow-y:auto;">
+<table class="ey-table ey-table-auto">
+	<thead >
+    	<tr>
+      		<th>网站域名</th>
+      		<th>IP</th>
+      		<th>网站负责人</th>
+      		<th class="col-sm-3">操作</th>
+    	</tr>
+   	</thead>
+   	<tbody>
+   		<tr data-ng-repeat="model in change.webList">
+     		<td title="{{model.domainName.split(';').join('\n')}}">{{model.domainName.length>30?model.domainName.substring(0,30)+'...':model.domainName}}</td>
+      		<td>
+               <div style="margin-top: 11px;">
+                   <div data-ng-repeat="ips in model.ipList">
+                       <p>{{ips.ip}};</p>
+                   </div>
+               </div>
+            </td>
+     		<td>{{model.webDutyName}}</td>
+     		<td class="col-sm-2">
+	     		<div class="ey-btn-group">
+	     	  		<a class="ey-btn" data-ng-click="change.updateChange(model)">修改</a>
+	     	  		<a class="ey-btn ey-color-red" data-ng-click="change.deleteChange(model)">删除</a>
+     	  		</div>
+     		</td>
+     	</tr>
+    </tbody>
+</table>
+</div>
+
+	<div class="ey-btn-group" style="text-align: center;">
+		<button type="button" class="ey-btn ey-btn-primary ey-btn-sm" ng-disabled="(change.webList==null || change.webList.length<=0) || !change.ischangetijiao" ng-click="change.commit()">提交</button>
+		<button type="button" class="ey-btn ey-btn-default" style="margin-left: 15px;" ng-click="change.cancel()">取 消</button>
+	</div>
+
+</div>
+</div>

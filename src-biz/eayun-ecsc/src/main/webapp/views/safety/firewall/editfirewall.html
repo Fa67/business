@@ -1,0 +1,29 @@
+<form class="form-horizontal" name="myForm">
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 ey-label">防火墙名称：</label>
+    <div class="col-sm-8" data-ng-class="(myForm.name.$dirty && myForm.name.$invalid) ? 'has-error' : ''">
+      <input type="text" class="ey-form-control" name="name" data-ng-model="model.fwName" placeholder="请输入防火墙名称" maxlength="20" required ajax-valid="checkFireWallName(value)">
+      <label class="ey-prompt" ng-show="myForm.name.$dirty && myForm.name.$error.required&&!flag">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+      <label class="ey-prompt" ng-show="myForm.name.$dirty && myForm.name.$error.ajaxValid&&!flag">防火墙名称已存在</label>
+      <label class="ey-prompt" ng-if="flag">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+    </div>
+  </div>
+  
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 ey-label">防火墙策略：</label>
+    <div class="col-sm-8" data-ng-class="(myForm.fwpName.$dirty && myForm.fwpName.$invalid) ? 'has-error' : ''">
+      <eayun-select name="fwpName" class="form-control" data-ng-model="model.fwpId"  placeholder="请选择一个策略"  required>
+       <!-- <eayun-option value=" " text="请选择一个策略" selected></eayun-option> -->
+        <eayun-option value="fwPolicy.fwpId" text="{{fwPolicy.fwpName}}" data-ng-repeat="fwPolicy in fwPolicys" ></eayun-option>
+      </eayun-select>
+      <label class="ey-prompt" ng-show="myForm.fwpName.$dirty && myForm.fwpName.$error.required">防火墙策略不能为空</label>
+    </div>
+    
+  </div>
+ 
+ <!-- 按钮区域 -->
+  <!-- <div class="modal-footer" >
+    <button type="button" class="btn btn-primary btn-modal" ng-click="commit()"  ng-disabled="!myForm.$valid">确  定</button>
+    <button type="button" class="btn btn-default btn-modal" ng-click="cancel()">取  消</button>
+  </div> -->
+</form>

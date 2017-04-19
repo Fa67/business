@@ -1,0 +1,49 @@
+<div class="modal-header">
+    <span class="modal-title">创建用户</span> 
+    <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style = "width:630px;">
+<form class="ey-form" name = "adduser" novalidate>
+  <div class="ey-form-group" data-ng-class="(adduser.userAccount.$dirty && adduser.userAccount.$invalid) ? 'ey-has-error' : ''">
+    <label class="ey-form-label ey-required">账号：</label>
+      <input type="text" required class="ey-form-input ey-form-w6" name="userAccount" data-ng-model="addmodel.userAccount" maxlength="20"
+      data-ajax-valid="checkAccount(value)" data-ng-pattern = "/^([a-zA-Z0-9][_][a-zA-Z0-9]|[a-zA-Z0-9]){0,20}$/" placeholder="请输入1-20位字符,支持数字、英文、下划线">
+      <span data-ng-show="adduser.userAccount.$dirty && adduser.userAccount.$error.required">请输入账号</span>
+      <span data-ng-show="adduser.userAccount.$dirty && adduser.userAccount.$error.ajaxValid">账号名称已存在</span>
+      <span data-ng-show="adduser.userAccount.$dirty && adduser.userAccount.$error.pattern">请输入1-20位字符,支持数字、英文、下划线</span>
+      <span class = "ey-text-tip">默认初始密码为：“账号”+“guest”，如：账号为test，生成的密码为testguest</span>
+  </div>
+  <div class="ey-form-group">
+    <label class="ey-form-label">账号说明：</label>
+    <input type="text" class="ey-form-input ey-form-w6" data-ng-model="addmodel.userExplain"maxlength="200">
+  </div>  
+<h4>请给用户分配角色</h4>
+<eayun-table data-api="roleTable.api" data-ajax-source="roleTable.source" data-param="roleTable.getParams" data-result="roleTable.result">
+  <table class="ey-table ey-table-auto">
+    <thead>
+    <tr>
+      <th width="10%"></th>
+      <th>角色名称</th>
+      <th>角色说明</th>
+    </tr>
+    </thead>
+    <tbody><tr data-ng-repeat="model in roleTable.result" data-ng-hide = "model.roleName=='root'||model.roleName=='超级管理员'">
+      <td>
+      	<div class = "ey-form-radio">
+      		<input type="radio" name="rolesId" value="{{model.roleId}}" data-ng-model = "addmodel.roleId" id = "{{model.roleId}}">
+      		<label for = "{{model.roleId}}"></label>
+  		</div>
+  	  </td>
+      <td>{{model.roleName}}</td>
+      <td>{{model.roleDesc}}</td>
+    </tr></tbody>
+  </table>
+</eayun-table>
+</form>
+</div>
+<div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<button class="ey-btn ey-btn-primary" data-ng-click="commit()" ng-disabled="adduser.$invalid||(!addusermodel.isHaveCheck)" type = "button">确  定</button>
+		<button class="ey-btn ey-btn-default" data-ng-click="cancel()" type = "button">取 消</button>
+	</div>
+</div>

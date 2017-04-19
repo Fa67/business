@@ -1,0 +1,32 @@
+<div class="modal-header">
+  <span class="modal-title">绑定公网IP</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 600px;">
+  <form class="ey-form" name="myForm" novalidate>
+    <div class="ey-form-group">
+      <label class="ey-form-label">IP地址：</label>
+      <!--<div class="col-sm-8" data-ng-class="(myForm.floatIp.$dirty && myForm.floatIp.$invalid) ? 'has-error' : ''">-->
+        <eayun-select name="floatIp" class="ey-form-w5 ey-form-select" data-ng-model="model.floatIp" ng-change="changePrj()" required placeholder="请选择IP">
+          <eayun-option value="float" text="{{float.floIp}}" data-ng-repeat="float in floatIps"></eayun-option>
+        </eayun-select>
+
+         <span class="ey-text-tip ey-has-error"
+               data-ng-show="myForm.floatIp.$dirty && myForm.floatIp.$error.required">
+           IP不能为空
+         </span>
+      </div>
+    <!--</div>-->
+  </form>
+</div>
+  <!-- 按钮区域 -->
+<div class="ey-modal-footer">
+  <div class="ey-btn-group" >
+    <button type="button"
+            class="ey-btn ey-btn-primary"
+            data-ng-click="commit()"
+            data-ng-disabled="!myForm.$valid || checked">
+      确  定
+    </button>
+    <button type="button" class="ey-btn ey-btn-default" ng-click="cancel()">取  消</button>
+  </div>
+</div>

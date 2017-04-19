@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="obsMonirotDetailGatherJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.eayun.obs.job.ObsDetailGatherJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="obsStorageMonirotDetailGatherJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.eayun.obs.job.ObsStorageDetailGatherJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="obsMonirotSummaryGatherJob_24h"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.obs.job.ObsDetailSummaryJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="obsStorageMonirotSummaryGatherJob_24h"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.obs.job.ObsStorageDetailSummaryJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="obsSortMonirotSummaryGatherJob_7day"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.obs.job.ObsSortDetailSummaryJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="obsStorageSortMonirotSummaryGatherJob_7day"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.obs.job.ObsStorageSortDetailSummaryJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="obsMonirotSummaryGatherJob_1month"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.obs.job.ObsDetailMonthSummaryJob"></property>
+		<property name="durability" value="true"></property>
+	</bean> 
+	<bean id="obsStorageMonirotSummaryGatherJob_1month"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.obs.job.ObsStorageDetailMonthSummaryJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+
+
+
+
+
+ 	  <!--  <bean id="obsMonirotDetailGatherTrigger_1h"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="obsMonirotDetailGatherJob"></property>
+		<property name="cronExpression" value="0/30 * * * * ? *"></property>
+	</bean>
+    <bean id="obsStorageMonirotDetailGatherTrigger_1h"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="obsStorageMonirotDetailGatherJob"></property>
+		<property name="cronExpression" value="0/30 * * * * ? *"></property>
+	</bean>
+	<bean id="obsMonirotSummaryGatherTrigger_24h"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="obsMonirotSummaryGatherJob_24h"></property>
+		<property name="cronExpression" value="0/30 * * * * ? *"></property>
+	</bean>
+	<bean id="obsStorageMonirotSummaryGatherTrigger_24h"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="obsStorageMonirotSummaryGatherJob_24h"></property>
+		<property name="cronExpression" value="0/30 * * * * ? *"></property>
+	</bean>
+	 -->
+	
+	 <bean id="obsMonirotDetailGatherTrigger_1h"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="obsMonirotDetailGatherJob"></property>
+		<property name="cronExpression" value="0 0 0/1 * * ?"></property>
+	</bean> 
+	<bean id="obsStorageMonirotDetailGatherTrigger_1h"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="obsStorageMonirotDetailGatherJob"></property>
+		<property name="cronExpression" value="0 0 0/1 * * ?"></property>
+	</bean> 
+	<bean id="obsMonirotSummaryGatherTrigger_24h"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="obsMonirotSummaryGatherJob_24h"></property>
+		<property name="cronExpression" value="0 15 0 * * ? *"></property>
+	</bean>
+	<bean id="obsStorageMonirotSummaryGatherTrigger_24h"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="obsStorageMonirotSummaryGatherJob_24h"></property>
+		<property name="cronExpression" value="0 15 0 * * ? *"></property>
+	</bean>
+	<bean id="obsSortMonirotSummaryGatherTrigger_7day"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="obsSortMonirotSummaryGatherJob_7day"></property>
+		<property name="cronExpression" value="0 5 0 ? * MON"></property>
+	</bean>
+	<bean id="obsStorageSortMonirotSummaryGatherTrigger_7day"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="obsStorageSortMonirotSummaryGatherJob_7day"></property>
+		<property name="cronExpression" value="0 5 0 ? * MON"></property>
+	</bean>
+	<bean id="obsMonirotSummaryGatherTrigger_1month"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="obsMonirotSummaryGatherJob_1month"></property>
+		<property name="cronExpression" value="0 5 0 1 * ?"></property>
+	</bean> 
+	<bean id="obsStorageMonirotSummaryGatherTrigger_1month"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="obsStorageMonirotSummaryGatherJob_1month"></property>
+		<property name="cronExpression" value="0 5 0 1 * ?"></property>
+	</bean>
+	
+	
+	
+	
+	
+
+	<!-- 定时任务调度器 -->
+	<bean class="com.eayun.common.job.EayunSchedulerFactoryBean" id="obsMonitorSchedulerFactory">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+		<property name="configLocation" value="classpath:quartz.properties" />
+		<property name="triggers">
+			<list>
+				<ref bean="obsMonirotDetailGatherTrigger_1h" />
+				<ref bean="obsStorageMonirotDetailGatherTrigger_1h"/>
+				<ref bean="obsMonirotSummaryGatherTrigger_24h" />
+				<ref bean="obsStorageMonirotSummaryGatherTrigger_24h" />
+				<ref bean="obsSortMonirotSummaryGatherTrigger_7day"/>
+				<ref bean="obsStorageSortMonirotSummaryGatherTrigger_7day"/> 
+				<ref bean="obsMonirotSummaryGatherTrigger_1month" /> 
+				<ref bean="obsStorageMonirotSummaryGatherTrigger_1month" />
+			</list>
+		</property>
+	</bean>
+</beans>

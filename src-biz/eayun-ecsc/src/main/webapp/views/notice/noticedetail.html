@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <span class="modal-title">公告详情</span> 
+    <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style = "width:550px;">
+	<div style="font-size:14px;">
+		<div class="form-group" style="font-family:Microsoft YaHei;">
+			<label class="control-label" style="padding-left:0px;text-align:left;font-size:14px;"><span style="color:#0077cc;">{{notice.title}}</span></label>
+		</div>
+		<div class="" style="font-family:Microsoft YaHei;margin-top:10px;height: 400px; overflow-y:auto;">
+			<label class="control-label" style="padding-left:0px;text-align:left;font-size:12px;">
+				<p ng-bind-html="notice.content" style="font-family:Microsoft YaHei;
+				word-break:break-all; word-wrap:break-all;line-height:2;text-indent:2em;">
+				</p>
+			</label>
+		</div>
+		<br>
+		<div style = "margin-bottom:30px;">
+			<a id="url" ng-if="notice.url!='' && notice.url!=null" ng-click="isOverdue(notice)" target="_blank" style="cursor:pointer">点此查看详情</a>
+		</div>
+	</div>
+</div>

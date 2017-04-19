@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="openstackMeterService"
+		class="com.eayun.eayunstack.service.impl.OpenstackMeterServiceImpl"></bean>
+
+	<bean id="networkFlowDetailGatherJob"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.eayun.virtualization.job.NetworkFlowDetailGatherJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataAsMap">
+			<map>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="networkFlowDetailSummaryJob"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.eayun.virtualization.job.NetworkFlowSummaryGatherJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataAsMap">
+			<map>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="networkFlowDetailGatherTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="networkFlowDetailGatherJob"></property>
+		<property name="cronExpression" value="0 0/1 * * * ? *"></property><!-- 每1分钟执行一次 -->
+	</bean>
+	
+	<bean id="networkFlowDetailSummaryTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="networkFlowDetailSummaryJob"></property>
+		<property name="cronExpression" value="0 5 0 * * ? *"></property><!-- 每天0点5分执行一次 -->
+	</bean>
+
+	<!-- 定时任务调度器 -->
+	<bean class="com.eayun.common.job.EayunSchedulerFactoryBean" id="netWorkInOutSchedulerFactory">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+		<property name="configLocation" value="classpath:quartz.properties" />
+		<property name="triggers">
+			<list>
+			 
+				<ref bean="networkFlowDetailGatherTrigger" /> 
+			 	<ref bean="networkFlowDetailSummaryTrigger" /> 
+			 
+			</list>
+		</property>
+	</bean>
+</beans>

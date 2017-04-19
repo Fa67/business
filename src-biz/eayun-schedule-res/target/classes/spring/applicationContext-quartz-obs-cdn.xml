@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="obsCdnRefreshBucketJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.eayun.obs.job.cdn.CdnRefreshBucketJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="obsCdnRefreshObjectJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.eayun.obs.job.cdn.CdnRefreshObjectJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="obsCdnDetailGatherJob_1h"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.obs.job.cdn.CdnDetailGatherJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="obsCdnSummaryGatherJob_1d"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.obs.job.cdn.CdnDaySummaryJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="obsCdnSummaryGatherJob_7day"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.obs.job.cdn.CdnWeekSummaryJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="obsCdnSummaryGatherJob_1month"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.obs.job.cdn.CdnMonthSummaryJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	
+	
+	
+	<bean id="obsCdnRefreshBucketTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="obsCdnRefreshBucketJob"></property>
+		<property name="cronExpression" value="0 0/1 * * * ? *"></property>
+	</bean>
+	<bean id="obsCdnRefreshObjectTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="obsCdnRefreshObjectJob"></property>
+		<property name="cronExpression" value="0 0/1 * * * ? *"></property>
+	</bean>
+	 <bean id="obsCdnDetailGatherTrigger_1h"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="obsCdnDetailGatherJob_1h"></property>
+		<property name="cronExpression" value="0 10 0/1 * * ?"></property>
+	</bean> 
+	<bean id="obsCdnSummaryGatherTrigger_1d"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="obsCdnSummaryGatherJob_1d"></property>
+		<property name="cronExpression" value="0 11 0 * * ? *"></property>
+	</bean>
+	<bean id="obsCdnSummaryGatherTrigger_7day"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="obsCdnSummaryGatherJob_7day"></property>
+		<property name="cronExpression" value="0 11 0 ? * MON"></property>
+	</bean>
+	<bean id="obsCdnSummaryGatherTrigger_1month"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="obsCdnSummaryGatherJob_1month"></property>
+		<property name="cronExpression" value="0 11 0 1 * ?"></property>
+	</bean> 
+	
+	
+
+	<!-- 定时任务调度器 -->
+	<bean class="com.eayun.common.job.EayunSchedulerFactoryBean" id="obCdnSchedulerFactory">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+		<property name="configLocation" value="classpath:quartz.properties" />
+		<property name="triggers">
+			<list>
+				<ref bean="obsCdnRefreshBucketTrigger" />
+				<ref bean="obsCdnRefreshObjectTrigger" />
+				<ref bean="obsCdnDetailGatherTrigger_1h" />
+				<ref bean="obsCdnSummaryGatherTrigger_1d" />
+				<ref bean="obsCdnSummaryGatherTrigger_7day"/>
+				<ref bean="obsCdnSummaryGatherTrigger_1month" /> 
+			</list>
+		</property>
+	</bean>
+</beans>

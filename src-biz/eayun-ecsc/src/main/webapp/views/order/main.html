@@ -1,0 +1,8 @@
+<div ng-controller="OrderCtrl">
+      <ul class="ey-nav-bread">
+        <li data-ui-sref={{item.route}} data-ng-repeat="item in orderNavLists">{{item.name}}</li>
+      </ul>
+      <div class="ey-divider ng-scope"></div>
+  </div>
+<!-- 子页面展示区 -->
+<div data-ui-view="" class="ey-panel ey-panel-full "></div>

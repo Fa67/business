@@ -1,0 +1,63 @@
+<div class="modal-header">
+	<span class="modal-title">Bucket详情</span><span
+		class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width:800px;">
+	<eayun-select data-ng-model="bucket" show-length="26" required> 
+					<eayun-option value="bucket" text="{{bucket.bucketName}}" 
+				data-ng-repeat="bucket in bucketAclList"
+				ng-click="getBucketDetail(bucket)" ></eayun-option>
+				</eayun-select>
+  	<nav class="ey-nav-online" style="margin-top:25px;">
+  		<a ng-class="tabFlag == 'normal' ? 'active' : ''" ng-click="tabChange('normal')">常规内容</a>
+  		<!-- <a ng-class="tabFlag == 'config' ? 'active' : ''" ng-click="tabChange('config')">防盗链设置</a>
+  		<a ng-class="tabFlag == 'logmng' ? 'active' : ''" ng-click="tabChange('logmng')">日志管理</a> -->
+  	</nav>
+  	<div class="row">
+  		<!-- <div class="ey-form-group">
+				<label class="ey-form-label" style="width: 100px;">CDN服务：</label> 
+				<eayun-select name="bucketName" data-ng-model="model.isOpencdn" required data-ng-disabled="isStop">
+					<eayun-option value="'0'" text="关闭" ></eayun-option>
+	        		<eayun-option value="'1'" text="开启" ></eayun-option>
+		    	</eayun-select>
+		    	<button class="ey-btn" data-ng-click="openOrCloseCDN()" ng-if="isOpencdnChange && model.isOpencdn =='1' "  data-ng-disabled = "isHide">确定更改状态</button>
+				<button class="ey-btn" data-ng-click="openOrCloseCDN()" ng-if="isOpencdnChange && model.isOpencdn =='0' "  data-ng-disabled = "isHide">确定更改状态</button>
+	</div> -->
+	<div class="ey-form-group">
+				<label class="ey-form-label" style="width: 100px;">Bucket类型：</label> 
+				<eayun-select name="bucketName" data-ng-model="model.permissionEn" required>
+					<eayun-option value="'Private'" text="私有读写" ></eayun-option>
+	        		<eayun-option value="'PublicReadWrite'" text="公有读写" ></eayun-option>
+	        		<eayun-option value="'PublicRead'" text="公有读私有写" ></eayun-option>
+			    </eayun-select>
+			    <button class="ey-btn" data-ng-click="setPermission()" 
+				ng-if="permissionChange" >确定更改权限</button>
+	</div>
+	<div class="ey-form-group">
+				<label class="ey-form-label" style="width: 100px;">Bucket预览：</label> 
+				<eayun-select name="bucketName" data-ng-model="model.preview" required>
+					<eayun-option value="'storage'" text="存储空间" selected></eayun-option>
+	        		<eayun-option value="'used'" text="使用流量" ></eayun-option>
+	        		<eayun-option value="'request'" text="请求次数" ></eayun-option>
+	        		<!-- <eayun-option value="'CDN'" text="CDN下载流量" ></eayun-option> -->
+			    </eayun-select>
+	</div>
+	<div class="col-sm-12" style="margin-top:25px;">
+		<label class="control-label" style="font-size : 12px;margin-left:20px;" ng-if="model.preview=='storage'">总存储量(MB)</label>
+		<label class="control-label" style="font-size : 12px;margin-left:20px;" ng-if="model.preview=='used'">内外网使用量(MB)</label>
+		<label class="control-label" style="font-size : 12px;margin-left:20px;" ng-if="model.preview=='request'">请求次数</label>
+		<label class="control-label" style="font-size : 12px;margin-left:20px;" ng-if="model.preview=='CDN'">CDN下载流量(MB)</label>
+		<div id="zonglan" style="height:300px;"></div>
+	</div>
+  	</div>
+  	
+	
+</div>
+
+<!-- <div class="row" ng-class="tabFlag == 'config' ? 'show' : 'hide'" style="height:500px;">
+	<span>敬请期待！</span>
+</div>
+
+<div class="row" ng-class="tabFlag == 'logmng' ? 'show' : 'hide'" style="height:500px;">
+	<span>敬请期待！</span>
+</div> -->

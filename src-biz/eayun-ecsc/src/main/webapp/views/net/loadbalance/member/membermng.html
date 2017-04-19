@@ -1,0 +1,66 @@
+
+<!-- Form表单 -->
+<form class="form-inline">
+  <button type="button" class="btn btn-primary btn-sm" data-ng-click="createMember()" data-ng-show="buttonPower.isAdd">
+  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 创建成员
+  </button>
+  
+  <div class="input-group has-feedback search-group">
+    <input type="text" class="form-control" placeholder="请输入IP地址搜索" data-ng-model="memberName">
+    <span class="form-control-feedback pointer search" data-ng-click="getMember()"></span>
+  </div>
+  
+</form>
+
+<!-- 表格 -->
+<eayun-table data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams" data-result="myTable.result">
+  <table class="table table-eayun">
+    <thead>
+    <tr>
+      <th class="col-sm-2">IP地址</th>
+      <th class="col-sm-2">状态</th>
+      <th class="col-sm-1">协议端口</th>
+      <th class="col-sm-1">权重</th>
+      <th class="col-sm-2">资源池</th>
+      
+      <th class="col-sm-1">已有标签</th>
+      <th class="col-sm-3">操作</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr data-ng-repeat="item in myTable.result">
+      <td class="col-sm-2">{{item.memberAddress}}</td>
+      <td class="col-sm-2">
+      	<span class ="state-block" data-ng-class="memberStatusClass!=''?memberStatusClass:''" ng-init="memberStatusClass = getMemberStatus(item)"></span>
+      	{{item.statusForMember}}
+      </td>
+      <td class="col-sm-1">{{item.protocolPort}}</td>
+      <td class="col-sm-1">{{item.memberWeight}}</td>
+      <td class="col-sm-2">{{item.poolName}}</td>
+      <td class="col-sm-1" ng-show="tags.gt2Tags" ng-init="tags=memJson(item.tagName)">
+      	<span>{{tags.twoTagsString}}</span>
+      	<div class="tag-icon ellipsis pointer"
+			ng-mouseenter="openTableBox({value:tags.allTagsString,type:'tagName',index:$index})"
+			ng-mouseleave="closeTableBox({type:'tagName',index:$index})"
+			hint="views/directives/ellipsispop.html"
+       		hint-show="hintTagShow[$index]"
+       		tooltip-class="tooltip-tag"
+       		tooltip-placement="bottom">
+       	</div>
+      </td>
+      <td class="col-sm-1" ng-show="!tags.gt2Tags">{{tags.twoTagsString}}</td>
+      <td class="col-sm-3" ng-if="buttonPower.isEdit &&buttonPower.isTag &&buttonPower.isDelete">
+      	<button class="btn btn-tablemng" type="button" data-ng-click="editMember(item)" data-ng-show="buttonPower.isEdit">编辑</button>
+		<button class="btn btn-tablemng btn-left" type="button" data-ng-click="tagResource('ldMember',item.memberId)" data-ng-show="buttonPower.isTag">标签</button>
+		<button class="btn btn-tabledel btn-left" type="button" data-ng-click="deleteMember(item)" data-ng-show="buttonPower.isDelete">删除</button>
+      </td>
+      <td class="col-sm-3" ng-if="!buttonPower.isEdit &&!buttonPower.isTag &&!buttonPower.isDelete">----
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <eayun-table-page></eayun-table-page>
+</eayun-table>
+
+

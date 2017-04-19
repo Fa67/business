@@ -1,0 +1,112 @@
+<form class="ey-search-bar ey-search-bar-white">
+    <button class="ey-btn ey-btn-primary" data-ui-sref="buy.vpcBuy" data-ng-show="modulePower.isCreNet">
+        <span class="eayunfont ef-plus"></span>
+        <span>创建私有网络</span>
+    </button>
+    <eayun-search-text value="netName" search="search()" placeholder="请输入名称搜索"></eayun-search-text>
+</form>
+<eayun-table data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams"
+             data-result="myTable.result">
+    <table class="ey-table-muliti">
+        <thead>
+        <tr>
+            <th style="width: 90px;">网络名称</th>
+            <th style="width: 110px;">状态</th>
+            <th style="width: 120px;">子网连接数量</th>
+            <th style="width: 85px;">带宽</th>
+            <th style="width: 130px;">外网网关</th>
+            <th style="width: 210px">计费状态</th>
+            <th style="width: 150px">创建时间</th>
+            <!--<th>管理员状态</th>-->
+            <th width="180px">操作</th>
+        </tr>
+        </thead>
+        <tbody><tr data-ng-repeat="netWork in myTable.result" data-ng-show="true">
+            <td data-ng-click="findNetWorkByNetId(netWork.netId)" class="click-td"
+                data-ng-bind="netWork.netName" title="{{netWork.netName}}"></td>
+            <td style="text-align: left;">
+                <span class="state-block" data-ng-class="vmStatusClass!=''?vmStatusClass:''"
+                      ng-init="vmStatusClass = getNetStatus(netWork)"></span>
+                <span data-ng-bind="netWork.netStatusName"></span>
+            </td>
+            <td data-ng-bind="netWork.subNetCount"></td>
+            <td><span data-ng-bind="netWork.rate"></span>Mbps</td>
+            <td data-ng-bind="netWork.gatewayIp"></td>
+            <td>
+                <span ng-bind="netWork.payTypeStr"></span><br>
+                <span data-ng-if="netWork.payType == 1">
+					到期时间：<span data-ng-bind="netWork.endTime|date:'yyyy-MM-dd HH:mm:ss'"></span>
+				</span>
+            </td>
+            <td ng-bind="netWork.createTime | date:'yyyy-MM-dd HH:mm:ss'"></td>
+            <td class="ey-table-operation">
+                <div class="ey-btn-group">
+                    <!--<button class="ey-btn"
+                            data-ng-show="modulePower.isEditNet"
+                            data-ng-disabled="netWork.routeId == null || netWork.chargeState != '0'"
+                            data-ng-click="addOrEditNetWork(netWork)">更改带宽
+                    </button>-->
+                    <button class="ey-btn"
+                            data-ng-show="modulePower.isAddSub"
+                            data-ng-disabled="netWork.chargeState != '0'"
+                            data-ng-click="addOrEditSubNetWork(netWork,null,'add1')">
+                        增加子网
+                    </button>
+                    <div class="ey-btn ey-btn-more" eayun-toggle="open"
+                            data-ng-show="modulePower.isBandWidth
+                                       || modulePower.isSetGateWay
+                                       || modulePower.isPortMapping
+                                       || modulePower.isNetTag
+                                       || modulePower.isRenew
+                                       || modulePower.isDelNet">
+                        更多操作 <span class="eayunfont ef-triangle"></span>
+                        <ul class="ey-drop-menu">
+                            <li data-ng-show="modulePower.isBandWidth"
+                                data-ng-if="!(netWork.routeId == null || netWork.chargeState != '0')"
+                                data-ng-click="addOrEditNetWork(netWork)">
+                                <a>更改带宽</a>
+                            </li>
+                            <!--<li data-ng-show="modulePower.isAddSub"
+                                data-ng-disabled="netWork.chargeState != '0'"
+                                data-ng-click="addOrEditSubNetWork(netWork,null,'add1')">
+                                <a>增加子网</a>
+                            </li>-->
+                            <!---->
+                            <li data-ng-show="modulePower.isSetGateWay"
+                                data-ng-if="!(netWork.routeId==null || netWork.chargeState != '0')"
+                                 data-ng-click="changeGateway(netWork)">
+                                <a data-ng-bind="(netWork.extNetName=='' || netWork.extNetName == null) ? '设置网关' : '清除网关'"></a>
+                            </li>
+                            <li data-ng-show="modulePower.isPortMapping"
+                                data-ng-click="portMapping(netWork)">
+                                <a>端口映射</a>
+                            </li>
+                            <li data-ng-show="modulePower.isNetTag"
+                                data-ng-if="!(netWork.chargeState != '0')"
+                                data-ng-click="tagResource('network',netWork.netId)">
+                                <a>标签</a>
+                            </li>
+                            <li data-ng-show="modulePower.isRenew &&netWork.payType == 1"
+                                data-ng-click="renewNetWork(netWork)">
+                                <a>续费</a>
+                            </li>
+                            <li data-ng-show="modulePower.isDelNet"
+                                data-ng-if="!(netWork.payType == '1' && netWork.chargeState == '0')"
+                                data-ng-click="delNetWorkByNetId(netWork)">
+                                <a class="ey-text-error" >删除</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <span data-ng-show="!modulePower.isAddSub
+                                     && !modulePower.isSetGateWay
+                                     && !modulePower.isNetTag
+                                     && !modulePower.isRenew
+                                     && !modulePower.isDelNet">
+                        ----
+                    </span>
+                </div>
+            </td>
+        </tr></tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

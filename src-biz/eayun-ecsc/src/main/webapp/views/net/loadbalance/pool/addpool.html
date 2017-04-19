@@ -1,0 +1,98 @@
+<form class="form-horizontal" name="myForm">
+  <div class="form-group">
+    <label class="col-sm-3 ey-label">所属项目：</label>
+    <div class="col-sm-8" data-ng-class="(myForm.prjName.$dirty && myForm.prjName.$invalid) ? 'has-error' : ''">
+      <eayun-select name="prjName" class="form-control" data-ng-model="model.project" ng-change="changePrj()" required placeholder="请选择项目">
+        <!-- <eayun-option value="''" text="全部" selected></eayun-option> -->
+        <eayun-option value="project" text="{{project.prjName}}" data-ng-repeat="project in projectList"></eayun-option>
+      </eayun-select>
+      
+      <!-- js验证项目选择是否为空 -->
+      <label class="ey-prompt" ng-show="myForm.prjName.$dirty && myForm.prjName.$error.required">项目不能为空</label>
+    </div>
+  </div>
+
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 ey-label">名称：</label>
+    <div class="col-sm-8" data-ng-class="(myForm.name.$dirty && (myForm.name.$invalid||!checkName)) ? 'has-error' : ''">
+      <input type="text" class="ey-form-control" name="name" maxlength="20" data-ng-model="model.poolName" placeholder="请输入负载均衡器名称" required
+      ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/' ng-change="checkNameExsit()">
+      <label class="ey-prompt" ng-show="myForm.name.$dirty && myForm.name.$invalid">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+      <label class="ey-prompt" ng-show="myForm.name.$dirty && myForm.name.$valid && !checkName">名称已存在</label>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label class="col-sm-3 ey-label">网络：</label>
+    <div class="col-sm-8" data-ng-class="(myForm.network.$dirty && myForm.network.$invalid) ? 'has-error' : ''">
+      <eayun-select name="network" class="form-control" data-ng-model="model.network" ng-change="changeSubnet()" required placeholder="请选择网络">
+        <eayun-option value="network.netId" text="{{network.netName}}" data-ng-repeat="network in networks"></eayun-option>
+      </eayun-select>
+      <label class="ey-prompt" ng-show="myForm.prjName.$dirty && myForm.prjName.$error.required">网络不能为空</label>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label class="col-sm-3 ey-label">子网：</label>
+    <div class="col-sm-8" data-ng-class="(myForm.subnet.$dirty && myForm.subnet.$invalid) ? 'has-error' : ''">
+      <eayun-select name="subnet" class="form-control" data-ng-model="model.subnet" required placeholder="请选择子网" show-format="substrSubnetName(text)">
+        <eayun-option value="subnet.subnetId" text="{{subnet.subnetName}}({{subnet.pooldata}})" data-ng-repeat="subnet in subnets"></eayun-option>
+      </eayun-select>
+      <label class="ey-prompt" ng-show="myForm.prjName.$dirty && myForm.prjName.$error.required">子网不能为空</label>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label class="col-sm-3 ey-label">负载均衡方式：</label>
+    <div class="col-sm-8" data-ng-class="(myForm.lbMethod.$dirty && myForm.lbMethod.$invalid) ? 'has-error' : ''">
+      <eayun-select name="lbMethod" class="form-control" data-ng-model="model.lbMethod" required placeholder="请选择负载均衡方式">
+        <eayun-option value="'ROUND_ROBIN'" text="轮询" ></eayun-option>
+        <eayun-option value="'LEAST_CONNECTIONS'" text="最小连接数" ></eayun-option>
+        <eayun-option value="'SOURCE_IP'" text="源地址" ></eayun-option>
+      </eayun-select>
+      <label class="ey-prompt" ng-show="myForm.lbMethod.$dirty && myForm.lbMethod.$error.required">负载均衡方式不能为空</label>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-3 ey-label">协议：</label>
+    <div class="col-sm-8" data-ng-class="(myForm.poolProtocol.$dirty && myForm.poolProtocol.$invalid) ? 'has-error' : ''">
+      <eayun-select name="poolProtocol" class="form-control" data-ng-model="model.poolProtocol" required placeholder="请选择协议">
+        <eayun-option value="'HTTP'" text="HTTP" ></eayun-option>
+       <!--  <eayun-option value="'HTTPS'" text="HTTPS" ></eayun-option> -->
+        <eayun-option value="'TCP'" text="TCP" ></eayun-option>
+      </eayun-select>
+      <label class="ey-prompt" ng-show="myForm.poolProtocol.$dirty && myForm.poolProtocol.$error.required">协议不能为空</label>
+    </div>
+  </div>
+  
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 ey-label">协议端口：</label>
+    <div class="col-sm-4 ey-control" data-ng-class="(myForm.port.$dirty && myForm.port.$invalid) ? 'has-error' : ''">
+      <input type="text" class="ey-form-control" name="port" maxlength="5" data-ng-model="model.port" required placeholder="请输入协议端口"
+       ng-pattern='/^([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]{1}|6553[0-5])$/'>
+    </div>
+    <div class="col-sm-5" data-ng-class="(myForm.port.$dirty && myForm.port.$invalid) ? 'has-error' : ''">
+      <label class="ey-prompt">请输入1到65535的整数</label>
+    </div>
+  </div>
+  
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 ey-label">连接限制数：</label>
+    <div class="col-sm-4 ey-control" data-ng-class="(myForm.limitNum.$dirty && myForm.limitNum.$invalid) ? 'has-error' : ''">
+      <input type="text" class="ey-form-control" name="limitNum" maxlength="9" data-ng-model="model.limitNum" required placeholder="请输入连接限制数"
+      ng-pattern='/^[1-9][0-9]*$/'>
+    </div>
+    <div class="col-sm-5" data-ng-class="(myForm.limitNum.$dirty && myForm.limitNum.$invalid) ? 'has-error' : ''">
+      <label class="ey-prompt">请输入1到999999999的整数</label>
+    </div>
+  </div>
+  
+  <!-- 按钮区域 -->
+  <div class="modal-footer ey-btn-group" >
+    <button type="button" class="ey-btn ey-btn-primary btn-modal" ng-click="commit()"  ng-disabled="!myForm.$valid||checkButton||!checkName">确  定</button>
+    <button type="button" class="ey-btn ey-btn-default btn-modal"  ng-click="cancel()">取  消</button>
+  </div>
+  
+  
+  
+</form>

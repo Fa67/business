@@ -1,0 +1,26 @@
+<div class="modal-header">
+    <span class="modal-title">绑定/解绑云主机</span> 
+    <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="ey-content-notice" style="margin-left: 20px;margin-right: 20px;margin-bottom: 20px;">
+    <span class="ey-color-red" style="line-height: 30px;">只有在关机状态下并且所在子网连接路由的云主机才能绑定/解绑密钥</span>
+</div>
+<div class="modal-body" style="width: 800px;">
+
+    <eayun-select-two-way class="ey-font-size ey-two-select-safety" list-data="list"
+        text-field="vmname" headers="主机名称"
+        header-width="150px,40%" title="云主机" name="cloudhostlist"
+        item-template-url='views/safety/secretkey/selectvm.html'>
+    </eayun-select-two-way>
+
+</div>
+<div style="margin-left: 20px;margin-right: 20px;margin-bottom: 20px;">
+    <span style="line-height: 30px;">绑定SSH密钥后，请禁止“密码登录”，详情请<a href="http://www.eayun.com/document/faq/safety.html" target="_blank">参考文档</a></span>
+</div>
+<!-- 按钮区域 -->
+<div class="ey-modal-footer">
+    <div class="ey-btn-group">
+        <button type="button" class="ey-btn ey-btn-primary btn-modal" data-ng-click="commit()" >确 定</button>
+        <button type="button" class="ey-btn ey-btn-default btn-modal" data-ng-click="cancel()">取 消</button>
+    </div>
+</div>

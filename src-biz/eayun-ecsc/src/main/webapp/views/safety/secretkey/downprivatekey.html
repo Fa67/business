@@ -1,0 +1,24 @@
+<div class="modal-header">
+	<span class="modal-title">下载密钥</span> 
+	<span class="eayunfont ef-close ey-font-huge" style="cursor: pointer;" data-ng-click="cancel()"></span>
+</div>
+<div class="model-body" style="width: 650px;">
+    <div class="ey-form-group has-feedback" style="margin-left: 20px;margin-right: 20px;margin-bottom: 20px;">
+        <span>
+                            密钥“{{secretkeyName}}”的私钥将会自动下载，若未开始下载请点击按钮手动下载
+        </span>
+    </div>
+    <div class="ey-form-group has-feedback" style="margin-left: 20px;margin-right: 20px;margin-bottom: 20px;">
+	   <button type="button" class="ey-btn ey-btn-primary btn-modal" data-ng-click="downFile()" >下载私钥</button>
+    </div>
+	<div class="ey-content-notice" style="margin-left: 20px;margin-right: 20px;margin-bottom: 20px;">
+	    <p class="ey-color-red" >私钥用于远程登录身份验证，为保证服务安全，我们不会保存您的私钥信息</p>
+	    <p class="ey-color-red" >请下载后妥善保管，下载链接有效时间为10分钟</p>
+	</div>
+	<!-- 按钮区域 -->
+	<div class="ey-modal-footer">
+		<div class="ey-btn-group">
+			<button type="button" class="ey-btn ey-btn-default btn-modal" data-ng-click="cancel()">关闭</button>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,102 @@
+
+<div class="ey-panel-body">
+    <h4>发票管理</h4>
+    <eayun-table class="ey-invoice">
+        <table class="ey-table ey-table-auto">
+            <td>
+                <h5 class="ey-font-size-big ey-font-bold">可开票金额</h5>
+                <p class="ey-font-size-bigger">
+                                                        ￥<span class="ey-font-size-superior" ng-class="amount.billableAmount && amount.billableAmount > 0 ? 'ey-color-blue' : ''">{{amount.billableAmount|currency:''}}</span>
+                </p>
+                <p class="ey-text-tip ey-font-size">已开发票金额  {{amount.invoicedAmount|currency:'￥'}}</p>
+                <button class="ey-btn ey-btn-primary"
+                    ng-disabled="amount.billableAmount == null || amount.billableAmount <= 0"
+                    ng-click="toApply()"
+                    ng-if="modulePower.isInvoiceApply">
+                                                            申请发票
+                </button>
+            </td>
+            <td  width="6px" class="ey-invoice-space"></td>
+            <td>
+                <h5 class="ey-font-size-big ey-font-bold">默认开票信息</h5>
+                <div ng-if="defaultInfo != null">
+                    <p class="ey-font-size"><span class="ey-text-tip">发票类型：</span><span>{{defaultInfo.invoiceTypeName}}</span></p>
+	                <p class="ey-font-size ey-invoice-ellipsis"><span class="ey-text-tip">发票抬头：</span><span title="{{defaultInfo.invoiceTitle}}">{{defaultInfo.invoiceTitle}}</span></p>
+	                <button class="ey-btn ey-btn-primary-light" ng-if="modulePower.isInvoiceInfo" ng-click="toInfo()">管理开票信息</button>
+                </div>
+                <div ng-if="defaultInfo == null && modulePower.isInvoiceInfo">
+                    <span class="ey-text-tip">您还没有创建开票信息，请先<a class="ey-color-blue" ng-click="toInfo()" href="javascript:void(0);">创建</a></span>
+                </div>
+            </td>
+            <td  width="6px"  class="ey-invoice-space"></td>
+            <td>
+                <h5 class="ey-font-size-big ey-font-bold">默认邮寄地址</h5>
+                <div ng-if="defaultAddress != null">
+                    <p class="ey-font-size">{{defaultAddress.receiverName}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{defaultAddress.receiverTel}}</p>
+	                <p class="ey-font-size ey-invoice-ellipsis" title="{{defaultAddress.address}}">{{defaultAddress.address}}</p>
+	                <button class="ey-btn ey-btn-primary-light" ng-if="modulePower.isInvoiceAddress" ng-click="toAddress()">管理邮寄地址</button>
+                </div>
+                <div ng-if="defaultAddress == null && modulePower.isInvoiceAddress">
+                    <span class="ey-text-tip">您还没有创建邮寄地址，请先<a class="ey-color-blue" ng-click="toAddress()" href="javascript:void(0);">创建</a></span>
+
+                </div>
+            </td>
+        </table>
+    </eayun-table>
+    <h5 class="ey-font-size-bigger ey-font-bold" style="padding-top:25px;">发票列表</h5>
+    <div class="ey-search-bar">
+        <label class="control-label">申请时间：</label>
+        <!-- <date-range start-date="list.startTime" end-date="list.endTime" data-show-time="false" max-date="list.endTime" class="ey-form-w4"></date-range> -->
+        <date-time-picker class="form-group"
+                          data-format="yyyy-MM-dd" data-ng-model="list.startTime"
+                          max-date="list.endTime" show-time="false"></date-time-picker>
+        <span style="margin-left: 5px;">—</span>
+        <date-time-picker class="form-group" style="margin-left:5px;"
+                          data-ng-model="list.endTime" min-date="list.startTime"
+                          show-time="false"></date-time-picker>
+        <button class="ey-btn ey-btn-default" ng-click="list.query()">查询</button>
+    </div>
+    <eayun-table data-api="list.invoiceTable.api"
+            data-ajax-source="list.invoiceTable.source"
+            data-param="list.invoiceTable.getParams"
+            data-result="list.invoiceTable.result"
+            ng-if="modulePower.isInvoiceList">
+        <table class="ey-table-muliti">
+            <thead>
+            <tr>
+                <th class="col-sm-1">金额</th>
+                <th class="col-sm-1">发票类型</th>
+                <th>抬头</th>
+                <th>申请时间</th>
+                <th>
+                    <eayun-table-filter list-data="list.statusList" text-field="text" item-clicked="list.selectStatus($item, $event)"></eayun-table-filter>
+                </th>
+                <th>邮寄地址</th>
+                <th class="col-sm-1">操作</th>
+
+            </tr>
+            </thead>
+            <tbody><tr data-ng-repeat="item in list.invoiceTable.result">
+                    <td ng-bind="::item.amount|currency:'￥'"></td>
+                    <td ng-bind="::item.invoiceTypeName"></td>
+                    <td ng-bind="::item.invoiceTitle" class="ey-ellipsis ey-color-blue" title="{{item.invoiceTitle}}"></td>
+                    <td ng-bind="::item.createTime|date:'yyyy-MM-dd HH:mm:ss'"></td>
+                    <td>
+                        <p>{{::item.statusName}}</p>
+                        <p ng-if="item.status == '20' && item.usedExpress == '0'" class="ey-text-tip">{{item.noExpressTips}}</p>
+                        <p ng-if="item.status == '20' && item.usedExpress == '1'" class="ey-text-tip">快递公司：{{item.expressName}}</p>
+                        <p ng-if="item.status == '20' && item.usedExpress == '1'" class="ey-text-tip">快递单号：{{item.expressNo}}</p>
+                        <p ng-if="item.status == '31'" class="ey-text-tip">{{item.cancelReason}}</p>
+                    </td>
+                    <td>
+                        <span class="ey-ellipsis ey-inline ey-middle" style="width:71px;" title="{{item.receiverName}}">{{item.receiverName}}</span>&nbsp;
+                        <span class="ey-ellipsis ey-inline ey-middle" style="width:172px;" title="{{item.receiverTel}}">{{item.receiverTel}}</span>
+                        <br>
+                        <span class="ey-ellipsis" title="{{item.address}}">{{item.address}}</span>
+                    </td>
+                    <td><button ng-if="modulePower.isInvoiceCancel" ng-disabled="item.status != '0'" class="ey-btn" ng-click="cancel(item.id)">取消</button></td>
+                </tr></tbody>
+        </table>
+        <eayun-table-page></eayun-table-page>
+    </eayun-table>
+</div>

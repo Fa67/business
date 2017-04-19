@@ -1,0 +1,76 @@
+<div class="modal-header">
+    <span class="modal-title">创建数据库</span>
+    <span class="eayunfont ef-close ey-font-huge" data-ng-style="{'cursor':(create.btnWait ? 'not-allowed' : 'pointer')}" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 600px;">
+    <form class="ey-form" name="createDatabase" novalidate>
+        <div class="ey-form-group"
+             data-ng-class="(createDatabase.databaseName.$dirty && (createDatabase.databaseName.$invalid || create.specialName)) ? 'ey-has-error' : ''">
+            <label class="ey-form-label ey-required">
+                数据库名称：
+            </label>
+            <input type="text" class="ey-form-input ey-form-w6"
+                   data-ng-model="create.database.databaseName" maxlength="64"
+                   name="databaseName" placeholder="请输入名称"
+                   data-ajax-valid="create.checkDBNameExist(value)"
+                   data-ng-change="create.specialNameCheck()"
+                   data-ng-pattern='/^[a-zA-Z0-9][_a-zA-Z0-9]{0,62}[a-zA-Z0-9]$/'
+                   required>
+            <span class="ey-text-tip ey-has-error hide"
+                  data-ng-class="(createDatabase.databaseName.$dirty
+                  && (createDatabase.databaseName.$error.pattern
+                  || createDatabase.databaseName.$error.required)) ? 'show' : 'hide'">
+				请输入2-64位字符，支持数字、大小写字母、下划线
+			</span>
+			<span class="ey-text-tip ey-has-error hide"
+                  data-ng-class="(createDatabase.databaseName.$dirty
+                  && !create.specialName
+                  && createDatabase.databaseName.$error.ajaxValid) ? 'show' : 'hide'">
+				数据库名称已存在
+			</span>
+            <span class="ey-text-tip ey-has-error hide"
+                  data-ng-class="(createDatabase.databaseName.$dirty
+                  && create.specialName) ? 'show' : 'hide'">
+				不支持mysql、performance_schema、lost+found、information_schema、test（test开头）的大小写混合名称
+			</span>
+        </div>
+        <div class="ey-form-group">
+            <label class="ey-form-label ey-required">
+                支持字符集：
+            </label>
+            <div class="ey-form-radio">
+                <input id="1" type="radio" data-ng-model="create.database.characterSet" value="utf8" required>
+                <label for="1" style="margin-right: 20px;">utf8</label>
+                <input id="2" type="radio" data-ng-model="create.database.characterSet" value="gbk" required>
+                <label for="2" style="margin-right: 20px;">gbk</label>
+                <input id="3" type="radio" data-ng-model="create.database.characterSet" value="latin1" required>
+                <label for="3" style="margin-right: 20px;">latin1</label>
+                <input id="4" type="radio" data-ng-model="create.database.characterSet" value="latin2" required>
+                <label for="4">latin2</label>
+            </div>
+            <br>
+        </div>
+        <div class="ey-form-group">
+            <label class="ey-form-label">
+                备注信息：
+            </label>
+            <textarea class="ey-form-textarea ey-form-w6" data-ng-model="create.database.remark" maxlength="200"></textarea>
+        </div>
+    </form>
+</div>
+<div class="ey-modal-footer ey-btn-group" >
+    <div class="ey-btn-group">
+        <button type="button"
+                class="ey-btn ey-btn-primary"
+                data-ng-click="commit()"
+                data-ng-disabled="create.btnWait || !createDatabase.$valid || create.specialName">
+            确 定
+        </button>
+        <button type="button"
+                class="ey-btn ey-btn-default"
+                data-ng-click="cancel()"
+                data-ng-disabled="create.btnWait">
+            取 消
+        </button>
+    </div>
+</div>

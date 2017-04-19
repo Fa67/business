@@ -1,0 +1,269 @@
+<div class="clearfix">
+<div>
+<h4>云硬盘详情</h4>
+<!-- Form表单 -->
+<form class="form-inline" data-ng-show="model.volBootable!='1'&&isShow">
+	<button  class="ey-btn ey-btn-primary" data-ng-show="buttonPower.isTag" data-ng-click="tagResource('volume',model.volId)" data-ng-disabled="model.volStatus=='DELETING'||model.chargeState!='0'">
+	<span class = "eayunfont ef-tag"></span>
+	<span>标签</span>
+	</button>
+
+	<button  class="ey-btn ey-btn-primary detail-btn-left" data-ng-show="buttonPower.addSnap" data-ng-click="addSnapshot(model)" data-ng-disabled="model.volStatus!='AVAILABLE'&&model.volStatus!='IN-USE'||model.chargeState!='0'">
+	<span class = "eayunfont ef-mirro"></span>
+	<span>创建备份</span>
+	</button>
+
+	<button  class="ey-btn ey-btn-primary  detail-btn-left" data-ng-show="model.volStatus!='IN-USE'&&buttonPower.isBind" data-ng-click="bindVolume(model)" data-ng-disabled="model.volStatus!='AVAILABLE'||model.chargeState!='0'">
+	<span class = "eayunfont ef-chain"></span>
+	<span>挂载</span>
+	</button>
+
+	<button  class="ey-btn ey-btn-primary  detail-btn-left" data-ng-click="debindVolume(model)" data-ng-show="model.volStatus=='IN-USE'&&buttonPower.isDebind">
+	<span class = "eayunfont ef-unbind"></span>
+	<span>解绑</span>
+	</button>
+
+	<button  class="ey-btn ey-btn-danger  detail-btn-left"  data-ng-show="buttonPower.delDisk" data-ng-click="deleteVolume(model)" data-ng-disabled="'CREATING'==model.volStatus||(model.payType=='1'&&model.chargeState=='0')"> 
+	<span class = "eayunfont ef-delete"></span>
+	<span>删&nbsp;除</span>
+	</button>
+</form>
+
+<!-- 详情 -->
+<div class="details">
+  <form class="row" name="myForm">
+    <div class="col-lg-6">
+    <div class="details-group">
+        <div class="details-name"
+        	hint="views/cloudhost/volume/editvolumename.html"
+       		hint-show="hintNameShow"
+       		tooltip-class="tooltip-edit"
+       		tooltip-placement="right">云硬盘名称：</div>
+        <div class="details-value">
+          <span data-ng-class="volNameEditable?'hide':'show'" data-ng-if="model.volName!=model.volId">{{model.volName.length>20?model.volName.substring(0,19):model.volName}}</span>
+          <span data-ng-class="volNameEditable?'hide':'show'" data-ng-if="model.volName==model.volId">{{model.volName}}</span>
+        </div>
+        <div ng-show="model.volName.length>20" class="detail-icon ellipsis pointer"
+        	ng-mouseenter="openPopBox({value:model.volName,type:'volName'})"
+        	ng-mouseleave="closePopBox('volName')"
+        	hint="views/cloudhost/volume/volumedescription.html"
+          	hint-show="nameShow"
+          	tooltip-class="tooltip-description"
+          	tooltip-placement="bottom" data-ng-if="model.volName!=model.volId"></div>
+	      <span class="badge" data-ng-class="!volNameEditable&&model.volBootable!='1'?'show':'hide'" data-ng-click="edit('volName')"  data-ng-show="buttonPower.isEdit&&model.chargeState=='0'&&('AVAILABLE'==model.volStatus||'IN-USE'==model.volStatus)">
+		      <span class="glyphicon glyphicon-pencil">
+		      </span> 
+	      </span>
+	      
+      </div>
+    
+      
+      
+       <div class="details-group">
+        <div class="details-name">云硬盘ID：</div>
+        <div class="details-value">
+          {{model.volId}}
+        </div>
+      </div>
+      
+      
+      
+      <div class="details-group">
+        <div class="details-name">状态：</div>
+        <div class="details-value">
+        
+        
+	    <span class ="eayunfont ef-square" data-ng-class="volStatusClass!=''?volStatusClass:''"></span>
+	        {{"null"!=model.statusForDis?model.statusForDis:""}}
+        </div>
+      </div>
+      
+    
+      
+      <div class="details-group">
+        <div class="details-name">创建方式：</div>
+        <div class="details-value">
+        {{("publicImage"==model.diskFrom || "privateImage"==model.diskFrom || "marketImage"==model.diskFrom)?"镜像":""}}{{"blank"==model.diskFrom?"空白盘":""}}{{"snapshot"==model.diskFrom?"备份":""}}
+        </div>
+      </div>
+      
+      
+      <div class="details-group">
+        <div class="details-name">挂载主机：</div>
+        <div class="details-value">
+        {{"null"==model.vmName?"":model.vmName}} 
+        </div>
+      </div>
+      
+      
+      <div class="details-group">
+        <div class="details-name">挂载点：</div>
+        <div class="details-value">
+        {{"null"==model.bindPoint?"":model.bindPoint}} 
+        </div>
+      </div>
+      
+       <div class="details-group">
+        <div class="details-name">所属数据中心：</div>
+        <div class="details-value">
+          {{model.dcName}}
+        </div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">已有标签：</div>
+        <div class="details-value" data-ng-show="tag.gt2Tags">
+          <span>{{tag.twoTagsString}}</span>
+          <div class="detail-icon ellipsis pointer"
+       	      ng-mouseenter="openPopBox({value:tag.allTagsString,type:'tagName'})"
+       		  ng-mouseleave="closePopBox('tagName')"
+			  hint="views/cloudhost/volume/volumedescription.html"
+       		  hint-show="tagShow"
+       		  tooltip-class="tooltip-description"
+       		  tooltip-placement="bottom">
+       	  </div>
+        </div>
+        <div class="details-value" data-ng-show="!tag.gt2Tags">
+        	<span>{{tag.allTagsString}}</span>
+        </div>
+      </div>
+      
+      
+    </div>
+    
+    
+   	<div class="col-lg-6"> 
+      <div class="details-group">
+        <div class="details-name"
+        	hint="views/cloudhost/volume/editvolumedescription.html"
+       		hint-show="hintDescShow"
+       		tooltip-class="tooltip-edit"
+       		tooltip-placement="right">描述：</div>
+       <div class="details-value">
+          <span data-ng-class="volDescEditable?'hide':'show'">
+          	{{(model.volDescription.length>25?model.volDescription.substring(0,25):model.volDescription)||''}}
+          </span>
+        </div>
+        <div ng-show="model.volDescription.length>25" class="detail-icon ellipsis pointer"
+        	ng-mouseenter="openPopBox({value:model.volDescription,type:'volDesc'})"
+        	ng-mouseleave="closePopBox('volDesc')"
+        	hint="views/cloudhost/volume/volumedescription.html"
+          	hint-show="descShow"
+          	tooltip-class="tooltip-description"
+          	tooltip-placement="bottom"></div>
+	      <span class="badge" data-ng-class="!volDescEditable&&model.volBootable!='1'?'show':'hide'" data-ng-click="edit('volDesc')" data-ng-show="buttonPower.isEdit&&model.chargeState=='0'&&('AVAILABLE'==model.volStatus||'IN-USE'==model.volStatus)">
+		      <span class="glyphicon glyphicon-pencil">
+		      </span> 
+	      </span>
+      </div>
+      
+      
+      <div class="details-group">
+        <div class="details-name">容量：</div>
+        <div class="details-value">
+          {{model.volSize}}GB
+        </div>
+      </div>
+      
+      
+      <div class="details-group">
+        <div class="details-name">云硬盘属性：</div>
+        <div class="details-value">
+          {{model.volBootable=='0'?"数据盘":"系统盘"}}
+        </div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">类型：</div>
+        <div class="details-value">
+          {{model.volumeTypeAs=='null'?"":model.volumeTypeAs}}
+        </div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">系統：</div>
+        <div class="details-value">
+          {{(model.sysType!=null&&model.sysType!='null')?model.sysType:"--"}}
+        </div>
+      </div>
+      
+      
+      <div class="details-group">
+        <div class="details-name">计费状态：</div>
+        <div class="details-value">
+          {{'1'==model.payType?'包年包月':'按需付费'}}
+        </div>
+      </div>
+      
+      
+      <div class="details-group">
+        <div class="details-name">创建时间：</div>
+        <div class="details-value">
+          {{model.createTime | date:"yyyy-MM-dd HH:mm:ss"}}
+        </div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">到期时间：</div>
+        <div class="details-value">
+          {{model.endTime!=null&&model.endTime!='null'?(model.endTime | date:"yyyy-MM-dd HH:mm:ss"):'--'}}
+        </div>
+      </div>
+      
+      
+      <div class="details-group">
+        <div class="details-name">云硬盘备份：</div>
+        <div class="details-value">
+                    共{{myTable.result.length}}个备份
+        </div>
+      </div>
+      
+    </div>
+  </form>
+</div>
+</div>
+</div>
+
+<div class="ey-divider"></div>
+
+<div class="clearfix">
+<div>
+<h4>云硬盘已创建备份</h4>
+<!-- 表格 -->
+<eayun-table ng-show="modulePower.isSnapView" data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams"
+             data-result="myTable.result">
+  <table class="ey-table">
+    <thead>
+    <tr>
+      <th>备份名称</th>
+      <th>状态</th>
+      <th>备份大小</th>
+      <th>创建时间</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+
+    <tbody><tr data-ng-repeat="snapshot in myTable.result">
+      <td>{{snapshot.snapName}}</td>
+      <td>
+      	<span class ="eayunfont ef-square" data-ng-class="snapStatusClass!=''?snapStatusClass:''" ng-init="snapStatusClass = getSnapStatus(snapshot)"></span>
+	     {{snapshot.statusForDis}}
+      </td>
+      <td>{{snapshot.snapSize}}GB</td>
+      <td>{{snapshot.createTime | date:"yyyy-MM-dd HH:mm:ss"}}</td>
+      <td class="ey-table-operation" data-ng-if="buttonPower.isAddDisk||buttonPower.rollBackVol">
+      	<div class="ey-btn-group">
+            <button class="ey-btn" data-ng-show="buttonPower.isAddDisk"
+               data-ng-click="AddVolumeBySnap(snapshot)" data-ng-disabled="snapshot.snapStatus!='AVAILABLE'||snapshot.chargeState!='0'">创建云硬盘
+            </button>
+            <button class="ey-btn" data-ng-show="buttonPower.rollBackVol"
+               data-ng-click="rollBack(snapshot)" data-ng-disabled="snapshot.snapStatus!='AVAILABLE'||snapshot.chargeState!='0'">回滚云硬盘
+             </button>
+       	</div>
+      </td>
+      <td data-ng-if="!buttonPower.isAddDisk&&!buttonPower.rollBackVol">----</td>
+    </tr></tbody>
+  </table>
+</eayun-table>
+</div>
+</div>

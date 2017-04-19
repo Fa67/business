@@ -1,0 +1,34 @@
+<div class="modal-header">
+	<span class="modal-title">手机号码验证</span><span
+		class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 600px;">
+	 <form class="ey-form " novalidate name="editphone">
+			<div class="ey-form-group">
+				<label class="ey-form-label">手机号码：</label>
+				<span class="ey-form-w3" ng-bind="::editPhone.userPhone.substring(0,4)+'****'+editPhone.userPhone.substring(8,11)"></span>
+				<button class="ey-btn" data-ng-click="sendCode()"
+					data-ng-hide="model.doSend">
+					<span>发送验证码</span>
+				</button>
+				<button class="ey-btn" data-ng-disabled="true"
+					data-ng-show="model.doSend">
+					<span>{{model.second}}s后可重新发送</span>
+				</button>
+			</div>
+			<div class="ey-form-group ey-required "data-ng-class="(editphone.verCode.$dirty && editPhone.verCode == '') ? 'ey-has-error' : ''">
+				<label class="ey-form-label">验证码：</label>
+				<input
+					class="ey-form-input ey-form-w2" data-ng-model="editPhone.verCode" name="verCode">
+				<span ng-show="editphone.verCode.$dirty && editPhone.verCode == ''">请输入验证码</span>
+			</div>
+	 </form>
+	
+</div>
+<div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<button class="ey-btn ey-btn-primary" ng-click="commit()"
+			ng-disabled="editPhone.verCode == ''">确定</button>
+		<button class="ey-btn ey-btn-default" ng-click="cancel()">取消</button>
+	</div>
+</div>

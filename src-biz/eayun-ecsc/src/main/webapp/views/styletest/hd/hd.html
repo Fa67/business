@@ -1,0 +1,105 @@
+<div class="second-menu-page">
+  <div class="second-menu">
+    <expander class="second-menu-target" data-target="#second-menu" data-expander-show="true">
+      标签类别<span class="icon toggle"></span>
+    </expander>
+
+    <div class="second-menu-group" id="second-menu">
+      <div class="second-menu-item active">用友OA</div>
+      <div class="second-menu-item">用友HCM</div>
+      <div class="second-menu-item">招标网</div>
+    </div>
+  </div>
+  <div class="second-menu-right">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <!-- 导航页签 -->
+        <tabs class="nav-tabs-online">
+          <tab class="active">云硬盘列表</tab>
+          <tab>云硬盘备份</tab>
+        </tabs>
+        <!-- Tab panes -->
+        <!-- Form表单 -->
+        <form class="form-inline">
+          <div class="form-group">
+            <label class="control-label">创建时间：</label>
+            <date-time-picker data-init="" data-ng-model="minDate" max-date="maxDate"></date-time-picker>
+            <label class="control-label text-center">--</label>
+            <date-time-picker data-init="[0,1]" data-ng-model="maxDate" min-date="minDate"></date-time-picker>
+          </div>
+
+          <button type="button" class="btn btn-primary btn-md" data-ng-click="open()"><span class="glyphicon glyphicon-plus"
+                                                                                     aria-hidden="true"></span>
+            创建云硬盘
+          </button>
+          <button type="button" class="btn btn-primary btn-md" data-ng-click="getChecked()">
+            getChecked
+          </button>
+          <button type="button" class="btn btn-primary btn-md" data-ng-click="selectRules()">
+            管理规则
+          </button>
+          <button type="button" class="btn btn-primary btn-md" data-ng-click="tooltip()">
+            工具提示
+          </button>
+
+          <button class="btn btn-default" ng-click="toastRun()">toastInfo</button>
+          <button class="btn btn-default" ng-click="toastSuccess()">toastSuccess</button>
+          <button class="btn btn-default" ng-click="toastError()">toastError</button>
+        </form>
+
+        <!-- 表格 -->
+        <eayun-table data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams"
+                     data-result="myTable.result">
+          <table class="table table-eayun">
+            <thead>
+            <tr>
+              <th><input type="checkbox" data-ng-model="myTable.isAllChecked" data-ng-click="checkAll()"></th>
+              <th>名称</th>
+              <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="filter.system">
+                  <eayun-option value="" text="系统（全部）" selected></eayun-option>
+                  <eayun-option value="'windows8.1'" text="windows8.1"></eayun-option>
+                  <eayun-option value="'Linux'" text="Linux"></eayun-option>
+                </eayun-select>
+              </th>
+              <th>
+                <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="filter.cpu">
+                  <eayun-option value="" text="CPU（全部）" selected></eayun-option>
+                  <eayun-option value="2" text="2核"></eayun-option>
+                  <eayun-option value="4" text="4核"></eayun-option>
+                </eayun-select>
+              </th>
+              <th>内存</th>
+              <th>数据盘</th>
+              <th>所在子网</th>
+              <th>内外IP</th>
+              <!--<th>公网IP</th>-->
+              <!--<th>创建时间</th>-->
+              <!--<th>操作</th>-->
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr data-ng-repeat="vm in myTable.result" data-ng-show="vm.show">
+              <td><input type="checkbox" ng-model="vm.isChecked"></td>
+              <td>{{vm.name}}</td>
+              <td>{{vm.system}}</td>
+              <td>{{vm.cpu}}核</td>
+              <td>{{vm.memery}}MB</td>
+              <td>{{vm.hd}}GB</td>
+              <td>{{vm.subnet}}</td>
+              <td>{{vm.privateIp}}</td>
+              <!--<td>{{vm.publicIp}}</td>-->
+              <!--<td>{{vm.creatTime | date:"yyyy-MM-dd hh:mm:ss"}}</td>-->
+              <!--<td>-->
+              <!--<button class="btn btn-default btn-xs">管理</button>-->
+              <!--</td>-->
+            </tr>
+            </tbody>
+          </table>
+          <eayun-table-page></eayun-table-page>
+        </eayun-table>
+      </div>
+    </div>
+  </div>
+</div>

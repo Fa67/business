@@ -1,0 +1,171 @@
+<!-- 导航条 -->
+<div class="header">
+  <div class="navbar navbar-default navbar-fixed-top navbar-eayun" role="navigation" data-ng-controller="NavbarCtrl">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target="#js-navbar-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand">
+              <img class="logo" src="images/logo5.png">
+              <span class="ey-font-size-super">|</span>
+              <span class="ey-font-size-bigger ey-font-bold">管理控制台</span>
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="js-navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dividing"><a></a></li>
+        <li class="pointer" ng-mouseenter="hintShow=true" ng-mouseleave="hintShow=false">
+        	<a>
+                <span class="eayunfont ef-workorder ey-text-tip"
+                      hint="views/work/tooltip.html"
+                      hint-show="hintShow"
+                      tooltip-class="tooltip-work"
+                      tooltip-placement="bottom"></span>
+        		<span>工单</span>
+        		<div id="reddot" data-ng-show="unHandleWorkCount!=null"></div>
+        		<!-- <span class="badge">{{unHandleWorkCount}}</span> -->
+        	</a>
+        </li>
+        <li class="dividing"><a></a></li>
+        <li>
+        	<a style="cursor:pointer" data-ng-click="toUnMsgList()"><!-- ui-sref="app.monitor.monitorbar.alarm.list" -->
+                <span class="eayunfont ef-ring ey-text-tip"></span>
+                <span>报警</span>
+	        	<div id="alarmdot"></div>
+        	</a>
+        </li>
+        <li class="pointer" ng-mouseenter="hintMsgShow=true" ng-mouseleave="hintMsgShow=false">
+        	<a style="cursor:pointer" data-ng-if="unreadList.length!=0" ng-mouseover="showMessage();">
+                <span class="eayunfont ef-mail ey-text-tip"
+                      hint="views/message/tooltip.html"
+                      hint-show="hintMsgShow"
+                      tooltip-class="tooltip-work"
+                      tooltip-placement="bottom"></span>
+        		<span>消息</span>
+        		<div id="reddot" class="hide" data-ng-class="unreadList.length>0 ? 'show' : 'hide'"></div>
+        		<!-- <span class="badge">{{unreadCount}}</span> -->
+       		</a>
+       		<a style="cursor:pointer" data-ng-if="unreadList==0" ui-sref="app.message">
+       			<span class="eayunfont ef-mail ey-text-tip"></span><span>消息</span>
+       		</a>
+        </li>
+        <!-- <div class="popover bottom" id="message_list" ng-mouseleave="hidden();">
+         	<div class="arrow"></div>
+         	<div class="popover-content">
+       			<p data-ng-repeat="unread in unreadList">
+       				<a ng-click="openMsgDetail(unread)" style="cursor:pointer">{{unread.newsTitle}}<br/></a>
+     			</p>
+       		</div>
+         	<p class="text-right popover-title"><a ui-sref="app.message">查看全部&nbsp;></a></p>
+         </div> -->
+        <li class="dropdown" title={{user.userName}}>
+          <a class="dropdown-toggle text-center" data-toggle="dropdown" role="button">
+            <span class="eayunfont ef-user ey-color-default"></span>
+            <span class="user-name ey-ellipsis">{{user.userName}}</span>
+          	<span class="eayunfont ef-menu-down" style="margin:0 0 4px 10px;"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li style="border-top:1px solid #dcdcdc;"><a  role="button" data-ng-click="updatePassword(user.userName)">修改密码</a></li>
+            <li><a  role="button" data-ng-click="logout()">退出</a></li>
+          </ul>
+        </li>
+      </ul>
+      <p class="navbar-text navbar-right date">{{today?today:""| date:"yyyy-MM-dd HH:mm:ss"}}</p>
+    </div>
+  </div>
+</div>
+
+<!-- 左侧导航菜单 -->
+<div class="eayun-left-menu">
+  <div class="eayun-left-menu-title"  ui-sref-active="active" data-ui-sref="app.overview">
+    <span class="eayunfont ef-overview"></span>总览
+  </div>
+
+
+  <expander class="expander" data-target="#accordion-element-server" data-expander-show="true">
+    <span class="eayunfont ey-font-size-big"></span>云服务
+  </expander>
+
+  <div class="eayun-left-menu-inner" id="accordion-element-server">
+
+    <div role="presentation" ui-sref-active="active" data-ui-sref="app.cloud" data-ng-show = "modulePower.isCloudView || modulePower.isDiskView || modulePower.isImageView">
+      <span class="eayunfont ef-cloudhost"></span><span>云主机</span>
+    </div>
+    <div role="presentation" ui-sref-active="active" data-ui-sref="app.rds" data-ng-show = "true">
+      <span class="eayunfont ef-data"></span><span>云数据库</span>
+    </div>
+    <div role="presentation" ui-sref-active="active" data-ui-sref="app.net">
+      <span class="eayunfont ef-net"></span><span>网络</span>
+    </div>
+    <div role="presentation" ui-sref-active="active" data-ui-sref="app.safety" data-ng-show="modulePower.isFireWallView||modulePower.isSeGroup">
+      <span class="eayunfont ef-safe-a"></span><span>安全</span>
+    </div>
+    <div role="presentation" ui-sref-active="active" data-ui-sref="app.monitor">
+      <span class="eayunfont ef-monitor-a"></span><span>云监控</span>
+    </div>
+    <div role="presentation" ui-sref-active="active" data-ui-sref="app.obs">
+      <span class="eayunfont ef-obs"></span><span style="margin-left:1px;">对象存储</span>
+    </div>
+  </div>
+
+    <expander class="expander" data-target="#accordion-element-management" data-expander-show="true"
+    	data-ng-show = "modulePower.isCount || modulePower.isRecycle || modulePower.isAPIView || modulePower.isTagView || modulePower.isLogView">
+        <span class="eayunfont ey-font-size-big"></span>管理
+    </expander>
+
+    <div class="eayun-left-menu-inner" id="accordion-element-management">
+        <div role="presentation" ui-sref-active="active" data-ui-sref="app.count" data-ng-show = "modulePower.isCount">
+            <span class="eayunfont ef-monitor"></span><span>资源统计</span>
+        </div>
+        <div role="presentation" ui-sref-active="active" data-ui-sref="app.recycle" data-ng-show = "modulePower.isRecycle">
+            <span class="eayunfont ef-recovery"></span><span>回收站</span>
+        </div>
+        <div role="presentation" ui-sref-active="active" data-ui-sref="app.accesskey" data-ng-show = "modulePower.isAPIView">
+            <span class="eayunfont ef-keysmng "></span><span style="margin-left:1px;">密钥管理</span>
+        </div>
+        <div role="presentation" ui-sref-active="active" data-ui-sref="app.business" data-ng-show = "modulePower.isTagView">
+            <span class="eayunfont ef-tag "></span><span style="margin-left:1px;">标签管理</span>
+        </div>
+        <div role="presentation" ui-sref-active="active" data-ui-sref="app.log" data-ng-show = "modulePower.isLogView">
+            <span class="eayunfont ef-rizhi"></span><span>操作日志</span>
+        </div>
+    </div>
+
+  <expander class="expander" data-target="#accordion-element-user" data-expander-show="true">
+    <span class="eayunfont ey-font-size-big"></span>用户中心
+  </expander>
+
+  <div class="eayun-left-menu-inner" id="accordion-element-user">
+      <div role="presentation" ui-sref-active="active" data-ui-sref="app.auth">
+          <span class="eayunfont ef-user"></span>基本信息
+      </div>
+      <div role="presentation" ui-sref-active="active" data-ui-sref="app.role" data-ng-show = "modulePower.isRoleMng">
+          <span class="eayunfont ef-forbid"></span><span>角色权限</span>
+      </div>
+      <div role="presentation" ui-sref-active="active" data-ui-sref="app.costcenter" data-ng-show="modulePower.isAccountView&&modulePower.isReportView">
+        <span class="eayunfont ef-cost"></span><span>费用中心</span>
+      </div>
+      <div role="presentation" ui-sref-active="active" data-ui-sref="app.invoice" data-ng-show = "modulePower.isInvoiceView">
+        <span class="eayunfont ef-invoice"></span><span>发票管理</span>
+      </div>
+      <div role="presentation" ui-sref-active="active" data-ui-sref="app.order" data-ng-show="modulePower.isOrderView">
+        <span class="eayunfont ef-order"></span><span>订单管理</span>
+      </div>
+      <div role="presentation" ui-sref-active="active" data-ui-sref="app.work" data-ng-show = "modulePower.isWorkView">
+          <span class="eayunfont ef-workorder"></span><span>工单管理</span>
+      </div>
+      <div role="presentation" ui-sref-active="active" data-ui-sref="app.message" data-ng-show = "modulePower.isMesgView">
+          <span class="eayunfont ef-mail"></span><span>消息中心</span>
+      </div>
+	  <div role="presentation" ui-sref-active="active" data-ui-sref="app.record" data-ng-show = "modulePower.isMesgView">
+          <span class="eayunfont ef-icp"></span><span>备案中心</span>
+      </div>
+  </div>
+</div>
+<!-- 右侧页面展示区 -->
+<div class="app-view" data-ui-view=""></div>

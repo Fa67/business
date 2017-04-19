@@ -1,0 +1,35 @@
+<div class="modal-header">
+    <span class="modal-title">开启自动备份</span>
+    <img data-ng-click="cancel()" data-ng-style="{'cursor':(upgrade.btnWait ? 'not-allowed' : 'pointer')}" src="images/close.png">
+</div>
+<div class="modal-body" style="width: 600px;margin-bottom: 60px;">
+    <form class="form-horizontal" name="backupDB" novalidate>
+        <div  class="ey-content-notice" style="margin-left: 20px; margin-right:20px; margin-bottom: 20px;">
+            <ul style="margin-top: 10px;">
+                <li>易云免费为您提供云数据库自动备份功能，如果选择开启，备份策略即时生效，每天例行为您创建一个备份，如果此实例的自动备份数量已经达到了{{abe.maxAutoBackupCount}}个，最早期的自动备份会被默认删除。</li>
+                <li>如果您想扩大自动备份个数或者修改自动备份时间，可以提交工单联系我们。</li>
+            </ul>
+        </div>
+        <div style="float: right;margin-right: 30px;" class="ey-form-checkbox">
+            <input id="chk_enabled" type="checkbox"
+                   data-ng-model ="abe.isChecked">
+            <label class="ey-text-tip" for="chk_enabled" >开启</label>
+        </div>
+    </form>
+</div>
+<div class="ey-modal-footer ey-btn-group" >
+    <div class="ey-btn-group">
+        <button type="button"
+                class="btn btn-primary btn-modal"
+                data-ng-click="commit()"
+                data-ng-disabled="abe.btnWait || !abe.isChecked">
+            确 定
+        </button>
+        <button type="button"
+                class="btn btn-default btn-modal"
+                data-ng-click="cancel()"
+                data-ng-disabled="abe.btnWait">
+            取 消
+        </button>
+    </div>
+</div>

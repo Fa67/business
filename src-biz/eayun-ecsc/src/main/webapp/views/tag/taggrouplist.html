@@ -1,0 +1,41 @@
+<div class="ey-panel">
+		<h4>标签类别列表</h4>
+		<div class = "ey-search-bar ey-search-bar-white">
+			<button class="ey-btn ey-btn-primary ey-btn-sm"
+				data-ng-click="createTagGroup()" data-ng-show = "modulePower.isTagMng">
+				<span class="eayunfont ef-plus" aria-hidden="true"></span>
+				<span>创建标签类别</span>
+			</button>
+		</div>
+		<eayun-table data-api="tagGroupTable.api" data-ajax-source="tagGroupTable.source" data-param="tagGroupTable.getParams" data-result="tagGroupTable.result">
+		<table class="ey-table">
+			<thead>
+				<tr>
+					<th>类别简称</th>
+					<th>启用</th>
+					<th>唯一值</th>
+					<th>标签数量</th>
+					<th>资源数量</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody><tr data-ng-repeat="model in tagGroupTable.result">
+					<td class="click-td" data-ui-sref="app.business.tag.tagDetail({tagGroupId:model.id})" >{{model.abbreviation}}</td>
+					<td>{{model.tgrpEnabled}}</td>
+					<td>{{model.tgrpUnique}}</td>
+					<td>{{model.tgrpTagNum}}</td>
+					<td>{{model.tgrpResNum}}</td>
+					<td>
+						<div class="ey-btn-group">
+							<button class="ey-btn"
+								data-ng-click="editTagGroup(model.id)" data-ng-show = "modulePower.isTagMng">编辑</button>
+							<button class="ey-btn"
+								data-ng-click="deleteTagGroup(model.abbreviation, model.id,model.cusId)"
+								data-ng-disabled="model.tgrpTagNum>0" data-ng-show = "modulePower.isTagMng"><span class="ey-text-error">删除</span></button>
+						</div>
+					</td>
+				</tr></tbody>
+		</table>
+		</eayun-table>
+
+</div>

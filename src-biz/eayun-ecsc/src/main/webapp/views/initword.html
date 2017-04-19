@@ -1,0 +1,65 @@
+<!-- 导航条 -->
+<div class="header">
+  <div class="navbar navbar-default navbar-fixed-top navbar-eayun" role="navigation" data-ng-controller="NavbarCtrl">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target="#js-navbar-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand">
+        <img class="logo" src="images/logo4.png">
+      </a>
+    </div>
+    <div class="collapse navbar-collapse" id="js-navbar-collapse">
+      <p class="navbar-text navbar-right date">{{today | date:"yyyy-MM-dd HH:mm:ss"}}</p>
+    </div>
+  </div>
+</div>
+<div style="background-color: #FFFFFF;position: fixed;top: 0;bottom: 0;left: 0;right: 0;overflow: auto;">
+<div class="panel-body" style = "margin:50px auto;width:660px;">
+<h4 style = "text-align:center;">请修改您的初始密码</h4>
+<form class="form-horizontal" name = "initword">
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 control-label">初始密码：</label>
+    <div class="col-sm-7" data-ng-class="(initword.oldword.$dirty && initword.oldword.$invalid)||(!checkcommit) ? 'has-error' : ''">
+    <input type="text" data-ng-model = "pmodel.userName" data-ng-show = "false">
+    <input type="password" style="display:none" data-ng-show = "false">
+      <input type="password" name = "oldword" class="form-control" data-ng-model = "pmodel.oldPassword" required  data-ng-change="checkIsOld()">
+      <label class="control-label" ng-show="initword.oldword.$dirty && initword.oldword.$error.required">请输入初始密码</label>
+      <label class="control-label" ng-show="!checkcommit">初始密码不正确，请重新输入</label>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-3 control-label">请输入新密码：</label>
+
+    <div class="col-sm-7" data-ng-class="(initword.newword.$dirty && (initword.newword.$invalid || NoSame)) ? 'has-error' : ''">
+      <input type="password" name = "newword" class="form-control" data-ng-model="pmodel.newPassword"  required 
+      placeholder="" data-ng-pattern = "/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/"  data-ng-change="checkNoSame()" maxlength="20">
+      <p data-ng-hide="initword.newword.$dirty && (initword.newword.$invalid || NoSame)" class="help-block">密码长度为6-20位，且必须包含英文字母与数字</p>
+      <label class="control-label" ng-show="initword.newword.$dirty && initword.newword.$error.required">请输入新密码</label>
+      <label class="control-label" ng-show="initword.newword.$dirty && initword.newword.$error.pattern">密码长度为6-20位，且必须包含英文字母与数字</label>
+      <label class="control-label" ng-show="initword.newword.$dirty && NoSame && initword.newword.$valid">新密码不能与原密码一致</label>
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <label class="col-sm-3 control-label">请再次输入新密码：</label>
+
+    <div class="col-sm-7" data-ng-class="(initword.second.$dirty && (initword.second.$invalid || !IsSame)) ? 'has-error' : ''">
+      <input type="password" name = "second" class="form-control" data-ng-model="pmodel.secondPassword"  required 
+      data-ng-pattern = "/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/" data-ng-change="checkIsSame()" maxlength="20">
+      <label class="control-label" ng-show="initword.second.$dirty && initword.second.$error.required">请输入新密码</label>
+      <label class="control-label" ng-show="initword.second.$dirty && initword.second.$error.pattern">密码长度为6-20位，且必须包含英文字母与数字</label>
+      <label class="control-label" ng-show="initword.second.$dirty && (!IsSame) && initword.second.$valid">两次输入的密码不一致</label>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary btn-modal" data-ng-click="commit()"  data-ng-disabled="!initword.$valid || (!IsSame)||NoSame">确定</button>
+    <a class="btn btn-default btn-modal" data-ng-click="cancel()" style="margin-left: 15px;">取  消</a>
+  </div>
+</form>
+</div>
+</div>

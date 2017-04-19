@@ -1,0 +1,47 @@
+<div class="modal-header" style="width: 600px;">
+    <span class="modal-title">创建自定义镜像</span> 
+    <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body">
+	<form class="ey-form " name="myForm" novalidate>
+		<fieldset>
+		  	<div class ="ey-form-group">
+		  		<label class = "ey-form-label">云主机名称：</label>
+		  		<span>{{model.vmName}}</span>
+		  	</div>
+		  	
+		  	<div class = "ey-form-group">
+		  		<label class ="ey-form-label">系统：</label>
+		  		<span>{{model.sysType}}</span>
+		  	</div>
+		  	
+		  	<div class="ey-form-group" data-ng-class="(myForm.name.$dirty && (myForm.name.$invalid || checkName)) ? 'ey-has-error' : ''">
+		  		 <label class="ey-form-label ey-required">镜像名称：</label>
+		  		 <div class="ey-form-input-group ey-form-w6">
+			  		 <input type="text" name="name" data-ng-model="model.imageName" placeholder="请输入镜像名称" maxlength="20"
+			      		data-ng-change="checkImageNameExist()"  ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/' required >
+		  		 </div>
+		  		 <div class="dialog-clear-left">
+			      	<span ng-if="myForm.name.$dirty && myForm.name.$valid&&checkName">镜像名称已存在</span>
+			      	<span ng-if="myForm.name.$dirty && myForm.name.$invalid">请输入1-20位字符,支持数字、中英文、下划线、空格</span>
+		  		 </div>
+		  	</div>
+		  	
+		  	<div class="ey-form-group">
+		  		<label class="ey-form-label">描述：</label>
+		  		<textarea class="ey-form-textarea ey-form-w6" rows="3" name="imageDesc" placeholder="请输入描述" data-ng-model="model.imageDesc" maxlength="200"></textarea>
+		  	</div>
+		</fieldset>
+		
+	</form>
+</div>
+
+<!-- 按钮区域 -->
+<div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<button type="button" class="ey-btn ey-btn-primary"
+			ng-click="commit()" ng-disabled="!myForm.$valid || checkName || checkToken">确定</button>
+		<button type="button" class="ey-btn ey-btn-default"
+			ng-click="cancel()">取 消</button>
+	</div>
+</div>

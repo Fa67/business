@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <span class="modal-title">挂载云硬盘</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 550px;">
+<form class="ey-form ey-old-dialog-font" name="myForm" novalidate>
+  <fieldset>
+  	<div class="ey-form-group">
+		<label class="ey-form-label ey-required">云主机名称：</label>
+		<eayun-select class="ey-form-w6" placeholder="请选择云主机" name="name" data-ng-model="vm"  required>
+			<eayun-option data-ng-repeat="vm in vms" value="vm" text="{{vm.vmName}}"></eayun-option>
+		</eayun-select>
+		 <span class="ey-text-tip ey-has-error" data-ng-show="myForm.name.$dirty && myForm.name.$error.required">云主机不能为空</span>
+	</div>
+  </fieldset>
+</form>
+</div>
+<div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<button type="button" class="ey-btn ey-btn-primary" data-ng-disabled="!myForm.$valid" data-ng-click="commit()">确定</button>
+		<button type="button" class="ey-btn ey-btn-default" data-ng-click="cancel()">取 消</button>
+	</div>
+</div>

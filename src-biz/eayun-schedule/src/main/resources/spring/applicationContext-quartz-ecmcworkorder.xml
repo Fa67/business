@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="ecmcSmsTimmerCountJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.eayun.ecmcwork.job.EcmcWorkorderJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataAsMap">
+			<map>
+				<!-- <entry key="smsService" value-ref="smsService"></entry> -->
+			</map>
+		</property>
+	</bean>
+
+	<bean id="ecmcSmsTimmerTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="ecmcSmsTimmerCountJob"></property>
+		<property name="cronExpression" value="0/5 * * * * ?"></property>
+	</bean>
+
+	<!-- 定时任务调度器 -->
+	<bean class="com.eayun.common.job.EayunSchedulerFactoryBean" id="ecmcWorkOrderSchedulerFactory">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+		<property name="configLocation" value="classpath:quartz.properties" />
+		<property name="triggers">
+			<list>
+				<ref bean="ecmcSmsTimmerTrigger" />
+			</list>
+		</property>
+	</bean>
+</beans>

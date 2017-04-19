@@ -1,0 +1,37 @@
+<div class="delete-confirm-container">
+    <div class="modal-header">
+        <span class="modal-title"> </span> <img data-ng-click="delSub.cancel()"
+                                                data-ng-style="{'cursor':(delSub.visible ? 'not-allowed' : 'pointer')}"
+                                                src="images/close.png">
+    </div>
+
+    <form class="ey-form delete-confirm-form" style="text-align: center;" name="myForm" novalidate="novalidate">
+        <div class="vm-delete-label">
+            <label>确定要删除子网<span data-ng-bind="delSub.subnet.subnetName"></span>?</label>
+        </div>
+        <!-- 按钮区域 -->
+        <div class="modal-footer delete-page-footer">
+            <button type="button"
+                    class="btn btn-primary btn-modal"
+                    data-ng-click="delSub.commit()"
+                    data-ng-hide="delSub.visible"
+                    data-ng-disabled="checkBtn">
+                确 定
+            </button>
+            <button type="button"
+                    class="ey-btn btn-modal"
+                    style="min-width: 100px;min-height: 34px;"
+                    data-ng-show="delSub.visible"
+                    disabled>
+                <span class="eayunfont ef-load ey-font-huge" style="margin-right: 0px;color: #999999;"></span>
+            </button>
+            <button type="button"
+                    class="btn btn-default btn-modal"
+                    data-ng-click="delSub.cancel()"
+                    data-ng-disabled="delSub.visible"
+                    style="margin-left: 15px;">
+                取 消
+            </button>
+        </div>
+    </form>
+</div>

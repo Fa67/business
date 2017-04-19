@@ -1,0 +1,47 @@
+<div class="ey-search-bar ey-search-bar-white">
+    <button class="ey-btn ey-btn-primary ey-btn-sm" data-ng-click="config.createTagGroup()" ng-show="config.canCreate">
+        <span class="eayunfont ef-plus"></span>
+        <span>创建配置文件</span>
+    </button>
+    <eayun-search class="eayun-table-search" data-ng-model="config.fileNameKeyword" options="config.options"></eayun-search>
+</div>
+<eayun-table data-api="config.table.api"
+             data-ajax-source="config.table.source"
+             data-param="config.table.getParams"
+             data-result="config.table.result">
+    <table class="ey-table-muliti">
+        <thead>
+            <tr>
+                <th>名称</th>
+                <th>
+                    <eayun-table-filter list-data="config.fileCategoryList" text-field="nodeName"
+                                        item-clicked="config.selectFileCategory($item, $event)">
+                    </eayun-table-filter>
+                </th>
+                <th>
+                    <eayun-table-filter list-data="config.dbVersionList" text-field="nodeName"
+                                        item-clicked="config.selectDbVersionCategory($item, $event)">
+                    </eayun-table-filter>
+                </th>
+                <th>使用该配置实例</th>
+                <th>创建时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody><tr data-ng-repeat="file in config.table.result">
+                <td ng-bind="file.configName"></td>
+                <td ng-bind="file.configType == '1'?'默认配置文件':'客户配置文件'"></td>
+                <td ng-bind="file.configVersionname|reverseName"></td>
+                <td ng-bind-html="file.applyInstancesStringFormat|showInfoSp" title={{file.applyInstancesStringFormat}}></td>
+                <td ng-bind="file.configDate|date:'yyyy-MM-dd HH:mm:ss'"></td>
+                <td>
+                    <div class="ey-btn-group">
+                        <button class="ey-btn" ng-show="(file.configType == '2')" data-ng-click="config.showDetailGroup(file)">查看</button>
+                        <button class="ey-btn" ng-show="(file.configType == '1')" data-ng-click="config.showDetailDefault(file)">查看</button>
+                        <button class="ey-btn" ng-show="(file.configType == '2')&&config.canDelete" data-ng-click="config.deleteTagGroup(file.configId,file.configName)">删除</button>
+                    </div>
+                </td>
+            </tr></tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

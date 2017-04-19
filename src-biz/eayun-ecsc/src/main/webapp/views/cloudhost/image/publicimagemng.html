@@ -1,0 +1,34 @@
+<div class = "ey-search-bar ey-search-bar-white">
+	<eayun-search-text value="imageName" search="search()" placeholder="请输入名称搜索"></eayun-search-text>
+</div>
+<eayun-table data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams"
+            data-result="myTable.result">
+  <table class="ey-table">
+    <thead>
+    <tr>
+      <th>镜像名称</th>
+      <th>镜像ID</th>
+      <th class="vm-table-td-btn">
+      	<eayun-table-filter list-data="statusList" text-field="nodeName" item-clicked="selectImageStatus($item, $event)"></eayun-table-filter>
+      </th>
+      <th class="vm-table-td-btn" style="width:180px;">
+      	<eayun-table-filter list-data="osList" text-field="nodeName" item-clicked="selectImageOsType($item, $event)" init-change="true"></eayun-table-filter>
+      </th>
+      <th>最低配置</th>
+      <th>创建时间</th>
+    </tr>
+    </thead>
+    <tbody><tr data-ng-repeat="image in myTable.result">
+      <td class="click-td" data-ng-click="detail(image)" title="{{image.imageName}}">{{image.imageName}}</td>
+      <td>{{image.imageId}}</td>
+      <td>
+      	<span class ="eayunfont ef-square" data-ng-class="imageStatusClass!=''?imageStatusClass:''" ng-init="imageStatusClass = getImageStatus(image)"></span>
+      	  {{image.statusForDis}}
+      </td>
+      <td title="{{image.sysTypeName!='null'?image.sysTypeName:''}}">{{image.sysTypeName!='null'?image.sysTypeName:""}}</td>
+      <td>{{image.minCpu}}核/{{image.minRam>1?image.minRam:1}}GB/{{image.minDisk}}GB</td>
+      <td>{{image.createTimeForDis}}</td>
+    </tr></tbody>
+  </table>
+  <eayun-table-page></eayun-table-page>
+</eayun-table>

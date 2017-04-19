@@ -1,0 +1,266 @@
+<div class="clearfix">
+<div>
+<!-- <h4>云数据库详情</h4> -->
+<!-- Form表单 -->
+<form class="form-inline" novalidate>
+	  <button  class="ey-btn ey-btn-primary" 
+	  		   data-ng-if="modulePower.instanceRestart"
+	  		   data-ng-disabled="model.chargeState != '0' || (model.rdsStatus != 'ACTIVE' && model.rdsStatus != 'RESTART_REQUIRED')"
+	  		   data-ng-click="restart(model)" >
+	     <span class="eayunfont ef-loading"></span>
+	     <span>重启</span>
+	  </button>
+	  <button  class="ey-btn ey-btn-primary detail-btn-left" 
+	  		   data-ng-if="model.isMaster == '1' && modulePower.instanceCreateReplica"
+	  		   data-ng-disabled="model.chargeState != '0' || model.rdsStatus != 'ACTIVE'"
+	  		   data-ng-click="buySlaveInstance(model)" >
+   		  <span class="eayunfont ef-instance-slave"></span>
+	      <span>创建从库</span>
+	  </button>
+	  <button  class="ey-btn ey-btn-primary detail-btn-left" 
+	  		   data-ng-if="model.isMaster == '0' && modulePower.instanceDetachReplica"
+	  		   data-ng-disabled="model.chargeState != '0' || model.rdsStatus != 'ACTIVE'"
+	  		   data-ng-click="detachReplica(model)" >
+   		  <span class = "eayunfont ef-instance-upgrade"></span>
+   		  <span>升为主库</span>
+	  </button>
+	  <button  class="ey-btn ey-btn-primary detail-btn-left" 
+	  		   data-ng-if = "modulePower.instanceMonitor"
+	  		   data-ng-disabled="model.chargeState != '0'"
+	  		   data-ng-click="showRdsMonitor(model)">
+   		 <span class = "eayunfont ef-monitor-a"></span>
+	     <span>查看监控</span>
+	  </button>
+		<div class="btn-group detail-btn-left" role="group" style="width: 120px;" data-ng-if="model.rdsStatus != 'RESTART_REQUIRED'">
+	      <button class="btn btn-default btn-sm" data-toggle="dropdown" style="width: 88px;"> 更多操作</button>
+	      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+	        <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+	      </button>
+	      <ul class="dropdown-menu vm-dropmeau ey-instance-more ey-font-size" style="left:0px;">
+	        <li data-ng-if="(model.rdsStatus=='ACTIVE' || model.rdsStatus == 'RESTART_REQUIRED') && modulePower.instanceResize && model.chargeState == '0'">
+	        	<a href="" 
+	        	   data-ng-click="resizeRdsInstance(model)" 
+	        	   style="padding: 5px 10px;">
+		        	<span class="eayunfont ef-scale ey-font-size-bigger"></span>升降规格
+	        	</a>
+	        </li>
+	        <li data-ng-if="modulePower.rdsLogDownload && model.chargeState == '0'">
+	        	<a href="" data-ng-click="rdsLog()" style="padding: 5px 10px;">
+		        	<span class="eayunfont ef-download ey-font-size-bigger"></span>下载日志
+	        	</a>
+	        </li>
+	       <!--  <li>
+	        	<a  href="" data-ng-click="tagResource('rds',model.rdsId)" style="padding: 5px 10px;">
+		        	<span class="eayunfont ef-tags ey-font-size-bigger"></span>标签
+	        	</a>
+	        </li> -->
+	        <li data-ng-if="model.rdsStatus=='ACTIVE' && model.chargeState == '0' && modulePower.instanceModifyConfiguration">
+	        	<a href="" 
+	        	   data-ng-click="modifyConfiguration(model)" 
+	        	   style="padding: 5px 10px;">
+		        	<span class="eayunfont ef-config ey-font-size-bigger"></span>更改配置文件
+	        	</a>
+	        </li>
+	        <li>
+	        	<a href="" data-ng-click="showBackups(model.rdsId, '1')" style="padding: 5px 10px;" data-ng-show = "modulePower.rdsBackupViewAuto && model.chargeState == '0' && model.rdsStatus=='ACTIVE'">
+		        	<span class="eayunfont ef-auto-backup ey-font-size-bigger"></span>自动备份
+	        	</a>
+	        </li>
+	        
+	        <li>
+	        	<a href="" data-ng-click="showBackups(model.rdsId, '0')" style="padding: 5px 10px;" data-ng-show = "modulePower.rdsBackupViewManual && model.chargeState == '0' && model.rdsStatus=='ACTIVE'">
+			        <span class="eayunfont ef-backup ey-font-size-bigger"></span>手动备份
+		        </a>
+	        </li>
+	        <li>
+	        	<a href="" 
+	        	   data-ng-if="((model.rdsStatus=='ACTIVE' || model.rdsStatus=='ERROR' || model.rdsStatus=='BLOCKED' || model.rdsStatus=='FAILED')
+	        	   && !(model.payType == '1' && model.chargeState == '0')
+	        	   && modulePower.instanceDelete) || (model.rdsStatus == 'BACKUP' && model.chargeState != '0')"
+	        	   data-ng-click="deleteRdsInstance(model)" 
+	        	   style="padding: 5px 10px;">
+	        		<span class="eayunfont ef-delete ey-font-size-bigger"></span>
+		        	删除
+	        	</a>
+	        </li>
+	      </ul>
+	    </div>
+</form>
+
+<eayun-auto-refresh interval="5000" refresh="refresh"></eayun-auto-refresh>
+<!-- 数据库实例实例详情 -->
+<div class="details clearfix">
+  
+    <div class="col-lg-6">
+    <div class="details-group">
+        <div class="details-name"
+			hint="views/rds/instance/detail/editrdsname.html"
+       		hint-show="hintNameShow"
+       		tooltip-class="tooltip-edit"
+       		tooltip-placement="right">实例名称：</div>
+        <div class="details-value">
+          <span data-ng-class="rdsNameEditable?'hide':'show'">{{model.rdsName}}</span>
+        </div>
+	      <span class="badge"
+                data-ng-click="edit('rdsName')"
+                data-ng-if="modulePower.instanceEdit && model.chargeState == '0' && model.rdsStatus == 'ACTIVE'">
+		      <span class="eayunfont ef-pencil">
+		      </span> 
+	      </span>
+      </div>
+      
+       <div class="details-group">
+        <div class="details-name">实例ID：</div>
+        <div class="details-value">{{model.rdsId}}</div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">状态：</div>
+        <div class="details-value">
+        <span class ="eayunfont ef-square" data-ng-class="rdsStatusClass!=''?rdsStatusClass:''"></span>
+        {{model.statusStr}}
+        </div>
+      </div>
+      <div class="details-group" data-ng-if="model.isMaster == '0'">
+        <div class="details-name">所属主库：</div>
+        <div class="details-value">{{model.masterName}}</div>
+      </div>
+      <div class="details-group">
+        <div class="details-name">配置文件：</div>
+        <div class="details-value">{{model.configName}}</div>
+        <button class="eayun-table-search ey-btn-table vm-detail-modsub"
+        		data-ng-if="modulePower.instanceModifyConfiguration"
+        		data-ng-disabled="model.chargeState != '0' || model.rdsStatus != 'ACTIVE'"
+        		data-ng-click="modifyConfiguration(model)">更改
+        </button>
+      </div>
+      <div class="details-group">
+        <div class="details-name">存储空间：</div>
+        <div class="details-value">{{model.volumeTypeName == 'Normal'?'普通型 ':'性能型 '}}| {{model.volumeSize}}GB</div>
+      </div>
+      
+      
+      <div class="details-group">
+        <div class="details-name">所在私有网络：</div>
+        <div class="details-value">{{model.netName}}</div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">所在子网：</div>
+        <div class="details-value">{{model.subnetName}}</div>
+      </div>
+    
+      <div class="details-group">
+        <div class="details-name">创建时间：</div>
+        <div class="details-value">{{model.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</div>
+      </div>
+      
+      <div class="details-group" data-ng-if="model.isMaster == '1'">
+        <div class="details-name">到期时间：</div>
+        <div class="details-value">{{model.payType=='1'?(model.endTime|date:'yyyy-MM-dd HH:mm:ss'):'--'}}</div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">自动备份：</div>
+        <div class="details-value" data-ng-show="!isAutoBackupEnabled">自动备份未开启</div>
+          <button class="eayun-table-search ey-btn-table vm-detail-modsub"
+                  data-ng-show="!isAutoBackupEnabled"
+                  data-ng-click="enabledAutoBackup(model.rdsId)"
+                  data-ng-disabled="model.chargeState != '0' || model.rdsStatus!='ACTIVE'">开启</button>
+          <div class="details-value" data-ng-show="isAutoBackupEnabled">计划时间 {{scheduleTime|date:'HH:mm:ss'}}</div>
+          <button class="eayun-table-search ey-btn-table vm-detail-modsub"
+                  data-ng-show="isAutoBackupEnabled"
+                  data-ng-click="disabledAutoBackup(model.rdsId)"
+                  data-ng-disabled="model.chargeState != '0' || model.rdsStatus!='ACTIVE'">关闭</button>
+      </div>
+    </div>
+    
+    
+   <div class="col-lg-6"> 
+      <div class="details-group">
+        <div class="details-name"
+        	hint="views/rds/instance/detail/editrdsdescription.html"
+       		hint-show="hintDescShow"
+       		tooltip-class="tooltip-edit"
+       		tooltip-placement="right">描述：
+       	</div>
+       	<div class="details-value">
+          <span data-ng-class="rdsDescEditable?'hide':'show'">
+          	{{(model.rdsDescription.length>25?model.rdsDescription.substring(0,25):model.rdsDescription)}}
+          </span>
+       	 </div>
+          <div ng-show="model.rdsDescription.length>30" class="detail-icon ellipsis pointer"
+               ng-mouseenter="openPopBox({value:model.rdsDescription})"
+               ng-mouseleave="closePopBox()"
+               hint="views/cloudhost/volume/volumedescription.html"
+               hint-show="descShow"
+               tooltip-class="tooltip-description"
+               tooltip-placement="bottom"></div>
+	     <span class="badge"
+               data-ng-class="rdsDescEditable?'hide':'show'"
+               data-ng-click="edit('rdsDesc')"
+               data-ng-if="modulePower.instanceEdit && model.chargeState == '0' && model.rdsStatus == 'ACTIVE'">
+		      <span class="eayunfont ef-pencil">
+		      </span> 
+	     </span>
+      </div>
+      
+      
+      <div class="details-group">
+        <div class="details-name">类型：</div>
+        <div class="details-value">{{model.isMaster == '1' ? "主库":"从库"}}</div>
+      </div>
+      <div class="details-group">
+        <div class="details-name"> 版本：</div>
+        <div class="details-value">{{model.type == 'mysql'?'MySQL ':''}}{{model.version}}</div>
+      </div>
+      
+      <div class="details-group" data-ng-if="model.isMaster == '1'">
+        <div class="details-name">已创建从库：</div>
+        <div class="details-value">{{model.slaveCount}}个</div>
+      </div>
+      <div class="details-group" data-ng-if="model.isMaster == '0'">
+        <div class="details-name">主库ID：</div>
+        <div class="details-value">{{model.masterId}}</div>
+      </div>
+      <div class="details-group">
+        <div class="details-name">CPU：</div>
+        <div class="details-value">{{model.cpu}}核</div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">内存：</div>
+        <div class="details-value">{{model.ram/1024}}GB</div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">所属数据中心：</div>
+        <div class="details-value">{{model.dcName}}</div>
+      </div>
+      
+       <div class="details-group">
+        <div class="details-name">内网IP：</div>
+        <div class="details-value">{{model.rdsIp}}</div>
+       </div>
+ 
+      <div class="details-group">
+        <div class="details-name">计费状态：</div>
+        <div class="details-value">{{model.payTypeStr}}</div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">手动备份：</div>
+        <div class="details-value">{{currentManualBackupNumber}} 个</div>
+        <button class="eayun-table-search ey-btn-table vm-detail-modsub"
+                data-ng-click="showBackups(model.rdsId, '0')"
+                data-ng-show = "modulePower.rdsBackupView"
+                data-ng-disabled="model.chargeState != '0' || model.rdsStatus != 'ACTIVE'">查看</button>
+        <button class="eayun-table-search ey-btn-table vm-detail-modsub"
+                data-ng-click="createManualBackup()"
+                data-ng-disabled="model.chargeState != '0' || model.rdsStatus!='ACTIVE'">创建</button>
+      </div>
+      
+    </div>
+</div>
+</div>
+</div>

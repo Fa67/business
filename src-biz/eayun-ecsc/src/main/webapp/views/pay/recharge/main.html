@@ -1,0 +1,71 @@
+<!-- 导航页签 -->
+        <ul class="ey-nav-bread">
+            <li><a ui-sref="{{navList[0].route}}">{{navList[0].name}}</a></li>
+            <li>账户充值</li>
+        </ul>
+        <h4 class="ey-font-hugest">账户充值</h4>
+        <div class="ey-form-payment">
+            <form class="ng-valid" novalidate="novalidate" action="pay/recharge/rechargeBalance.do" name="recharge" method="post" target="_blank">
+              <div>
+                  <div class="ey-pay-panel">
+                      <div class="ey-pay-body">
+                        <p>
+                            <span class="ey-form-label ey-font-size-big">当前余额：</span>
+                            <span ng-if="model.balance!=undefined"  data-ng-class="model.balance >= 0 ? 'ey-color-blue' : 'ey-color-red'">￥</span>
+                            <span ng-if="model.balance!=undefined" data-ng-class="model.balance >= 0 ? 'ey-color-blue' : 'ey-color-red'"
+                             class="ey-font-huge" ng-bind="::model.balance | currency:''"></span>
+                        </p>
+                        <p data-ng-class="recharge.amount.$dirty 
+                                && (recharge.amount.$error.pattern || recharge.amount.$error.required || recharge.amount.$error.ajaxValid) ? 'ey-has-error' : ''">
+                            <span class="ey-form-label ey-font-size-big">充值金额：</span>
+                            <span class="ey-form-input-group ey-has-suffix">
+                                 <input type="text" class="ey-form-input ey-form-w2" 
+                                     name="amount" ng-init="model.amount=''" data-ng-model="model.amount"
+                                     data-ng-class="(recharge.amount.$dirty && recharge.amount.$error.pattern) ? 'has-error' : ''"
+                                     data-ng-pattern="/^((0.0[1-9])|(0.[1-9][0-9]?)|([1-9][0-9]*(.\d{1,2})?))$/" data-ajax-valid="validAmount(value)" maxlength="13" required="required">
+                                <span class="ey-suffix">元</span>
+                            </span>
+                            <span ng-show="recharge.amount.$dirty 
+                                && (recharge.amount.$error.pattern || recharge.amount.$error.required)">
+                                                                                        请输入正确的金额
+                            </span>
+                            <span ng-show="recharge.amount.$dirty 
+                                && recharge.amount.$error.ajaxValid">
+                                                                                         单笔充值金额不能超过￥ 100,000,000
+                            </span>
+                        </p>
+                    </div>
+                    <div class="ey-divider"/>
+                    <div class="ey-pay-body">
+                        <p>选择充值方式：</p>
+                        <table width="100%">
+                            <tbody>
+                                <tr>
+                                    <td width="30px">
+                                       <div class="ey-form-checkbox">
+                                           <input type="checkbox" id="check1" name="payType" ng-init="model.alipay=true" ng-model="model.alipay" required="required" checked="checked" value="1">
+                                           <label for="check1"></label>
+                                        </div>
+                                    </td>
+                                    <td width="30px"><span class="eayunfont ef-alipay ey-font-hugest ey-color-blue"></span></td>
+                                    <td width="150px">支付宝支付</td>
+                                    <td width="30px">
+                                        <span class="ey-text-tip">|</span>
+                                    </td>
+                                    <td>
+                                        <span>支付&nbsp;</span>
+                                        <span class="ey-color-red ey-font-size-big ey-font-bold" 
+                                          ng-bind="recharge.amount.$error.pattern ? '0' : recharge.amount.$viewValue | currency:'￥'"></span>
+                                    </td>
+                                 </tr>
+                              </tbody>
+                            </table>
+                        </div>
+                        <div class="ey-pay-bottom" style="margin-top:10px;">
+                            <button class="ey-btn ey-btn-primary ey-btn-lg" onclick="submit()" ng-click="commit()"
+                              data-ng-disabled="(recharge.$dirty && recharge.$invalid) || recharge.amount=='' || model.amount =='' || alipay==false">立即充值</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>

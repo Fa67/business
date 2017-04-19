@@ -1,0 +1,62 @@
+<!-- Tab panes -->
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active" id="appSafetyFwpTable">
+    <!-- Form表单 -->
+    <form class="form-inline">
+      <button type="button" class="ey-btn ey-btn-primary ey-btn-sm" ng-show="buttonPower.isCreate" style="margin-right:20px;" data-ng-click="addFwPolicy()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        创建防火墙策略
+      </button>
+      
+      <div class="input-group has-feedback ey-search-group">
+	  	<input type="text" class="ey-form-control" placeholder="请输入名称搜索" data-ng-model="fwpName">
+	  	<span class="form-control-feedback pointer ey-search" data-ng-click="queryFwPolicy()"></span>
+	  </div>
+	  
+      <!-- <div class="input-group">
+    <input type="text" class="form-control" ng-model="fwpName" placeholder="请输入策略名称搜索" style="z-index:0;">
+    <span class="input-group-btn">
+        <button class="btn btn-default" data-ng-click="queryFwPolicy()"  type="button" style="z-index:0;"><span class="glyphicon glyphicon-search"></span></button>
+      </span>
+  </div> -->
+    </form>
+    <!-- 表格 -->
+
+    <eayun-table data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams"
+                data-result="myTable.result">
+      <table class="ey-table">
+        <thead>
+        <tr>
+          <th>防火墙策略名称</th>
+          <th>规则</th>
+          <th class="col-sm-3">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="fwp in myTable.result">
+          <td>{{fwp.fwpName}}</td>
+          <td ng-show="fwp.rules.indexOf(',',fwp.rules.indexOf(',')+1)!=-1">
+          	{{fwp.rules.substring(0,fwp.rules.indexOf(',',fwp.rules.indexOf(',')+1))}}
+          	<div class="tag-icon ellipsis pointer"
+				ng-mouseenter="openTableBox({value:fwp.rules,type:'ruleName',index:$index})"	
+				ng-mouseleave="closeTableBox({type:'ruleName',index:$index})"
+				hint="views/directives/ellipsispop.html"
+	       		hint-show="hintRuleShow[$index]"
+	       		tooltip-class="tooltip-tag"
+	       		tooltip-placement="bottom">
+       		</div>
+          </td>
+          <td ng-show="fwp.rules.indexOf(',',fwp.rules.indexOf(',')+1)==-1">{{fwp.rules=='null'||fwp.rules==''?"":fwp.rules}}</td>
+          <td class="col-sm-3" ng-if="buttonPower.isEdit||buttonPower.isEdit||buttonPower.delFireWall">
+  <button  class="ey-btn" ng-show="buttonPower.isEdit" data-ng-click="updateFwPolicy(fwp)">编辑</button>
+  <button  class="ey-btn btn-left" ng-show="buttonPower.isEdit" data-ng-click="toDoFwRule(fwp)">管理规则</button>
+  <button  class="ey-btn btn-left" ng-show="buttonPower.delFireWall" ng-disabled="null!=fwp.fwId&&'null'!=fwp.fwId" data-ng-click="delFwPolicy(fwp)"><span class="ey-text-error">删除</span></button>
+          </td>
+          <td ng-if="!buttonPower.isEdit&&!buttonPower.isEdit&&!buttonPower.delFireWall">----</td>
+        </tr>
+        </tbody>
+      </table>
+      <eayun-table-page></eayun-table-page>
+    </eayun-table>
+  </div>
+  <div role="tabpanel" class="tab-pane" id="appCloudhostHDSnapshot">profile</div>
+</div>

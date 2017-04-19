@@ -1,0 +1,17 @@
+<ul class="ey-nav-bread">
+	<li>{{cucrentName}}</li>
+</ul>
+
+<div class="ey-divider"></div>
+<div class="ey-panel ey-panel-full">
+	<div class="ey-panel-title">
+		<nav class="ey-nav-underline">
+			<a ui-sref-active="active" data-ng-if="vmListPermissions.isHost" data-ui-sref="app.recycle.host">云主机</a>
+			<a ui-sref-active="active" data-ng-if="vmListPermissions.isVolume" data-ui-sref="app.recycle.volume">云硬盘</a> 
+			<a ui-sref-active="active" data-ng-if="vmListPermissions.isSnap" data-ui-sref="app.recycle.snapshot">云硬盘备份</a>
+		</nav>
+	</div>
+	<div class="ey-panel-body">
+		<div data-ui-view=""></div>
+	</div>
+</div>

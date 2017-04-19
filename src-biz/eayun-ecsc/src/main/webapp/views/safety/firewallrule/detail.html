@@ -1,0 +1,102 @@
+<div class="details" style="font-size: 12px;">
+    <form class="row" name="myForm">
+        <div class="col-lg-12">
+
+            <div class="details-group">
+                <div class="details-name">所属数据中心：</div>
+                <div class="details-value">
+                    <span ng-bind="::fwRule.dcName"></span>
+                </div>
+            </div>
+
+            <!-- <div class="details-group">
+                <div class="details-name">所属项目：</div>
+                <div class="details-value">
+                    <span ng-bind="::fwRule.prjName"></span>
+                </div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">客户：</div>
+                <div class="details-value">
+                    <span ng-bind="::fwRule.cusOrg"></span>
+                </div>
+            </div> -->
+            <div class="details-group">
+                <div class="details-name">规则名称：</div>
+                <div class="details-value">
+                    <span ng-bind="::fwRule.fwrName" title="{{fwRule.fwrName}}"></span>
+                </div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">优先级：</div>
+                <div class="details-value">
+                    <span ng-bind="::fwRule.priority"></span>
+                </div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">协议：</div>
+                <div class="details-value">
+                    <span style="text-transform: uppercase;">{{(fwRule.protocol=='any'||fwRule.protocol=='') ? '所有' : fwRule.protocol}}</span>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">源IP：</div>
+                <div class="details-value">
+                    <span ng-bind="::(fwRule.sourceIpaddress=='null' || fwRule.sourceIpaddress=='0.0.0.0/0')?'所有':fwRule.sourceIpaddress"></span>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">源端口：</div>
+                <div class="details-value">
+                    <span ng-bind="::fwRule.protocol=='any'||fwRule.protocol=='icmp'? '--' : fwRule.sourcePort=='null'?'所有':fwRule.sourcePort"></span>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">目的IP：</div>
+                <div class="details-value">
+                    <span ng-bind="::(fwRule.destinationIpaddress=='null' || fwRule.destinationIpaddress=='0.0.0.0/0')?'所有':fwRule.destinationIpaddress"></span>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">目的端口：</div>
+                <div class="details-value">
+                    <span ng-bind="::fwRule.protocol=='any'||fwRule.protocol=='icmp'? '--' : fwRule.destinationPort=='null'?'所有':fwRule.destinationPort"></span>
+                </div>
+            </div>
+
+            <div class="details-group">
+                <div class="details-name">动作：</div>
+                <div class="details-value">
+                    <span ng-bind="::fwRule.fwrAction == 'allow' ? '允许' : '拒绝'"></span>
+                </div>
+            </div>
+
+            <!-- <div class="details-group">
+                <div class="details-name">所属策略：</div>
+                <div class="details-value">
+                    <span ng-bind="::fwRule.fwpName != 'null' ? fwRule.fwpName : '无'"></span>
+                </div>
+            </div> -->
+
+			<div class="details-group">
+                <div class="details-name">规则状态：</div>
+                <div class="details-value">
+                    <span ng-bind="::fwRule.fwrEnabled == 1 ? '已启用' : '已禁用'"></span>
+                </div>
+            </div>
+            <div class="details-group">
+                <div class="details-name">创建时间：</div>
+                <div class="details-value">
+                    <span ng-bind="::fwRule.createTime == 'null' ? '' : (fwRule.createTime|date : 'yyyy-MM-dd HH:mm:ss')"></span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <!-- <button class="btn btn-default btn-modal" ng-click="cancel()">关闭</button> -->
+</div>

@@ -1,0 +1,30 @@
+<div class="modal-header">
+	<span class="modal-title">新建文件夹</span><span
+		class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 660px;">
+	<form class="ey-form " novalidate name="addStorage">
+			<div class="ey-form-group ey-required"
+				data-ng-class="((addStorage.folderName.$invalid || checkFlag) && addStorage.folderName.$dirty) ? 'ey-has-error' : ''">
+				<label class="ey-form-label">文件夹名称：</label> 
+				<input class="ey-form-input ey-form-w8" name="folderName" maxlength="254"
+					data-ng-model="folderName" data-ng-change="checkStorageName(folderName)" required
+					ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9-_.]{0,252}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/"
+					ng-change="checkBucketName()"> 
+					<span class="ey-text-tip obs-line-height ey-form-w8"
+					data-ng-class="((addStorage.folderName.$invalid || checkFlag) && addStorage.folderName.$dirty) ? 'ey-has-error' : ''">1、只能包含字母，数字，中文，下划线（_）和短横线（-）,小数点（.）</span>
+				<span class="ey-text-tip obs-line-height ey-form-w8"
+					data-ng-class="((addStorage.folderName.$invalid || checkFlag) && addStorage.folderName.$dirty) ? 'ey-has-error' : ''">2、只能以字母,汉字和数字开头和结尾</span>
+				<span class="ey-text-tip obs-line-height ey-form-w8"
+					data-ng-class="((addStorage.folderName.$invalid || checkFlag) && addStorage.folderName.$dirty) ? 'ey-has-error' : ''">3、文件夹的长度限制在1-254字符之间</span>
+				<span class="ey-text-tip obs-line-height ey-form-w8"
+					data-ng-class="((addStorage.folderName.$invalid || checkFlag) && addStorage.folderName.$dirty) ? 'ey-has-error' : ''">4、Object总长度必须在1-1023字符之间</span>
+			</div>
+	</form>
+</div>
+<div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<button class="ey-btn ey-btn-primary" ng-click="commit()" ng-disabled="addStorage.$invalid || checkFlag">确定</button>
+		<button class="ey-btn ey-btn-default" ng-click="cancel()">取消</button>
+	</div>
+</div>

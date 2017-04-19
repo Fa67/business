@@ -1,0 +1,103 @@
+<div class="tab-content ey-panel-body">
+  <div role="tabpanel" class="tab-pane active" id="appCloudhostHDTable">
+    <!-- Form表单 -->
+    <h4>备案主体信息</h4>
+    <form class="form-inline">
+      	<button data-ng-disabled="!recordList.isNull(recordList.unit)" type="button" class="ey-btn ey-btn-primary ey-btn-sm"  data-ng-click="recordList.addFireRecord()">
+      		<span class="eayunfont ef-plus" aria-hidden="true"></span>
+        	备案主体
+      	</button>
+      	<div class="ey-content-progress ey-margin">
+			<p>建议您一次备案只备案一个主体信息，若想备案多个主体信息请分批备案</p>
+		</div>
+    </form>
+    <!-- 表格 -->
+
+      <table class="ey-table">
+        <thead>
+	        <tr>
+	          <th>主办单位名称</th>
+	          <th>主办单位证件号码</th>
+	          <th>主办单位负责人</th>
+	          <th>操作</th>
+	        </tr>
+        </thead>
+        <tbody>
+	        	<tr ng-if="!recordList.isNull(recordList.unit)">
+	          		<td title="{{recordList.unit.unitName}}">{{recordList.unit.unitName}}</td>
+	           		<td title="{{recordList.unit.certificateNo}}">{{recordList.unit.certificateNo}}</td>
+	          		<td title="{{recordList.unit.dutyName}}">{{recordList.unit.dutyName}}</td>
+	          		<td>
+		          		<div class="ey-btn-group">
+		          	  		<a class="ey-btn" data-ng-click="recordList.addFireRecord()">修改</a>
+		          	  		<a class="ey-btn ey-color-red" data-ng-click="recordList.deleteRecord(recordList.unit)">删除</a>
+	          	  		</div>
+	          		</td>
+	        	</tr>
+	        	<tr ng-if="recordList.isNull(recordList.unit)" class="ey-table-noRecord">
+	           		<td class="col-sm-12" colspan="4" style="text-align: center;">当前没有备案主体，请<a data-ui-sref="app.record.addFireRecordUnit({toType:'add'})">创建备案主体</a></td>
+	        	</tr>
+        </tbody>
+      </table>
+
+    
+    <h4>备案网站信息</h4>
+    <form class="form-inline">
+      	<button data-ng-disabled="!(!recordList.isNull(recordList.unit)&&recordList.webList.length==0)" type="button" class="ey-btn ey-btn-primary ey-btn-sm"  data-ng-click="recordList.addRecordWeb()">
+      		<span class="eayunfont ef-plus" aria-hidden="true"></span>
+        	备案网站
+      	</button>
+    </form>
+    <div style="width: 100%;height: 300px;overflow-y:auto;">
+      <table class="ey-table">
+        <thead>
+	        <tr>
+	          <th>网站域名</th>
+	          <th>IP</th>
+	          <th>网站负责人</th>
+	          <th class="col-sm-3">操作</th>
+	        </tr>
+        </thead>
+        <tbody>
+        	<tr ng-if="recordList.webList!=null" data-ng-repeat="web in recordList.webList" >
+          		<td title="{{web.domainName.split(';').join('\n')}}">{{web.domainName.length>30?web.domainName.substring(0,30)+'...':web.domainName}}</td>
+           		<td>
+          			<div style="margin-top: 11px;">
+                        <div data-ng-repeat="ips in web.ipList">
+                            <p>{{ips.ip}};</p>
+                        </div>
+                    </div>
+          		</td>
+          		<td title="{{web.webDutyName}}">
+          			{{web.webDutyName}}
+          		</td>
+          		<td class="col-sm-3">
+	          		<div class="ey-btn-group">
+	          	  		<a class="ey-btn" data-ng-click="recordList.updateRecordWeb(web)">修改</a>
+	          	  		<a class="ey-btn ey-color-red" data-ng-click="recordList.deleteWeb(web)">删除</a>
+          	  		</div>
+          		</td>
+        	</tr>
+        	<tr ng-if="recordList.isNull(recordList.unit)" class="ey-table-noRecord">
+	           	<td class="col-sm-12" colspan="4" style="text-align: center;">当前没有备案主体，请<a data-ui-sref="app.record.addFireRecordUnit({toType:'add'})">创建备案主体</a></td>
+	        </tr>
+        	<tr ng-if="!recordList.isNull(recordList.unit) && (recordList.webList==null || recordList.webList.length<=0)" class="ey-table-noRecord">
+	           	<td class="col-sm-12" colspan="4" style="text-align: center;">当前没有备案网站，请<a data-ui-sref="app.record.addweb({toType:'add'})">创建备案网站</a></td>
+	        </tr>
+        </tbody>
+      </table>
+ 	</div>
+  </div>
+  <div style="text-align: center;">
+	  	<form class=" ey-btn-group">
+	      	<button type="button" class="ey-btn ey-btn-primary ey-btn-sm" data-ng-disabled="(recordList.webList==null || recordList.webList.length<=0) || recordList.unit==null || !recordList.istijiao" data-ng-click="recordList.addFirstRecord()">
+	        	提交
+	      	</button>
+	      	
+	      	<button type="button" class="ey-btn ey-btn-default" data-ng-click="recordList.cancel()">
+	        	取消
+	      	</button>
+	    </form>
+  </div>
+  <div role="tabpanel" class="tab-pane" id="appCloudhostHDSnapshot">profile</div>
+</div>

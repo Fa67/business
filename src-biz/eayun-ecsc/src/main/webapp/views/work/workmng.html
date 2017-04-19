@@ -1,0 +1,74 @@
+<style>
+<!--
+	.falg-0{
+		color: #F0545F;
+	}
+	.falg-1{
+		color:#939090;
+	}
+-->
+</style>
+<h4>工单管理</h4>
+<!-- Form表单 -->
+
+<div class="form-inline">
+	<div class="ey-search-bar" style="padding-right: 0;">
+		<label class="control-label" >工单编号：</label> 
+		<input type="text" class="ey-form-input ey-form-w3"  data-ng-model="workNum" placeholder="请输入工单编号">
+		<label>时间范围：</label>
+		<date-range start-date="beginTime"
+			end-date="endTime" max-date="maxTime"
+			data-show-time="false" class="ey-form-w4">
+		</date-range>
+		<label>问题标题：</label>
+		<input type="text" class="ey-form-input ey-form-w3" placeholder="请输入问题标题" data-ng-model="keyWord">
+		<label>问题类别：</label>
+		<eayun-select data-ng-model="workorder.workType" show-length = "13" class="ey-form-w3">
+			<eayun-option value="" text="问题分类(全部)" selected></eayun-option>
+   			<eayun-option value="type.pId"  
+   			              text = "{{type.text}}" 
+   			              data-ng-repeat="type in typeStatus"></eayun-option>
+    	</eayun-select>
+		<button class="ey-btn ey-btn-default"
+			data-ng-click="myTable.api.draw()">查&nbsp;&nbsp;询
+		</button>
+	</div>
+</div>
+
+<div class="ey-search-bar ey-search-bar-white">
+	 <button  data-ng-show = "true" class="ey-btn ey-btn-primary ey-btn-sm" data-ui-sref="app.work.addWork">
+		 <span class="eayunfont ef-plus"></span>
+		 <span>创建工单</span>
+	</button>
+ </div>
+<!-- 表格 -->
+<eayun-table data-api="myTable.api" data-ajax-source="myTable.source"  data-param="myTable.getParams" data-result="myTable.result" >
+	<table class="ey-table">
+		<thead>
+			<tr>
+				<th>工单编号</th>
+				<th style="width: 414px;">问题标题</th>
+				<th>
+					问题分类
+				</th>
+				<th style="width:180px;">提交时间</th>
+				<th>
+					<eayun-table-filter list-data="status" text-field="text" item-clicked="statusItemClicked($item, $event)"></eayun-table-filter>
+			    </th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody><tr data-ng-repeat="workorder in myTable.result" data-ng-show="true" style="height:45px;">
+				<td>{{workorder.workNum}}</td>
+				<td data-ng-click="findWorkByWorkId(workorder.workId)" class="click-td" title="{{workorder.workTitle}}">{{workorder.workTitle}}</a></td>
+				<td>{{workorder.workTypeName}}</td>
+				<td>{{workorder.workCreTime|date:"yyyy-MM-dd HH:mm:ss"}}</td>
+				<td data-ng-class="workorder.workEcscFalg=='0'?'falg-0':((workorder.workEcscFalg=='5'|| workorder.workEcscFalg=='6')?'falg-1':'')">{{workorder.workFalgName}}</td>
+				<td>
+					<span data-ng-click="findWorkByWorkId(workorder.workId)" style="cursor:pointer;color:#0077cc;">查看</span>
+					<span data-ng-click="closeWorkorder(workorder)" style="cursor:pointer;margin-left:15px;color:#0077cc;" ng-if="workorder.workFalg !='3' && workorder.workFalg!=4">取消</span>
+				</td>
+			</tr></tbody>
+	</table>
+	<eayun-table-page></eayun-table-page>
+</eayun-table>

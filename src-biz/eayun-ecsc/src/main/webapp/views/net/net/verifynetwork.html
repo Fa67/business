@@ -1,0 +1,123 @@
+<ul class="ey-nav-bread">
+    <a class="ey-color-blue pointer"
+       data-ng-if="verifyNet.source == 'buy_vpc'"
+       data-ng-click="verifyNet.goToCreateNetWork()">
+        返回修改配置
+    </a>
+    <span class="ey-text-tip" data-ng-if="verifyNet.source == 'buy_vpc'">|</span>
+    <li data-ui-sref="app.net.netbar.net">私有网络</li>
+    <li data-ng-if="verifyNet.netWork.orderType == '0'">创建私有网络</li>
+    <li data-ng-if="verifyNet.netWork.orderType == '2'">更改带宽</li>
+</ul>
+<h4>订单确认</h4>
+<div class="ey-warm" data-ng-if="verifyNet.isError">
+    <span class="eayunfont ef-warning ey-font-size-big"></span>
+    <span data-ng-bind="verifyNet.errorMsg"></span>
+</div>
+<table class="ey-order-table">
+    <tbody>
+    <tr>
+        <td>产品名称</td>
+        <td data-ng-bind="::verifyNet.netWork.$$orderName"></td>
+        <td>产品数量</td>
+        <td data-ng-bind="::verifyNet.netWork.$$productCount+'个'"></td>
+    </tr>
+    <tr>
+        <td>购买周期</td>
+        <td data-ng-if="verifyNet.netWork.orderType == '0' && verifyNet.netWork.payType == '1'">
+            {{verifyNet.netWork.buyCycle >= 12 ? (verifyNet.netWork.buyCycle/12 + '年') : (verifyNet.netWork.buyCycle + '个月')}}
+        </td>
+        <td data-ng-if="verifyNet.netWork.orderType != '0' || verifyNet.netWork.payType != '1'">--</td>
+        <td>付款方式</td>
+        <td data-ng-bind="::verifyNet.netWork.$$payTypeName"></td>
+    </tr>
+    <tr>
+        <td>具体配置</td>
+        <td colspan="3">
+            <p>数据中心：{{verifyNet.netWork.dcName}}<br></p>
+            <p data-ng-if="verifyNet.netWork.orderType == '2'">私有网络ID：{{verifyNet.netWork.netId}}<br></p>
+            <p>私有网络名称：{{verifyNet.netWork.netName}}<br></p>
+            <p data-ng-if="verifyNet.netWork.orderType == '0'">带宽：{{verifyNet.netWork.rate}}Mbps<br></p>
+            <p data-ng-if="verifyNet.netWork.orderType == '2'">原带宽：{{verifyNet.netWork.rateOld}}Mbps<br></p>
+            <p data-ng-if="verifyNet.netWork.orderType == '2'">调整后带宽：{{verifyNet.netWork.rate}}Mbps<br></p>
+        </td>
+    </tr>
+    <tr>
+        <td>金额</td>
+        <td class="ey-color-red" colspan="3" data-ng-if="'1' == verifyNet.netWork.payType">
+            ￥&nbsp;{{verifyNet.netWork.price | thousand}}
+        </td>
+        <td class="ey-color-red" colspan="3" data-ng-if="'2' == verifyNet.netWork.payType">
+            ￥&nbsp;{{verifyNet.netWork.price | thousand:true}}&nbsp;<span class="ey-color-default">/小时</span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div data-ng-class="verifyNet.netWork.payType == '1' ? 'ey-pay-panel' : ''">
+    <div class="ey-pay-body" data-ng-if="verifyNet.netWork.payType == '1'">
+        <table>
+            <tbody>
+                <tr>
+                    <td width="30px">
+                        <span class="eayunfont ef-wallet ey-font-hugest ey-color-yellow-dark"></span>
+                    </td>
+                    <td width="110px">使用余额支付：</td>
+                    <td width="20px">
+                        <div class="ey-form-checkbox">
+                            <input type="checkbox" id="check1"
+                                   data-ng-checked="verifyNet.isBalance"
+                                   data-ng-disabled="verifyNet.netWork.$$balance <= 0"
+                                   data-ng-click="verifyNet.useBalance()">
+                            <label for="check1"></label>
+                        </div>
+                    </td>
+                    <td width="60px">余额支付</td>
+                    <td width="20px"><span class="ey-text-tip">|</span></td>
+                    <td width="180px">
+                        <span class="ey-text-tip">可用金额&nbsp;</span>
+                        <span class="ey-color-blue">￥&nbsp;{{verifyNet.netWork.$$balance | thousand}}</span>
+                    </td>
+                    <td width="110px" data-ng-show="verifyNet.isBalance">
+                        <span class="ey-text-tip">扣除&nbsp;</span>
+                        <span class="ey-color-red">￥&nbsp;{{verifyNet.netWork.accountPayment | thousand}}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <p data-ng-if="verifyNet.netWork.payType == '2'">
+        <span class="ey-color-red">*</span>
+        <span class="ey-text-tip">按需付费的资源，采用先使用后扣费的模式，扣费时精确到厘，具体扣费请以账单为准。</span>
+    </p>
+    <ul class="ey-order-list">
+        <li class="ey-font-size-big" data-ng-if="verifyNet.netWork.payType == '1'">
+            <span>产品金额：</span>
+            <span>￥&nbsp;{{verifyNet.netWork.price | thousand}}</span>
+        </li>
+        <li class="ey-font-size-big" data-ng-if="verifyNet.netWork.payType == '1'">
+            <span>余额支付：</span>
+            <span>￥&nbsp;-{{verifyNet.netWork.accountPayment | thousand}}</span>
+        </li>
+        <div class="divider" data-ng-if="verifyNet.netWork.payType == '1'"></div>
+        <li class="ey-font-size-bigger ey-font-bold">
+            <span>应付款：</span>
+            <span class="ey-text-tip">
+                <span>￥&nbsp;</span>
+                <span class="ey-color-red ey-font-size-superior" data-ng-if="verifyNet.netWork.payType == '1'">
+                    {{verifyNet.netWork.thirdPartPayment | thousand}}
+                </span>
+                <span class="ey-color-red ey-font-size-superior" data-ng-if="verifyNet.netWork.payType == '2'">
+                    {{0 | thousand}}
+                </span>
+            </span>
+        </li>
+        <li>
+            <button class="ey-btn ey-btn-primary"
+                    data-ng-disabled="!verifyNet.checkBtn"
+                    data-ng-click="verifyNet.commitOrderNetWork()">
+                提交订单
+            </button>
+        </li>
+    </ul>
+</div>

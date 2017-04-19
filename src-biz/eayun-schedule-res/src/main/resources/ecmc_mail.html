@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+        body {
+            padding: 0 50px;
+            font-family: "微软雅黑", "Microsoft YaHei", "Arial", serif !important;
+            font-size: 14px;
+            color: #555555;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .blue {
+            color: #0077cc;
+        }
+
+        .red {
+            color: #EA3200;
+        }
+
+        .help-block {
+            color: #999999;
+            font-size: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-spacing: 0;
+            border-collapse: collapse;
+
+        }
+
+        table thead {
+            background-color: #e3e3e3;
+            white-space: nowrap;
+        }
+
+        table tr {
+            border: 1px solid #dbdbdb;
+        }
+
+        table thead th,
+        table tbody td {
+            font-weight: normal;
+            text-align: left;
+            padding: 10px 20px;
+        }
+
+
+    </style>
+</head>
+<body>
+<div style="width: 650px;margin:0 auto;">
+    <div style="padding: 10px;border-bottom: 2px solid #DCDCDC;">
+        <img src="{imgUrl}" style="height: 30px;">
+    </div>
+
+    <div style="padding: 10px 20px;">
+        <p style="padding: 15px 0;"><strong>尊敬的 {userName}，您好:</strong></p>
+
+        <p>{work},请登录 <a class="blue"  href="{ecmcUrl}">公有云运维中心</a>
+            查看。
+        </p>
+        <table>
+            <thead>
+           <!-- <tr>
+                <th width="40%">工单编号</th>
+                <th width="40%">问题分类</th>
+                <th>工单状态</th>
+            </tr>-->
+            </thead>
+            <tbody>
+            <tr>
+                <th width="20%">工单编号</th>
+                <td width="30%">{workNum}</td>
+                <th width="20%">创建时间</th>
+                <td width="30%">{workCreTime}</td>
+            </tr>
+            <tr>
+                <th width="20%">事件级别</th>
+                <td width="30%" class="fontColor">{workLevel}</td>
+                <th width="20%">事件类别</th>
+                <td width="30%">{workType}</td>
+            </tr>
+            <tr>
+                <td>申请客户</td>
+                <td>{applyCustomer}</td>
+                <td>工单状态</td>
+                <td>{workFalg}</td>
+            </tr>
+            <tr>
+                <td>工单描述</td>
+                <td colspan="3"><div style="overflow-y:auto;">{workContent}</div></td>
+            </tr>
+            <tr>
+                <td>最新回复内容</td>
+                <td colspan="3"><div style="overflow-y:auto;">{opinionContent}</div></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p style="padding: 15px 0;">易云捷讯科技（北京）股份有限公司</p>
+
+
+    </div>
+
+    <div style="text-align: center;border-top: 1px solid #DCDCDC;">
+        <p class="help-block">&copy; 2011-2017 易云捷讯科技（北京）股份有限公司, 版权所有</p>
+    </div>
+</div>
+</body>
+</html>

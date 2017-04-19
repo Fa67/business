@@ -1,0 +1,57 @@
+<div class="modal-header">
+    <span class="modal-title">创建配置文件</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="createCon.cancel()"></span>
+</div>
+<div class="modal-body" style="width: 600px;">
+    <form class="ey-form" name="addConfigFileGroup" novalidate>
+        <div class="ey-form-group" >
+            <label class="ey-form-label"><span style="color: red">* </span>数据库版本号：</label>
+            <eayun-select class="ey-form-w6"
+                          name="taggroupname"
+                          data-ng-model="createCon.configEntity.configVersion"
+                          data-ng-change="createCon.versionChange()"
+                          placeholder="请选择数据库版本号" required="">
+                <eayun-option value="version.nodeNameEn" text="{{version.nodeName}}" data-ng-repeat="version in createCon.versionList" ></eayun-option>
+            </eayun-select>
+        </div>
+        <div class="ey-form-group" >
+            <label class="ey-form-label"><span style="color: red">* </span>源配置文件：</label>
+            <eayun-select class="ey-form-w6"
+                          name="taggroupname"
+                          data-ng-model="createCon.configEntity.configId"
+                          data-ng-change=""
+                          placeholder="请选择源配置文件" required="">
+                <eayun-option value="file.configId" text="{{file.configName}}" data-ng-repeat="file in createCon.configFileList" ></eayun-option>
+            </eayun-select>
+        </div>
+        <div class="ey-form-group has-feedback"
+             ng-class="((addConfigFileGroup.configFormName.$dirty) && (addConfigFileGroup.configFormName.$invalid))?'ey-has-error':''">
+            <label class="ey-form-label"><span style="color: red">* </span>新配置文件名称：</label>
+            <div>
+                <input type="text"
+                       name="configFormName"
+                       class="ey-form-input"
+                       required
+                       ng-pattern="/^[_a-zA-Z0-9]+$/"
+                       placeholder="请输入新配置文件名称"
+                       data-ng-model="createCon.configEntity.configName"
+                       ajax-valid="createCon.ajaxConfirm(value)"
+                       maxlength="20"/><span style="color: red" ng-show="addConfigFileGroup.configFormName.$error.ajaxValid">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该名称已存在</span>
+            </div>
+        </div>
+        <div class="ey-form-group has-feedback" style="margin-top: -20px;"
+             ng-class=" ((addConfigFileGroup.configFormName.$dirty) && (addConfigFileGroup.configFormName.$invalid) && (!addConfigFileGroup.configFormName.$error.ajaxValid))?'show':'hide' ">
+            <div><span style="color: red">请输入1-20位字符，支持数字、英文、下划线</span></div>
+        </div>
+        <div class="ey-form-group">
+            <span>新配置文件创建成功后，可以编辑配置参数</span>
+        </div>
+    </form>
+</div>
+<div class="ey-modal-footer">
+    <div class="ey-btn-group">
+        <button type="button" class="ey-btn ey-btn-primary"
+                ng-click="createCon.commit()" data-ng-disabled="!addConfigFileGroup.$valid">确定</button>
+        <button type="button" class="ey-btn ey-btn-default"
+                ng-click="createCon.cancel()">取 消</button>
+    </div>
+</div>

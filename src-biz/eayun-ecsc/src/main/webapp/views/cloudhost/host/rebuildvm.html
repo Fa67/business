@@ -1,0 +1,42 @@
+<form class="form-horizontal" name="myForm">
+  
+  <div class="form-group">
+    <label class="col-sm-3 control-label">创建自：</label>
+    <div class="col-sm-7">
+      <eayun-select required class="form-control" name="vmFrom" placeholder="请选择镜像来源" data-ng-model="model.vmFrom" ng-change="changeFrom()">
+       	<eayun-option value="'publicImage'" text = "公共镜像" ></eayun-option>
+       	<eayun-option value="'privateImage'" text = "自定义镜像" ></eayun-option>
+       </eayun-select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-3 control-label">操作系统：</label>
+    <div class="col-sm-7">
+      <eayun-select class="form-control" required name="osType" placeholder="请选择操作系统类别" data-ng-model="model.osType" ng-change="changeSys()">
+      	<eayun-option ng-repeat="os in osTypeList" value="os" text = "{{os.nodeName}}"></eayun-option>
+      </eayun-select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-3 control-label">系统类型：</label>
+    <div class="col-sm-7">
+      <eayun-select class="form-control" required name="sysType" placeholder="请选择系统" data-ng-model="model.sysType" ng-change="changeImage()">
+      	<eayun-option ng-repeat="system in sysTypeList" value="system.nodeId" text = "{{system.nodeName}}"></eayun-option>
+      </eayun-select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-3 control-label">镜像文件：</label>
+    <div class="col-sm-7">
+     <eayun-select class="form-control" name="fromImageId" required placeholder="请选择镜像" data-ng-model="model.fromImageId">
+     	<eayun-option ng-repeat="image in imageList" value="image.imageId" text = "{{image.imageName}}"></eayun-option>
+     </eayun-select>
+    </div>
+  </div>
+  
+ <!-- 按钮区域 -->
+  <div class="modal-footer" >
+    <button type="button" class="btn btn-primary btn-modal" data-ng-click="commit()"  ng-disabled="!myForm.$valid || checkToken">确  定</button>
+    <button type="button" class="btn btn-default btn-modal" data-ng-click="cancel()" style="margin-left: 15px;">取  消</button>
+  </div>
+</form>

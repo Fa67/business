@@ -1,0 +1,107 @@
+<div class="tab-content ey-panel-body">
+  <div role="tabpanel" class="tab-pane active" id="appCloudhostHDTable">
+    <!-- Form表单 -->
+    <div class="ey-content-progress">
+    	<h5>状态：输入信息</h5>
+		<p>1.备案时需要先将网站主体信息完成后再备案网站信息</p>
+		<p>2.一次备案只备案一个主体信息，若想备案多个主体信息请分批备案</p>
+		<p>3.备案提交后将不得修改，请您在提交前谨慎检查信息是否有遗漏或错误</p>
+		<p>4.仅当备案主体和接入均有信息时，备案才可以提交</p>
+	</div>
+    <h4>备案主体信息</h4>
+    <form class="form-inline">
+      	<button data-ng-disabled="!accessList.isNull(accessList.unit)" type="button" class="ey-btn ey-btn-primary ey-btn-sm"  data-ng-click="accessList.addFireRecord()">
+      		<span class="eayunfont ef-plus" aria-hidden="true"></span>
+        	创建备案主体
+      	</button>
+    </form>
+    <!-- 表格 -->
+
+      <table class="ey-table">
+        <thead>
+	        <tr>
+	          <th>主办单位名称</th>
+	          <th>主办单位证件号码</th>
+	          <th>主办单位负责人</th>
+	          <th class="col-sm-3">操作</th>
+	        </tr>
+        </thead>
+        <tbody>
+	        	<tr ng-if="!accessList.isNull(accessList.unit)">
+	          		<td title="{{accessList.unit.unitName}}">{{accessList.unit.unitName}}</td>
+	           		<td title="{{accessList.unit.certificateNo}}">{{accessList.unit.certificateNo}}</td>
+	          		<td title="{{accessList.unit.dutyName}}">{{accessList.unit.dutyName}}</td>
+	          		<td class="col-sm-2">
+	          			<div class="ey-btn-group">
+		          	  		<a class="ey-btn" data-ng-click="accessList.addFireRecord()">修改</a>
+		          	  		<a class="ey-btn ey-color-red" data-ng-click="accessList.deleteRecord(accessList.unit)">删除</a>
+	          	  		</div>
+	          		</td>
+	        	</tr>
+	        	<tr ng-if="accessList.isNull(accessList.unit)" class="ey-table-noRecord">
+	           		<td class="col-sm-12" colspan="4" style="text-align: center;">当前没有备案主体，请<a data-ui-sref="app.record.addFireRecordUnit({toType:'access'})">创建备案主体</a></td>
+	        	</tr>
+        </tbody>
+      </table>
+
+    
+    <h4>新增接入备案信息</h4>
+    <form class="form-inline">
+      	<button data-ng-disabled="!(!accessList.isNull(accessList.unit)&&accessList.webList.length==0)" type="button" class="ey-btn ey-btn-primary ey-btn-sm"  data-ng-click="accessList.addRecordWeb()">
+      		<span class="eayunfont ef-plus" aria-hidden="true"></span>
+        	新增接入
+      	</button>
+    </form>
+    <div style="width: 100%;height: 300px;overflow-y:auto;">
+      <table class="ey-table">
+        <thead>
+	        <tr>
+	          <th>网站备案编号</th>
+	          <th>IP</th>
+	          <!-- <th>网站负责人</th> -->
+	          <th class="col-sm-3">操作</th>
+	        </tr>
+        </thead>
+        <tbody>
+        	<tr ng-if="accessList.webList!=null" data-ng-repeat="web in accessList.webList" >
+          		<td title="{{web.webRecordNo}}">{{web.webRecordNo}}</td>
+           		<td>
+          			<div style="margin-top: 11px;">
+                        <div data-ng-repeat="ips in web.ipList">
+                            <p>{{ips.ip}};</p>
+                        </div>
+                    </div>
+          		</td>
+          		<!-- <td>
+          			{{web.webDutyName}}
+          		</td> -->
+          		<td class="col-sm-2">
+	          		<div class="ey-btn-group">
+	          	  		<a class="ey-btn" data-ng-click="accessList.updateRecordWeb(web)">修改</a>
+	          	  		<a class="ey-btn ey-color-red" data-ng-click="accessList.deleteWeb(web)">删除</a>
+          	  		</div>
+          		</td>
+        	</tr>
+        	<tr ng-if="accessList.isNull(accessList.unit)" class="ey-table-noRecord">
+	           	<td class="col-sm-12" colspan="3" style="text-align: center;">当前没有备案主体，请<a data-ui-sref="app.record.addFireRecordUnit({toType:'access'})">创建备案主体</a></td>
+	        </tr>
+        	<tr ng-if="!accessList.isNull(accessList.unit) && (accessList.webList==null || accessList.webList.length<=0)" class="ey-table-noRecord">
+	           	<td class="col-sm-12" colspan="3" style="text-align: center;">当前没有新增接入，请<a data-ui-sref="app.record.access">创建新增接入</a></td>
+	        </tr>
+        </tbody>
+      </table>
+ 	</div>
+  </div>
+  <div style="text-align: center;">
+	  	<form class=" ey-btn-group">
+	      	<button type="button" class="ey-btn ey-btn-primary ey-btn-sm" ng-disabled="accessList.unit==null || (accessList.webList==null || accessList.webList.length<=0) || !accessList.istijiao" data-ng-click="accessList.commit()">
+	        	提交
+	      	</button>
+	      	
+	      	<button type="button" class="ey-btn ey-btn-default"  data-ng-click="accessList.cancel()">
+	        	取消
+	      	</button>
+	    </form>
+  </div>
+  <div role="tabpanel" class="tab-pane" id="appCloudhostHDSnapshot">profile</div>
+</div>

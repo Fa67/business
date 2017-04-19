@@ -1,0 +1,31 @@
+<form class="form-horizontal" name="myForm">
+
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 control-label">名称：</label>
+    <div class="col-sm-8" data-ng-class="(myForm.name.$dirty && (myForm.name.$invalid||!checkName)) ? 'has-error' : ''">
+      <input type="text" class="form-control" name="name" maxlength="20" data-ng-model="model.poolName" placeholder="请输入负载均衡器名称" required 
+      ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/' ng-change="checkNameExsit()">
+      <label class="control-label" ng-show="myForm.name.$dirty && myForm.name.$invalid">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+      <label class="control-label" ng-show="myForm.name.$dirty && myForm.name.$valid && !checkName">名称已存在</label>
+    </div>
+  </div>
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 control-label">连接限制数：</label>
+    <div class="col-sm-4" data-ng-class="(myForm.limitNum.$dirty && myForm.limitNum.$invalid) ? 'has-error' : ''">
+      <input type="text" class="form-control" name="limitNum" maxlength="9" data-ng-model="model.connectionLimit" required placeholder="请输入连接限制数" 
+      ng-pattern="'/^[1-9][0-9]*$/'">
+    </div>
+    <div class="col-sm-5" data-ng-class="(myForm.limitNum.$dirty && myForm.limitNum.$invalid) ? 'has-error' : ''">
+      <label class="control-label">请输入1到999999999的整数</label>
+    </div>
+  </div>
+  
+  <!-- 按钮区域 -->
+  <div class="modal-footer" >
+    <button type="button" class="btn btn-primary btn-modal" ng-click="commit()"  ng-disabled="!myForm.$valid||!checkName||checkButton">确  定</button>
+    <button type="button" class="btn btn-default btn-modal" style="margin-left:13px;" ng-click="cancel()">取  消</button>
+  </div>
+  
+  
+  
+</form>

@@ -1,0 +1,23 @@
+<div class="modal-header">
+    <span class="modal-title">添加报警对象</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+
+<div class="modal-body" style="width: 820px;height:350px;">
+    <eayun-select-two-way class="ey-font-size"
+                          list-data="alarmObjectsList"
+                          text-field="vmName,vmIp,selfSubIp,floatIp"
+                          headers="{{titles}}"
+                          header-width="150px,40%"
+                          title="报警对象"
+                          item-template-url='views/monitor/alarm/alarmobjectslist.html'>
+    </eayun-select-two-way>
+</div>
+
+<div class="ey-modal-footer">
+    <div class="ey-btn-group">
+        <button type="button" class="ey-btn ey-btn-primary"
+                ng-click="commit()">确  定</button>
+        <button type="button" class="ey-btn ey-btn-default"
+                ng-click="cancel()">取  消</button>
+    </div>
+</div>

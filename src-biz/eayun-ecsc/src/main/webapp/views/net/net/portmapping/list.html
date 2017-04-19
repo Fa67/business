@@ -1,0 +1,58 @@
+<div class="ey-search-bar ey-search-bar-white">
+    <div class="ey-btn-group">
+        <button class="ey-btn ey-btn-primary"
+                data-ng-click="pm.addPM()"
+                data-ng-show="pm.modulePower.isAddPort"
+                data-ng-disabled="pm.chargeState != '0'">
+            <span class="eayunfont ef-plus" aria-hidden="true"></span>
+            <span>创建端口映射</span>
+        </button>
+        <!--<button class="ey-btn" data-ng-click="pm.listAll()">
+        	展示端口映射
+        </button>-->
+    </div>
+</div>
+<!-- <h4>当前私有网络：<span data-ng-bind="pm.netName"></span></h4> -->
+<div class="ey-table-title">
+     <span style="margin-left: -5px;">当前私有网络：<span data-ng-bind="pm.netName"></span></span>
+</div>
+<eayun-table data-api="pm.table.api" data-ajax-source="pm.table.source" data-param="pm.table.getParams" data-result="pm.table.result">
+    <table class="ey-table">
+        <thead>
+            <th>协议</th>
+            <th>源IP</th>
+            <th>源端口</th>
+            <th>目的IP</th>
+            <th>目的端口</th>
+            <th>操作</th>
+        </thead>
+        <tbody><tr data-ng-repeat="portMapping in pm.table.result">
+            <td data-ng-if="portMapping.protocol == 'tcp'">
+                <span>TCP</span>
+            </td>
+            <td data-ng-if="portMapping.protocol == 'udp'">
+                <span>UDP</span>
+            </td>
+            <td data-ng-bind="::pm.gatewayIp"></td>
+            <td data-ng-bind="::portMapping.resourcePort"></td>
+            <td data-ng-bind="::portMapping.destinyIp"></td>
+            <td data-ng-bind="::portMapping.destinyPort"></td>
+            <td>
+                <div class="ey-btn-group">
+                    <button class="ey-btn"
+                            data-ng-click="pm.editPM(portMapping)"
+                            data-ng-show="pm.modulePower.isEditPort"
+                            data-ng-disabled="pm.chargeState != '0'">
+                        <span>编辑</span>
+                    </button>
+                    <button class="ey-btn"
+                            data-ng-click="pm.deletePM(portMapping)"
+                            data-ng-show="pm.modulePower.isDelPort">
+                        <span class="ey-text-error">删除</span>
+                    </button>
+                </div>
+            </td>
+        </tr></tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

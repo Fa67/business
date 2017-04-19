@@ -1,0 +1,117 @@
+<h4>资源统计</h4>
+<div class="form-inline">
+	<div class="ey-search-bar">
+   	<span style="font-size:14px;">数据中心：</span>
+   	<eayun-select data-ng-model="dataDc" show-length = "13">
+   		<eayun-option value="dc"  text = "{{dc.dcName}}" data-ng-repeat="dc in dcList"></eayun-option>
+    </eayun-select>
+    <span style="font-size:14px;margin-left:15px;">时间范围：</span>
+   	<date-range start-date="data.startTime" end-date="data.endTime" data-show-time="true" class="ey-form-w6"></date-range>
+   	<button class="ey-btn ey-btn-default" style="margin-left:15px;"
+			 data-ng-click="queryList()">查&nbsp;&nbsp;询</button>
+	<button class="ey-btn ey-btn-primary-light pull-right" data-ng-click="createExcel()" data-ng-show = "buttonPower.isExport" style="margin-top:7px;">
+			<span class="eayunfont ef-export"></span> <span>导出</span>
+		</button>
+	<div style="display: none;">
+		<iframe id="excel-export-iframe" frameborder="0"></iframe>
+	</div>
+  </div>
+</div>
+<!-- 导航页签 -->
+<nav class="ey-nav-online" style= "margin-top:20px;margin-bottom:20px;">
+  <a data-ng-class = "showVm?'active':''" data-ng-click = "showTab(showVm,'0')">云主机</a>
+  <a data-ng-class = "showVol?'active':''" data-ng-click = "showTab(showVol,'1')">云硬盘</a>
+  <a data-ng-class = "showNet?'active':''" data-ng-click = "showTab(showNet,'2')">网络</a>
+</nav>
+<label class = "control-label"style = "font-weight: bold;margin-bottom:10px;">统计时间周期：</label>
+<label class = "control-label" style= "margin-bottom:10px;">{{data.startTime|date:"yyyy-MM-dd HH:mm:ss"}}--{{data.endTime|date:"yyyy-MM-dd HH:mm:ss"}}</label>
+<div data-ng-show = "showVm">
+	<div class="panel-body" style = "padding:0px;margin-top:10px;" data-ng-if = "showCon">
+  		<eayun-table data-api="vmTable.api" data-ajax-source="vmTable.source" data-param="vmTable.getParams" data-result="vmTable.result">
+		    <table class="ey-table">
+		      <thead>
+		      <tr>
+		        <th width = "18%">主机名称</th>
+		        <th width = "9%" style="cursor: pointer;" data-ng-click="changeVmSort('CPU')">CPU<span class="{{sortCpuClass}}"></span></th>
+		        <th width = "10%" style="cursor: pointer;" data-ng-click="changeVmSort('RAM')">内存<span class="{{sortRamClass}}"></span></th>
+		        <th style = "width:120px;">挂载云硬盘数</th>
+		        <th width = "18%" style="cursor: pointer;" data-ng-click="changeVmSort('START')">开始时间<span class="{{sortStartClass}}"></span></th>
+		        <th width = "18%">截止时间</th>
+		        <th width = "18%" style="cursor: pointer;" data-ng-click="changeVmSort('HOURS')">累计时长<span class="{{sortHoursClass}}"></span></th>
+		      </tr>
+		      </thead>
+		      <tbody><tr data-ng-repeat="details in vmTable.result">
+		        <td title = "{{details.vmName}}">{{details.vmName}}</td>
+		        <td>{{details.vmFlavorCpu}}核</td>
+		        <td>{{details.vmFlavorRam}}M</td>
+		        <td>{{details.vmvolCount}}</td>
+		        <td>{{details.startTime|date:"yyyy-MM-dd HH:mm:ss"}}</td>
+		        <td>{{details.endTime|date:"yyyy-MM-dd HH:mm:ss"}}</td>
+		        <td>{{details.vmHour}}小时</td>
+		      </tr></tbody>
+		    </table>
+		    <eayun-table-page></eayun-table-page>
+		  </eayun-table>
+	</div>
+</div>
+<div data-ng-show = "showVol">
+	<div class="panel-body" style = "padding:0px;margin-top:10px;" data-ng-if = "showCon">
+  		<eayun-table data-api="volTable.api" data-ajax-source="volTable.source" data-param="volTable.getParams" data-result="volTable.result">
+		    <table class="ey-table">
+		      <thead>
+		      <tr>
+		        <th width = "19%">硬盘名称</th>
+		        <th width = "10%" style="cursor: pointer;" data-ng-click="changeVolSort('VOL')">硬盘容量<span class="{{sortVolSizeClass}}"></span></th>
+		        <th width = "25%">挂载云主机名称</th>
+		        <th width = "18%" style="cursor: pointer;" class = "col-sm-2" data-ng-click="changeVolSort('START')">开始时间<span class="{{sortVolStartClass}}"></span></th>
+		        <th width = "18%">截止时间</th>
+		        <th width = "10%" style="cursor: pointer;" data-ng-click="changeVolSort('HOURS')">累计时长<span class="{{sortVolHoursClass}}"></span></th>
+		      </tr>
+		      </thead>
+		      <tbody><tr data-ng-repeat="details in volTable.result">
+		        <td title = "{{details.volumeName}}">{{details.volumeName}}</td>
+		        <td>{{details.volumeSize}}GB</td>
+		        <td title = "{{details.volvmName}}">{{details.volvmName==null||details.volvmName==''?'--':details.volvmName}}</td>
+		        <td>{{details.startTime|date:"yyyy-MM-dd HH:mm:ss"}}</td>
+		        <td>{{details.endTime|date:"yyyy-MM-dd HH:mm:ss"}}</td>
+		        <td>{{details.volHour}}小时</td>
+		      </tr></tbody>
+		    </table>
+		    <eayun-table-page></eayun-table-page>
+		  </eayun-table>
+	</div>
+</div>
+<div data-ng-show = "showNet">
+<div class="panel panel-default" style="margin-bottom:5px;margin-top:10px;" data-ng-if = "showCon">
+	  <div class="panel-heading" style = "height:40px;">
+		  <div class="row">
+		  		<label class = "control-label col-sm-4 color-blue">公网流量</label>
+			    <label class = "control-label col-sm-4 nowrap" data-ng-show = "netRes.volumeTypeNmae=='yes'">上行流量累计：{{netRes.netDownFlowCount | number:0}}MB</label>
+			    <label class = "control-label col-sm-4 nowrap" data-ng-hide = "netRes.volumeTypeNmae=='yes'">上行流量累计：--</label>
+			    <label class = "control-label col-sm-2 nowrap" data-ng-show = "netRes.vmFlavorName=='yes'">下行流量累计：{{netRes.netUpFlowCount | number:0}}MB</label>
+			    <label class = "control-label col-sm-2 nowrap" data-ng-hide = "netRes.vmFlavorName=='yes'">下行流量累计：--</label>
+			    <button width = "20%" class="ey-btn ey-btn-primary pull-right" data-ng-click = "showHistogram()" style="position:relative;top:-7px;">查看柱状图</button>
+		  </div>
+	  </div>
+		<div class="panel-body" style = "padding:5px;">
+	  		<eayun-table>
+			    <table class="table table-eayun-info" style = "margin-bottom:0px;">
+			      <thead>
+			      <tr>
+			        <th width = "33%" style="text-align:left;">时间</th>
+			        <th width = "34%" style="text-align:left;">上行流量</th>
+			        <th width = "33%" style="text-align:left;">下行流量</th>
+			      </tr>
+			      </thead>
+			      <tbody><tr data-ng-repeat="detail in netRes.detailsList | orderBy : '-everyDate'">
+			        <td style="text-align:left;">{{detail.everyDate}}</td>
+			        <td style="text-align:left;" data-ng-show = "detail.volumeName=='yes'">{{detail.downCount | number:0}}MB</td><!--上行流量  -->
+			        <td style="text-align:left;" data-ng-show = "detail.volumeName=='no'">--</td>
+			        <td style="text-align:left;" data-ng-show = "detail.vmName=='yes'">{{detail.upCount | number:0}}MB</td><!--下行流量  -->
+			        <td style="text-align:left;" data-ng-show = "detail.vmName=='no'">--</td>
+			      </tr></tbody>
+			    </table>
+			  </eayun-table>
+		</div>
+	</div>
+</div>

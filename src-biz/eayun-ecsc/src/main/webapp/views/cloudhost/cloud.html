@@ -1,0 +1,31 @@
+<div class="ey-nav">
+	<eayun-select ng-cloak data-ng-model="model.projectvoe" show-length="14" data-ng-if="cucrentName == '云主机' || cucrentName == '云硬盘' ||cucrentName == '云硬盘备份' ||cucrentName == '镜像' ">
+		<eayun-option ng-repeat="project in cloudprojectList" value="project" text="{{project.dcName}}"></eayun-option>
+	</eayun-select>
+	<ul class="ey-nav-bread">
+		<li data-ui-sref={{item.route}} data-ng-repeat="item in navLists">{{item.name}}</li>
+		<li>{{cucrentName}}</li>
+	</ul>
+</div>
+
+<div class="ey-divider"></div>
+
+<div class="ey-panel ey-panel-full" data-ng-if="type!='detail'">
+	<div class="ey-panel-title">
+		<nav class="ey-nav-underline">
+			<a ui-sref-active="active" data-ui-sref="app.cloud.cloudhost.host">云主机</a>
+			<a ui-sref-active="active"
+				ng-show="modulePower.isDiskView||modulePower.isSnapView"
+				data-ui-sref="app.cloud.cloudhost.volume">云硬盘</a> 
+			<a ui-sref-active="active" ng-show="modulePower.isImageView||modulePower.isPublicImageView||modulePower.isMarketImageView"
+				data-ui-sref="app.cloud.cloudhost.image">镜像</a>
+		</nav>
+	</div>
+	<div class="ey-panel-body">
+		<div data-ui-view=""></div>
+	</div>
+</div>
+<div class="ey-panel ey-panel-full" data-ng-if="type=='detail'">
+	<div class="ey-panel-body" data-ui-view="">
+	</div>
+</div>

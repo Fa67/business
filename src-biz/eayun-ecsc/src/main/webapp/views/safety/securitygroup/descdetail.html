@@ -1,0 +1,21 @@
+<div>
+	<form name="editDescTable" novalidate>
+	<div class="col-md-10"
+		data-ng-class="vmNameEditable && (editDescTable.fwDesc.$dirty && editDescTable.fwDesc.$invalid ) ? 'has-error' : ''"
+		style="padding-left: 0px;">
+		<input class="ey-form-input" name="fwDesc" type="text" maxlength="200"
+			placeholder="请输入安全组描述" data-ng-model="vmEditModel.sgDescription">
+		<label class="control-label hide" style="padding-top: 17px;"
+			data-ng-class="vmNameEditable && editDescTable.fwDesc.$dirty && editDescTable.fwDesc.$invalid ? 'show' : 'hide'">
+			<span>请输入安全组描述</span>
+		</label>
+	</div>
+	<span class="badge hide"
+		style="margin-left: 10px; background-color: green; color: #ffffff;"
+		data-ng-class="vmDescEditable ? 'show' : 'hide'"
+		data-ng-click="saveEdit('fwDesc')"> <span
+		class="glyphicon glyphicon-ok"></span>
+	</span> <span class="badge" data-ng-click="cancelEdit('fwDesc')"> <span
+		class="glyphicon glyphicon-remove"></span>
+	</span> </form>
+</div>

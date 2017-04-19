@@ -1,0 +1,34 @@
+<div class="modal-header">
+    <span class="modal-title">编辑镜像</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+
+<div class="modal-body" style="width: 600px;">
+    <form class="ey-form" name="myForm" novalidate>
+        <div class="ey-form-group">
+            <label class="ey-form-label ey-form-w6">系统：</label>
+            <span>{{model.sysTypeName!='null'?model.sysTypeName:""}}</span>
+        </div>
+
+        <div class="ey-form-group" data-ng-class="(myForm.name.$dirty && myForm.name.$invalid) ? 'ey-has-error' : ''">
+            <label class="ey-form-label ey-required">镜像名称：</label>
+            <input type="text" class="ey-form-input ey-form-w6" name="name" data-ng-model="model.imageName" placeholder="请输入镜像名称" maxlength="20" required ajax-valid="checkImageName(value)">
+            <span ng-show="myForm.name.$dirty && myForm.name.$error.required&&!flag">请输入1-20位字符,支持数字、中英文、下划线、空格</span>
+            <span ng-show="myForm.name.$dirty && myForm.name.$error.ajaxValid&&!flag">镜像名称已存在</span>
+            <span ng-if="flag">请输入1-20位字符,支持数字、中英文、下划线、空格</span>
+        </div>
+
+        <div class="ey-form-group">
+            <label class="ey-form-label">描述：</label>
+            <textarea class="ey-form-textarea ey-form-w6" rows="3" placeholder="请输入描述" data-ng-model="model.imageDescription" maxlength="200"></textarea>
+        </div>
+    </form>
+</div>
+
+<div class="ey-modal-footer">
+    <div class="ey-btn-group">
+        <button type="button" class="ey-btn ey-btn-primary"
+                ng-click="commit()" ng-disabled="!myForm.$valid">确定</button>
+        <button type="button" class="ey-btn ey-btn-default"
+                ng-click="cancel()">取 消</button>
+    </div>
+</div>

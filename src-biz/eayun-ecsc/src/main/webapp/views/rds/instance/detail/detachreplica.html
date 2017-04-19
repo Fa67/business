@@ -1,0 +1,36 @@
+<div class="modal-header">
+    <span class="modal-title">升级从库为主库</span>
+    <span class="eayunfont ef-close ey-font-huge" data-ng-style="{'cursor':(mbc.btnWait ? 'not-allowed' : 'pointer')}" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 600px;">
+    <form class="ey-form clearfix" name="backupDB" novalidate>
+        <div class="ey-content-notice" style="margin-left: 20px; margin-right:20px; margin-bottom: 20px;">
+            <ul style="margin-top: 10px;">
+                <li>从库升级为独立主库后，将自动断开与原主库的同步，并且进入主库状态，
+		  		可以为其创建从库，您确认将{{model.rdsName}}从库提升为主库吗？</li>
+            </ul>
+        </div>
+        <div class="ey-form-checkbox" style="float:right;margin-right:110px;">
+				<input id="check2" type="checkbox" data-ng-model ="isAccept">
+				<label for="check2" class="ey-text-tip">确定升级</label>
+	    </div>
+    </form>
+</div>
+<div class="ey-modal-footer ey-btn-group" >
+    <div class="ey-btn-group">
+        <button type="button"
+        		data-ng-disabled="!isAccept || checkBtn"
+                class="ey-btn ey-btn-primary"
+                data-ng-click="commit()"
+               >
+            确 定
+        </button>
+        <button type="button"
+                class="ey-btn ey-btn-default"
+                data-ng-click="cancel()"
+                >
+            取 消
+        </button>
+    </div>
+</div>
+

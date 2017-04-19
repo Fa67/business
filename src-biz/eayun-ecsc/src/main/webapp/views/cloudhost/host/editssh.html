@@ -1,0 +1,21 @@
+<div class="modal-header" style="width: 750px;">
+    <span class="modal-title">绑定/解绑SSH密钥</span> 
+    <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body">
+	<eayun-select-two-way list-data="secretList" text-field="secretkeyName" title="SSH密钥">
+	</eayun-select-two-way>
+	<div>
+		<span class="ey-text-tip" style="line-height: 20px">绑定SSH密钥后，请禁止“密码登录”。详细操作<a href="" target="_blank"><span class="ey-text-link">请点击此处</span></a></span>
+	</div>
+</div>
+
+<!-- 按钮区域 -->
+<div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<button type="button" class="ey-btn ey-btn-primary"
+			ng-click="commit()" ng-disabled="checkToken">确定</button>
+		<button type="button" class="ey-btn ey-btn-default"
+			ng-click="cancel()">取 消</button>
+	</div>
+</div>

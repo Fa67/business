@@ -1,0 +1,74 @@
+<div class="modal-header">
+    <span class="modal-title">公网IP续费</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+
+<div class="modal-body">
+	<form class="ey-form " name="myForm" novalidate>
+	
+	  <div class="ey-form-group" >
+	    <label class="ey-form-label">IP地址：</label>
+	    <span ng-bind="model.floIp"></span>
+	  </div>
+	  
+	  <div class="ey-form-group" >
+	    <label class="ey-form-label">绑定资源：</label>
+		<span ng-bind="model.resNameForRenew"></span>
+	  </div>
+	
+	   <div class="ey-form-group" >
+	    <label class="ey-form-label">到期时间：</label>
+		<span>{{model.endTime | date:"yyyy-MM-dd HH:mm:ss"}}</span>
+	   </div>
+	
+	  <div class="ey-form-group">
+	    <label class="ey-form-label">续费时长：</label>
+	     <eayun-select name="renewType"
+					   class="ey-form-w3 ey-form-select"
+					   data-ng-model="model.renewType"
+					   required style="width: 122px;"
+					   data-ng-change="changePayType()">
+	       <eayun-option value="'month'" text="月付" ></eayun-option>
+	       <eayun-option value="'year'" text="年付" ></eayun-option>
+	     </eayun-select>
+	     <eayun-select name="renewTime"
+					   class="ey-form-w3 ey-form-select"
+					   data-ng-model="model.renewTime"
+					   required style="width: 122px;"
+					   data-ng-change="changeTime(model.renewType,model.renewTime)">
+	       <eayun-option ng-if="model.renewType == 'month'" value="'1'" text="1个月" ></eayun-option>
+	       <eayun-option ng-if="model.renewType == 'month'" value="'2'" text="2个月" ></eayun-option>
+	       <eayun-option ng-if="model.renewType == 'month'" value="'3'" text="3个月" ></eayun-option>
+	       <eayun-option ng-if="model.renewType == 'month'" value="'4'" text="4个月" ></eayun-option>
+	       <eayun-option ng-if="model.renewType == 'month'" value="'5'" text="5个月" ></eayun-option>
+	       <eayun-option ng-if="model.renewType == 'month'" value="'6'" text="6个月" ></eayun-option>
+	       <eayun-option ng-if="model.renewType == 'month'" value="'7'" text="7个月" ></eayun-option>
+	       <eayun-option ng-if="model.renewType == 'month'" value="'8'" text="8个月" ></eayun-option>
+	       <eayun-option ng-if="model.renewType == 'month'" value="'9'" text="9个月" ></eayun-option>
+	       <eayun-option ng-if="model.renewType == 'month'" value="'10'" text="10个月" ></eayun-option>
+	       <eayun-option ng-if="model.renewType == 'month'" value="'11'" text="11个月" ></eayun-option>
+	       
+	       <eayun-option ng-if="model.renewType == 'year'" value="'12'" text="1年" ></eayun-option>
+	       <eayun-option ng-if="model.renewType == 'year'" value="'24'" text="2年" ></eayun-option>
+	       <eayun-option ng-if="model.renewType == 'year'" value="'36'" text="3年" ></eayun-option>
+	     </eayun-select>
+	  </div>
+	  
+	  <div class="ey-form-group" >
+	    	<label class="ey-form-label">续费后到期时间：</label>
+			<span>{{model.lastTime | date:"yyyy-MM-dd HH:mm:ss"}}</span>
+	  </div>
+	</form>
+</div>
+<!-- 按钮区域 -->
+  <div class="ey-modal-footer">
+      <div class="ey-btn-group">
+  	      <span class="ey-font-bold">总价：
+  	      	  <span class="ey-color-red ey-font-bold" data-ng-if="responseCode!='010120'">￥&nbsp;</span>
+		      <span class="ey-font-huger ey-color-red ey-font-bold" ng-if="responseCode!='010120'" data-ng-bind="(model.chargeMoney | thousand)"></span>
+		      <span class="ey-color-red ey-font-bold" ng-if="responseCode=='010120'">{{respMsg}}</span>
+		  </span>
+		  
+  		<button type="button" class="ey-btn ey-btn-primary" ng-click="commit()"  ng-disabled="!myForm.$valid || model.renewTime =='0' || responseCode =='010120'">确定</button>
+    	<button type="button" class="ey-btn ey-btn-default" ng-click="cancel()">取  消</button>
+  	  </div>
+  </div>

@@ -1,0 +1,16 @@
+<div>
+	<div class="modal-header">
+		<span class="modal-title"></span><span class="eayunfont ef-close
+			ey-font-huge" data-ng-click="cancel()"></span>
+	</div>
+	<div class="modal-body">
+		<div class="modal-confirm" style="word-break:break-all;overflow: unset;">
+			数据盘<span class="delete-resoure-color">{{model.volName}}</span>
+			将回滚到<span class="delete-resoure-color">{{model.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</span>的状态，此刻之后的数据将被清除，请谨慎操作。
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary btn-modal"  data-ng-click="commit()">确 定</button>
+		<button class="btn btn-default btn-modal" data-ng-click="cancel()" style="margin-left:15px">取 消</button>
+	</div>
+</div>

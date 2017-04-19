@@ -1,0 +1,87 @@
+<div class="modal-header">
+    <span class="modal-title">创建端口映射</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body">
+	<form class="ey-form novalidate" name="myForm" novalidate>
+	    <fieldset>
+	        <div class="ey-form-group">
+	            <label class="ey-form-label ey-required">协议：</label>
+	            <eayun-select class="ey-form-w3" name="protocol" 
+	            			  data-ng-model="addPM.protocol" 
+	            			  data-ng-change="addPM.changeProtocol()" 
+	            			  placeholder="请选择协议"
+	            			  required>
+	                <eayun-option value="'tcp'" text="TCP"></eayun-option>
+	                <eayun-option value="'udp'" text="UDP"></eayun-option>
+	            </eayun-select>
+	        </div>
+	        <div class="ey-form-group">
+	            <label class="ey-form-label">源IP：</label>
+	            <span data-ng-bind="addPM.gatewayIp"></span>
+	        </div>
+	        <div class="ey-form-group" data-ng-class="(myForm.resourcePort.$dirty && (myForm.resourcePort.$invalid || addPM.checkResourcePortFlag))?'ey-has-error' : ''">
+	            <label class="ey-form-label ey-required">源端口：</label>
+	            <input class="ey-form-input ey-form-w3" name="resourcePort" 
+	            	   data-ng-model="addPM.resourcePort"
+	            	   data-ng-pattern="/^(^[1-9]\d{0,3}$)|(^[1-5]\d{4}$)|(^6[0-4]\d{3}$)|(^65[0-4]\d{2}$)|(^655[0-2]\d$)|(^6553[0-5]$)$/"
+	            	   data-ng-change="addPM.checkResourcePort()" 
+	            	   placeholder="请输入源端口" 
+	            	   required >
+	            <!--<span class="ey-text-tip ey-has-error" data-ng-if="myForm.resourcePort.$dirty && myForm.resourcePort.$error.required">源端口不能为空</span>-->
+	            <span class="ey-text-tip ey-has-error"
+					  data-ng-if="myForm.resourcePort.$valid &&  addPM.checkResourcePortFlag">
+					源端口已存在
+				</span>
+	            <span class="ey-text-tip ey-has-error"
+					  data-ng-if="myForm.resourcePort.$dirty
+					  			&& (myForm.resourcePort.$error.pattern
+					  			|| myForm.resourcePort.$error.required)">
+					请输入1到65535的整数
+				</span>
+	        </div>
+	        <div class="ey-form-group">
+	            <label class="ey-form-label ey-required">目的子网：</label>
+	            <eayun-select class="ey-form-w6" name="subnet" 
+	            			  data-ng-model="addPM.subnetId" 
+	            			  data-ng-change="addPM.changeSubnetId()"
+	            			  placeholder="请选择目的子网"
+	            			  required >
+	                <eayun-option data-ng-repeat="subnet in addPM.subnetList" value="subnet.subnetId" text="{{subnet.subnetName + '(' + subnet.cidr + ')'}}" data-ng-if="subnet.subnetType==1"></eayun-option>
+	            </eayun-select>
+	        </div>
+	        <div class="ey-form-group">
+	            <label class="ey-form-label ey-required">目的IP：</label>
+	            <eayun-select class="ey-form-w6" name="destinyId" 
+	                          data-ng-model="addPM.vm"
+	                          placeholder="请选择目的IP"
+	                          required >
+	                <eayun-option data-ng-repeat="vm in addPM.vmList" value="vm" text="{{vm.vmName + '(' + vm.vmIp + ')'}}"></eayun-option>
+	            </eayun-select>
+	        </div>
+	        <div class="ey-form-group" data-ng-class="(myForm.destinyPort.$dirty && myForm.destinyPort.$invalid) ? 'ey-has-error' : ''">
+	            <label class="ey-form-label ey-required">目的端口：</label>
+	            <input class="ey-form-input ey-form-w3" 
+	                   name="destinyPort" 
+	                   data-ng-model="addPM.destinyPort"
+	            	   data-ng-pattern="/^(^[1-9]\d{0,3}$)|(^[1-5]\d{4}$)|(^6[0-4]\d{3}$)|(^65[0-4]\d{2}$)|(^655[0-2]\d$)|(^6553[0-5]$)$/" 
+	            	   placeholder="请输入目的端口" 
+	            	   required >
+	            <!--<span class="ey-text-tip ey-has-error" data-ng-if="myForm.destinyPort.$dirty && myForm.destinyPort.$error.required">目的端口不能为空</span>-->
+	            <span class="ey-text-tip ey-has-error"
+					  data-ng-if="myForm.destinyPort.$dirty
+					  			&& (myForm.destinyPort.$error.pattern
+					  			|| myForm.destinyPort.$error.required)">
+					请输入1到65535的整数
+				</span>
+	        </div>
+	    </fieldset>
+	</form>
+</div>
+<!-- 按钮区域 -->
+<div class="ey-modal-footer">
+    <div class="ey-btn-group">
+        <button type="button" class="ey-btn ey-btn-primary" data-ng-click="commit()"
+        		data-ng-disabled="!myForm.$valid || addPM.checkResourcePortFlag">确 定</button>
+        <button type="button" class="ey-btn ey-btn-default" data-ng-click="cancel()">取 消</button>
+    </div>
+</div>

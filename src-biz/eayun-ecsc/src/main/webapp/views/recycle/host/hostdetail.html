@@ -1,0 +1,106 @@
+<!-- 详情 -->
+<div class="details" style="font-size: 12px;">
+  <form class="row" name="myForm" novalidate>
+    <div class="col-lg-12">
+    
+	    <div class="details-group">
+		    <div class="details-name col-sm-4">所属数据中心：</div>
+		    <div class="details-value col-sm-8">
+		      {{item.dcName}}
+		    </div>
+	    </div>
+	    
+	    <div class="details-group">
+		    <div class="details-name col-sm-4">云主机名称：</div>
+		    <div class="details-value col-sm-8">
+		      {{item.vmName}}
+		    </div>
+	    </div>
+	    
+	    <div class="details-group">
+		    <div class="details-name col-sm-4">云主机ID：</div>
+		    <div class="details-value col-sm-8">
+		      {{item.vmId}}
+		    </div>
+	    </div>
+	    
+	    <div class="details-group">
+		    <div class="details-name col-sm-4">系统：</div>
+		    <div class="details-value col-sm-8">
+		      {{item.sysType}}
+		    </div>
+	    </div>
+	    
+	    <div class="details-group">
+		    <div class="details-name col-sm-4">状态：</div>
+		    <div class="details-value col-sm-8">
+		    	<span class ="eayunfont ef-square" data-ng-class="vmStatusClass!=''?vmStatusClass:''"></span>
+		      	{{item.vmStatusStr}}
+		    </div>
+	    </div>
+	      
+	      <div class="details-group">
+	        <div class="details-name col-sm-4">CPU：</div>
+	        <div class="details-value col-sm-8">
+	          {{item.cpus}}核
+	        </div>
+	      </div>
+	      
+	      <div class="details-group">
+	        <div class="details-name">内存：</div>
+	        <div class="details-value">
+	          <span >{{item.rams/1024}}GB</span>
+	        </div>
+	      </div>
+	      
+	      <div class="details-group">
+	        <div class="details-name">系统盘：</div>
+	        <div class="details-value">
+	          <span >{{item.disks}}GB</span>
+	        </div>
+	      </div>
+	      
+	      <div class="details-group">
+	        <div class="details-name">私有网络：</div>
+	        <div class="details-value">
+	          <span >{{item.netName}}</span>
+	        </div>
+	      </div>
+	      
+	      <div class="details-group">
+	        <div class="details-name">所在子网：</div>
+	        <div class="details-value">
+	          <span title="{{(item.subnetName ? item.subnetName : '未加入')}}">{{'受管子网：'+(item.subnetName ? (item.subnetName.length>5?(item.subnetName.substr(0,5)+'...'):item.subnetName) : '未加入')}}，</span> &nbsp;&nbsp;
+	          <span title="{{(item.selfSubnetName? item.selfSubnetName : '未加入')}}">{{'自管子网：'+(item.selfSubnetName? (item.selfSubnetName.length>5?(item.selfSubnetName.substr(0,5)+'...'):item.selfSubnetName) : '未加入')}}</span>
+	        </div>
+	      </div>
+	      
+	      <div class="details-group">
+	        <div class="details-name">内网IP：</div>
+	        <div class="details-value">
+		        <span >{{'受管子网：'+(item.vmIp != 'null' ? item.vmIp : '未加入')}}，</span>&nbsp;&nbsp;
+		        <span >{{'自管子网：'+(item.selfIp != 'null' ? item.selfIp : '未加入')}}</span>
+	        </div>
+	      </div>
+	      
+	      <div class="details-group">
+	        <div class="details-name">创建时间：</div>
+	        <div class="details-value">
+	          <span >{{item.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+	        </div>
+	      </div>
+	      
+	      <div class="details-group">
+	        <div class="details-name">删除时间：</div>
+	        <div class="details-value">
+	          <span >{{item.deleteTime|date:'yyyy-MM-dd HH:mm:ss'}}</span>
+	        </div>
+	      </div>
+	      
+	      
+   </div>
+  </form>
+</div>
+  <div class="modal-footer" >
+    
+  </div>

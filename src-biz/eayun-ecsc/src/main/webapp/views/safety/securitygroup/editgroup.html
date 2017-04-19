@@ -1,0 +1,39 @@
+<form class="form-horizontal" name="myForm">
+
+	<div class="form-group has-feedback">
+		<label class="col-sm-3 ey-label">安全组名称：</label>
+
+		<div class="col-sm-8"
+			data-ng-class="(myForm.name.$dirty && myForm.name.$invalid) ? 'has-error' : ''">
+			<input type="text" id="name" class="ey-form-control" name="name"
+				maxlength="20" data-ng-model="model.sgName" placeholder="请输入名称"
+				required ajax-valid="validGroupName()"> <label
+				class="ey-prompt"
+				ng-show="myForm.name.$dirty && myForm.name.$error.required && !flag">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+			<label class="ey-prompt"
+				ng-show="myForm.name.$dirty && myForm.name.$error.ajaxValid && !flag">安全组名称已存在</label>
+			<label class="ey-prompt" ng-if="flag">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 ey-label">描述：</label>
+
+		<div class="col-sm-8">
+			<textarea class="form-control" rows="3" maxlength="200"
+				placeholder="请输入0-200位描述" data-ng-model="model.sgDescription"></textarea>
+		</div>
+	</div>
+
+
+	<!-- 按钮区域 -->
+	<div class="modal-footer ey-btn-group">
+		<button type="button" class="ey-btn ey-btn-primary btn-modal"
+			ng-click="commit()" ng-disabled="!myForm.$valid">确 定</button>
+		<button type="button" class="ey-btn ey-btn-default btn-modal"
+			ng-click="cancel()">取 消</button>
+	</div>
+
+
+
+</form>

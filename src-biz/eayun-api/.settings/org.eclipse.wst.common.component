@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="eayun-api">
+        <wb-resource deploy-path="/" source-path="/target/m2e-jee/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="eayun-log-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-log/eayun-log">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-log-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-log-intf/eayun-log-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-auth-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-auth-intf/eayun-auth-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-project-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-project-intf/eayun-project-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-datacenter-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-datacenter-intf/eayun-datacenter-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-dashboard-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-dashboard-intf/eayun-dashboard-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-obs-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-obs/eayun-obs">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-virtualization-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-virtualization-intf/eayun-virtualization-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-obs-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-obs-intf/eayun-obs-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-customer-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-customer-intf/eayun-customer-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-syssetup-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-syssetup-intf/eayun-syssetup-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-order-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-order-intf/eayun-order-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-money-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-money-intf/eayun-money-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-sms-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-sms-intf/eayun-sms-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-common-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-common/eayun-common">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-mail-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-mail-intf/eayun-mail-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-auth-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-auth/eayun-auth">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-customer-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-customer/eayun-customer">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-eayunstack-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-eayunstack/eayun-eayunstack">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-workorder-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-workorder-intf/eayun-workorder-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-notice-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-notice-intf/eayun-notice-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-invoice-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-invoice-intf/eayun-invoice-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-syssetup-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-syssetup/eayun-syssetup">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-virtualization-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-virtualization/eayun-virtualization">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-monitor-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-monitor-intf/eayun-monitor-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-unit-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-unit-intf/eayun-unit-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-file-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-file-intf/eayun-file-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-project-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-project/eayun-project">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-datacenter-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-datacenter/eayun-datacenter">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-schedule-res-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-schedule-res-intf/eayun-schedule-res-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-monitor-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-monitor/eayun-monitor">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-database-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-database-intf/eayun-database-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-money-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-money/eayun-money">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-order-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-order/eayun-order">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-pay-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-pay-intf/eayun-pay-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-pay-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-pay/eayun-pay">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-notice-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-notice/eayun-notice">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-workorder-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-workorder/eayun-workorder">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-news-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-news-intf/eayun-news-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-news-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-news/eayun-news">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-file-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-file/eayun-file">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-unit-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-unit/eayun-unit">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-invoice-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-invoice/eayun-invoice">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-database-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-database/eayun-database">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-api-entry-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-api-entry/eayun-api-entry">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="eayun-api-verify-intf-1.0.0-RELEASE.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/eayun-api-verify-intf/eayun-api-verify-intf">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="eayun-api"/>
+        <property name="java-output-path" value="/eayun-api/target/classes"/>
+    </wb-module>
+</project-modules>

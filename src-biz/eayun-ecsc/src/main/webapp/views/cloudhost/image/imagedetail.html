@@ -1,0 +1,170 @@
+<!-- 详情 -->
+<div class="modal-header">
+    <span class="modal-title">镜像详情</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+
+<div class="modal-body" style="width: 650px;">
+<div class="details" style="font-size: 12px;">
+  <form class="row" name="myForm">
+    <div class="col-lg-12">
+    
+    <div class="details-group">
+        <div class="details-name">所属数据中心：</div>
+        <div class="details-value">
+          {{model.dcName}}
+        </div>
+      </div>
+    
+    <div class="details-group">
+        <div class="details-name">镜像ID：</div>
+        <div class="details-value">
+          {{model.imageId}}
+        </div>
+      </div>
+    
+    <div class="details-group">
+        <div class="details-name">镜像名称：</div>
+        <div class="details-value">
+          <span >{{model.imageName}}</span>
+        </div>
+      </div>
+    
+    
+     <div class="details-group">
+        <div class="details-name">系统：</div>
+        <div class="details-value">
+		{{model.sysTypeName!='null'?model.sysTypeName:""}}
+        </div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">状态：</div>
+        <div class="details-value">
+        <span class="eayunfont ef-square" data-ng-class="imageStatusClass!=''?imageStatusClass:''"></span>
+		{{"null"!=model.statusForDis?model.statusForDis:""}}
+        </div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">来源镜像类型：</div>
+        <div class="details-value">
+		{{'1'==model.sourceType?'公共镜像':'市场镜像'}}
+        </div>
+      </div>
+      
+       <div class="details-group">
+        <div class="details-name">来源镜像名称：</div>
+        <div class="details-value" data-ng-if="model.sourceName.length>20">
+         <span>{{model.sourceName!='null'?model.sourceName.substring(0,19):''}}</span>
+         <div class="detail-icon ellipsis pointer"
+       	      ng-mouseenter="openPopBox({value:model.sourceName,type:'imageName'})"
+       		  ng-mouseleave="closePopBox('imageName')"
+			  hint="views/cloudhost/volume/volumedescription.html"
+       		  hint-show="nameShow"
+       		  tooltip-class="tooltip-description"
+       		  tooltip-placement="bottom">
+       	  </div>
+        </div>
+        <div class="details-value" data-ng-if="model.sourceName.length<=20">
+        	<span>{{model.sourceName!='null'?model.sourceName:''}}</span>
+        </div>
+      </div>
+      
+      
+      
+      <div class="details-group">
+        <div class="details-name">最小CPU：</div>
+        <div class="details-value">
+		{{"null"!=model.minCpu?model.minCpu:"0"}}核
+        </div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">最小内存：</div>
+        <div class="details-value">
+		{{model.minRam>1?model.minRam:"1"}}GB
+        </div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">最小磁盘：</div>
+        <div class="details-value">
+		{{"null"!=model.minDisk?model.minDisk:"0"}}GB
+        </div>
+      </div>
+      <div class="details-group">
+        <div class="details-name">最大CPU：</div>
+        <div class="details-value">
+		{{null==model.maxCpu?"":model.maxCpu+"核"}}
+        </div>
+      </div>
+      <div class="details-group">
+        <div class="details-name">最大内存：</div>
+        <div class="details-value">
+		{{null==model.maxRam?"":model.maxRam+"GB"}}
+        </div>
+      </div>
+      
+      
+      
+      <div class="details-group">
+        <div class="details-name">创建云主机数量：</div>
+        <div class="details-value">
+		{{model.vmNum}}
+        </div>
+      </div>
+      
+
+      
+      <div class="details-group">
+        <div class="details-name">创建时间：</div>
+        <div class="details-value">
+         {{model.createTimeForDis}}
+        </div>
+      </div>
+      
+ 
+    <div class="details-group">
+        <div class="details-name">已有标签：</div>
+        <div class="details-value" ng-if="tags.gt2Tags">
+         <span>{{tags.twoTagsString}}</span>
+         <div class="detail-icon ellipsis pointer"
+       	      ng-mouseenter="openPopBox({value:tags.allTagsString,type:'tagName'})"
+       		  ng-mouseleave="closePopBox('tagName')"
+			  hint="views/cloudhost/volume/volumedescription.html"
+       		  hint-show="tagShow"
+       		  tooltip-class="tooltip-description"
+       		  tooltip-placement="bottom">
+       	  </div>
+        </div>
+        <div class="details-value" ng-if="!tags.gt2Tags">
+        	<span>{{tags.allTagsString}}</span>
+        </div>
+      </div>
+      
+      
+       <div class="details-group">
+        <div class="details-name">描述：</div>
+        <div class="details-value" ng-if="model.imageDescription.length>30">
+         <span>{{model.imageDescription.substring(0,29)}}</span>
+         <div class="detail-icon ellipsis pointer"
+       	      ng-mouseenter="openPopBox({value:model.imageDescription,type:'imageDesc'})"
+       		  ng-mouseleave="closePopBox('imageDesc')"
+			  hint="views/cloudhost/volume/volumedescription.html"
+       		  hint-show="imageDescShow"
+       		  tooltip-class="tooltip-description"
+       		  tooltip-placement="bottom">
+       	  </div>
+        </div>
+        <div class="details-value" ng-if="model.imageDescription.length<=30">
+        	<span>{{'null'!=model.imageDescription&&null!=model.imageDescription?model.imageDescription:''}}</span>
+        </div>
+      </div>
+      
+    </div>
+    
+  </form>
+</div>
+</div>
+<div class="modal-footer">
+</div>

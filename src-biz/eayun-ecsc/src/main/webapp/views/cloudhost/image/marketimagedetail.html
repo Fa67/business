@@ -1,0 +1,190 @@
+<div class="clearfix">
+<div>
+<h4>基本信息</h4>
+<!-- 详情 -->
+<div class="details">
+  <form class="row" name="myForm">
+    <div class="col-lg-6">
+    <div class="details-group">
+      <div class="details-name">镜像名称：</div>
+        <div class="details-value">
+          <span>{{item.imageName.length>20?item.imageName.substring(0,19):item.imageName}}</span>
+        </div>
+        <div ng-show="item.imageName.length>20" class="detail-icon ellipsis pointer"
+        	ng-mouseenter="openPopBox({value:item.imageName,type:'imageName'})"
+        	ng-mouseleave="closePopBox('imageName')"
+        	hint="views/cloudhost/volume/volumedescription.html"
+          	hint-show="nameShow"
+          	tooltip-class="tooltip-description"
+          	tooltip-placement="bottom">
+        </div>
+      </div>
+    
+      
+      
+      <div class="details-group">
+        <div class="details-name">镜像ID：</div>
+        <div class="details-value">
+          {{item.imageId}}
+        </div>
+      </div>
+      
+      
+      
+      <div class="details-group">
+        <div class="details-name">状态：</div>
+        <div class="details-value">
+	    <span class ="eayunfont ef-square" data-ng-class="imageStatusClass!=''?imageStatusClass:''"></span>
+	        {{"null"!=item.statusForDis?item.statusForDis:""}}
+        </div>
+      </div>
+      
+    
+      
+      
+      
+      <div class="details-group">
+        <div class="details-name">提供商：</div>
+        <div class="details-value">
+          <span>{{item.provider.length>30?item.provider.substring(0,29):item.provider}}</span>
+        </div>
+        <div ng-show="item.provider.length>30" class="detail-icon ellipsis pointer"
+        	ng-mouseenter="openPopBox({value:item.provider,type:'imageProvider'})"
+        	ng-mouseleave="closePopBox('imageProvider')"
+        	hint="views/cloudhost/volume/volumedescription.html"
+          	hint-show="imageProviderShow"
+          	tooltip-class="tooltip-description"
+          	tooltip-placement="bottom">
+        </div>
+      </div>
+      
+      
+      
+      
+      <div class="details-group">
+        <div class="details-name">业务类别：</div>
+        <div class="details-value">
+        {{"null"==item.professionName?"":item.professionName}} 
+        </div>
+      </div>
+      
+      
+      <div class="details-group">
+        <div class="details-name">系统类型：</div>
+        <div class="details-value">
+        {{"null"==item.sysTypeName?"":item.sysTypeName}} 
+        </div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">操作系统：</div>
+        <div class="details-value">
+          <span>{{item.sysDetail.length>30?item.sysDetail.substring(0,29):item.sysDetail}}</span>
+        </div>
+        <div ng-show="item.sysDetail.length>30" class="detail-icon ellipsis pointer"
+        	ng-mouseenter="openPopBox({value:item.sysDetail,type:'imageSys'})"
+        	ng-mouseleave="closePopBox('imageSys')"
+        	hint="views/cloudhost/volume/volumedescription.html"
+          	hint-show="imageSys"
+          	tooltip-class="tooltip-description"
+          	tooltip-placement="bottom">
+        </div>
+      </div>
+      
+    
+     <div class="details-group">
+        <div class="details-name">集成软件：</div>
+        <div class="details-value">
+          <span>{{item.integratedSoftware.length>30?item.integratedSoftware.substring(0,29):item.integratedSoftware}}</span>
+          
+        </div>
+        <div ng-show="item.integratedSoftware.length>30" class="detail-icon ellipsis pointer"
+        	ng-mouseenter="openPopBox({value:item.integratedSoftware,type:'imageDesc'})"
+        	ng-mouseleave="closePopBox('imageDesc')"
+        	hint="views/cloudhost/volume/volumedescription.html"
+          	hint-show="descShow"
+          	tooltip-class="tooltip-description"
+          	tooltip-placement="bottom">
+        </div>
+        
+        
+        
+     </div>
+
+    </div>
+    
+    
+   	<div class="col-lg-6"> 
+      
+      
+      <div class="details-group">
+        <div class="details-name">所属数据中心：</div>
+        <div class="details-value">
+          {{item.dcName}}
+        </div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">创建时间：</div>
+        <div class="details-value">
+          {{item.createdTime | date:"yyyy-MM-dd HH:mm:ss"}}
+        </div>
+      </div>
+      
+      
+      <div class="details-group">
+        <div class="details-name">最小CPU：</div>
+        <div class="details-value">
+          {{item.minCpu}}核
+        </div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">最小内存：</div>
+        <div class="details-value">
+          {{item.minRam}}GB
+        </div>
+      </div>
+      
+      
+      <div class="details-group">
+        <div class="details-name">最小硬盘：</div>
+        <div class="details-value">
+          {{item.minDisk}}GB
+        </div>
+      </div>
+      
+      
+      <div class="details-group">
+        <div class="details-name">最大CPU：</div>
+        <div class="details-value">
+          {{item.maxCpu}}核
+        </div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">最大内存：</div>
+        <div class="details-value">
+         {{item.maxRam}}GB
+        </div>
+      </div>
+      
+    </div>
+  </form>
+</div>
+</div>
+</div>
+
+<div class="ey-divider"></div>
+
+<div class="clearfix">
+<div>
+<h4>镜像描述</h4>
+<!-- 表格 -->
+<div class="details">
+    <div>
+      <div data-ng-bind-html="item.marketimageDepict"></div>
+    </div>
+</div>
+</div>
+</div>

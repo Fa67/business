@@ -1,0 +1,336 @@
+<div class="clearfix">
+<div>
+<h4>云主机详情</h4>
+<!-- Form表单 -->
+<form class="form-inline" novalidate>
+	  <button  class="ey-btn ey-btn-primary" data-ng-click="vmOption('restartVm')" data-ng-if="model.vmStatus=='SHUTOFF'&&vmDetailPermissions.isVmStartOrShut"
+	  ng-disabled="model.chargeState != '0' ">
+	     <span class = "eayunfont ef-play"></span>
+	     <span>启动云主机</span>
+	  </button>
+	  <button  class="ey-btn ey-btn-primary" data-ng-click="shutdown()" data-ng-if="(model.vmStatus=='ACTIVE'||model.vmStatus=='ERROR')&&vmDetailPermissions.isVmStartOrShut" 
+	   ng-disabled="model.vmStatus=='ERROR' || model.chargeState != '0'">
+   		  <span class = "eayunfont ef-poweroff"></span>
+	      <span>关闭云主机</span>
+	  </button>
+	  <button  class="ey-btn ey-btn-primary detail-btn-left" data-ng-click="restart('softRestartVm')"
+	  ng-disabled="model.vmStatus!='ACTIVE' || model.chargeState != '0'" data-ng-if="vmDetailPermissions.isVmSoftRestart">
+   		 <span class = "eayunfont ef-loading"></span>
+	     <span>重启云主机</span>
+	  </button>
+	  <button  class="ey-btn ey-btn-primary detail-btn-left" data-ng-click="bindDisks(model)" data-ng-if="vmDetailPermissions.isBindVolume" 
+	  ng-disabled="(model.vmStatus!='ACTIVE'&&model.vmStatus!='SHUTOFF') || model.chargeState != '0'">
+   		 <span class = "eayunfont ef-storage"></span>
+	     <span>挂载云硬盘</span>
+	  </button>
+	  <button  class="ey-btn ey-btn-primary detail-btn-left" data-ng-click="bindFloatIp(model)" 
+	  data-ng-if="(model.vmStatus=='ACTIVE'||model.vmStatus=='SHUTOFF')&&model.floatIp=='' && vmDetailPermissions.isVmBindFloatIp"
+	  ng-disabled="model.chargeState != '0' ">
+   		 <span class = "eayunfont ef-IP-big"></span>
+	     <span>绑定公网IP</span>
+	  </button>
+	  <button  class="ey-btn ey-btn-primary detail-btn-left" data-ng-click="unbindFloatIp(model)" 
+	  data-ng-if="(model.vmStatus=='ACTIVE'||model.vmStatus=='SHUTOFF')&&model.floatIp!='' && vmDetailPermissions.isVmUnBindFloatIp"
+	  ng-disabled="model.chargeState != '0' ">
+   		 <span class = "eayunfont ef-IP-disable"></span>
+	     <span>解绑公网IP</span>
+	  </button>
+	  <button  class="ey-btn ey-btn-primary detail-btn-left" data-ng-click="showVmMonitor(model.vmId)"
+	  data-ng-if="vmDetailPermissions.isShowMonitor" ng-disabled="model.vmStatus=='SUSPENDED' || model.vmStatus=='DELETING' || model.chargeState != '0'">
+   		 <span class = "eayunfont ef-monitor-a"></span>
+	     <span>查看监控</span>
+	  </button>
+			
+		<div class="btn-group detail-btn-left" role="group"  style="width: 150px;"
+		data-ng-show="
+		((model.vmStatus=='ACTIVE'||model.vmStatus=='SHUTOFF') && (vmDetailPermissions.isVmAddImage || vmDetailPermissions.isVmEditSSH || vmDetailPermissions.isVmResetPwd) && model.chargeState == '0')
+		||(model.vmStatus=='ACTIVE' && (vmDetailPermissions.isVmEditSG || vmDetailPermissions.isVmEditSSH || vmDetailPermissions.isVmLog 
+		|| vmDetailPermissions.isVmRebuild) && model.chargeState == '0')
+		||((model.vmStatus=='ACTIVE'||model.vmStatus=='SHUTOFF')&& vmDetailPermissions.isVmResize && model.chargeState == '0')
+		||(model.vmStatus=='VERIFY_RESIZE' && vmDetailPermissions.isVmResize && model.chargeState == '0')
+		||((model.vmStatus=='ACTIVE'||model.vmStatus=='SHUTOFF'||model.vmStatus=='VERIFY_RESIZE'||model.vmStatus=='ERROR') && vmDetailPermissions.isVmTag && model.chargeState == '0')
+		||((model.vmStatus=='ACTIVE'||model.vmStatus=='SHUTOFF'||model.vmStatus=='VERIFY_RESIZE'||model.vmStatus=='ERROR')
+		 && vmDetailPermissions.isVmDelete && !(model.payType == '1'&& model.chargeState == '0'))">
+	      <button class="btn btn-default btn-sm" data-toggle="dropdown" > 更多操作</button>
+	      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+	        <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+	      </button>
+	      <ul class="dropdown-menu vm-dropmeau ey-instance-more" style="left:0px;">
+	        <li data-ng-if="(model.vmStatus=='ACTIVE'||model.vmStatus=='SHUTOFF') && vmDetailPermissions.isVmAddImage && model.chargeState == '0'">
+	        	<a class="btn-sm" href="" data-ng-click="createSnapshot(model)" style="padding: 5px 10px;">
+		        	<span class="eayunfont ef-mirro ey-font-size-bigger"></span>创建镜像
+	        	</a>
+	        </li>
+	        <li data-ng-if="(model.vmStatus=='ACTIVE'||model.vmStatus=='SHUTOFF') && vmDetailPermissions.isVmResize && model.chargeState == '0'">
+	        	<a class="btn-sm" href="" data-ng-click="resizeVm(model)" style="padding: 5px 10px;">
+		        	<span class="eayunfont ef-scale ey-font-size-bigger"></span>调整配置
+	        	</a>
+	        </li>
+	        <li data-ng-if="(model.vmStatus=='ACTIVE'||model.vmStatus=='SHUTOFF') && vmDetailPermissions.isVmEditSG && model.chargeState == '0'">
+	        	<a class="btn-sm" href="" data-ng-click="editSg(model)" style="padding: 5px 10px;">
+		        	<span class="eayunfont ef-safe ey-font-size-bigger"></span>编辑安全组
+	        	</a>
+	        </li>
+	        <li data-ng-if="(model.vmStatus=='ACTIVE' || model.vmStatus=='SHUTOFF') && vmDetailPermissions.isVmResetPwd && model.chargeState == '0'">
+	        	<a class="btn-sm" href="" data-ng-click="resetPwd(model)" style="padding: 5px 10px;">
+		        	<span class="eayunfont ef-password ey-font-size-bigger"></span>修改密码
+	        	</a>
+	        </li>
+	        <li data-ng-if="(model.vmStatus=='ACTIVE' || model.vmStatus=='SHUTOFF') && vmDetailPermissions.isVmEditSSH 
+	        	&& model.chargeState == '0' && model.osType == 'Linux'">
+	        	<a class="btn-sm" href="" data-ng-click="editSSH(model)" style="padding: 5px 10px;">
+		        	<span class="eayunfont ef-bind ey-font-size-bigger"></span>绑定/解绑SSH密钥
+	        	</a>
+	        </li>
+	        <li data-ng-if="(model.vmStatus=='ACTIVE'||model.vmStatus=='SHUTOFF'||model.vmStatus=='ERROR'
+	        ||model.vmStatus=='VERIFY_RESIZE') && vmDetailPermissions.isVmTag && model.chargeState == '0'">
+	        	<a class="btn-sm" href="" data-ng-click="tagResource('vm',model.vmId)" style="padding: 5px 10px;">
+		        	<span class="eayunfont ef-tags ey-font-size-bigger"></span>标签
+	        	</a>
+	        </li>
+	        <li data-ng-show="(model.vmStatus=='ACTIVE'||model.vmStatus=='ERROR'||model.vmStatus=='SHUTOFF') && vmDetailPermissions.isVmLog && model.chargeState == '0'">
+	        	<a class="btn-sm" href="" data-ng-click="getVmLog(model)" style="padding: 5px 10px;">
+		        	<span class="eayunfont ef-rizhi ey-font-size-bigger"></span>查看日志
+	        	</a>
+	        </li>
+	        <li data-ng-if="((model.vmStatus=='ACTIVE'||model.vmStatus=='SHUTOFF'||model.vmStatus=='ERROR'
+	        ||model.vmStatus=='VERIFY_RESIZE')&& !(model.payType == '1'&& model.chargeState == '0')) && vmDetailPermissions.isVmDelete">
+	        	<a class="btn-sm" href="" data-ng-click="deleteVm(model)" style="padding: 5px 10px;">
+		        	<span class="eayunfont ef-delete ey-font-size-bigger"></span>删除云主机
+	        	</a>
+	        </li>
+	      </ul>
+	    </div>
+	<div  style="float: right;">
+		  <button  class="ey-btn ey-btn-primary" data-ng-click="openVmConsole(model)" ng-disabled="model.vmStatus!='ACTIVE' || model.chargeState != '0'"
+		  	data-ng-show="vmDetailPermissions.isVmOpenConsole">
+       		<span class = "eayunfont ef-console"></span>
+	     	<span>云主机控制台</span>
+		  </button>
+	</div>
+</form>
+
+<!-- 详情 -->
+<div class="details clearfix">
+  
+    <div class="col-lg-6">
+    <div class="details-group">
+        <div class="details-name"
+			hint="views/cloudhost/host/edithostname.html"
+       		hint-show="hintNameShow"
+       		tooltip-class="tooltip-edit"
+       		tooltip-placement="right">云主机名称：</div>
+        <div class="details-value">
+          <span data-ng-class="vmNameEditable?'hide':'show'">{{model.vmName}}</span>
+        </div>
+	      <span class="badge" data-ng-show = "(model.vmStatus=='ACTIVE'||model.vmStatus=='SHUTOFF'||model.vmStatus=='VERIFY_RESIZE')
+	       && vmDetailPermissions.isVmEdit && model.chargeState == '0'" data-ng-class="vmNameEditable?'hide':'show'" data-ng-click="edit('vmName')">
+		      <span class="glyphicon glyphicon-pencil">
+		      </span> 
+	      </span>
+      </div>
+      
+       <div class="details-group">
+        <div class="details-name">云主机ID：</div>
+        <div class="details-value">{{model.vmId}}</div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">状态：</div>
+        <div class="details-value">
+        <span class ="eayunfont ef-square" data-ng-class="vmStatusClass!=''?vmStatusClass:''"></span>
+        {{model.vmStatusStr}}
+        </div>
+        
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">系统盘：</div>
+        <div class="details-value">{{model.disks}}G</div>
+      </div>
+      <div class="details-group">
+        <div class="details-name">数据盘：</div>
+        <div class="details-value">{{model.dataCapacity}}G</div>
+      </div>
+      
+      
+      <div class="details-group">
+        <div class="details-name">所在私有网络：</div>
+        <div class="details-value">{{model.netName}}</div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">公网IP：</div>
+        <div class="details-value">{{!model.floatIp?'未分配':model.floatIp}}</div>
+      </div>
+      
+ 	  <div class="details-group">
+        <div class="details-name">所在安全组：</div>
+         <div class="details-value" ng-show="model.securityGroups.length>25">
+        	<span>{{model.securityGroups.substr(0,25)}}</span>
+        	<div class="detail-icon ellipsis pointer"
+        		ng-mouseenter="openPopBox({value:model.securityGroups,type:'vmSgNames'})"
+        		ng-mouseleave="closePopBox('vmSgNames')"
+				hint="views/cloudhost/volume/volumedescription.html"
+        		hint-show="sgShow"
+        		tooltip-class="tooltip-description"
+        		tooltip-placement="bottom">
+        	</div>
+        </div>
+        <div class="details-value" ng-show="model.securityGroups.length<=25">
+        	<span>{{model.securityGroups}}</span>
+        </div>
+       </div>
+    
+      <div class="details-group">
+        <div class="details-name">创建时间：</div>
+        <div class="details-value">{{model.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">到期时间：</div>
+        <div class="details-value">{{model.payType=='1'?(model.endTime|date:'yyyy-MM-dd HH:mm:ss'):'--'}}</div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">绑定SSH密钥数量：</div>
+        <div class="details-value">{{model.sshCount+'个'}}</div>
+      </div>
+    
+    </div>
+    
+    
+   	<div class="col-lg-6"> 
+      <div class="details-group">
+        <div class="details-name"
+        	hint="views/cloudhost/host/edithostdescription.html"
+       		hint-show="hintDescShow"
+       		tooltip-class="tooltip-edit"
+       		tooltip-placement="right">描述：</div>
+       <div class="details-value">
+          <span data-ng-class="vmDescEditable?'hide':'show'">
+          	{{(model.vmDescripstion.length>25?model.vmDescripstion.substring(0,25):model.vmDescripstion)}}
+          </span>
+        </div>
+        <div ng-show="model.vmDescripstion.length>25" class="detail-icon ellipsis pointer"
+        	ng-mouseenter="openPopBox({value:model.vmDescripstion,type:'vmDesc'})"
+        	ng-mouseleave="closePopBox('vmDesc')"
+        	hint="views/cloudhost/volume/volumedescription.html"
+          	hint-show="descShow"
+          	tooltip-class="tooltip-description"
+          	tooltip-placement="bottom"></div>
+	      <span class="badge" data-ng-show = "(model.vmStatus=='ACTIVE'||model.vmStatus=='SHUTOFF'||model.vmStatus=='VERIFY_RESIZE')
+	       && vmDetailPermissions.isVmEdit && model.chargeState == '0'"
+	      data-ng-class="vmDescEditable?'hide':'show'" data-ng-click="edit('vmDesc')">
+		      <span class="glyphicon glyphicon-pencil">
+		      </span> 
+	      </span>
+      </div>
+      
+      
+      <div class="details-group">
+        <div class="details-name">系统：</div>
+        <div class="details-value">{{model.sysType}}</div>
+      </div>
+      <div class="details-group">
+        <div class="details-name"> 镜像名称：</div>
+        <div class="details-value" title="{{model.imageName}}">{{model.imageName.length>20?(model.imageName.substr(0,20)+'...'):model.imageName}}</div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">CPU：</div>
+        <div class="details-value">{{model.cpus}}核</div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">内存：</div>
+        <div class="details-value">{{model.rams/1024}}GB</div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">所属数据中心：</div>
+        <div class="details-value">{{model.dcName}}</div>
+      </div>
+      
+       <div class="details-group">
+        <div class="details-name">所在子网：</div>
+        <div class="details-value">
+        	<span title="{{model.subnetName}}">受管子网：{{model.subnetName?(model.subnetName.length>5?model.subnetName.substr(0,5)+'...':model.subnetName):'未加入'}}，</span>
+        	<span title="{{model.selfSubnetName}}">自管子网：{{model.selfSubnetName?(model.selfSubnetName.length>5?model.selfSubnetName.substr(0,5)+'...':model.selfSubnetName):'未加入'}}</span>
+        </div>
+       	<button class="eayun-table-search ey-btn-table vm-detail-modsub" ng-if="vmDetailPermissions.isModifySubnet" data-ng-click="modifySubnet(model)" 
+       	ng-disabled="!((model.vmStatus=='ACTIVE'||model.vmStatus=='SHUTOFF')&& model.chargeState == '0')">修改子网</button>
+       </div>
+ 
+      <div class="details-group">
+        <div class="details-name">内网IP：</div>
+        <div class="details-value">
+        	<span>受管子网：{{model.vmIp !='null'?model.vmIp:'未加入'}}，</span>
+        	<span>自管子网：{{model.selfIp != ''?model.selfIp:'未加入'}}</span>
+		</div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">计费状态：</div>
+        <div class="details-value">{{model.payTypeStr}}</div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">已有标签：</div>
+        <div class="details-value" ng-show="tag.gt2Tags">
+        	<span>{{tag.twoTagsString}}</span>
+        	<div class="detail-icon ellipsis pointer"
+        		ng-mouseenter="openPopBox({value:tag.allTagsString,type:'tagName'})"
+        		ng-mouseleave="closePopBox('tagName')"
+				hint="views/cloudhost/volume/volumedescription.html"
+        		hint-show="hintTagShow"
+        		tooltip-class="tooltip-description"
+        		tooltip-placement="bottom">
+        	</div>
+        </div>
+        <div class="details-value" ng-show="!tag.gt2Tags">
+        	<span>{{tag.allTagsString}}</span>
+        </div>
+      </div>
+            
+    </div>
+</div>
+</div>
+</div>
+<div class="ey-divider"></div>
+<div class="clearfix">
+<div>
+<h4>已挂载的云硬盘列表</h4>
+<!-- 表格 -->
+  <table class="ey-table">
+    <thead>
+    <tr>
+      <th>云硬盘名称</th>
+      <th>容量</th>
+      <th>挂载点</th>
+      <th>硬盘属性</th>
+      <th>创建方式</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr data-ng-repeat="volume in volumes">
+      <td class="click-td" data-ng-click="volumeDetail(volume)" title="{{volume.volName}}">{{volume.volName}}</td>
+      <td>{{volume.volSize}}GB</td>
+      <td>{{(model.osType=='Windows'||"null"==volume.bindPoint)?"--":volume.bindPoint}}</td>
+      <td>{{volume.volBootable=='1'?'系统盘':'数据盘'}}</td>
+      <td>{{("privateImage"==volume.diskFrom || "publicImage"==volume.diskFrom || "marketImage"==volume.diskFrom)?"镜像":""}}
+      {{"blank"==volume.diskFrom?"空白盘":""}}{{"snapshot"==volume.diskFrom?"备份":""}}</td>
+      <td data-ng-show = "vmDetailPermissions.isVmUnbindVolume&&volume.volBootable!='1'" >
+      	<div class="ey-btn-group">
+	        <button class="ey-btn" data-ng-click="addVolumeSnapshot(volume)" ng-disabled="volume.chargeState != '0'">创建备份</button>
+	        <button class="ey-btn" data-ng-click="unbindVol(volume)" ng-disabled="volume.volStatus != 'IN-USE'">解绑</button>
+      	</div>
+      </td>
+      <td data-ng-show = "!vmDetailPermissions.isVmUnbindVolume||volume.volBootable=='1'" >----</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</div>

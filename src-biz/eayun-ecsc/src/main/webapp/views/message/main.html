@@ -1,0 +1,17 @@
+
+
+<ul class="ey-nav-bread">
+	<!-- <li data-ui-sref="app.message.message">消息</li> -->
+	<li data-ui-sref={{item.route}} data-ng-repeat="item in navLists">{{item.name}}</li>
+	<li>{{cucrentName}}</li>
+	
+</ul>
+
+<div class="ey-divider "></div>
+
+<div class="ey-panel ey-panel-full clearfix" style= "position: relative; ">
+  <div class="ey-panel-body">
+
+    <div data-ui-view=""></div>
+  </div>
+</div>

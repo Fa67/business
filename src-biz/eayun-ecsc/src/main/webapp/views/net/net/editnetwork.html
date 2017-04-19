@@ -1,0 +1,93 @@
+<div class="modal-header">
+    <span class="modal-title">更改带宽</span>
+    <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 666px;" novalidate>
+    <form class="ey-form" name="addNetWork">
+        <div class="ey-form-group">
+            <label class="ey-form-label">网络名称：</label>
+            <span class="ey-form-w8" data-ng-bind="::netWork.netName"></span>
+        </div>
+        <!-- 路由带宽开始 -->
+        <div class="ey-form-group">
+            <label class="ey-form-label">带宽：</label><!--netWork.payType == '1' ? netWork.rateOld : 1-->
+            <eayun-progress class="ey-form-w8"
+                            data-ng-class="(addNetWork.bandRate.$dirty
+                                        && (!rateValid
+                                        || (netWork.payType == '1' && netWork.rate <= netWork.rateOld)
+                                        || (netWork.payType == '2' && netWork.rate == netWork.rateOld)))
+                                        || (netWork.rate - netWork.rateOld > bandQuotas)
+                                        ? 'ey-has-error' : ''"
+                            name="bandRate"
+                            data-ng-model="netWork.rate"
+                            on-value-change="changeBand($value)"
+                            max-value="100"
+                            min-value="0"
+                            text="Mbps">
+            </eayun-progress>
+            <span class="ey-text-tip">
+                1Mbps - 100Mbps
+            </span>
+            <span class="ey-text-tip ey-has-error"
+                  data-ng-show="netWork.rate - netWork.rateOld > bandQuotas">
+                带宽配额不足
+            </span>
+            <span class="ey-text-tip ey-has-error"
+                  data-ng-show="addNetWork.bandRate.$dirty
+                            && (netWork.rate - netWork.rateOld <= bandQuotas || !netWork.rate)
+                            && !rateValid">
+                带宽必须为正整数
+            </span>
+            <span class="ey-text-tip ey-has-error"
+                  data-ng-if="netWork.payType == '1'"
+                  data-ng-show="addNetWork.bandRate.$dirty
+                            && netWork.rate - netWork.rateOld <= bandQuotas
+                            && rateValid
+                            && netWork.rate <= netWork.rateOld">
+                带宽必须大于当前大小
+            </span>
+            <span class="ey-text-tip ey-has-error"
+                  data-ng-if="netWork.payType == '2'"
+                  data-ng-show="addNetWork.bandRate.$dirty
+                            && netWork.rate == netWork.rateOld">
+                带宽不能等于当前大小
+            </span>
+        </div>
+        <!-- 付款方式-->
+        <div class="ey-form-group">
+            <label class="ey-form-label">付款方式：</label>
+            <span class="ey-form-w8" data-ng-bind="netWork.payType == '1' ? '包年包月' : '按需付费'"></span>
+        </div>
+    </form>
+</div>
+<div class="ey-modal-footer">
+    <p class="ey-text-tip" data-ng-if="netWork.payType == '1'">
+        注：需支付的费用=（新配置-旧配置）*当前每月的单价*(剩余总天数/30)
+    </p>
+    <div class="ey-btn-group">
+        <span class="ey-font-bold">总价：
+            <span class="ey-color-red" data-ng-if="hasGotPrice">￥&nbsp;</span>
+            <span class="ey-font-huger ey-color-red ey-font-bold" data-ng-if="netWork.payType == '1' && hasGotPrice">
+                {{netWork.price | thousand}}
+            </span>
+            <span class="ey-color-red ey-font-bold" data-ng-if="!hasGotPrice">
+                {{priceMsg}}
+            </span>
+            <span class="ey-font-huger ey-color-red ey-font-bold" data-ng-if="netWork.payType == '2' && hasGotPrice">
+                {{netWork.price | thousand:true}}
+            </span>
+            <span class="ey-color-default" data-ng-if="netWork.payType == '2' && hasGotPrice">
+                 &nbsp;/小时
+            </span>
+        </span>
+        <button type="button" class="ey-btn ey-btn-primary" data-ng-click="commit()"
+                data-ng-disabled="netWork.rate - netWork.rateOld > bandQuotas
+                                || !rateValid
+                                || netWork.rate == netWork.rateOld
+                                || (netWork.payType == '1' && netWork.rate < netWork.rateOld)
+                                || !hasGotPrice">
+            确 定
+        </button>
+        <button type="button" class="ey-btn ey-btn-default" data-ng-click="cancel()">取 消</button>
+    </div>
+</div>

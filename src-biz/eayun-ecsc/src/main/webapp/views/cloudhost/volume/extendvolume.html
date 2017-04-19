@@ -1,0 +1,63 @@
+<div class="modal-header">
+    <span class="modal-title">云硬盘扩容</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 630px;">
+	<form class="ey-form " name="myForm" novalidate>
+
+	  <div class="ey-content-notice">
+  		 <p style="color:red;">{{model.volumeTypeAs}}云硬盘单块最大容量为{{maxSize}}GB，目标容量必须大于当前容量</p>
+	  </div>
+	
+	
+		<div class="ey-form-group" style="margin-top:20px;">
+			<label class="ey-form-label">云硬盘名称：</label>
+			<span title="{{model.volName}}">{{model.volName.length>20?model.volName.substring(0,19)+'...':model.volName}}</span>
+		</div>
+		
+		
+		<div class="ey-form-group">
+			<label class="ey-form-label">类型：</label>
+			<span>{{model.volumeTypeAs}}</span>
+		</div>
+		
+		<div class="ey-form-group">
+			<label class="ey-form-label">当前容量：</label>
+			<span>{{model.volOldSize}}GB</span>
+		</div>
+		
+		
+		<div class="ey-form-group"  data-ng-class="((model.volSize>maxDisk||model.volSize<model.volOldSize)||volCapacityQuotaMsg)?'ey-has-error' : ''">
+            <label class="ey-form-label">目标容量：</label>
+            <div class="ey-form-w8">
+             <eayun-progress-step   data-ng-model="model.volSize" max-value="maxSize" min-value="model.volOldSize"  total-step="stepCount" precision="1" format="formate" parse="parse" on-value-change="checkVolSize($value)" text="GB" required></eayun-progress-step>
+            </div>
+            <span class="ey-text-tip ey-has-error" data-ng-if="(model.volSize>maxDisk||model.volSize<model.volOldSize)">请输入{{model.volSize}}-{{maxDisk}}的正整数</span>
+            <span class="ey-text-tip ey-has-error" data-ng-if="volCapacityQuotaMsg">{{volCapacityQuotaMsg}}</span>
+        </div> 
+		
+		
+		<div class="ey-form-group">
+			<label class="ey-form-label">计费状态：</label>
+			<span>{{'1'==model.payType?'包年包月':'按需付费'}}</span>
+		</div>
+
+	</form>
+</div>
+
+<!-- 按钮区域 -->
+<div class="ey-modal-footer">
+	<div class="ey-btn-group" data-ng-if="model.payType == '1'">	
+	 <span class="ey-text-tip">注：需支付的费用=(新配置-旧配置)*当前每月的单价*（剩余总天数/30）</span>
+	</div>
+	<div class="ey-btn-group">
+		<span class="ey-font-bold">总价：
+	    <span class="ey-color-red" data-ng-if="!priceError">￥&nbsp;</span>
+		<span class="ey-font-huger ey-color-red ey-font-bold" data-ng-if="model.payType == '1'&&!priceError">{{priceDetails| thousand}}</span>
+		<span class="ey-font-huger ey-color-red ey-font-bold" data-ng-if="model.payType == '2'&&!priceError">{{priceDetails.totalPrice| thousand:true}}</span>
+		<span class="ey-color-default" data-ng-if="model.payType == '2'&&!priceError">&nbsp;/小时</span>
+		<span class="ey-color-red" data-ng-if="priceError">{{priceError}}</span>
+		</span>
+		<button type="button" class="ey-btn ey-btn-primary" data-ng-disabled="myForm.$invalid ||isNSF||volCapacityQuotaMsg||(model.volSize<=model.volOldSize)" data-ng-click="commit()">确定</button>
+		<button type="button" class="ey-btn ey-btn-default" data-ng-click="cancel()">取 消</button>
+	</div>
+</div>

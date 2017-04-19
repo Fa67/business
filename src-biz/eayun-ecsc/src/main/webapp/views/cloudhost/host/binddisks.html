@@ -1,0 +1,54 @@
+<div class="modal-header" style="width: 600px;">
+    <span class="modal-title">挂载云硬盘</span> 
+    <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body">
+	<form class="ey-form " name="myForm" novalidate>
+		<div class="ey-form-group" style="padding-left: 0px;">
+	  	<label class="col-sm-8" style="font-weight: bold;text-align: left; " ng-if="!disks||disks.length==0">当前项目没有可用的云硬盘!</label>
+	  	<label class="col-sm-8" style="font-weight: bold;text-align: left; " ng-if="bindeddisks>=maxdisks">可挂载的硬盘数量已满!</label>
+			<div class="col-sm-12" ng-if="disks.length!=0&&bindeddisks<maxdisks">
+				<div class="col-sm-12" style="max-height: 268px; overflow-y:auto;">
+					<table style="width: 100%; " class="table table-striped">
+						<thead>
+							<tr class="control-label" style="height: 30px" ng-if="disks&&disks.length>0">
+								<td style="width: 15px;text-align: center;">
+									<input type="checkbox" style="width: 16px;height: 16px;" data-ng-change="selectAll()" data-ng-model="model.allCheck" >
+								</td>
+								<td style="text-align: left;padding-left: 20px;">
+								名称
+								</td>
+								<td style="text-align: left;width: 100px;padding-left: 20px;">
+								大小
+								</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="control-label" style="height: 30px" data-ng-repeat="disk in disks">
+								<td style="width: 15px;">
+									<input type="checkbox" style="width: 16px;height: 16px;" ng-click="selectcurrent($index)" 
+									data-ng-model="disk.check">
+								</td>
+								<td style="text-align: left" title="{{disk.volName}}">
+									{{disk.volName.length>15?disk.volName.substr(0,15)+'...':disk.volName}}
+								</td>
+								<td style="text-align: left;">
+									{{disk.volSize}} GB
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+
+<!-- 按钮区域 -->
+<div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<button type="button" class="ey-btn ey-btn-primary" ng-click="commit()" 
+			ng-disabled="!disks||disks.length==0||checkBtn||isSelected<=0">确定</button>
+		<button type="button" class="ey-btn ey-btn-default" ng-disabled="checkBtn" ng-click="cancel()">取 消</button>
+	</div>
+</div>

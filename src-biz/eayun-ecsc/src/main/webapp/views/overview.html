@@ -1,0 +1,176 @@
+<div class="ey-list-notice" data-ng-hide="noticeList.length==null||noticeList.length==0">
+    <div class="ey-list-notice-title ey-text-link" style="cursor:pointer;" data-ng-click="openNoticePage()">全部公告</div>
+    <div class="ey-divider"></div>
+    <ul eayun-banner="noticeList" name="noticefield" interval="10000" ng-cloak>
+        <li data-ng-repeat="item in noticeList" ng-class="item.$$selected?'in':''" ng-mouseenter="noticefield.stop()"
+            ng-mouseleave="noticefield.start()">
+            <span class="ey-list-notice-new" data-ng-if = "item.validTime > threeDay">NEW</span>
+            <span ng-click="openNoticeDetail(item)" data-ng-bind="::item.memo"></span>
+        </li>
+    </ul>
+</div>
+<nav class="ey-nav">
+     <eayun-select data-ng-model="model.dcProject" show-length="14">
+         <eayun-option ng-repeat="project in cloudprojectList" value="project"
+                       text="{{project.dcName}}"></eayun-option>
+     </eayun-select>
+     <ul class="ey-nav-bread">
+     	<li>总览</li>
+     </ul>
+</nav>
+<div class="ey-divider"></div>
+
+<div style="position:relative">
+    <div style="position:absolute;right:0;width:350px;margin-right:10px;">
+        <div class="ey-panel" style="margin:10px 0px 10px 10px">
+            <div class="ey-panel-body">
+                <h4>历史记录
+                    <button class="ey-btn ey-btn-table" data-ui-sref="app.log" style="float:right;margin-top:-6px;" title = "{{!buttonPower.LogView?'您没有此权限':''}}"
+                            data-ng-disabled="!buttonPower.LogView" data-ng-if="buttonPower.LogView">查看全部
+                    </button>
+                </h4>
+                <ul class="ey-list-record" style="height:730px;">
+                    <li data-ng-repeat="log in lastLogs">
+                        <p class="ey-text-tip" data-ng-bind="::log.actTime|date:'yyyy-MM-dd HH:mm:ss'"></p>
+
+                        <p style="max-height: 3em;overflow: hidden;word-wrap:break-word;word-break:break-all;line-height:1.5;text-indent:0em;margin-left:1.5em;">
+                            <span class="color-blue">"{{log.actPerson}}"</span> &nbsp;&nbsp;{{log.actItem}}&nbsp;&nbsp;
+                        <span class="color-blue"
+                              data-ng-bind="::log.resourceName == null || log.resourceName == ''?'':log.resourceName">
+                        </span></p><!--ey-text-link  -->
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div style="padding:0 360px 0 0">
+        <div class="ey-panel" style = "margin-bottom:6px;">
+            <div class="ey-panel-body" style = "overflow:hidden;">
+                <div class="clearfix">
+                    <div class="ey-col-5" style = "margin-right:10px;">
+                        <h4>{{userMessage.userAccount}}，您好！</h4>
+
+                        <p class="ey-text-tip ey-font-size-big">
+                            <span class="eayunfont ef-phone"></span> <span data-ng-bind="userMessage.userPhone"></span>
+                        </p>
+
+                        <p class="ey-text-tip ey-font-size-big">
+                            <span class="eayunfont ef-mail-r"></span> <span data-ng-bind="userMessage.userEmail"></span>
+                        </p>
+
+                        <p class="ey-text-tip ey-font-size-big" data-ng-bind="userMessage.cusCpname" style = "word-wrap:break-all;word-break:break-all;line-height:1.5;"></p>
+                    </div>
+                    <div class="ey-overview-divider"></div>
+                    <div class="ey-col-6" style="padding-left:35px;">
+                        <h4>账户余额</h4>
+                        <label class="control-label color-blue" style="font-size:16px;margin-bottom:20px;"
+                               data-ng-if="!isLowZero">￥ </label>
+                        <label class="control-label color-blue" style="font-size:24px;margin-bottom:20px;"
+                               data-ng-if="!isLowZero">{{account.money|number:2}}</label>
+                        <label class="control-label ey-text-error" style="font-size:16px;margin-bottom:20px;"
+                            data-ng-if="isLowZero">￥ </label>
+                        <label class="control-label ey-text-error" style="font-size:24px;margin-bottom:20px;"
+                            data-ng-if="isLowZero">{{account.money|number:2}}</label>
+                        <button class="ey-btn ey-btn-sm ey-btn-primary" data-ng-click="toPayAccount()" title = "{{!buttonPower.costcenter?'您没有此权限':''}}"
+                                style="margin-left:50px;margin-bottom:20px;" data-ng-disabled="!buttonPower.costcenter" data-ng-if="buttonPower.costcenter">充&nbsp;&nbsp;&nbsp;&nbsp;值
+                        </button>
+                        <p>
+                            <span class="eayunfont ef-dollar ey-color-blue ey-font-huge"></span>
+                            <button class="ey-btn ey-btn-table" style="font-size:14px;margin-top:-10px;" title = "{{!buttonPower.orderList?'您没有此权限':''}}"
+                                    data-ng-click="toPayList()" data-ng-disabled="toPayOrderTable.api.options.$$totalCount == 0 || !buttonPower.orderList"
+                                    data-ng-if="buttonPower.orderList">{{toPayOrderTable.api.options.$$totalCount}}条待支付订单
+                            </button>
+                            <button class="ey-btn ey-btn-table" style="font-size:14px;margin-top:-10px;" title = "{{!buttonPower.orderList?'您没有此权限':''}}"
+                                    data-ng-disabled="toPayOrderTable.api.options.$$totalCount == 0 || !buttonPower.orderList"
+                                    data-ng-if="!buttonPower.orderList">{{toPayOrderTable.api.options.$$totalCount}}条待支付订单
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ey-panel" style = "margin-bottom:6px;margin-top:6px;">
+            <div class="ey-panel-body">
+                <h4>待支付订单（{{toPayOrderTable.api.options.$$totalCount}}）</h4>
+                <eayun-table data-api="toPayOrderTable.api" data-ajax-source="toPayOrderTable.source"
+                             data-param="toPayOrderTable.getParams" data-result="toPayOrderTable.result">
+                    <table class="ey-table">
+                        <thead>
+                        <tr>
+                            <th>订单编号</th>
+                            <th>产品名称</th>
+                            <th>订单类型</th>
+                            <th>金额</th>
+                            <th data-ng-if="buttonPower.orderPay&&buttonPower.orderCancel">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody><tr data-ng-repeat="model in toPayOrderTable.result">
+                            <td title="{{model.orderNo}}" data-ng-bind="::model.orderNo"></td>
+                            <td title="{{model.prodName}}" data-ng-bind="::model.prodName"></td>
+                            <td data-ng-bind="::model.payTypeName"></td>
+                            <td>￥ {{model.paymentAmount|number:2}}</td>
+                            <td data-ng-if="buttonPower.orderPay&&buttonPower.orderCancel">
+                                <div class="ey-btn-group">
+                                    <button class="ey-btn" data-ng-click="payment(model.orderNo)" data-ng-disabled="!buttonPower.orderPay" title = "{{!buttonPower.orderPay?'您没有此权限':''}}">立即支付</button>
+                                    <button class="ey-btn" data-ng-click="cancelOrder(model.orderId)" data-ng-disabled="!buttonPower.orderCancel" title = "{{!buttonPower.orderCancel?'您没有此权限':''}}">取消订单</button>
+                                </div>
+                            </td>
+                        </tr></tbody>
+                    </table>
+                    <eayun-table-page></eayun-table-page>
+                </eayun-table>
+            </div>
+        </div>
+        <div class="ey-panel" style = "margin-bottom:6px;margin-top:6px;">
+            <div class="ey-panel-body">
+                <h4>即将到期的资源</h4>
+                <eayun-table data-api="toExpireTable.api" data-ajax-source="toExpireTable.source"
+                             data-param="toExpireTable.getParams" data-result="toExpireTable.result">
+                    <table class="ey-table">
+                        <thead>
+                        <tr>
+                            <th>资源名称</th>
+                            <th>资源类型</th>
+                            <th>创建时间</th>
+                            <th>到期时间</th>
+                        </tr>
+                        </thead>
+                        <tbody><tr data-ng-repeat="model in toExpireTable.result">
+                            <td title="{{model.resourcesName}}" data-ng-bind="::model.resourcesName"></td>
+                            <td data-ng-bind="::model.resourcesType"></td>
+                            <td data-ng-bind="::model.createTime|date:'yyyy-MM-dd HH:mm:ss'"></td>
+                            <td data-ng-bind="::model.endTime|date:'yyyy-MM-dd HH:mm:ss'"></td>
+                        </tr></tbody>
+                    </table>
+                    <eayun-table-page></eayun-table-page>
+                </eayun-table>
+            </div>
+        </div>
+        <div class="ey-panel" style = "margin-top:6px;">
+            <div class="ey-panel-body">
+                <button class="ey-btn ey-btn-primary" style="float:right;margin-top:-5px;"
+                        data-ui-sref="app.monitor.monitorbar.alarm.list">去处理
+                </button>
+                <h4>业务运行情况</h4>
+                <table class="ey-table">
+                    <thead>
+                    <tr>
+                    	<th>资源类型</th>
+                        <th>资源名称</th>
+                        <th>报警类型（全部）</th>
+                        <th>报警时间</th>
+                        <th>报警信息</th>
+                    </tr>
+                    </thead>
+                    <tbody><tr data-ng-repeat="alarmMsg in unhandledAlarmMsgList">
+                    	<td title="{{alarmMsg.monitorTypeName}}" data-ng-bind="::alarmMsg.monitorTypeName"></td>
+                        <td title="{{alarmMsg.vmName}}" data-ng-bind="::alarmMsg.vmName"></td>
+                        <td data-ng-bind="::alarmMsg.alarmTypeName"></td>
+                        <td data-ng-bind="::alarmMsg.alarmTime"></td>
+                        <td title="{{alarmMsg.detail}}" data-ng-bind="::alarmMsg.detail"></td>
+                    </tr></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

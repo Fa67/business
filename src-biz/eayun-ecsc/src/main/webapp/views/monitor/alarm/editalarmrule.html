@@ -1,0 +1,145 @@
+<style>
+<!--
+	.text-left{
+		text-align: left;
+		color: #07C;
+	}
+	tr{
+		max-height: 50px;
+	}
+	.quota-table{
+		height:220px;
+		overflow:auto;
+		margin:15px;
+		border-radius:4px;
+		border: 1px solid #CCC;
+	}
+	.quota-table > table > tbody > tr {
+		height: 50px;
+	}
+	.quota-table > table > tbody > tr > td{
+		padding-left:0px;
+		padding-right:10px;
+	}
+-->
+</style>
+
+<div class="modal-header">
+    <span class="modal-title">编辑报警规则</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+
+<div class="modal-body" style="width: 780px;">
+    <form class="ey-form" name="editrule" novalidate>
+        <div class="ey-form-group" data-ng-class="(editrule.name.$dirty && editrule.name.$invalid) ? 'ey-has-error' : ''">
+            <label class="ey-form-label ey-required">规则名称：</label>
+
+            <input type="text" class="ey-form-input ey-form-w6" placeholder="请输入规则名称"  name="name"
+                   data-ng-model="alarmRuleModel.name" required
+                   data-ajax-valid="checkRuleName(value)" maxlength=20/>
+            <span ng-show="editrule.name.$dirty && editrule.name.$error.required && !nameflag">规则名称不能为空</span>
+            <span ng-show="editrule.name.$dirty && editrule.name.$error.ajaxValid && !nameflag">规则名称已存在</span>
+            <span ng-if="nameflag">请输入1-20位字符，支持数字、中英文、下划线、空格</span>
+        </div>
+
+        <div class="ey-form-group" >
+            <label class="ey-form-label ey-required">监控项：</label>
+            <!-- 这里是下拉框 -->
+            <eayun-select class="ey-form-w6" name="monitorItem" data-ng-model="alarmRuleModel.monitorItem"  placeholder="请选择监控项" required  ng-disabled="true">
+                <eayun-option value="monitoritem.nodeId" text="{{monitoritem.name}}" data-ng-repeat="monitoritem in monitorItemList" ng-click=queryZBByItem(monitoritem.nodeId) ></eayun-option>
+            </eayun-select>
+        </div>
+
+        <div class="ey-form-group">
+            <label class="ey-form-label">
+                报警触发条件：<br/>
+                <label class="color-blue" role="button" data-ng-click = "addAlarmTrigger()" ng-if="triggerArray.length<=14">
+                    <h6><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;增加触发条件</h6>
+                </label>
+                <label role="button" ng-if="triggerArray.length>=15" style="color:#e8e8e8">
+                    <h6><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;增加触发条件</h6>
+                </label>
+            </label>
+        </div>
+        <div class="ey-form-w14 quota-table" style="margin-left: 20px;margin-top: 32px;">
+            <table class="table-striped" >
+                <tbody>
+                    <tr ng-repeat="trigger in triggerArray">
+                        <td>
+                            <div style="width:155px;padding-left:10px;">
+                            <eayun-select class="ey-form-w3" style="width:155px;" name="zb{{$index}}" data-ng-model="trigger.zb"  placeholder="监控指标" ng-change="setTriggerUnit(trigger)" required>
+                                <eayun-option value="monitorzb.nodeId" text="{{monitorzb.name}}" data-ng-repeat="monitorzb in monitorZBList" ></eayun-option>
+                            </eayun-select>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="width:110px;padding-left:10px;">
+                                <eayun-select name="operator" data-ng-model="trigger.operator"  placeholder="操作符"  required>
+                                    <eayun-option value="'>'" text=">" ></eayun-option>
+                                    <eayun-option value="'<'" text="<" ></eayun-option>
+                                    <eayun-option value="'='" text="=" ></eayun-option>
+                                </eayun-select>
+                            </div>
+                        </td>
+                        <td style="white-space:nowrap;width:185px;padding-left:25px;">
+                            <div ng-if="trigger.unit=='%'" data-ng-class="(editrule.threshold1{{$index}}.$dirty && editrule.threshold1{{$index}}.$invalid ) ? 'ey-has-error' : ''">
+                                <div style="float:left;">
+                                <input type="text"  class="ey-form-input" placeholder="阈值（非负）"  name="threshold1{{$index}}" style="width:110px;"
+                                    data-ng-model="trigger.threshold" maxlength=3 required
+                                    onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                                    onpaste="return false"
+                                    ng-change="setTriggerUnit(trigger)"
+                                    ng-pattern="/^(?:0|[1-9][0-9]?|100)$/"
+                                    />
+                                </div>
+                                <div style="float:left;padding-top: 10px;padding-left: 6px;">
+                                    {{trigger.unit}}
+                                </div>
+                            </div>
+                            <div ng-if="trigger.unit!='%'" data-ng-class="(editrule.threshold2{{$index}}.$dirty && editrule.threshold2{{$index}}.$invalid) ? 'ey-has-error' : ''">
+                                <div style="float:left;">
+                                <input type="text"  class="ey-form-input" placeholder="阈值（非负）"  name="threshold2{{$index}}" style="width:110px;"
+                                    data-ng-model="trigger.threshold" maxlength=5 required
+                                    onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                                    onpaste="return false"
+                                    ng-change="setTriggerUnit(trigger)"
+                                    />
+                                </div>
+                                <div style="float:left;padding-top: 10px;padding-left: 6px;">
+                                    {{trigger.unit}}
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="width:130px;">
+                                <eayun-select name="lastTime" data-ng-model="trigger.lastTime"  placeholder="持续时间" required>
+                                    <eayun-option value="60" text="1分钟" ></eayun-option>
+                                    <eayun-option value="300" text="5分钟" ></eayun-option>
+                                    <eayun-option value="900" text="15分钟" ></eayun-option>
+                                    <eayun-option value="1800" text="30分钟" ></eayun-option>
+                                    <eayun-option value="3600" text="1小时" ></eayun-option>
+                                </eayun-select>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="padding-left:10px; padding-top: 10px;">
+                            <label class="color-error" role="button" data-ng-click = "del($index)">
+                                <h5>移除</h5>
+                            </label>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </form>
+</div>
+
+<div class="ey-modal-footer">
+    <div class="ey-btn-group">
+        <button type="button" class="ey-btn ey-btn-primary"
+                ng-click="commit()" ng-disabled="!editrule.$valid">确定</button>
+        <button type="button" class="ey-btn ey-btn-default"
+                ng-click="cancel()">取 消</button>
+    </div>
+</div>
+

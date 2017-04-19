@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="overviewIncomeJob_total"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="ccom.eayun.dashboard.job.OverviewIncomeStatisticJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataMap">
+			<map>
+				<entry key="periodType" value="0"></entry>
+				<entry key="tabSort" value="0"></entry>
+				<entry key="tabTitle " value="全部"></entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="overviewIncomeJobTrigger_total" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="overviewIncomeJob_total"></property>
+		<property name="cronExpression" value="0 0 3 * * ? *"></property>
+	</bean>
+	
+	<bean id="overviewIncomeJob_1d"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="ccom.eayun.dashboard.job.OverviewIncomeStatisticJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataMap">
+			<map>
+				<entry key="periodType" value="1"></entry>
+				<entry key="tabSort" value="1"></entry>
+				<entry key="tabTitle " value="昨日"></entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="overviewIncomeJobTrigger_1d" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="overviewIncomeJob_1d"></property>
+		<property name="cronExpression" value="0 0 3 * * ? *"></property>
+	</bean>
+	
+	<bean id="overviewIncomeJob_7d"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="ccom.eayun.dashboard.job.OverviewIncomeStatisticJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataMap">
+			<map>
+				<entry key="periodType" value="2"></entry>
+				<entry key="tabSort" value="2"></entry>
+				<entry key="tabTitle " value="近7日"></entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="overviewIncomeJobTrigger_7d" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="overviewIncomeJob_7d"></property>
+		<property name="cronExpression" value="0 0 3 * * ? *"></property>
+	</bean>
+	
+	<bean id="overviewIncomeJob_30d"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="ccom.eayun.dashboard.job.OverviewIncomeStatisticJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataMap">
+			<map>
+				<entry key="periodType" value="3"></entry>
+				<entry key="tabSort" value="3"></entry>
+				<entry key="tabTitle " value="近30日"></entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="overviewIncomeJobTrigger_30d" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="overviewIncomeJob_30d"></property>
+		<property name="cronExpression" value="0 0 3 * * ? *"></property>
+	</bean>
+
+	<bean id="overviewIncomeJob_90d"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="ccom.eayun.dashboard.job.OverviewIncomeStatisticJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataMap">
+			<map>
+				<entry key="periodType" value="4"></entry>
+				<entry key="tabSort" value="4"></entry>
+				<entry key="tabTitle " value="近90日"></entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="overviewIncomeJobTrigger_90d" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="overviewIncomeJob_90d"></property>
+		<property name="cronExpression" value="0 0 3 * * ? *"></property>
+	</bean>
+	
+	<bean id="overviewIncomeJob_1y"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="ccom.eayun.dashboard.job.OverviewIncomeStatisticJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataMap">
+			<map>
+				<entry key="periodType" value="5"></entry>
+				<entry key="tabSort" value="5"></entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="overviewIncomeJobTrigger_1y" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="overviewIncomeJob_1y"></property>
+		<property name="cronExpression" value="0 0 3 * * ? *"></property>
+	</bean>
+
+	<!-- 定时任务调度器 -->
+	<bean class="com.eayun.common.job.EayunSchedulerFactoryBean" id="OverviewSchedulerFactory">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+		<property name="configLocation" value="classpath:quartz.properties" />
+		<property name="triggers">
+			<list>
+				<ref bean="overviewIncomeJobTrigger_total" />
+				<ref bean="overviewIncomeJobTrigger_1d" />
+				<ref bean="overviewIncomeJobTrigger_7d" />
+				<ref bean="overviewIncomeJobTrigger_30d" />
+				<ref bean="overviewIncomeJobTrigger_90d" />
+				<ref bean="overviewIncomeJobTrigger_1y" />
+			</list>
+		</property>
+	</bean>
+</beans>

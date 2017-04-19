@@ -1,0 +1,81 @@
+
+<div class="form-inline form-count">
+	<div class="ey-search-bar">
+		<eayun-select data-ng-model="postPay.searchType" style="width:150px;" ng-change="postPay.change(postPay.searchType)">
+		<eayun-option value="2" text="计费时间"></eayun-option> <eayun-option
+			value="1" text="账期"></eayun-option> </eayun-select>
+		<date-range ng-if="postPay.searchType=='2'"
+			start-date="postPay.beginTime" end-date="postPay.endTime"
+			max-date="postPay.maxDate" data-show-time="false" class="ey-form-w4"></date-range>
+		<date-time-picker ng-if="postPay.searchType=='1'"  class="ey-form-w4"
+			data-ng-model="postPay.monMonth" max-date="postPay.maxDate"
+			min-mode="month" datepicker-mode="month" format="yyyy-MM"></date-time-picker>
+		<label>产品名称：</label> <input class="ey-form-control" type="text"
+			placeholder="请输入产品名称" ng-model="postPay.productName" style="width:150px;"> <label>资源名称：</label>
+		<input class="ey-form-control" type="text" placeholder="请输入资源名称" style="width:150px;"
+			ng-model="postPay.resourceName">
+		<button class="ey-btn ey-btn-default" type="button"
+			data-ng-click="postPay.queryReport()">
+			<span>查&nbsp;&nbsp;&nbsp;询</span>
+		</button>
+		<button class="ey-btn ey-btn-default-light ey-color-blue pull-right"
+			style="margin-top:7px;" ng-click="postPay.createExcel()" ng-if="buttonPower.isReportExcel">
+			<span class="eayunfont ef-export"></span> <span>导出</span>
+		</button>
+		<div style="display: none;">
+			<iframe id="report-export-iframe" frameborder="0"></iframe>
+		</div>
+	</div>
+</div>
+<!-- 表格 -->
+	<div class="ey-table-title">
+		<span style="margin-left: -5px;">{{postPay.begin|date:'yyyy-MM-dd'}}至{{postPay.end|date:'yyyy-MM-dd'}}后付费资源消费总计：<span class="color-blue">￥ {{postPay.totalCost|number:3}}</span>
+	</div>
+	<eayun-table data-api="postPay.myTable.api"
+		data-ajax-source="postPay.myTable.source"
+		data-param="postPay.myTable.getParams"
+		data-result="postPay.myTable.result">
+	<table class="ey-table-muliti">
+		<thead>
+			<tr>
+				<th style="width:150px;">计费时间</th>
+				<th style="width:90px;">账期</th>
+				<th style="width:140px;">产品名称</th>
+				<th style="width:300px;">资源id/名称</th>
+				<th style="width:100px;">付款方式</th>
+				<th style="width:100px;">应付金额</th>
+				<th style="width:100px;">支付状态</th>
+				<th style="width:100px;">操作</th>
+			</tr>
+		</thead>
+
+		<tbody><tr data-ng-repeat="model in postPay.myTable.result"
+				data-ng-show="true" style="height:45px;">
+				<td><span
+					data-ng-bind="::model.monTime|date:'yyyy-MM-dd HH:mm:ss'"></span></td>
+				<td><span data-ng-bind="::model.monPaymonth"></span></td>
+				<td title="{{::model.productName}}"><span
+					data-ng-bind="::model.productName"></span></td>
+				<td
+					data-ng-if="::model.resourceType!='6'"><span title="{{model.resourceId}}"
+					data-ng-bind="model.resourceId"></span> <br> <span title="{{model.resourceName}}"
+					data-ng-bind="model.resourceName"></span></td>
+				<td data-ng-if="::model.resourceType=='6'"><span>对象存储服务</span>
+				</td>
+				<td><span data-ng-bind="model.payType=='1'?'预付费':'后付费'"></span></td>
+				<td><span class="color-blue">￥ <span
+						data-ng-bind="model.money|number:3"></span></span></td>
+				<td ng-if="model.payState=='1'||model.money==0.000"><span
+					class="color-blue">已支付</span></td>
+				<td ng-if="model.payState=='2'&&model.money!=0.000"
+					data-ng-class="'red-font-color'">已欠费<br>￥ <span
+					data-ng-bind="model.monArrearsMoney|number:3"></span></td>
+				<td>
+					<div class="ey-btn-group">
+						<button class="ey-btn" data-ng-click="postPay.detail(model.monId)">查看详情</button>
+					</div>
+				</td>
+			</tr></tbody>
+	</table>
+	<eayun-table-page></eayun-table-page> </eayun-table>
+

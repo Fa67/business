@@ -1,0 +1,306 @@
+
+<div class="clearfix">
+        <div class="ey-unit-detail clearfix">
+			<!--<h4>客户总览</h4>-->
+			<div class="form-horizontal data-center clearfix">
+				<h4 style="float: left; margin-bottom: 0px;">主体信息</h4>
+				<div class="col-lg-6">
+					<span data-ng-if="unitdetail.showFag==1" class="click-link">展开</span>
+					<span data-ng-if="unitdetail.showFag==0" class="click-link">收起</span>
+				</div>
+				<div class="col-lg-6">&nbsp;
+						<span class="eayunfont click-link expander ng-isolate-scope" style="cursor:pointer;"
+							  data-toggle="collapse" data-target="#unitMessage" data-expander-show="true" aria-expanded="true">
+							<span
+									class="ey-text-link" ng-click="webs.$$active = !webs.$$active"
+									ng-init="(webs.$$active=true)" ng-bind="webs.$$active?'收起详情':'展开详情'"></span>
+						</span>
+				</div>
+			</div>
+			<div  class="collapse in" id="unitMessage" aria-expanded="false">
+				<div class="col-lg-6">
+					<div class="details-group">
+						<div class="details-name">主办单位名称：</div>
+						<div class="details-value"><span title="{{unitdetail.model.unitName}}" ng-bind="::unitdetail.model.unitName.length>20?unitdetail.model.unitName.substring(0,20)+'...':unitdetail.model.unitName "></span></div>
+					</div>
+					<div class="details-group">
+						<div class="details-name">主办单位性质：</div>
+						<div class="details-value">
+							<span data-ng-if="unitdetail.model.unitNature==1">个人</span>
+							<span data-ng-if="unitdetail.model.unitNature==2">企业</span>
+							<span data-ng-if="unitdetail.model.unitNature==3">政府机关</span>
+							<span data-ng-if="unitdetail.model.unitNature==4">事业单位</span>
+							<span data-ng-if="unitdetail.model.unitNature==5">社会群体</span>
+							<span data-ng-if="unitdetail.model.unitNature==6">军队</span>
+						</div>
+					</div>
+					<div class="details-group">
+						<div class="details-name">投资人或主管单位：</div>
+						<div class="details-value"><span title="{{unitdetail.model.headName}}" data-ng-bind="::unitdetail.model.headName.length>20?unitdetail.model.headName.substring(0,20)+'...':unitdetail.model.headName "></span></div>
+					</div>
+					<div class="details-group ">
+						<div class="details-name">主办单位所属区域：</div>
+						<div class="details-value"><span title="{{unitdetail.model.unitArea}}" ng-bind="::unitdetail.model.unitArea.length>20?unitdetail.model.unitArea.substring(0,20)+'...':unitdetail.model.unitArea "></span></div>
+					</div>
+					<div class="details-group ">
+						<div class="details-name">主办单位通讯地址：</div>
+						<div class="details-value"><span title="{{unitdetail.model.unitAddress}}" ng-bind="::unitdetail.model.unitAddress.length>20?unitdetail.model.unitAddress.substring(0,20)+'...':unitdetail.model.unitAddress "></span></div>
+					</div>
+					<div class="details-group ">
+						<div class="details-name">主办单位证件类型：</div>
+						<div class="details-value">
+							<span data-ng-if="unitdetail.model.certificateType==1">工商营业执照</span>
+							<span data-ng-if="unitdetail.model.certificateType==2">组织机构代码</span>
+						</div>
+					</div>
+					<div class="details-group ">
+						<div class="details-name">主办单位证件号码：</div>
+						<div class="details-value"><span title="{{unitdetail.model.certificateNo}}" ng-bind="::unitdetail.model.certificateNo.length>20?unitdetail.model.certificateNo.substring(0,20)+'...':unitdetail.model.certificateNo "></span></div>
+					</div>
+					<div class="details-group ">
+						<div class="details-name">主办单位证件所在地：</div>
+						<div class="details-value"><span title="{{unitdetail.model.certificateAddress}}" ng-bind="::unitdetail.model.certificateAddress.length>20?unitdetail.model.certificateAddress.substring(0,20)+'...':unitdetail.model.certificateAddress "></span></div>
+					</div>
+					<div class="details-group ">
+						<div class="details-name">主体备案号：</div>
+						<div class="details-value"><span title="{{unitdetail.model.recordNo}}" ng-bind="::unitdetail.model.recordNo.length>20?unitdetail.model.recordNo.substring(0,20)+'...':unitdetail.model.recordNo "></span></div>
+					</div>
+
+				</div>
+				<div class="col-lg-6">
+					<div class="details-group ">
+						<div class="details-name">主体负责人姓名：</div>
+						<div class="details-value"><span title="{{unitdetail.model.dutyName}}" ng-bind="::unitdetail.model.dutyName.length>20?unitdetail.model.dutyName.substring(0,20)+'...':unitdetail.model.dutyName "></span></div>
+					</div>
+					<div class="details-group ">
+						<div class="details-name">负责人证件类型：</div>
+						<div class="details-value">
+							<span data-ng-if="unitdetail.model.dutyCertificateType==1">身份证</span>
+							<span data-ng-if="unitdetail.model.dutyCertificateType==2">护照</span>
+							<span data-ng-if="unitdetail.model.dutyCertificateType==3">台胞证</span>
+							<span data-ng-if="unitdetail.model.dutyCertificateType==4">军官证</span>
+						</div>
+					</div>
+					<div class="details-group">
+						<div class="details-name">负责人证件号码：</div>
+						<div class="details-value"><span title="{{unitdetail.model.dutyCertificateNo}}" ng-bind="::unitdetail.model.dutyCertificateNo.length>20?unitdetail.model.dutyCertificateNo.substring(0,20)+'...':unitdetail.model.dutyCertificateNo "></span></div>
+					</div>
+					<div class="details-group ">
+						<div class="details-name">办公室电话：</div>
+						<div class="details-value"><span ng-bind="::unitdetail.model.phone "></span></div>
+					</div>
+					<div class="details-group ">
+						<div class="details-name">手机号码：</div>
+						<div class="details-value"><span ng-bind="::unitdetail.model.dutyPhone "></span></div>
+					</div>
+					<div class="details-group ">
+						<div class="details-name">电子邮箱：</div>
+						<div class="details-value"><span title="{{unitdetail.model.dutyEmail}}" ng-bind="::unitdetail.model.dutyEmail.length>20?unitdetail.model.dutyEmail.substring(0,20)+'...':unitdetail.model.dutyEmail "></span></div>
+					</div>
+					<div class="details-group ">
+						<div class="details-name">QQ：</div>
+						<div class="details-value"><span ng-bind="::unitdetail.model.dutyQQ "></span></div>
+					</div>
+					<div class="details-group ">
+						<div class="details-name">备注：</div>
+						<div class="details-value"><span title="{{unitdetail.model.remark}}" ng-bind="::unitdetail.model.remark.length>20?unitdetail.model.remark.substring(0,20)+'...':unitdetail.model.remark "></span></div>
+					</div>
+					<div class="details-group ">
+						<div class="details-name"></div>
+						<div class="details-value"><span></span></div>
+					</div>
+				</div>
+			</div>
+        </div>
+
+        <div class="ey-margin" style="width:100%;margin-bottom:10px;">
+			<div class="panel-body ey-unit-detail" data-ng-repeat="webs in unitdetail.model.websiteList">
+					<h4 style="float: left; margin-bottom: 0px;">网站信息</h4>
+					<div class="col-lg-6">&nbsp;
+						<span class="eayunfont click-link expander ng-isolate-scope" style="cursor:pointer;"
+							   data-toggle="collapse" data-target="#webs{{$index}}" data-expander-show="true" aria-expanded="true"
+							>
+							<span
+                                    class="ey-text-link" ng-click="webs.$$active = !webs.$$active"
+                                    ng-init="(webs.$$active=true)" ng-bind="webs.$$active?'展开详情':'收起详情'"></span>
+							</span>
+							</span>
+
+					</div>
+
+
+					<div style="clear:both;"  class="collapse" id=webs{{$index}} aria-expanded="false">
+						<div class="col-lg-6">
+							<div class="details-group ">
+								<div class="details-name">网站名称：</div>
+								<div class="details-value">
+									<span title="{{webs.webName}}" ng-bind="webs.webName.length>20?webs.webName.substring(0,20)+'...':webs.webName "></span>
+								</div>
+							</div>
+
+							<div class="details-group">
+								<div class="details-name ">网站域名：</div>
+								<div class="details-value record-apply">
+									<span ng-bind="webs.domainName.length>20?webs.domainName.substring(0,20):webs.domainName "></span>
+									<div class="ey-inline ey-cursor ey-record-unit-tooltip" id="js-navbar-collapse"  data-ng-if="webs.domainName.length>20">
+                                        <div ng-mouseenter="hintMsgShow=true" ng-mouseleave="hintMsgShow=false" ng-mouseover="showMessage();">
+                                        <span class="eayunfont ef-more ef-text-tip ey-font-size-super"style="color:#999;"
+                                              hint="views/record/apply/domainName.html"
+                                              hint-show="hintMsgShow"
+                                              tooltip-class="tooltip-work"
+                                              tooltip-placement="bottom"></span>
+                                        </div>
+                                    </div>
+								</div>
+							</div>
+							<div class="details-group">
+								<div class="details-name ">网站首页URL：</div>
+								<div class="details-value record-apply">
+									<span ng-bind="webs.domainUrl.length>20?webs.domainUrl.substring(0,20):webs.domainUrl "></span>
+								    <div class="ey-inline ey-cursor ey-record-unit-tooltip" id="js-navbar-collapse"  data-ng-if="webs.domainUrl.length>20">
+                                        <div ng-mouseenter="hintMsgShow=true" ng-mouseleave="hintMsgShow=false" ng-mouseover="showMessage();">
+                                        <span class="eayunfont ef-more ef-text-tip ey-font-size-super"style="color:#999;"
+                                              hint="views/record/apply/domainUrl.html"
+                                              hint-show="hintMsgShow"
+                                              tooltip-class="tooltip-work"
+                                              tooltip-placement="bottom"></span>
+                                        </div>
+                                    </div>
+								</div>
+							</div>
+
+							<div class="details-group">
+								<div class="details-name ">备案云服务：</div>
+								<div class="details-value">
+									   <div>
+                                            <span data-ng-bind-html="webs.ipList[0].dcId"></span>&nbsp
+                                            <span ng-bind="webs.ipList[0].webService=='1'?'云主机': webs.ipList[0].webService=='2'?'负载均衡':''"></span>
+                                            &nbsp;
+                                            <span ng-bind="webs.ipList[0].ip"></span>
+
+
+                                            <div class="ey-inline ey-cursor ey-record-unit-tooltip" id="js-navbar-collapse"  data-ng-if="webs.ipList.length>1">
+                                                <div ng-mouseenter="hintMsgShow=true" ng-mouseleave="hintMsgShow=false" data-ng-if="webs.dcID.length!=0" ng-mouseover="showMessage();">
+                                                <span class="eayunfont ef-more ef-text-tip ey-font-size-super"style="color:#999;"
+                                                      hint="views/record/unit/tooltip.html"
+                                                      hint-show="hintMsgShow"
+                                                      tooltip-class="tooltip-work"
+                                                      tooltip-placement="bottom"></span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+								</div>
+							</div>
+							<div class="details-group">
+								<div class="details-name ">网站服务内容：</div>
+								<div class="details-value">
+									<span ng-if="webs.serviceContent!=null && webs.serviceContent!=''" title="{{unitdetail.recursiveReplace(webs.serviceContent)}}" ng-bind="unitdetail.recursiveReplace(webs.serviceContent).length>20?unitdetail.recursiveReplace(webs.serviceContent).substring(0,20)+'...':unitdetail.recursiveReplace(webs.serviceContent)"></span>
+									<span ng-if="webs.serviceContent==null || webs.serviceContent==''" ng-bind="::webs.serviceContent"></span>
+								</div>
+							</div>
+							<div class="details-group">
+								<div class="details-name ">网站语言：</div>
+								<div class="details-value">
+									<span ng-if="webs.webLanguage!=null && webs.webLanguage!=''" title="{{unitdetail.recursiveReplace(webs.webLanguage)}}" ng-bind="unitdetail.recursiveReplace(webs.webLanguage).length>20?unitdetail.recursiveReplace(webs.webLanguage).substring(0,20)+'...':unitdetail.recursiveReplace(webs.webLanguage)"></span>
+									<span ng-if="webs.webLanguage==null || webs.webLanguage==''" ng-bind="::webs.webLanguage"></span>
+								</div>
+							</div>
+							<div class="details-group">
+								<div class="details-name ">前置或专项审批内容：</div>
+								<div class="details-value">
+									<span ng-if="webs.webSpecial==1">新闻</span>
+									<span ng-if="webs.webSpecial==2">出版</span>
+									<span ng-if="webs.webSpecial==3">教育</span>
+									<span ng-if="webs.webSpecial==4">医疗保健</span>
+									<span ng-if="webs.webSpecial==5">药品和医疗器械</span>
+									<span ng-if="webs.webSpecial==6">文化</span>
+									<span ng-if="webs.webSpecial==7">广播电影电视节目</span>
+								</div>
+							</div>
+							<div class="details-group">
+								<div class="details-name ">前置审批号：</div>
+								<div class="details-value">
+									<span title="{{webs.specialNo}}" ng-bind="webs.specialNo.length>20?webs.specialNo.substring(0,20)+'...':webs.specialNo "></span>
+								</div>
+							</div>
+							<div class="details-group">
+								<div class="details-name ">备注：</div>
+								<div class="details-value">
+									<span title="{{webs.remark}}" ng-bind="webs.remark.length>20?webs.remark.substring(0,20)+'...':webs.remark"></span>
+								</div>
+							</div>
+
+						</div>
+						<div class="col-lg-6">
+							<div class="details-group">
+								<div class="details-name ">网站负责人姓名：</div>
+								<div class="details-value">
+									<span title="{{webs.webDutyName}}" ng-bind="webs.webDutyName.length>20?webs.webDutyName.substring(0,20)+'...':webs.webDutyName"></span>
+								</div>
+							</div>
+							<div class="details-group">
+								<div class="details-name ">有效证件类型：</div>
+								<div class="details-value">
+									<span ng-if="webs.dutyCertificateType==1">身份证</span>
+									<span ng-if="webs.dutyCertificateType==2">护照</span>
+									<span ng-if="webs.dutyCertificateType==3">台胞证</span>
+									<span ng-if="webs.dutyCertificateType==4">军官证</span>
+								</div>
+							</div>
+							<div class="details-group">
+								<div class="details-name ">有效证件号：</div>
+								<div class="details-value">
+									<span title="{{webs.dutyCertificateNo}}" ng-bind="webs.dutyCertificateNo.length>20?webs.dutyCertificateNo.substring(0,20)+'...':webs.dutyCertificateNo"></span>
+								</div>
+							</div>
+							<div class="details-group">
+								<div class="details-name ">办公室电话：</div>
+								<div class="details-value">
+									<span ng-bind="webs.phone"></span>
+								</div>
+							</div>
+							<div class="details-group">
+								<div class="details-name ">手机号码：</div>
+								<div class="details-value">
+									<span ng-bind="webs.dutyPhone"></span>
+								</div>
+							</div>
+							<div class="details-group">
+								<div class="details-name ">电子邮箱：</div>
+								<div class="details-value">
+									<span title="{{webs.dutyEmail}}" ng-bind="webs.dutyEmail.length>20?webs.dutyEmail.substring(0,20)+'...':webs.dutyEmail"></span>
+								</div>
+							</div>
+							<div class="details-group">
+								<div class="details-name ">QQ：</div>
+								<div class="details-value">
+									<span ng-bind="webs.dutyQQ"></span>
+								</div>
+							</div>
+							<div class="details-group ">
+								<div class="details-name">网站备案号：</div>
+								<div class="details-value">
+									<span ng-bind="webs.webRecordNo"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+			</div>
+		</div>
+
+		<div class="ey-btn-group" style="margin-left: 30px;">
+		<button class="ey-btn btn-primary" type="button" ng-click="yinyeimg()" ng-disabled="unitdetail.businessFileId">营业执照</button>
+        <button class="ey-btn btn-primary" type="button" ng-click="unitimg()" ng-disabled="unitdetail.dutyFileId">主体负责人</button>
+        <button class="ey-btn btn-primary" type="button" ng-click="weburlimg()" ng-disabled="unitdetail.domainFileId">网站域名证书</button>
+        <button class="ey-btn btn-primary" type="button" ng-click="webfzrimg()" ng-disabled="unitdetail.dutywebFileId">网站负责人</button>
+        <button class="ey-btn btn-primary" type="button" ng-click="qianzhiimg()" ng-disabled="unitdetail.specialFileId">前置专项审批</button>
+		</div>
+	</div>
+
+
+<div class="modal-footer gd_footer">
+    <div class="col-md-12 text-center">
+        <button class="btn button-orange" type="button" ng-click="unitdetail.cancel()">返回</button>
+    </div>
+</div>

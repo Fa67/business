@@ -1,0 +1,58 @@
+<!-- Form表单 -->
+<div class="ey-search-bar ey-search-bar-white">
+  <button class="ey-btn ey-btn-primary" data-ng-click="createMonitor()" data-ng-show="buttonPower.isAddMonitor">
+    <span class="eayunfont ef-plus" aria-hidden="true"></span>
+    <span>创建健康检查</span>
+  </button>
+  <eayun-search-text value="search" search="searchFn()" placeholder="请输入名称搜索"></eayun-search-text>
+  <!--<div class="input-group has-feedback search-group">-->
+    <!--<input type="text" class="form-control" placeholder="请输入健康检查名称搜索" data-ng-model="name">-->
+    <!--<span class="form-control-feedback pointer search" data-ng-click="getHealthMonitor()"></span>-->
+  <!--</div>-->
+</div>
+
+<!-- 表格 -->
+<eayun-table data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams" data-result="myTable.result">
+  <table class="ey-table">
+    <thead>
+    <tr>
+      <th>名称</th>
+      <th>参数</th>
+      <th>URL</th>
+      <th>监控负载均衡数量</th>
+      <th>标签</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+
+    <tbody><tr data-ng-repeat="item in myTable.result">
+      <td title="{{item.ldmName}}">{{item.ldmName}}</td>
+      <td title="{{item.ldmType  +'间隔：'+item.ldmDelay+'秒 重试：'+item.maxRetries+'次 超时：'+item.ldmTimeout+'秒'}}">
+        {{item.ldmType}}  间隔：{{item.ldmDelay}}秒      重试：{{item.maxRetries}}次     超时：{{item.ldmTimeout}}秒
+      </td>
+      <td title={{item.urlPath}}>{{!item.urlPath? '--':(item.urlPath.length>50?item.urlPath.substr(0,50)+'...':item.urlPath)}}</td>
+      <td >{{item.poolNum}}</td>
+      <td class="" ng-show="tags.gt2Tags" ng-init="tags=memJson(item.tagName)">
+      	<span>{{tags.twoTagsString}}</span>
+      	<div class="tag-icon ellipsis pointer"
+			ng-mouseenter="openTableBox({value:tags.allTagsString,type:'tagName',index:$index})"
+			ng-mouseleave="closeTableBox({type:'tagName',index:$index})"
+			hint="views/directives/ellipsispop.html"
+       		hint-show="hintTagShow[$index]"
+       		tooltip-class="tooltip-tag"
+       		tooltip-placement="bottom">
+       	</div>
+      </td>
+      <td class="" ng-show="!tags.gt2Tags">{{tags.allTagsString}}</td>
+      <td>
+      	<button class="ey-btn" type="button" data-ng-click="editHealthMonitor(item)" data-ng-show="buttonPower.isEditMonitor">编辑</button>
+		<button class="ey-btn btn-left" type="button" data-ng-click="tagResource('ldMonitor',item.ldmId)" data-ng-show = "buttonPower.isTagMonitor">标签</button>
+		<button class="ey-btn btn-left" type="button" data-ng-click="deleteHealthMonitor(item)" data-ng-show="buttonPower.isDeleteMonitor"><span class="ey-text-error">删除</span></button>
+		<span data-ng-show="!buttonPower.isEditMonitor &&!buttonPower.isTagMonitor &&!buttonPower.isDeleteMonitor">----</span>
+      </td>
+    </tr></tbody>
+  </table>
+  <eayun-table-page></eayun-table-page>
+</eayun-table>
+
+

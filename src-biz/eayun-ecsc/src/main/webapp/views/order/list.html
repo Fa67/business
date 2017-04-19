@@ -1,0 +1,101 @@
+
+	<div class="ey-panel-body">
+		<h4>订单管理</h4>
+
+		<div class="form-inline"
+			data-ng-if="orderMng.permissions.hasListPower">
+			<div class="ey-search-bar">
+				<label>创建时间：</label>
+				<date-range start-date="orderMng.startTime"
+					end-date="orderMng.endTime" max-date="orderMng.time.maxTime"
+					data-show-time="false" class="ey-form-w4"></date-range>
+				<label>产品名称：</label>
+				<input type="text" class="ey-form-input" style="margin-left: 10px;"
+					placeholder="请输入产品名称搜索" data-ng-model="orderMng.prodName">
+					
+				<label>订单编号：</label>
+				<input type="text" class="ey-form-input" style="margin-left: 10px;"
+					placeholder="请输入订单编号搜索" data-ng-model="orderMng.orderNo">
+				<button class="ey-btn ey-btn-default" style="margin-left: 15px;"
+					ng-click="orderMng.query()">查&nbsp;&nbsp;询</button>
+			</div>
+		</div>
+		<div class="form-inline ng-pristine ng-valid"
+			data-ng-if="orderMng.permissions.hasPayPower">
+			<button class="btn btn-primary" data-ng-click="orderMng.payOrders()"
+				style="margin-right: 15px;"
+				data-ng-disabled="orderMng.selected.length<=1">合并支付</button>
+		</div>
+		<eayun-table data-api="orderMng.orderTable.api"
+			data-ajax-source="orderMng.orderTable.source"
+			data-param="orderMng.orderTable.getParams"
+			data-result="orderMng.orderTable.result"
+			data-ng-if="orderMng.permissions.hasListPower">
+		<table class="ey-table-muliti">
+			<thead>
+				<tr>
+					<th class="ey-form-checkbox" width="50px" style="text-align:center;">
+						<input type="checkbox"  data-ng-click="orderMng.checkOrUncheckAll($event,order.orderNo)"
+						data-ng-checked="orderMng.checkAll"
+						 id="checkOrUncheckAll" ><label for="checkOrUncheckAll"></label>
+					</th>
+					<th class="col-sm-2">订单编号</th>
+					<th class="col-sm-2">产品名称</th>
+					<th>
+						<eayun-table-filter list-data="orderMng.orderTypes"
+							text-field="text"
+							item-clicked="orderMng.typeSelected($item, $event)">
+						</eayun-table-filter>
+					</th>
+					<th>创建时间</th>
+					<th>
+						<eayun-table-filter list-data="orderMng.stateTypes"
+							text-field="text"
+							item-clicked="orderMng.stateSelected($item, $event)">
+						</eayun-table-filter>
+					</th>
+					<th class="col-sm-1">金额</th>
+					<th class="col-sm-2">操作</th>
+				</tr>
+			</thead>
+			<tbody><tr data-ng-repeat="order in orderMng.orderTable.result">
+					<td class="ey-form-checkbox" style="text-align:center;">
+						<input type="checkbox" data-ng-disabled="order.orderState!='1'"
+							data-ng-checked="orderMng.isSelected(order.orderNo)"
+							data-ng-click="orderMng.updateSelection($event,order.orderNo)"
+							id="checkbox_{{order.orderNo}}"><label for="checkbox_{{order.orderNo}}"></label>
+					</td>
+					<td class="click-td" ng-bind="order.orderNo"
+						data-ng-click="orderMng.detail(order.orderId)"></td>
+					<td ng-bind="order.prodName"></td>
+					<td ng-bind="order.orderTypeName"></td>
+					<td ng-bind="order.createTime|date:'yyyy-MM-dd HH:mm:ss'"></td>
+					<td ng-bind="order.orderStateName"></td>
+					<td>￥ {{order.paymentAmount|number:2}}</td>
+					<td>
+						<div
+							data-ng-if="order.orderState == '1' && orderMng.permissions.hasPayPower">
+							<button class="ey-btn"
+								data-ng-click="orderMng.payOneOrder(order.orderNo)">立即支付</button>
+						</div>
+						<div>
+							<button class="ey-btn"
+								data-ng-click="orderMng.detail(order.orderId)">查看详情</button>
+						</div>
+						<div
+							data-ng-if="order.orderState == '1' && orderMng.permissions.hasCancelPower">
+							<button class="ey-btn"
+								data-ng-click="orderMng.cancelOrder(order.orderId)">
+								<span class="ey-text-error">取消订单</span>
+							</button>
+						</div>
+						<div
+							data-ng-if="order.orderType == '0' && (order.orderState == '3' || order.orderState == '5') && orderMng.permissions.hasReorderPower">
+							<button class="ey-btn"
+								data-ng-click="orderMng.reorder(order.resourceType, order.orderNo)">重新下单</button>
+						</div>
+					</td>
+				</tr></tbody>
+		</table>
+		<eayun-table-page></eayun-table-page> </eayun-table>
+	</div>

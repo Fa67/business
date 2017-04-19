@@ -1,0 +1,68 @@
+
+<!-- Form表单 -->
+
+<div class="ey-search-bar ey-search-bar-white">
+
+
+	<button type="button" class="ey-btn ey-btn-primary ey-btn-sm"
+		style="margin-right: 20px;" data-ng-click="createGroup()"
+		data-ng-show="buttonPower.isAdd">
+		<span class="eayunfont ef-plus" aria-hidden="true"></span>
+		创建安全组
+	</button>
+
+	
+		<!--  <eayun-search data-ng-model="sgName" options="options"></eayun-search>-->
+		<eayun-search-text value="sgName" search="sourceName()" placeholder="请输入安全组名称搜索"></eayun-search-text>
+
+</div>
+
+
+<!-- 表格 -->
+<eayun-table data-api="myTable.api" data-ajax-source="myTable.source"
+	data-param="myTable.getParams" data-result="myTable.result">
+<table class="ey-table">
+	<thead>
+		<tr>
+			<th class="col-sm-2">安全组名称</th>
+			<th class="col-sm-2">已有标签</th>
+			<th class="col-sm-2">创建时间</th>
+			<th class="col-sm-2">操作</th>
+		</tr>
+	</thead>
+
+	<tbody><tr data-ng-repeat="item in myTable.result">
+			<td class="col-sm-2 click-td" data-ng-click="manageGroupRule(item)">{{item.sgName=="default"?"默认安全组":item.sgName}}</td>
+			
+			<td class="col-sm-2" ng-show="tags.gt2Tags"ng-init="tags=parseJson(item.tagName)">
+				<span>{{tags.twoTagsString}}</span>
+				<div class="tag-icon ellipsis pointer"
+					ng-mouseenter="openTableBox({value:tags.allTagsString,type:'tagName',index:$index})"
+					ng-mouseleave="closeTableBox({type:'tagName',index:$index})"
+					hint="views/directives/ellipsispop.html"
+					hint-show="hintTagShow[$index]" tooltip-class="tooltip-tag"
+					tooltip-placement="bottom"></div></td>
+			<td class="col-sm-2" ng-show="!tags.gt2Tags"><span>{{tags.allTagsString}}</span>
+			</td>
+			<td>{{item.createTime |date:"yyyy-MM-dd HH:mm:ss"}}</td>
+			<td class="col-sm-2">
+
+				<button  class="ey-btn"
+					data-ng-class="item.defaultGroup=='not'? 'ey-btn ey-btn-left' :'ey-btn'"
+					type="button" data-ng-click="manageGroupRule(item)"
+					>管理</button>
+				<button class="ey-btn btn-left" type="button"
+					data-ng-click="tagResource('securityGroup',item.sgId)"
+					data-ng-show="buttonPower.isTag">标签</button>
+				<button class="ey-btn btn-left" type="button"
+					data-ng-click="deleteGroup(item)" 
+					data-ng-show="item.defaultGroup!='defaultGroup' && buttonPower.isDelete"><span class="ey-text-error">删除</span></button>
+			</td>
+			<!-- <td class="col-sm-4"
+				ng-if="!buttonPower.isEdit && !buttonPower.isGroupRule && !buttonPower.isTag && !buttonPower.isDelete">----
+			</td> -->
+		</tr></tbody>
+</table>
+<eayun-table-page></eayun-table-page> </eayun-table>
+
+

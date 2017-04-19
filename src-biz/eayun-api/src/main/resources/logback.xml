@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds" debug="true">
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>d:\ecsc.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>d:\archive\ecsc.%d{yyyy-MM-dd}.zip
+			</fileNamePattern>
+			<!-- 超过30天的备份文件会被删除 -->
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d [%thread] %-5level %40logger{40} - %msg%n</Pattern>
+		</layout>
+	</appender>
+
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+		<encoder>
+			<pattern>
+				%d [%thread] %-5level %40logger{40} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<root level="info">
+		<appender-ref ref="CONSOLE" />
+	</root>
+</configuration>

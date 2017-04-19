@@ -1,0 +1,151 @@
+<ul class="ey-nav-bread">
+    <a class="ey-color-blue pointer"
+       data-ng-if="verifyInstance.source == 'buy_instance' || verifyInstance.source == 'buy_slave_instance'"
+       data-ng-click="verifyInstance.goToCreateInstance()" >
+        返回修改配置
+    </a>
+    <span class="ey-text-tip" data-ng-if="verifyInstance.source == 'buy_instance' || verifyInstance.source == 'buy_slave_instance'">|</span>
+    <li data-ui-sref="app.rds.instance">MySQL</li>
+    <li data-ng-if="verifyInstance.instance.orderType == '0' && verifyInstance.instance.isMaster == '1'">创建主库实例</li>
+    <li data-ng-if="verifyInstance.instance.orderType == '0' && verifyInstance.instance.isMaster == '0'">创建从库实例</li>
+    <li data-ng-if="verifyInstance.instance.orderType == '2'">升降规格</li>
+    <li data-ng-if="verifyInstance.instance.orderType == '1'">续费</li>
+</ul>
+<h4>订单确认</h4>
+<div class="ey-warm" data-ng-if="verifyInstance.isError || verifyInstance.isWarn">
+    <span class="eayunfont ef-warning ey-font-size-big"></span>
+    <span data-ng-bind="verifyInstance.errorMsg"></span>
+</div>
+<table class="ey-order-table">
+    <tbody>
+    <tr>
+        <td>产品名称</td>
+        <td data-ng-bind="::verifyInstance.instance.prodName"></td>
+        <td>产品数量</td>
+        <td data-ng-bind="::verifyInstance.instance.$$productCount+'台'"></td>
+    </tr>
+    <tr>
+        <td>购买周期</td>
+        <td data-ng-if="(verifyInstance.instance.orderType == '0' || verifyInstance.instance.orderType == '1') && verifyInstance.instance.payType == '1'">
+            {{verifyInstance.instance.buyCycle >= 12 ? (verifyInstance.instance.buyCycle/12 + '年') : (verifyInstance.instance.buyCycle + '个月')}}
+        </td>
+        <td data-ng-if="verifyInstance.instance.payType == '2' || (verifyInstance.instance.payType == '1' && verifyInstance.instance.orderType == '2')">--</td>
+        <td>付款方式</td>
+        <td data-ng-bind="::verifyInstance.instance.$$payTypeName"></td>
+    </tr>
+    <tr>
+        <td>具体配置</td>
+        <td colspan="3" data-ng-if="verifyInstance.instance.orderType == '0'">
+            <p>数据中心：{{verifyInstance.instance.dcName}}<br></p>
+            <p>私有网络：{{verifyInstance.instance.netName}}<br/></p>
+            <p>受管子网：{{verifyInstance.instance.subnetName + '(' + verifyInstance.instance.subnetCidr + ')'}}<br/></p>
+            <p>规格：{{verifyInstance.instance.cpu}}核/{{verifyInstance.instance.ram}}GB/
+            {{verifyInstance.instance.volumeTypeName == 'Normal'?'普通型 ':'性能型 '}}{{verifyInstance.instance.volumeSize}}GB<br/></p>
+            <p>版本：{{verifyInstance.instance.versionName}}<br/></p>
+        </td>
+        <td colspan="3" data-ng-if="verifyInstance.instance.orderType == '2'">
+            <p>数据中心：{{verifyInstance.instance.dcName}}<br></p>
+            <p>实例ID：{{verifyInstance.instance.rdsId}}<br/></p>
+            <p>实例名称：{{verifyInstance.instance.rdsName}}<br/></p>
+            <p>版本号：{{verifyInstance.instance.versionName}}<br/></p>
+            <p>当前规格：{{verifyInstance.instance.rdsInstanceCpu}}核/{{verifyInstance.instance.rdsInstanceRam}}GB/ 
+            	{{verifyInstance.instance.volumeTypeName == 'Normal'?'普通型 ':'性能型 '}}{{verifyInstance.instance.diskSize}}GB<br/></p>
+            <p>升级后规格：{{verifyInstance.instance.cpu}}核/{{verifyInstance.instance.ram}}GB/ 
+            	{{verifyInstance.instance.volumeTypeName == 'Normal'?'普通型 ':'性能型 '}}{{verifyInstance.instance.volumeSize}}GB<br/></p>
+        </td>
+        <td colspan="3" data-ng-if="verifyInstance.instance.orderType == '1'">
+            <p>数据中心：{{verifyInstance.instance.dcName}}<br></p>
+            <p>实例ID：{{verifyInstance.instance.rdsId}}<br/></p>
+            <p>实例名称：{{verifyInstance.instance.rdsName}}<br/></p>
+            <p>版本号：{{verifyInstance.instance.versionName}}<br/></p>
+            <p>规格：{{verifyInstance.instance.cpu}}核/{{verifyInstance.instance.ram}}GB/ 
+            	{{verifyInstance.instance.volumeTypeName == 'Normal'?'普通型 ':'性能型 '}}{{verifyInstance.instance.volumeSize}}GB<br/></p>
+        </td>
+    </tr>
+    <tr>
+        <td>金额</td>
+        <td class="ey-color-red" colspan="3" data-ng-if="'1' == verifyInstance.instance.payType">
+            ￥&nbsp;{{verifyInstance.instance.price | thousand}}
+        </td>
+        <td class="ey-color-red" colspan="3" data-ng-if="'2' == verifyInstance.instance.payType">
+            ￥&nbsp;{{verifyInstance.instance.price | thousand:true}}&nbsp;<span class="ey-color-default">/小时</span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div data-ng-class="verifyInstance.instance.payType == '1' ? 'ey-pay-panel' : ''">
+    <div class="ey-pay-body" data-ng-if="verifyInstance.instance.payType == '1'">
+        <table>
+            <tbody>
+                <tr>
+                    <td width="30px">
+                        <span class="eayunfont ef-wallet ey-font-hugest ey-color-yellow-dark"></span>
+                    </td>
+                    <td width="110px">使用余额支付：</td>
+                    <td width="20px">
+                        <div class="ey-form-checkbox">
+                            <input type="checkbox" 
+                            	   id="check1"
+                                   data-ng-checked="verifyInstance.isBalance"
+                                   data-ng-disabled="verifyInstance.instance.$$balance <= 0"
+                                   data-ng-click="verifyInstance.useBalance()">
+                            <label for="check1"></label>
+                        </div>
+                    </td>
+                    <td width="60px">余额支付</td>
+                    <td width="20px"><span class="ey-text-tip">|</span></td>
+                    <td width="180px">
+                        <span class="ey-text-tip">可用金额&nbsp;</span>
+                        <span class="ey-color-blue">￥&nbsp;{{verifyInstance.instance.$$balance | thousand}}</span>
+                    </td>
+                    <td width="110px" data-ng-show="verifyInstance.isBalance">
+                        <span class="ey-text-tip">扣除&nbsp;</span>
+                        <span class="ey-color-red">￥&nbsp;{{verifyInstance.instance.accountPayment | thousand}}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <p data-ng-if="verifyInstance.instance.payType == '2'">
+        <span class="ey-color-red">*</span>
+        <span class="ey-text-tip">按需付费的资源，采用先使用后扣费的模式，扣费时精确到厘，具体扣费请以账单为准。</span>
+    </p>
+    <ul class="ey-order-list">
+        <li class="ey-font-size-big" data-ng-if="verifyInstance.instance.payType == '1'">
+            <span>产品金额：</span>
+            <span>￥&nbsp;{{verifyInstance.instance.price | thousand}}</span>
+        </li>
+        <li class="ey-font-size-big" data-ng-if="verifyInstance.instance.payType == '1'">
+            <span>余额支付：</span>
+            <span>￥&nbsp;-{{verifyInstance.instance.accountPayment | thousand}}</span>
+        </li>
+        <div class="divider" data-ng-if="verifyInstance.instance.payType == '1'"></div>
+        <li class="ey-font-size-bigger ey-font-bold">
+            <span>应付款：</span>
+            <span class="ey-text-tip">
+                <span>￥&nbsp;</span>
+                <span class="ey-color-red ey-font-size-superior" data-ng-if="verifyInstance.instance.payType == '1'">
+                    {{verifyInstance.instance.thirdPartPayment | thousand}}
+                </span>
+                <span class="ey-color-red ey-font-size-superior" data-ng-if="verifyInstance.instance.payType == '2'">
+                    {{0 | thousand}}
+                </span>
+            </span>
+        </li>
+        <li>
+            <button class="ey-btn ey-btn-primary"
+                    data-ng-disabled="verifyInstance.isError || !verifyInstance.isAccept || verifyInstance.checkBtn"
+                    data-ng-click="verifyInstance.commitOrderInstance()">
+                提交订单
+            </button>
+        </li>
+        <li>
+			<div class="ey-form-checkbox">
+				<input id="check2" type="checkbox" data-ng-model ="verifyInstance.isAccept">
+				<label for="check2" class="ey-text-tip">我同意</label>
+			</div>
+			<a href="http://www.eayun.com/document/product/ech.html" target="_blank"><span class="ey-text-link">《云数据库MySQL服务条款》</span></a>
+		</li>
+    </ul>
+</div>

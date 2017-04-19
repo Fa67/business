@@ -1,0 +1,70 @@
+<div class="modal-header" style="width: 800px;">
+	<span class="modal-title">下载日志</span> <span
+		class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 800px;">
+	<div class="ey-content-progress">
+		<p>下载日志需要先将某类型的日志进行发布，发布后自动生成日志文件方可下载。
+			日志下载受限于公网速度，如果公网下载速度较慢，建议使用易云云主机进行下载。</p>
+	</div>
+	<div class="ey-form-group">
+		<label class="ey-form-label">实例名称：</label> <span>{{item.rdsName}}</span>
+	</div>
+
+	<div class="ey-form-group">
+		<label class="ey-form-label">日志类型：</label>
+		<div>
+			<span class="ey-mark" data-ng-click="selectType('DBLog')"
+				ng-class=" model.type=='DBLog'? 'active' : ''">DBLog</span> <span
+				class="ey-mark" data-ng-click="selectType('SlowLog')"
+				ng-class=" model.type=='SlowLog'? 'active' : ''">SlowLog</span> <span
+				class="ey-mark" data-ng-click="selectType('ErrorLog')"
+				ng-class=" model.type=='ErrorLog'? 'active' : ''">ErrorLog</span>
+
+			<button class="ey-btn ey-btn-primary" style="margin-left: 180px;"
+				data-ng-click="publish()" ng-disabled="publishBtn || logPubishingState.data">{{(publishBtn || logPubishingState.data)?'发布中':'发布'}}</button>
+		</div>
+	</div>
+	<div class="ey-form-group">
+		<label class="ey-form-label">生成时间：</label>
+		<date-range start-date="model.startDate" end-date="model.endDate" min-date ="model.minDate" max-date="model.endDate"
+			style="width:208px;"></date-range>
+		<button class="ey-btn ey-btn-default" style="margin-left: 175px;"
+			data-ng-click="queryLogList()">查询</button>
+	</div>
+
+	<div>
+		<eayun-table data-api="myTable.api" data-ajax-source="myTable.source"
+			data-param="myTable.getParams" data-result="myTable.result">
+		<table class="ey-table">
+			<thead>
+				<tr>
+					<th style="width: 240px;">日志文件名称</th>
+					<th style="width: 180px;">生成时间</th>
+					<th style="width: 180px;">日志大小</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+
+			<tbody style="width: 758px;">
+				<tr data-ng-repeat="log in myTable.result">
+					<td style="width: 240px;">{{log.logName}}</td>
+					<td style="width: 180px;">{{log.publishTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+					<td style="width: 180px;">{{(log.size<1024?(log.size+'B'):
+						(log.size<1024*1024?(((log.size/1024)|number:2)+'KB'):(((log.size/1024/1024)|number:2)+'MB')))}}</td>
+					<td class="ey-table-operation" style="width: 141px;">
+						<span class="ey-btn" data-ng-click="download(log)">下载</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<eayun-table-page page-size="5"></eayun-table-page> </eayun-table>
+	</div>
+</div>
+<!-- 按钮区域 -->
+<div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<button type="button" class="ey-btn ey-btn-default"
+			ng-click="cancel()">取 消</button>
+	</div>
+</div>

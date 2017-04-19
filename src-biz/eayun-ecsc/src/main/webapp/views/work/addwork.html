@@ -1,0 +1,76 @@
+<h4>创建工单</h4>
+<form class="form-horizontal row" name="addWork" novalidate>
+	<div class="ey-form-group "  data-ng-class="(addWork.workType.$dirty && addWork.workType.$invalid) ? 'ey-has-error' : ''">
+		<label class="col-sm-2 control-label">问题类别：</label>
+		<eayun-select name="workType" class="ey-form-select ey-form-w6" data-ng-model="workorder.workType" placeholder="请选择问题类别" required>
+			<!-- <eayun-option value="" selected text="请选择问题类别"></eayun-option> -->
+			<eayun-option value="workType.nodeId" data-ng-repeat="workType in dataTree" text="{{workType.nodeName}}"></eayun-option>
+		</eayun-select>
+		<!-- <span class="glyphicon glyphicon-ok form-control-feedback" data-ng-show="addWork.workType.$dirty && addWork.workType.$valid"></span> -->
+		<span class="ey-text-tip ey-color-red" data-ng-show="addWork.workType.$dirty && addWork.workType.$error.required">请选择问题类别</span>
+	</div>
+	<div class="ey-form-group "  data-ng-class="(addWork.workTitle.$dirty && addWork.workTitle.$invalid) ? 'ey-has-error' : ''">
+		<label class="col-sm-2 control-label">问题标题：</label>
+		<input type="text" class="ey-form-input ey-form-w8" data-ng-model="workorder.workTitle" maxlength="45" name="workTitle" placeholder="请输入标题" required>
+		<span class="ey-text-tip ey-color-red" data-ng-show="addWork.workTitle.$dirty && addWork.workTitle.$error.required">标题不能为空</span>
+	</div>
+	<div class="ey-form-group" data-ng-class="(addWork.workContent.$dirty && addWork.workContent.$invalid) ? 'ey-has-error' : ''">
+		<label class="col-sm-2 control-label">问题描述：</label>
+		<textarea rows="3" class="ey-form-textarea ey-form-w8" maxlength="2000" name="workContent" data-ng-model="workorder.workContent" placeholder="限制2000字以内" required></textarea>
+		<span class="ey-text-tip ey-color-red" data-ng-show="addWork.workContent.$dirty && addWork.workContent.$error.required">问题描述不能为空</span>
+	</div>
+
+	<div class="ey-form-group "  data-ng-class="(mailPhone || phone) ? 'ey-has-error' : ''">
+		<label class="col-sm-2 control-label">联系手机：</label>
+		<input type="text" class="ey-form-input ey-form-w8" data-ng-model="workorder.workPhone" maxlength="11" name="workPhone" placeholder="请输入联系手机" data-ng-change="checkMailPhone()">
+		<span class="ey-text-tip ey-color-red" data-ng-show="addWork.workPhone.$dirty && phone">请输入正确的手机号</span>
+	</div>
+	<!--<div class="form-group">
+		<label class="col-sm-2 control-label">短信提醒时间段：</label>
+		<div class="col-sm-5 checkbox-inline">
+			<span class="col-sm-3" style="padding-bottom: 0px">
+				<input type="radio" data-ng-model="workorder.workPhoneTime" name="workPhoneTime" value="0">每日9:00-18:00
+			</span>
+			<span class="col-sm-3">
+				<input type="radio" data-ng-model="workorder.workPhoneTime" name="workPhoneTime" value="1">任何时间
+			</span>
+			<span class="col-sm-3">
+				<input type="radio" data-ng-model="workorder.workPhoneTime" name="workPhoneTime" value="2">从不接收
+			</span>
+
+		</div>
+	</div>-->
+	<div class="ey-form-group " data-ng-class="(mailPhone || mail)  ? 'ey-has-error' : ''">
+		<label class="col-sm-2 control-label">联系邮箱：</label>
+		<input type="text" class="ey-form-input ey-form-w8" data-ng-model="workorder.workEmail" maxlength="50"
+			   name="workEmail" placeholder="请输入联系邮箱" data-ng-change="checkMailPhone()">
+		<span class="ey-text-tip ey-color-red" data-ng-show="addWork.workEmail.$dirty && mail">请输入正确的邮箱地址</span>
+		<span class="ey-text-tip ey-color-red" data-ng-show="mailPhone">手机号和邮箱至少输入一项</span>
+	</div>
+	<div class="ey-form-group">
+		<label class="col-sm-2 control-label">上传附件：</label>
+		<div class="col-sm-5" style="padding-left:0;">
+			<div class="media file" data-ng-repeat="file in files">
+				<div class="media-left">
+					<span class="glyphicon glyphicon-paperclip"></span>
+				</div>
+				<div class="media-body">{{shortName(file.name)}}</div>
+				<button type="button" class="close" aria-label="Close" data-ng-click="deleteWorkFile(file)">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<!--ngf-pattern="'.jpg,.bmp,.png,.gif,.txt,.rar,.zip,.doc,.docx,.ini,.conf,.eml,.pdf'"-->
+			<button type="button" class="btn btn-default btn-sm" ngf-select="uploadFiles($file)" ngf-pattern="'.'+fileTypes.join(',.')"  accept="{{'.'+fileTypes.join(',.')}}">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+				添加附件
+			</button>
+			<p class="help-block">可上传3个附件</p>
+			<p class="help-block">每个附件大小不得超过2M，支持的格式有：'{{fileTypes.join("','")}}'</p>
+			<!-- <p class="help-block">2.如您仅添加机密信息，附件也将加密处理</p> -->
+			<div class="ey-form-group ey-btn-group">
+				<button type="button" class="ey-btn ey-btn-primary ey-btn-lg" data-ng-click="addWorkorder()" data-ng-disabled="addWork.$invalid || mailPhoneBtn || checkBtn">提交</button>
+				<button type="button" class="ey-btn ey-btn-default ey-btn-lg" data-ui-sref="app.work.workList">取消</button>
+			</div>
+		</div>
+	</div>
+</form>

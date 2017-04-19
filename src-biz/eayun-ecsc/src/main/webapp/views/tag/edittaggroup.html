@@ -1,0 +1,71 @@
+<div class="modal-header">
+    <span class="modal-title">编辑标签类别</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+
+<div class="modal-body" style="width: 600px;">
+    <form class="ey-form" name="edittaggroup" novalidate>
+        <div class="ey-form-group">
+            <label class="ey-form-label">名称：</label>
+
+            <input type="text" class="ey-form-input ey-form-w6"  name="name"
+                       data-ng-model="editTagGroupModel.name" disabled="true">
+        </div>
+
+        <div class="ey-form-group"  data-ng-class="(edittaggroup.abbr.$dirty && edittaggroup.abbr.$invalid) ? 'ey-has-error' : ''">
+            <label class="ey-form-label ey-required">类别简称：</label>
+
+            <input type="text" class="ey-form-input ey-form-w6" placeholder="请输入标签类别简称" name="abbr"
+                   data-ng-model="editTagGroupModel.abbreviation" required
+                   data-ajax-valid="checkTagGroupAbbr(value)" maxlength=9/>
+            <span ng-show="edittaggroup.abbr.$dirty && edittaggroup.abbr.$error.required && !abbrflag">类别简称不能为空</span>
+            <span ng-show="edittaggroup.abbr.$dirty && edittaggroup.abbr.$error.ajaxValid && !abbrflag">类别简称已存在</span>
+            <span ng-if="abbrflag">请输入1-9位字符,支持数字、中英文、下划线、空格</span>
+        </div>
+
+        <div class="ey-form-group">
+            <label class="ey-form-label">描述：</label>
+
+            <textarea type="text" class="ey-form-textarea ey-form-w6" placeholder="请输入描述"
+                       data-ng-model="editTagGroupModel.description" maxlength=200></textarea>
+        </div>
+
+        <div class="ey-form-group">
+            <label class="ey-form-label">是否启用：</label>
+
+            <div class="ey-form-radio">
+                <input type="radio" id="rdo_enable" name="enabled" value="1" data-ng-model="editTagGroupModel.enabled">
+                <label for="rdo_enable">是</label>
+            </div>
+
+            <div class="ey-form-radio">
+                <input type="radio" id="rdo_disable" name="enabled" value="0" data-ng-model="editTagGroupModel.enabled">
+                <label for="rdo_disable">否</label>
+            </div>
+        </div>
+
+        <div class="ey-form-group">
+            <label class="ey-form-label">是否唯一：</label>
+
+            <div class="ey-form-radio">
+                <input type="radio" id="rdo_unique" name="unique" value="1" data-ng-model="editTagGroupModel.unique" disabled>
+                <label for="rdo_unique">是</label>
+            </div>
+            <div class="ey-form-radio">
+                <input type="radio" id="rdo_inunique" name="unique" value="0" data-ng-model="editTagGroupModel.unique" disabled>
+                <label for="rdo_inunique">否</label>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+
+<div class="ey-modal-footer">
+    <div class="ey-btn-group">
+        <button type="button" class="ey-btn ey-btn-primary"
+                ng-click="doCommit()" ng-disabled="!edittaggroup.$valid">确定</button>
+        <button type="button" class="ey-btn ey-btn-default"
+                ng-click="cancel()">取 消</button>
+    </div>
+</div>
+

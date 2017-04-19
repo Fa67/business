@@ -1,0 +1,115 @@
+<ul class="ey-nav-bread">
+    <a class="ey-color-blue pointer"
+       data-ng-if="verifyFloatIp.floatOrder.orderType == '0'"
+       data-ng-click="verifyFloatIp.goToCreateFloatIp()">
+        返回修改配置
+    </a>
+    <span class="ey-text-tip" data-ng-if="verifyFloatIp.floatOrder.orderType == '0'">|</span>
+    <li data-ui-sref="app.net.netbar.floatip">弹性公网IP</li>
+    <li>申请弹性公网IP</li>
+</ul>
+<h4>订单确认</h4>
+<div class="ey-warm" data-ng-if="verifyFloatIp.isError">
+    <span class="eayunfont ef-warning ey-font-size-big"></span><span data-ng-bind="verifyFloatIp.isErrMessage"></span>
+</div>
+<table class="ey-order-table">
+    <tbody>
+    <tr>
+        <td>产品名称</td>
+        <td data-ng-bind="::verifyFloatIp.floatOrder.$$orderName"></td>
+        <td>产品数量</td>
+        <td data-ng-bind="::verifyFloatIp.floatOrder.productCount+'个'"></td>
+    </tr>
+    <tr>
+        <td>购买周期</td>
+        <td data-ng-if="verifyFloatIp.floatOrder.orderType == '0' && verifyFloatIp.floatOrder.payType == '1'">
+            {{verifyFloatIp.floatOrder.buyCycle > 11 ? (verifyFloatIp.floatOrder.buyCycle/12 + '年') : (verifyFloatIp.floatOrder.buyCycle + '个月')}}
+        </td>
+        <td data-ng-if="verifyFloatIp.floatOrder.orderType != '0' || verifyFloatIp.floatOrder.payType != '1'">--</td>
+        <td>付款方式</td>
+        <td data-ng-bind="::verifyFloatIp.floatOrder.$$payTypeName"></td>
+    </tr>
+    <tr>
+        <td>具体配置</td>
+        <td colspan="3">
+            <p>数据中心 ：{{verifyFloatIp.floatOrder.dcName}}<br></p>
+        </td>
+    </tr>
+    <tr>
+        <td>金额</td>
+        <td class="ey-color-red" colspan="3" data-ng-if="'1' == verifyFloatIp.floatOrder.payType">
+            ￥&nbsp;{{verifyFloatIp.floatOrder.price | number:2}}
+        </td>
+        <td class="ey-color-red" colspan="3" data-ng-if="'2' == verifyFloatIp.floatOrder.payType">
+            ￥&nbsp;{{verifyFloatIp.floatOrder.price | thousand:true}}&nbsp;<span class="ey-color-default">/小时</span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div data-ng-class="verifyFloatIp.floatOrder.payType == '1' ? 'ey-pay-panel' : ''">
+    <div class="ey-pay-body" data-ng-if="verifyFloatIp.floatOrder.payType == '1'">
+        <table>
+            <tbody>
+            <tr>
+                <td width="30px">
+                    <span class="eayunfont ef-wallet ey-font-hugest ey-color-yellow-dark"></span>
+                </td>
+                <td width="110px">使用余额支付：</td>
+                <td width="20px">
+                    <div class="ey-form-checkbox">
+                        <input type="checkbox" id="check1"
+                               data-ng-checked="verifyFloatIp.isBalance"
+                               data-ng-disabled="verifyFloatIp.floatOrder.$$balance <= 0"
+                               data-ng-click="verifyFloatIp.useBalance()">
+                        <label for="check1"></label>
+                    </div>
+                </td>
+                <td width="60px">余额支付</td>
+                <td width="20px"><span class="ey-text-tip">|</span></td>
+                <td width="180px">
+                    <span class="ey-text-tip">可用金额&nbsp;</span>
+                    <span class="ey-color-blue">￥ {{verifyFloatIp.floatOrder.$$balance | thousand}}</span>
+                </td>
+                <td width="110px" data-ng-show="verifyFloatIp.isBalance">
+                    <span class="ey-text-tip">扣除&nbsp;</span>
+                    <span class="ey-color-red">￥&nbsp;{{verifyFloatIp.floatOrder.accountPayment | thousand}}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p data-ng-if="verifyFloatIp.floatOrder.payType == '2'">
+        <span class="ey-color-red">*</span>
+        <span class="ey-text-tip">按需付费的资源，采用先使用后扣费的模式，扣费时精确到厘，具体扣费请以账单为准。</span>
+    </p>
+    <ul class="ey-order-list">
+        <li class="ey-font-size-big" data-ng-if="verifyFloatIp.floatOrder.payType == '1'">
+            <span>产品金额：</span>
+            <span>￥ {{verifyFloatIp.floatOrder.price | number:2}}</span>
+        </li>
+        <li class="ey-font-size-big" data-ng-if="verifyFloatIp.floatOrder.payType == '1'">
+            <span>余额支付：</span>
+            <span>￥ -{{verifyFloatIp.floatOrder.accountPayment | number:2}}</span>
+        </li>
+        <div class="divider" data-ng-if="verifyFloatIp.floatOrder.payType == '1'"></div>
+        <li class="ey-font-size-bigger ey-font-bold">
+            <span>应付款：</span>
+            <span class="ey-text-tip">
+                <span>￥&nbsp;</span>
+                <span class="ey-color-red ey-font-size-superior" data-ng-if="verifyFloatIp.floatOrder.payType == '1'">
+                    {{verifyFloatIp.floatOrder.thirdPartPayment | number:2}}
+                </span>
+                <span class="ey-color-red ey-font-size-superior" data-ng-if="verifyFloatIp.floatOrder.payType == '2'">
+                    {{0 | thousand:true}}
+                </span>
+            </span>
+        </li>
+        <li>
+            <button class="ey-btn ey-btn-primary"
+                    data-ng-disabled="!verifyFloatIp.commitOrderFlag"
+                    data-ng-click="verifyFloatIp.commitOrderFloatIp()">
+                提交订单
+            </button>
+        </li>
+    </ul>
+</div>

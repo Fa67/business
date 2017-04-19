@@ -1,0 +1,59 @@
+<ul class="ey-nav-bread">
+    <li data-ui-sref="app.obs">对象存储</li>
+    <li>开通对象存储</li>
+</ul>
+<h4>订单确认</h4>
+<div class="ey-warm" data-ng-if="isError">
+    <span class="eayunfont ef-warning ey-font-size-big"></span><span data-ng-bind="isErrMessage"></span>
+</div>
+<table class="ey-order-table">
+    <tbody>
+    <tr>
+        <td>产品名称</td>
+        <td>对象存储服务</td>
+        <td>产品数量</td>
+        <td>1个</td>
+    </tr>
+    <tr>
+        <td>购买周期</td>
+        <td>
+            --
+        </td>
+        <td>付款方式</td>
+        <td>后付费</td>
+    </tr>
+    <tr>
+        <td>具体配置</td>
+        <td colspan="3"><span>标准</span>
+        </td>
+    </tr>
+    <tr>
+        <td>金额</td>
+        <td colspan="3">
+          --
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p><span class="ey-color-red">*</span><span class="ey-text-tip">按需付费的资源，采用先使用后扣费的模式，扣费时精确到厘，具体扣费请以账单为准。</span></p>
+<ul class="ey-order-list">
+       <li class="ey-font-size-bigger ey-font-bold">
+            <span>应付款：</span>
+            <span class="ey-text-tip">￥
+                <span class="ey-color-red ey-font-size-superior">
+                    0.00
+                </span>
+            </span>
+        </li>
+         <li>
+            <button class="ey-btn ey-btn-primary"  ng-disabled="flag || isLight||openDis" data-ng-click="open()">提交订单
+            </button>
+        </li>
+         <li>
+           	<div class="ey-form-checkbox">
+				<input id="check2" type="checkbox" ng-model="isAgree" ng-click="checkAgree()">
+				<label for="check2" class="ey-text-tip">我同意</label>
+			</div>
+			<a href="http://www.eayun.com/document/product/eos.html" target="_blank"><span class="ey-text-link">《对象存储EOS服务条款》</span></a>
+		 </li>
+    </ul>

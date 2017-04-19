@@ -1,0 +1,48 @@
+<div class="ey-search-bar ey-search-bar-white">
+	  <eayun-search-text search="search($value,$event)" placeholder="请输入名称搜索"></eayun-search-text>
+</div>
+<!-- 表格 -->
+<eayun-table data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams" data-result="myTable.result">
+  <table class="ey-table-muliti">
+    <thead>
+    <tr>
+      <th>备份名称</th>
+      <th style="width:100px;">状态</th>
+      <th style="width:120px;">分类</th>
+      <th>源硬盘名称</th>
+      <th style="width:100px;">备份大小</th>
+      <th style="width:150px;">
+         <eayun-table-filter list-data="dcList" text-field="dcName" item-clicked="selectDc($item, $event)"></eayun-table-filter>
+      </th>
+      <th style="width:220px;">时间</th>
+      <th style="width:100px;">操作</th>
+    </tr>
+    </thead>
+    <tbody><tr data-ng-repeat="snap in myTable.result">
+      <td class="click-td" data-ng-click="detail(snap)" title="{{snap.snapName}}">{{snap.snapName}}</td>
+      <td>
+         <span class ="eayunfont ef-square" data-ng-class="snapStatusClass!=''?snapStatusClass:''" ng-init="snapStatusClass = getSnapshotStatus(snap)"></span>
+         {{(snap.snapStatus=='DELETING'&&'2'==snap.isDeleted)?'删除中':'已删除'}}
+  	  </td>
+      <td>{{snap.snapType=='1'?'系统盘备份':'数据盘备份'}}</td>
+      <td class="click-td" data-ng-click="detailVolume(snap)" data-ng-if="snap.volName!=null&&snap.volName!='null'&&snap.volName!=''" title="{{snap.volName}}">{{snap.volName=='null'?'--':snap.volName}}</td>
+      <td  data-ng-if="snap.volName==null||snap.volName=='null'||snap.volName==''">--</td>
+      <td>{{snap.snapSize}}GB</td>
+      <td>{{snap.dcName}}</td>
+      <td>
+      	<span>{{'创建时间：'+(snap.createTime|date:'yyyy-MM-dd HH:mm:ss')}}<br></span>
+      	<span>{{'删除时间：'+(snap.deleteTime|date:'yyyy-MM-dd HH:mm:ss')}}</span>
+      </td>
+      <td>
+        <div class="ey-btn-group">
+			<button class="ey-btn"  data-ng-click="deleteSnap(snap)" data-ng-if="snapListPermissions.isDelete" data-ng-disabled="snap.snapStatus=='DELETING'&&'2'==snap.isDeleted">
+			   <span class="ey-text-error">删除</span>
+			</button>
+			<button class="ey-btn"  data-ng-click="recoverSnap(snap)" data-ng-if="snapListPermissions.isRestore" data-ng-disabled="snap.snapStatus=='DELETING'&&'2'==snap.isDeleted">恢复</button>
+			<span data-ng-if="!(snapListPermissions.isRestore || snapListPermissions.isDelete)">----</span>
+		</div>
+      </td>
+    </tr></tbody>
+  </table>
+  <eayun-table-page></eayun-table-page>
+</eayun-table>

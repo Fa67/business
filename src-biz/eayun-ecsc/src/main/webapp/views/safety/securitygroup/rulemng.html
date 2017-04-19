@@ -1,0 +1,228 @@
+
+<div class="ey-panel-body">
+	<div class=" clearfix">
+		<h4>安全组详情</h4>
+		<!-- Form表单 -->
+		<form class="form-inline"></form>
+
+
+		<!-- 详情 -->
+		<div class="details" style="margin-bottom: 20px">
+			<div class="row">
+				<div class="col-lg-6">
+
+					<div class="details-group">
+						<div class="details-name"
+							 hint="views/safety/securitygroup/detaileditgroup.html"
+							 hint-show="hintNameShow" tooltip-class="tooltip-edit"
+							 tooltip-placement="right">安全组名称：</div>
+
+						<div class="details-value">
+						<span ng-bind="model.sgName=='default'?'默认安全组':model.sgName"
+							  data-ng-class="vmNameEditable ? 'hide' : 'show'"></span>
+						</div>
+
+
+
+						<span class="badge" ng-show="buttonPower.isEdit"
+							 data-ng-click="editNameOrDesc('fwName')"
+							 data-ng-class="model.defaultGroup=='defaultGroup' ? 'hide' : 'show'">
+							<span class="glyphicon glyphicon-pencil" style="cursor: pointer"></span>
+						</span>
+
+
+
+
+
+					</div>
+					<div class="details-group">
+						<div class="details-name">安全组ID：</div>
+						<div class="details-value">{{model.sgId}}</div>
+					</div>
+					<div class="details-group">
+						<div class="details-name">创建时间：</div>
+						<div class="details-value">{{model.createTime |date:"yyyy-MM-dd HH:mm:ss"}}</div>
+					</div>
+
+				</div>
+				<div class="col-lg-6">
+					<div class="details-group">
+
+						<div class="details-name"
+							 hint="views/safety/securitygroup/descdetail.html"
+							 hint-show="hintDescShow" tooltip-class="tooltip-edit"
+							 tooltip-placement="right">描述：</div>
+
+						<div class="details-value ey-ellipsis" title="{{model.sgDescription}}"
+                            ng-bind="model.sgDescription" data-ng-if="!vmDescEditable">
+						</div>
+
+						<div class="badge show" ng-show="buttonPower.isEdit"
+							 data-ng-click="editNameOrDesc('fwDesc')"
+							 data-ng-class="model.defaultGroup=='defaultGroup' ? 'hide' : 'show'">
+							<span class="glyphicon glyphicon-pencil"  style="cursor: pointer"></span>
+						</div>
+
+
+					</div>
+					<div class="details-group">
+						<div class="details-name">所属数据中心：</div>
+						<div class="details-value">{{model.dcName}}</div>
+					</div>
+					<div class="details-group">
+						<div class="details-name">已有标签：</div>
+						<div class="details-value">
+							{{resourceTags.gt2Tags?resourceTags.twoTagsString:resourceTags.allTagsString}}
+						</div>
+						<div ng-show="resourceTags.gt2Tags"
+							 class="detail-icon ellipsis pointer"
+							 ng-mouseenter="openPopBox({value:resourceTags.allTagsString,type:'tagName'})"
+							 ng-mouseleave="closePopBox('tagName')"
+							 hint="views/directives/ellipsispop.html"
+							 hint-show="tagShow" tooltip-class="tooltip-description"
+							 tooltip-placement="bottom"></div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class=" clearfix">
+
+		<form class="form-inline">
+			<button class="ey-btn ey-btn-primary ey-btn-sm" data-ng-click="createRule()"
+					style="margin-right: 15px;"
+					ng-show="model.defaultGroup!='defaultGroup'&& buttonPower.isruleAdd">
+				<span class="eayunfont ef-plus"></span> 添加规则
+			</button>
+
+			<!-- 表格 -->
+		</form>
+		<eayun-table data-api="myGroupRuleTable.api"
+					 data-ajax-source="myGroupRuleTable.source"
+					 data-param="myGroupRuleTable.getParams"
+					 data-result="myGroupRuleTable.result">
+			<table class="ey-table">
+				<thead>
+				<tr>
+					<th class="col-sm-2">方向</th>
+					<th class="col-sm-2">类型</th>
+					<th class="col-sm-2">协议</th>
+					<th class="col-sm-2">端口范围</th>
+					<th class="col-sm-2">ICMP类型/编码</th>
+					<th class="col-sm-2">源地址</th>
+					<th class="col-sm-2">操作</th>
+				</tr>
+				</thead>
+
+				<tbody><tr data-ng-repeat="item in myGroupRuleTable.result">
+					<td class="col-sm-2">{{item.direction=='egress'?'出方向':'入方向'}}</td>
+					<td class="col-sm-2">{{item.ethertype}}</td>
+					<td style="text-transform: uppercase;" class="col-sm-2">{{item.protocol=='null'?'所有':item.protocol=="All"?"所有":item.protocol}}</td>
+
+					<td data-ng-show="item.icMp=='--'&&item.portRangeMin!='null'&&item.portRangeMin!=item.portRangeMax">
+					{{item.portRangeMin+"-"+item.portRangeMax}}
+					</td>
+
+					<td data-ng-show="item.icMp=='--'&&item.portRangeMin!='null'&&item.portRangeMin==item.portRangeMax&&item.protocolExpand==''">
+					{{item.portRangeMin+"-"+item.portRangeMax}}
+					</td>
+					<td data-ng-show="item.icMp=='--'&&item.portRangeMin!='null'&&item.protocolExpand!=''&&item.portRangeMin==item.portRangeMax">
+					{{item.protocolExpand}}
+					</td>
+					<td data-ng-show="item.icMp=='null'&&item.portRangeMin!='null'&&(item.protocolExpand!=''||item.protocolExpand!='')">
+					{{item.protocolExpand}}
+					</td>
+
+
+					<td data-ng-show="(item.icMp!='--'&&item.protocolExpand=='')||(item.icMp=='null'&&item.protocolExpand=='null'&&item.portRangeMin=='null')">
+					--
+					</td>
+					<td data-ng-show="item.icMp=='--'&&item.protocolExpand=='null'&&item.portRangeMin=='null'">
+					--
+					</td>
+
+					<td class="col-sm-2">{{item.icMp=="null"?"--":item.icMp}}</td>
+
+						 <td class="col-sm-2" data-ng-show="item.remoteIpPrefix=='null'&&item.remoteGroupName==''">{{item.remoteIpPrefix=='null'? '0.0.0.0/0' + '(CIDR)':item.remoteIpPrefix+'(CIDR)'}}</td>
+                    <td class="col-sm-2" data-ng-show="item.remoteIpPrefix!='null'&&item.remoteGroupName==''">{{item.remoteIpPrefix+'(CIDR)'}}</td>
+                    <td class="col-sm-2" data-ng-show="item.remoteGroupName!=''">{{item.remoteGroupName=="default"?"默认安全组":item.remoteGroupName}}</td>
+
+					<td class="col-sm-2" ng-if="buttonPower.isDelete">
+						<button class="ey-btn" type="button" ng-disabled="item.deletefag"
+								data-ng-click="deleteGroupRule(item)"
+								data-ng-show="model.defaultGroup!='defaultGroup'  && buttonPower.isruleDelete "><span class="ey-text-error">删除</span></button>
+
+						<span data-ng-show="model.defaultGroup=='defaultGroup'  && buttonPower.isDelete">----</span>
+					</td>
+					<td class="col-sm-2" ng-if="! buttonPower.isDelete">
+						<span>----</span>
+					</td>
+				</tr></tbody>
+			</table>
+			<eayun-table-page></eayun-table-page> </eayun-table>
+	</div>
+
+
+	<div class="clearfix">
+		<!-- 表格 -->
+		<form class="form-inline">
+			<button class="ey-btn ey-btn-primary ey-btn-sm" ng-show="buttonPower.isHostAdd"
+					data-ng-click="manage(model.sgId,model.sgName)"
+					style="margin-right: 15px;">
+				<span class="eayunfont ef-plus"></span> 添加云主机
+			</button>
+
+		</form>
+		<eayun-table data-api="myGroupcloudhostTable.api"
+					 data-ajax-source="myGroupcloudhostTable.source"
+					 data-param="myGroupcloudhostTable.getParams"
+					 data-result="myGroupcloudhostTable.result">
+			<table class="ey-table">
+				<thead>
+				<tr>
+					<th class="col-sm-2">主机名称 </th>
+					<th class="col-sm-2">状态</th>
+					<th class="col-sm-2">所属网络</th>
+					<th class="col-sm-2">IP地址</th>
+
+					<th class="col-sm-2">操作</th>
+				</tr>
+				</thead>
+
+				<tbody><tr data-ng-repeat="item in myGroupcloudhostTable.result">
+					<td class="col-sm-2">{{item.vmname}}</td>
+					<td><span class="state-block"
+							  data-ng-class="vmStatusClass!=''?vmStatusClass:''"
+							  ng-init="vmStatusClass = checkVmStatus(item)"></span>
+						{{item.statusForDis}}</td>
+					<td>
+
+					<span
+							data-ng-bind="'受管子网：'+(item.subnet_name+'('+(item.cidr==''? '--':item.cidr)+')')"></span><br>
+
+					<span
+							data-ng-bind="'自管子网：'+(item.subName+'('+(item.subip==''? '--':item.subip)+')')"></span>
+
+					</td>
+					<td><span
+							data-ng-bind="'受管子网：'+(item.vm_ip==''? '--':item.vm_ip)"></span><br>
+						<span data-ng-bind="'公网：'+(item.flo_ip==''?'--':item.flo_ip)"></span><br>
+					<span
+							data-ng-bind="'自管子网：'+(item.subip==''? '--':item.subip)"></span>
+					</td>
+					<td class="col-sm-2" data-ng-show="buttonPower.isHostAdd">
+						<button class="ey-btn ey-text-error" type="button"
+								data-ng-click="deletecloudhost(model.sgId,item.vmid,item.prj_id,model.sgName,item.vmname)"
+								data-ng-show="buttonPower.isHostAdd"><span class="ey-text-error">移除</span></button>
+					</td>
+					<td class="col-sm-2" ng-if="!buttonPower.isHostAdd">----</td>
+				</tr></tbody>
+			</table>
+			<eayun-table-page></eayun-table-page> </eayun-table>
+	</div>
+</div>
+
+
+

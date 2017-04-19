@@ -1,0 +1,84 @@
+<form class="form-horizontal" name="myForm">
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 ey-label">防火墙规则名称：</label>
+    <div class="col-sm-8"  data-ng-class="(myForm.fwrName.$dirty && myForm.fwrName.$invalid) ? 'has-error' : ''">
+      <input type="text" class="form-control" name="fwrName" data-ng-model="model.fwrName"  placeholder="请输入规则名称" maxlength="20" required  ajax-valid="checkFwRuleName(value)">
+      <label class="ey-prompt" ng-show="myForm.fwrName.$dirty && myForm.fwrName.$error.required&&!flag">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+      <label class="ey-prompt" ng-show="myForm.fwrName.$dirty && myForm.fwrName.$error.ajaxValid&&!flag">规则名称已存在</label>
+      <label class="ey-prompt" ng-if="flag">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+    </div>
+  </div>
+  
+   <div class="form-group has-feedback">
+    <label class="col-sm-3 ey-label">协议：</label>
+    <div class="col-sm-8" data-ng-class="(myForm.protocol.$dirty && myForm.protocol.$invalid) ? 'has-error' : ''">
+      <eayun-select name="protocol" class="form-control" data-ng-model="model.protocol" ng-change="changeProtocol(model.protocol)"  placeholder="--选择一个协议--"  required>
+      	<!-- <eayun-option value="" text="--选择一个协议--"></eayun-option> -->
+		<eayun-option value="'tcp'" text="TCP"></eayun-option>
+		<eayun-option value="'udp'" text="UDP"></eayun-option>
+		<eayun-option value="'icmp'" text="ICMP"></eayun-option>
+		<eayun-option value="'any'" text="任何"></eayun-option>
+      </eayun-select>
+      <label class="ey-prompt" ng-show="myForm.protocol.$dirty && myForm.protocol.$error.required">协议不能为空</label>
+    </div>
+  </div>
+  
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 ey-label">源IP地址/子网：</label>
+    <div class="col-sm-8" data-ng-class="(myForm.sourceIpaddress.$dirty && myForm.sourceIpaddress.$invalid) ? 'has-error' : ''">
+      <input type="text" class="ey-form-control" name="sourceIpaddress" data-ng-model="model.sourceIpaddress"  placeholder="请输入源IP地址/子网"  ajax-valid="checkSourceIp(value)">
+	  <!-- <label class="control-label" ng-show="myForm.sourceIpaddress.$dirty && myForm.sourceIpaddress.$error.required&&!isflag">源IP地址/子网不能为空</label> -->
+      <label class="ey-prompt" ng-if="isflag">请输入正确的IPv4地址格式</label>
+    </div>
+  </div>
+  
+  <div class="form-group has-feedback" ng-if="model.protocol!='any'&&model.protocol!='icmp'">
+    <label class="col-sm-3 ey-label">源端口/端口范围：</label>
+    <div class="col-sm-8"  data-ng-class="(myForm.sourcePort.$dirty && myForm.sourcePort.$invalid) ? 'has-error' : ''">
+      <input type="text" class="ey-form-control" name="sourcePort" data-ng-model="model.sourcePort"  placeholder="请输入源端口/端口范围"  ajax-valid="checkSourcePort(value)">
+      <!-- <label class="control-label" ng-show="myForm.sourcePort.$dirty && myForm.sourcePort.$error.required&&!isflag3">源端口/端口范围不能为空</label> -->
+      <label class="ey-prompt" ng-if="isflag3">端口格式为A或A:B，其中A和B范围为1-65535</label>
+    </div>
+  </div>
+  
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 ey-label">目的IP地址/子网：</label>
+    <div class="col-sm-8" data-ng-class="(myForm.destinationIpaddress.$dirty && myForm.destinationIpaddress.$invalid) ? 'has-error' : ''">
+      <input type="text" class="ey-form-control" name="destinationIpaddress" data-ng-model="model.destinationIpaddress"  placeholder="请输入目的IP地址/子网"  ajax-valid="checkDestinationIp(value)">
+     <!--  <label class="control-label" ng-show="myForm.destinationIpaddress.$dirty && myForm.destinationIpaddress.$error.required&&!isflag2">目的IP地址/子网不能为空</label> -->
+      <label class="ey-prompt" ng-if="isflag2">请输入正确的IPv4地址格式</label>
+    </div>
+  </div>
+  
+  
+  <div class="form-group has-feedback" ng-if="model.protocol!='any'&&model.protocol!='icmp'">
+    <label class="col-sm-3 ey-label">目的端口/端口范围：</label>
+    <div class="col-sm-8"   data-ng-class="(myForm.destinationPort.$dirty && myForm.destinationPort.$invalid) ? 'has-error' : ''">
+      <input type="text" class="ey-form-control" name="destinationPort" data-ng-model="model.destinationPort"  placeholder="请输入目的端口/端口范围"  ajax-valid="checkDestinationPort(value)">
+      <!-- <label class="control-label" ng-show="myForm.destinationPort.$dirty && myForm.destinationPort.$error.required&&!isflag4">目的端口/端口范围不能为空</label> -->
+      <label class="ey-prompt" ng-if="isflag4">端口格式为A或A:B，其中A和B范围为1-65535</label>
+    </div>
+  </div>
+  
+  
+  <div class="form-group has-feedback" data-ng-class="(myForm.fwrAction.$dirty && myForm.fwrAction.$invalid) ? 'has-error' : ''">
+    <label class="col-sm-3 ey-label">动作：</label>
+    <div class="col-sm-8 " >
+      <eayun-select name="fwrAction" class="form-control" data-ng-model="model.fwrAction"  placeholder="--选择一个动作--"  required>
+      	<!-- <eayun-option value="" text="--选择一个动作--"></eayun-option> -->
+		<eayun-option value="'allow'" text="允许"></eayun-option>
+		<eayun-option value="'deny'" text="拒绝"></eayun-option>
+      </eayun-select>
+      <label class="ey-prompt" ng-show="myForm.fwrAction.$dirty && myForm.fwrAction.$error.required">动作不能为空</label>
+    </div>
+  </div>
+  
+  
+
+ 
+ <!-- 按钮区域 -->
+  <!-- <div class="modal-footer" >
+    <button type="button" class="btn btn-primary btn-modal" ng-click="commit()"  ng-disabled="!myForm.$valid">确  定</button>
+    <button type="button" class="btn btn-default btn-modal" ng-click="cancel()">取  消</button>
+  </div> -->
+</form>

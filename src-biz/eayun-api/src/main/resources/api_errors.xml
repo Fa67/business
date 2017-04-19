@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ErrorList>
+	<Error>
+		<error>error-->The request you have made requires authentication.</error>
+		<code>100005</code>
+	</Error>
+	<Error>
+		<error>error-->The resource could not be found</error>
+		<code>500003</code>
+	</Error>
+	<Error>
+		<error>Connect to @ failed: Connection timed out: connect</error>
+		<code>500002</code>
+	</Error>
+	<Error>
+		<error>0,Connect to @ failed: Connection timed out: connect</error>
+		<code>500002</code>
+	</Error>
+	<Error>
+		<error>error-->No server is available to handle this request.</error>
+		<code>500003</code>
+	</Error>
+	<Error>
+		<error>error-->An unexpected error prevented the server from
+			fulfilling your request: (OperationalError) (@, "Lost connection to
+			MySQL server at 'reading initial communication packet', system error:
+			@") None None (Disable debug mode to suppress these details.)
+		</error>
+		<code>500001</code>
+	</Error>
+	<Error>
+		<error>504,syntax error, pos 1</error>
+		<code>500002</code>
+	</Error>
+	<Error>
+		<error>401,syntax error, pos 1</error>
+		<code>500001</code>
+	</Error>
+	<Error>
+		<error>503,syntax error, pos 1</error>
+		<code>500002</code>
+	</Error>
+	<Error>
+		<error>404,not close json text, token : int</error>
+		<code>500001</code>
+	</Error>
+	
+	<!-- 云主机重启开始 -->
+	<Error>
+		<error>conflictingRequest-->Cannot 'reboot' while instance is in task_state powering-off</error>
+		<code>110048</code>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'reboot' while instance is in vm_state stopped</error>
+		<code>110048</code>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'reboot' while instance is in task_state image_pending_upload</error>
+		<code>110053</code>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'reboot' while instance is in task_state image_uploading</error>
+		<code>110053</code>
+	</Error>
+	<!-- 云主机重启结束 -->
+
+	<!-- 云主机关机开始 -->
+	<Error>
+		<error>conflictingRequest-->Instance @ in task_state reboot_started. Cannot stop while the instance is in this state.</error>
+		<code>110048</code>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Instance @ in vm_state stopped. Cannot stop while the instance is in this state.</error>
+		<code>110048</code>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Instance @ in vm_state suspended. Cannot stop while the instance is in this state.</error>
+		<code>110048</code>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Instance @ in task_state image_uploading.
+			Cannot stop while the instance is in this state.
+		</error>
+		<code>110050</code>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Instance @ in task_state image_pending_upload. Cannot stop while the instance is in this state.</error>
+		<code>110050</code>
+	</Error>
+	<!-- 云主机关机结束 -->
+
+	<!-- 云主机删除开始 -->
+	<Error>
+		<error>badRequest-->Instance @ in task_state powering-off. Cannot force_delete while the instance is in this state.</error>
+		<code>110080</code>
+	</Error>
+	<!-- 云主机删除结束 -->
+
+	<!-- 安全组开始 -->
+	<Error>
+		<error>itemNotFound-->Security group @ is not found for project</error>
+		<code>110065</code>
+	</Error>
+	<Error>
+		<error>itemNotFound-->Security group @ not associated with the instance @</error>
+		<code>110068</code>
+	</Error>
+	<Error>
+		<error>itemNotFound-->Security group @ does not exist</error>
+		<code>110065</code>
+	</Error>
+	<Error>
+		<error>badRequest-->Security group id should be uuid</error>
+		<code>500001</code>
+	</Error>
+
+	<!-- 安全组结束 -->
+	
+	<Error>
+		<error>itemNotFound-->Instance could not be found</error>
+		<code>110043</code>
+	</Error>
+	<Error>
+		<error>itemNotFound-->Instance not found</error>
+		<code>110043</code>
+	</Error>
+		<Error>
+		<error>conflictingRequest-->Cannot 'resize' while instance is in task_state resize_prep</error>
+		<code>110072</code> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'resize' while instance is in task_state image_uploading</error>
+		<code>110082</code> 
+	</Error>
+	<Error>
+		<error>itemNotFound-->Instance @ could not be found.</error>
+		<code>110043</code>
+	</Error>
+	<Error>
+		<error>itemNotFound-->ImageNotFound: Image @ could not be found</error>
+		<code>110016</code>
+	</Error>
+	<Error>
+		<error>badRequest-->Invalid input received: Image @ is not active.</error>
+		<code>110073</code>
+	</Error>
+	<Error>
+		<error>overLimit-->VolumeLimitExceeded: Maximum number of volumes allowed (@) exceeded</error>
+		<code>110040</code>
+	</Error> 
+	<Error>
+		<error>overLimit-->VolumeSizeExceedsAvailableQuota: Requested volume or snapshot exceeds allowed Gigabytes quota. Requested @G, quota is @G and @G has been consumed.</error>
+		<code>110041</code>
+	</Error>
+	<Error>
+		<error>NeutronError-->External network @ is not reachable from subnet @.  Therefore, cannot associate Port @ with a Floating IP.</error>
+		<code>110007</code>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'resize' while instance is in vm_state error</error>
+		<code>110074</code>
+	</Error>
+	<Error>
+		<error>badRequest-->No valid host was found. No valid host found for resize</error>
+		<code>500003</code> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'resize' while instance is in task_state image_pending_upload</error>
+		<code>110082</code>
+	</Error>
+	<Error>
+		<error>badRequest-->Network @ could not be found.</error>
+		<code>110001</code>
+	</Error>
+	<Error>
+		<error>itemNotFound-->Instance could not be found</error>
+		<code>110043</code>
+	</Error>
+	<Error>
+		<error>itemNotFound-->Instance not found</error>
+		<code>110043</code>
+	</Error>
+	<Error> 
+		<error>badRequest-->Image @ is not active.</error>
+		<code>110073</code>
+	</Error>
+	<Error>
+		<error>forbidden-->Quota exceeded for cores,instances: Requested @, but already used @ of @ cores</error>
+		<code>110037</code> 
+	</Error>
+	<Error>
+		<error>forbidden-->Quota exceeded for cores,instances,ram: Requested @, but already used @ of @ cores</error>
+		<code>110037</code> 
+	</Error>
+	<Error>
+		<error>forbidden-->Quota exceeded for cores: Requested @, but already used @ of @ cores</error>
+		<code>110037</code> 
+	</Error>
+	<Error>
+		<error>forbidden-->Quota exceeded for ram: Requested @, but already used @ of @ ram</error>
+		<code>110038</code> 
+	</Error>
+	<Error>
+		<error>forbidden-->Quota exceeded for cores,ram: Requested @, but already used @ of @ cores</error>
+		<code>110037</code> 
+	</Error>
+	<Error>
+		<error>overLimit-->Quota exceeded for instances: Requested @, but already used @ of @ instances</error>
+		<code>110036</code> 
+	</Error>
+	<Error>
+		<error>overLimit-->Quota exceeded for ram: Requested @, but already used @ of @ ram</error>
+		<code>110038</code> 
+	</Error>
+	<Error>
+		<error>overLimit-->Quota exceeded for cores: Requested @, but already used @ of @ cores</error>
+		<code>110037</code> 
+	</Error>
+	<Error>
+		<error>overLimit-->Quota exceeded for cores,ram: Requested @, but already used @ of @ cores</error>
+		<code>110037</code> 
+	</Error> 
+	<Error>
+		<error>badRequest-->Flavor's memory is too small for requested image.</error>
+		<code>110020</code> 
+	</Error>
+	<Error>
+		<error>badRequest-->Missing imageRef attribute</error>
+		<code>110076</code>
+	</Error>
+	<Error>
+		<error>badRequest-->Could not parse imageRef from request.</error>
+		<code>110016</code> 
+	</Error>
+	<Error>
+		<error>badRequest-->No nw_info cache associated with instance</error>
+		<code>110007</code>
+	</Error>
+	<Error>
+		<error>itemNotFound-->No more floating ips in pool @.</error>
+		<code>500003</code>
+	</Error>
+	<Error>
+		<error>forbidden-->IP allocation over quota in pool @.</error>
+		<code>110039</code> 
+	</Error> 
+	<Error>
+		<error>computeFault-->The server has either erred or is incapable of performing the requested operation.</error>
+		<code>110072</code> 
+	</Error> 
+</ErrorList>

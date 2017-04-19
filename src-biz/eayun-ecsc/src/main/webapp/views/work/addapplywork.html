@@ -1,0 +1,239 @@
+<div class="modal-header">
+    <span class="modal-title">申请配额</span> 
+    <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<style>
+<!--
+	.text-left{
+		text-align: left;
+		color: #07C;
+	}
+	tr{
+		max-height: 50px;
+	}
+	.quota-table{
+		max-height:210px;
+		overflow:auto;
+		border-radius:4px;
+		border: 1px solid #CCC;
+	}
+	.quota-table-error{
+		border: 1px solid #EA3200;
+	}
+	.quota-table > table > tbody > tr {
+		height: 50px;
+	}
+-->
+</style>
+<div class="modal-body" style="width:880px;">
+<form class="ey-form" name="addWork" novalidate>
+	<div class="ey-form-group">
+		<label class="ey-form-label">问题类别：</label>
+		<input type="text" class="ey-form-input ey-form-w6" data-ng-model="workorder.workTypeName" data-ng-disabled="true">
+	</div>
+	<div class="ey-form-group">
+		<label class="ey-form-label" >问题标题：</label>
+		<input type="text" class="ey-form-input ey-form-w6" data-ng-disabled="true" data-ng-model="workorder.workTitle">
+	</div>
+	<div class="ey-form-group">
+		<label class="ey-form-label">问题描述：</label>
+		<textarea class = "ey-form-textarea ey-form-w11" maxlength="2000" data-ng-model="workorder.workContent" placeholder="限制2000字以内"></textarea>
+	</div>
+	<div class="ey-form-group">
+		<label class="ey-form-label">剩余配额：</label>
+		<div class="quota-table" data-ng-class="(checkQuotaFalg || checkSlaveInstanceQuotaFlag || checkBackupByHandQuotaFlag || checkBackupByAutoQuotaFlag)
+		 ? 'quota-table-error' : ''" style="height:auto;width:580px;">
+			<table class="table-striped col-sm-12">
+				<tbody>
+					<tr>
+						<td class="col-sm-4 text-left" style="text-align: left;">云主机(台)：</td>
+						<td class="col-sm-3">{{prj.usedVmCount}}/{{prj.hostCount}}</td>
+						<td class="col-sm-2">扩大至:</td>
+						<td class="col-sm-3" data-ng-class="checkQuotaVmFalg ? 'ey-has-error':''">
+							<input type="text" data-ng-model="workQuota.quotaVm" class="ey-form-input ey-form-w2" maxlength="9">
+						</td>
+					</tr>
+					<tr>
+						<td class="col-sm-4 text-left">CPU(核)：</td>
+						<td class="col-sm-3">{{prj.usedCpuCount}}/{{prj.cpuCount}}</td>
+						<td class="col-sm-2">扩大至:</td>
+						<td class="col-sm-3" data-ng-class="checkQuotaCpuFalg ? 'ey-has-error':''">
+							<input type="text" data-ng-model="workQuota.quotaCpu" class="ey-form-input ey-form-w2" maxlength="9">
+						</td>
+					</tr>
+					<tr>
+						<td class="col-sm-4 text-left">内存(GB)：</td>
+						<td class="col-sm-3">{{prj.usedRam/1024}}/{{prj.memory}}</td>
+						<td class="col-sm-2">扩大至:</td>
+						<td class="col-sm-3" data-ng-class="checkQuotaMemoryFalg ? 'ey-has-error':''">
+							<input type="text" data-ng-model="workQuota.quotaMemory" class="ey-form-input ey-form-w2" maxlength="9">
+						</td>
+					</tr>
+					<tr>
+						<td class="col-sm-4 text-left">云硬盘(块)：</td>
+						<td class="col-sm-3">{{prj.diskCountUse}}/{{prj.diskCount}}</td>
+						<td class="col-sm-2">扩大至:</td>
+						<td class="col-sm-3" data-ng-class="checkQuotaDiskFalg ? 'ey-has-error':''">
+							<input type="text" data-ng-model="workQuota.quotaDisk" class="ey-form-input ey-form-w2" maxlength="9">
+						</td>
+					</tr>
+					<tr>
+						<td class="col-sm-4 text-left">云硬盘备份(个)：</td>
+						<td class="col-sm-3">{{prj.diskSnapshotUse}}/{{prj.diskSnapshot}}</td>
+						<td class="col-sm-2">扩大至:</td>
+						<td class="col-sm-3" data-ng-class="checkQuotaShotFalg ? 'ey-has-error':''">
+							<input type="text" data-ng-model="workQuota.quotaSnapshot" class="ey-form-input ey-form-w2" maxlength="9">
+						</td>
+					</tr>
+					<!--start  -->
+					<tr>
+						<td class="col-sm-4 text-left">云硬盘容量(GB)：</td>
+						<td class="col-sm-3">{{prj.usedDiskCapacity}}/{{prj.diskCapacity}}</td>
+						<td class="col-sm-2">扩大至:</td>
+						<td class="col-sm-3" data-ng-class="checkQuotaDiskSizeFalg ? 'ey-has-error':''">
+							<input type="text" data-ng-model="workQuota.quotaDiskSize" class="ey-form-input ey-form-w2" maxlength="9">
+						</td>
+					</tr>
+					<tr>
+						<td class="col-sm-4 text-left">云硬盘备份容量(GB)：</td>
+						<td class="col-sm-3">{{prj.usedSnapshotCapacity}}/{{prj.snapshotSize}}</td>
+						<td class="col-sm-2">扩大至:</td>
+						<td class="col-sm-3" data-ng-class="checkQuotaShotSizeFalg ? 'ey-has-error':''">
+							<input type="text" data-ng-model="workQuota.quotaShotSize" class="ey-form-input ey-form-w2" maxlength="9">
+						</td>
+					</tr>
+					<tr>
+						<td class="col-sm-4 text-left">带宽(Mbps)：</td>
+						<td class="col-sm-3">{{prj.countBandUse}}/{{prj.countBand}}</td>
+						<td class="col-sm-2">扩大至:</td>
+						<td class="col-sm-3" data-ng-class="checkQuotaBandFalg ? 'ey-has-error':''">
+							<input type="text" data-ng-model="workQuota.quotaBand" class="ey-form-input ey-form-w2" maxlength="3">
+						</td>
+					</tr>
+					<tr>
+						<td class="col-sm-4 text-left">VPN(个)：</td>
+						<td class="col-sm-3">{{prj.countVpnUse}}/{{prj.countVpn}}</td>
+						<td class="col-sm-2">扩大至:</td>
+						<td class="col-sm-3"  data-ng-class="checkQuotaVPNFalg ? 'ey-has-error':''">
+							<input type="text" data-ng-model="workQuota.quotaVpn" class="ey-form-input ey-form-w2" maxlength="9">
+						</td>
+					</tr>
+					<tr>
+						<td class="col-sm-4 text-left">网络(个)：</td>
+						<td class="col-sm-3">{{prj.netWorkUse}}/{{prj.netWork}}</td>
+						<td class="col-sm-2">扩大至:</td>
+						<td class="col-sm-3" data-ng-class="checkQuotaNetFalg ? 'ey-has-error':''">
+							<input type="text" data-ng-model="workQuota.quotaNet" class="ey-form-input ey-form-w2" maxlength="9">
+						</td>
+					</tr>
+					<tr>
+						<td class="col-sm-4 text-left">子网(个)：</td>
+						<td class="col-sm-3">{{prj.subnetCountUse}}/{{prj.subnetCount}}</td>
+						<td class="col-sm-2">扩大至:</td>
+						<td class="col-sm-3" data-ng-class="checkQuotaSubnetFalg ? 'ey-has-error':''">
+							<input type="text" data-ng-model="workQuota.quotaSubnet" class="ey-form-input ey-form-w2" maxlength="9">
+						</td>
+					</tr>
+					<tr>
+						<td class="col-sm-4 text-left">安全组(个)：</td>
+						<td class="col-sm-3">{{prj.safeGroupUse}}/{{prj.safeGroup}}</td>
+						<td class="col-sm-2">扩大至:</td>
+						<td class="col-sm-3" data-ng-class="checkQuotaGroupFalg ? 'ey-has-error':''">
+							<input type="text" data-ng-model="workQuota.quotaSecGroup" class="ey-form-input ey-form-w2" maxlength="9">
+						</td>
+					</tr>
+					<tr>
+						<td class="col-sm-4 text-left">公网IP(个)：</td>
+						<td class="col-sm-3">{{prj.outerIPUse}}/{{prj.outerIP}}</td>
+						<td class="col-sm-2">扩大至:</td>
+						<td class="col-sm-3" data-ng-class="checkQuotaFloatIpFalg ? 'ey-has-error':''">
+							<input type="text" data-ng-model="workQuota.quotaFloatIp" class="ey-form-input ey-form-w2" maxlength="9">
+						</td>
+					</tr>
+					<tr>
+						<td class="col-sm-4 text-left">负载均衡(个)：</td>
+						<td class="col-sm-3">{{prj.usedPool}}/{{prj.quotaPool}}</td>
+						<td class="col-sm-2">扩大至:</td>
+						<td class="col-sm-3" data-ng-class="checkQuotaBalanceFalg ? 'ey-has-error':''">
+							<input type="text" data-ng-model="workQuota.quotaBalance" class="ey-form-input ey-form-w2" maxlength="9">
+						</td>
+					</tr>
+					<!--start  -->
+					<tr>
+						<td class="col-sm-4 text-left">端口映射(个)：</td>
+						<td class="col-sm-3">{{prj.portMappingUse}}/{{prj.portMappingCount}}</td>
+						<td class="col-sm-2">扩大至:</td>
+						<td class="col-sm-3" data-ng-class="checkQuotaMappingFalg ? 'ey-has-error':''">
+							<input type="text" data-ng-model="workQuota.quotaPortMapping" class="ey-form-input ey-form-w2" maxlength="9">
+						</td>
+					</tr>
+					<!--end  -->
+					<tr>
+						<td class="col-sm-4 text-left">报警短信条数(个)：</td>
+						<td class="col-sm-3">{{prj.smsQuota}}/{{prj.smsCount}}</td>
+						<td class="col-sm-2">扩大至:</td>
+						<td class="col-sm-3" data-ng-class="checkSmsQuotaFalg ? 'ey-has-error':''">
+							<input type="text" data-ng-model="workQuota.quotaSms" class="ey-form-input ey-form-w2" maxlength="9">
+						</td>
+					</tr>
+					<tr>
+						<td class="col-sm-4 text-left" style="padding-right:0px;">MySQL主库实例数量(个)：</td>
+						<td class="col-sm-3">{{prj.masterInstanceUse}}/{{prj.maxMasterInstance}}</td>
+						<td class="col-sm-2">扩大至:</td>
+						<td class="col-sm-3" data-ng-class="checkInstanceQuotaFlag ? 'ey-has-error':''">
+							<input type="text" data-ng-model="workQuota.quotaMasterInstance" class="ey-form-input ey-form-w2" maxlength="4">
+						</td>
+					</tr>
+					<tr>
+						<td class="col-sm-4 text-left" style="padding-right:0px;">MySQL主库创建从库数量(个)：</td>
+						<td class="col-sm-2">{{prj.maxSlaveIOfCluster}}</td>
+						<td class="col-sm-2">调整至:</td>
+						<td class="col-sm-3" data-ng-class="checkSlaveInstanceQuotaFlag ? 'ey-has-error':''">
+							<input type="text" data-ng-model="workQuota.quotaSlaveInstance" class="ey-form-input ey-form-w2" maxlength="2">
+						</td>
+					</tr>
+					<tr>
+						<td class="col-sm-5 text-left" style="padding-right:0px;" >MySQL手动备份数量(个/实例)：</td>
+						<td class="col-sm-2">{{prj.maxBackupByHand}}</td>
+						<td class="col-sm-2">调整至:</td>
+						<td class="col-sm-3" data-ng-class="checkBackupByHandQuotaFlag ? 'ey-has-error':''">
+							<input type="text" data-ng-model="workQuota.quotaBackupByHand" class="ey-form-input ey-form-w2" maxlength="1">
+						</td>
+					</tr>
+					<tr>
+						<td class="col-sm-5 text-left" style="padding-right:0px;">MySQL自动备份数量(个/实例)：</td>
+						<td class="col-sm-2">{{prj.maxBackupByAuto}}</td>
+						<td class="col-sm-2">调整至:</td>
+						<td class="col-sm-3" data-ng-class="checkBackupByAutoQuotaFlag ? 'ey-has-error':''">
+							<input type="text" data-ng-model="workQuota.quotaBackupByAuto" class="ey-form-input ey-form-w2" maxlength="1">
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<span class="ey-has-error" data-ng-if="checkQuotaFalg">请输入大于当前配额的整数！</span>
+		<span class="ey-has-error" data-ng-if="!checkQuotaFalg && checkSlaveInstanceQuotaFlag">请输入大于2小于11的整数！</span>
+		<span class="ey-has-error" data-ng-if="!checkQuotaFalg && !checkSlaveInstanceQuotaFlag && 
+		(checkBackupByHandQuotaFlag || checkBackupByAutoQuotaFlag)">请输入大于2小于8的整数！</span>
+	</div>
+	<div class="ey-form-group "  data-ng-class="(mailPhone || phone) ? 'ey-has-error' : ''">
+		<label class="ey-form-label" >联系手机：</label>
+			<input type="text" class="ey-form-input  ey-form-w6" data-ng-model="workorder.workPhone" maxlength="11" name="workPhone" placeholder="请输入联系手机" 
+			data-ng-change="checkMailPhone()">
+			<span data-ng-show="addWork.workPhone.$dirty && phone">请输入正确的手机号</span>
+	</div>
+	<div class="ey-form-group "  data-ng-class="(mailPhone || mail) ? 'ey-has-error' : ''">
+		<label class="ey-form-label">联系邮箱：</label>
+			<input type="text" class="ey-form-input  ey-form-w6" data-ng-model="workorder.workEmail" maxlength="50" 
+			name="workEmail" placeholder="请输入联系邮箱" data-ng-change="checkMailPhone()">
+			<span data-ng-show="addWork.workEmail.$dirty && mail">请输入正确的邮箱地址</span>
+			<span data-ng-show="mailPhone">手机号和邮箱至少输入一项</span>
+	</div>
+</form>
+</div>
+<div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<button class="ey-btn ey-btn-primary" data-ng-click="commit()" type = "button" data-ng-disabled="addWork.$invalid || btnShow || mailPhoneBtn">确定</button>
+		<button class="ey-btn ey-btn-default" data-ng-click="cancel()" type = "button">取 消</button>
+	</div>
+</div>

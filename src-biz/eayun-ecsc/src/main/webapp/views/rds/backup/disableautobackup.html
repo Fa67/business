@@ -1,0 +1,35 @@
+<div class="modal-header">
+    <span class="modal-title">关闭自动备份</span>
+    <img data-ng-click="cancel()" data-ng-style="{'cursor':(upgrade.btnWait ? 'not-allowed' : 'pointer')}" src="images/close.png">
+</div>
+<div class="modal-body" style="width: 600px;margin-bottom: 60px;">
+    <form class="form-horizontal" name="backupDB" novalidate>
+        <div  class="ey-content-notice" style="margin-left: 20px; margin-right:20px; margin-bottom: 20px;">
+            <ul style="margin-top: 10px;">
+                <p>关闭自动备份，将会保留已有的自动备份文件。此操作不影响您的手动备份文件。</p>
+                <p>如果您在使用过程中遇到问题，请及时联系我们。</p>
+            </ul>
+        </div>
+        <div style="float: right;margin-right: 30px;" class="ey-form-checkbox">
+            <input id="chk_enabled" type="checkbox"
+                   data-ng-model ="abd.isChecked">
+            <label class="ey-text-tip" for="chk_enabled" >关闭</label>
+        </div>
+    </form>
+</div>
+<div class="ey-modal-footer ey-btn-group" >
+    <div class="ey-btn-group">
+        <button type="button"
+                class="btn btn-primary btn-modal"
+                data-ng-click="commit()"
+                data-ng-disabled="abd.btnWait || !abd.isChecked">
+            确 定
+        </button>
+        <button type="button"
+                class="btn btn-default btn-modal"
+                data-ng-click="cancel()"
+                data-ng-disabled="abd.btnWait">
+            取 消
+        </button>
+    </div>
+</div>

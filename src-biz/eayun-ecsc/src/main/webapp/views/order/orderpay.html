@@ -1,0 +1,85 @@
+
+<ul class="ey-nav-bread">
+	<li data-ui-sref={{item.route}}
+		data-ng-repeat="item in orderPay.orderPayNavList">{{item.name}}</li>
+	<li>支付订单</li>
+</ul>
+<h4 class="ey-font-hugest">支付订单</h4>
+<div class="ey-form-payment">
+	<p class="ey-font-bold" style="line-height:30px">订单提交成功，请您尽快付款。
+	   <span data-ng-if="orderPay.singleOrderNo">订单号：{{::orderPay.singleOrderNo}}</span>
+	 </p>
+	<p class="ey-font" style="line-height:30px">请您在<span class="ey-color-red">24小时</span>之内完成支付，过期将自动取消您的订单</p>
+	<form name="doOrderPay" method="post" action="order/doorderpay.do" 
+		target="_blank">
+		<div class="ey-pay-panel">
+			<div class="ey-pay-body">
+				<p>
+					<span class="ey-font-huge">应付款：</span>
+					<span class="ey-font-huge">￥ </span>
+					<span class="ey-color-red ey-font-size-super ey-font-bold">{{::orderPay.payInfo.thirdPartPayment|number:2}}</span>
+				</p>
+			</div>
+			
+			<div class="ey-divider"  style="margin-top: 0px;margin-bottom: 0px;"></div>
+			<div class="ey-pay-body">
+				<p>选择支付方式：</p>
+				<table width="100%">
+					<tr>
+						<td width="30px">
+							<div class="ey-form-checkbox">
+								<input id="check1" type="checkbox" name="thirdPartType" data-ng-init="orderPay.thirdPartType=true" 
+								data-ng-model="orderPay.thirdPartType" value="0" checked="checked">
+								<label for="check1"></label>
+							</div>
+						</td>
+						<td width="30px">
+							<span class="eayunfont ef-alipay ey-font-hugest ey-color-blue"></span>
+						</td>
+						<td width="150px">支付宝支付</td>
+						<td width="30px">
+							<span class="ey-text-tip">|</span>
+						</td>
+						<td>
+							<span>支付&nbsp;</span>
+							<span class="ey-color-red ey-font-size-big ey-font-bold">￥ {{::orderPay.payInfo.thirdPartPayment|number:2}}</span>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="ey-pay-bottom">
+				<input data-ng-hide="true" name="ordersNo"
+					value="{{::orderPay.ordersNo}}">
+				<button class="ey-btn ey-btn-primary ey-btn-lg"
+					data-ng-disabled="orderPay.disablePayBtn || orderPay.thirdPartType==false"  
+					data-ng-click="orderPay.showModal();">立即支付</button>
+			</div>
+		</div>
+	</form>
+	<h5>支付详情：</h5>
+	<table class="ey-table-muliti ey-table-auto">
+		<thead>
+			<tr>
+				<th class="col-sm-1">订单编号</th>
+				<th class="col-sm-1">产品名称</th>
+				<th class="col-sm-1">产品数量</th>
+				<th class="col-sm-2">具体配置</th>
+				<th class="col-sm-1">购买周期</th>
+				<th class="col-sm-1">付款方式</th>
+				<th class="col-sm-1">金额</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr data-ng-repeat="order in orderPay.payInfo.orders">
+				<td data-ng-click="" ng-bind="::order.orderNo"></td>
+				<td ng-bind="::order.prodName"></td>
+				<td ng-bind="::order.prodCount"></td>
+				<td ng-bind-html="::orderPay.formatProdConfig(order.prodConfig)" style="text-align: left"></td>
+				<td ng-if="order.buyCycle == '0'">--</td>
+				<td ng-if="order.buyCycle != '0'">{{::order.buyCycle}}个月</td>
+				<td ng-bind="::order.payTypeName"></td>
+				<td class="ey-text-error ey-font-bold">￥ {{::order.paymentAmount|number:2}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

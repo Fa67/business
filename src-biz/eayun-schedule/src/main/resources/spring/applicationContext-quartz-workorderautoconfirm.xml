@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!--工单系统的对应操作-->
+	<bean id="workOrderAutoConfirmJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.eayun.work.job.WorkorderAutoConvertStatusJob"></property>
+		<property name="durability" value="true"></property>
+		<!--<property name="jobDataAsMap">-->
+			<!--<map>-->
+				<!--<entry key="dbConfig" value="classpath:db.properties" />-->
+				<!--<entry key="htmlConfig" value="classpath:api_alarmmsg.html" />-->
+			<!--</map>-->
+		<!--</property>-->
+	</bean>
+	
+	<bean id="workOrderAutoConfirmTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="workOrderAutoConfirmJob"></property>
+		<property name="cronExpression" value="0 0 0/1 * * ? *"></property>
+	</bean>
+
+	<!-- 定时任务调度器 -->
+	<bean class="com.eayun.common.job.EayunSchedulerFactoryBean" id="workOrderAutoConfirmFactory">
+		<property name="dataSource"><ref bean="dataSource" /></property>
+		<property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+		<property name="configLocation" value="classpath:quartz.properties" />
+		<property name="triggers"><list><ref bean="workOrderAutoConfirmTrigger" /></list></property>
+	</bean>
+</beans>

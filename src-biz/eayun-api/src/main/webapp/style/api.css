@@ -1,0 +1,84 @@
+.box{
+	width:1200px;
+	min-height:450px;
+	border-radius:6px;
+	box-shadow:0px 0px 5px rgba(0,0,0,0.5);
+	margin:0 auto;
+	margin-top:40px;
+}
+.box-left{
+	width:600px;
+	padding:25px;
+	float:left;
+}
+.box-left{
+	margin-bottom:10px;
+}
+.message{
+	width:100%;
+	border:1px solid #ccc;
+	border-radius:4px;
+	padding:10px;
+	margin-bottom:10px;
+	max-height:630px;
+	overflow-y:auto;
+}
+.message span,.message a{
+	cursor:pointer;
+}
+.copy{
+	margin-left:-40px;
+}
+.copy  li{
+	margin-bottom:10px;
+	list-style:none;
+}
+.copy .short{
+	width:31%;
+}
+.copy .long.form-control{
+	margin-left:10px;
+	/*width:58%;*/
+	width:50%;
+}
+.box-right{
+	width:560px;
+	float:left;
+	padding:20px 0;
+}
+.box-right textarea{
+	resize:none;
+	margin-bottom:10px;
+}
+.close{
+	width:16px;
+	height:16px;
+	background:url(../images/close.png) no-repeat;
+	vertical-align:middle;
+	margin:8px 10px 0 0;
+}
+.form-group input{
+	margin-bottom:10px;
+}
+.btn{
+	background-color:#07c;
+	color:#fff;
+ 	border-color: #0071b2 !important;
+}
+.btn:hover {
+  border-color: #0071b2 !important;
+  background-color: #068fde !important;
+  color: #FFFFFF !important
+}
+.btn:active,.btn:focus  {
+  border-color: #0071b2 !important;
+  background-color: #077bbd !important;
+  color: #f3f3f3 !important
+}
+input.ng-invalid {
+	border-color:#a94442;
+}
+.control-label{
+	color:#a94442;
+	font-weight:normal;
+}

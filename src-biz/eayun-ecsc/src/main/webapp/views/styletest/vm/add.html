@@ -1,0 +1,215 @@
+<div class="container" style="padding: 0">
+  <!-- 右侧区域 -->
+  <div class="col-sm-7" style="height: 650px">
+    <!-- 头部标题区域 -->
+    <div class="modal-header">
+    <span class="modal-title">
+      {{title}}
+      <span class="glyphicon glyphicon-remove navbar-right close" aria-hidden="true" ng-click="cancel()"></span>
+    </span>
+    </div>
+    <!-- 步骤控件-->
+    <div class="text-center">
+      <div class="step active">
+        <span>1</span>
+
+        <div></div>
+        <p class="text-left">属性</p>
+      </div>
+      <div class="step" data-ng-class="step > 1 ? 'active':''">
+        <div></div>
+        <span>2</span>
+
+        <div></div>
+        <p class="text-center">镜像</p>
+      </div>
+      <div class="step" data-ng-class="step > 2 ? 'active':''">
+        <div></div>
+        <span>3</span>
+
+        <p class="text-right">网络</p>
+      </div>
+    </div>
+    <!-- 表单区域 -->
+    <div class="modal-body">
+      <div class="eayun-modal-dialog" style="width: 500px;">
+        <form>
+          <!-- Step 1 -->
+          <div data-ng-class="step == 1 ? 'show':'hidden'">
+            <div class="form-group row">
+              <label class="col-md-12 control-label">项目名称：</label>
+
+              <div class="col-md-9">
+                <eayun-select class="form-control" placeholder="请选择项目">
+                </eayun-select>
+              </div>
+
+            </div>
+            <div class="form-group row">
+              <label class="col-md-12 control-label">云主机名称：</label>
+
+              <div class="col-md-9">
+                <div class="has-feedback">
+                  <input type="text" class="form-control" placeholder="请输入名称">
+                  <span class="glyphicon glyphicon-ok form-control-feedback"></span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-12 control-label">云主机类型：</label>
+
+              <div class="col-md-9">
+                <eayun-select class="form-control" placeholder="请选择主机类型">
+                </eayun-select>
+              </div>
+
+            </div>
+            <div class="form-group row">
+              <label class="col-md-12 control-label">云主机数量：</label>
+
+              <div class="col-md-9">
+                <input type="text" class="form-control" placeholder="请输入数量">
+              </div>
+              <div class="col-md-12">
+                <p class="help-block">*如添加多台云主机则会在云主机名称后自动加序号。</p>
+
+                <p class="help-block">例如：云主机名称A，数量3，则会添加A-1、A-2、A-3，三台云主机。</p>
+              </div>
+            </div>
+          </div>
+          <!-- Step 2 -->
+          <div data-ng-class="step == 2 ? 'show':'hidden'">
+            <div class="form-group row">
+              <label class="col-md-12 control-label">请选择镜像来源：</label>
+
+              <div class="col-md-9">
+                <eayun-select class="form-control" placeholder="请选择项目">
+                </eayun-select>
+              </div>
+
+            </div>
+            <div class="form-group row">
+              <label class="col-md-12 control-label">镜像：</label>
+
+              <div class="col-md-9">
+                <eayun-select class="form-control" placeholder="请选择操作系统类别">
+                </eayun-select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-9">
+                <eayun-select class="form-control" placeholder="请选择系统">
+                </eayun-select>
+              </div>
+
+              <div class="col-md-12">
+                <p class="help-block">*选择Windows系统，默认系统盘为60GB。</p>
+              </div>
+
+            </div>
+            <div class="form-group row">
+              <label class="col-md-12 control-label">镜像文件：</label>
+
+              <div class="col-md-9">
+                <eayun-select class="form-control" placeholder="请选择系统">
+                </eayun-select>
+              </div>
+            </div>
+          </div>
+          <!-- Step 3 -->
+          <div data-ng-class="step == 3 ? 'show':'hidden'">
+            <div class="form-group row">
+              <label class="col-md-12 control-label">当前项目存在的子网络：</label>
+
+              <div class="col-md-9">
+                <eayun-select class="form-control col-sm-9" placeholder="请选择系统">
+                </eayun-select>
+              </div>
+              <button type="button" class="btn btn-primary col-md-3" data-ng-click="open()">
+                <span class="glyphicon glyphicon-plus"></span> 创建云硬盘
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- 按钮区域 -->
+    <div class="modal-footer" style="text-align: right;position: absolute;bottom: 0;left: 0;right: 15px;">
+      <button class="btn btn-default btn-modal" ng-click="cancel()">取 消</button>
+      <button class="btn btn-primary btn-modal" ng-click="back()" data-ng-show="step>1">上一步</button>
+      <button class="btn btn-primary btn-modal" ng-click="next()" data-ng-show="step<3">下一步</button>
+      <button class="btn btn-primary btn-modal" ng-click="done()" data-ng-show="step==3">完 成</button>
+    </div>
+
+  </div>
+  <!-- 左侧区域 -->
+  <div class="col-sm-5"
+       style="height: 650px;padding: 40px 20px;background: #ccc;border-bottom-right-radius: 4px;border-top-right-radius: 4px;">
+    <p>指定创建云主机类型的详细信息</p>
+
+    <p>下面的图表显示当前项目所使用的资源和关联的项目配额</p>
+    <h4>方案详情</h4>
+
+    <div class="panel panel-default">
+      <div class="panel-body text-le">
+        <form class="form-horizontal">
+          <div class="form-group row">
+            <label class="col-sm-4 control-label" style="font-weight: bold">类型名称：</label>
+
+            <label class="col-sm-8 control-label" style="text-align: left">易云默认类型</label>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-4 control-label" style="font-weight: bold">CPU核数：</label>
+
+            <label class="col-sm-8 control-label" style="text-align: left">3核</label>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-4 control-label" style="font-weight: bold">系统盘容量：</label>
+
+            <label class="col-sm-8 control-label" style="text-align: left">60GB</label>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-4 control-label" style="font-weight: bold">数据盘容量：</label>
+
+            <div class="col-md-3">
+              <eayun-select class="form-control">
+              </eayun-select>
+            </div>
+            <label class="col-md-2 control-label" style="text-align: left">GB</label>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <h4>项目限定</h4>
+
+    <p>云主机数量：</p>
+
+    <div class="progress">
+      <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="40" aria-valuemin="0"
+           aria-valuemax="100" style="width: 40%">
+      </div>
+    </div>
+    <p>云主机数量：</p>
+
+    <div class="progress">
+      <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="40" aria-valuemin="0"
+           aria-valuemax="100" style="width: 40%">
+      </div>
+    </div>
+    <p>云主机数量：</p>
+
+    <div class="progress">
+      <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="40" aria-valuemin="0"
+           aria-valuemax="100" style="width: 40%">
+      </div>
+    </div>
+    <p>云主机数量：</p>
+
+    <div class="progress">
+      <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="40" aria-valuemin="0"
+           aria-valuemax="100" style="width: 40%">
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+<h4>路由列表</h4>
+
+<!-- Form表单 -->
+<form class="form-inline">
+  <button type="button" class="btn btn-primary btn-sm" data-ng-click="createRoute()" data-ng-show = "buttonPower.isAdd">
+  <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 创建路由
+  </button>
+  
+  <div class="input-group has-feedback search-group">
+    <input type="text" class="form-control" placeholder="请输入路由名称搜索" data-ng-model="routeName">
+    <span class="form-control-feedback pointer search" data-ng-click="getRoute()"></span>
+  </div>
+  
+</form>
+
+<!-- 表格 -->
+<eayun-table data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams" data-result="myTable.result">
+  <table class="table table-eayun">
+    <thead>
+    <tr>
+      <th class="col-sm-3">路由名称</th>
+      <th class="col-sm-1">状态</th>
+      <th class="col-sm-1">带宽</th>
+      <th class="col-sm-1">已连接子网</th>
+      <th class="col-sm-2">外部网络</th>
+      <th class="col-sm-4">操作</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr data-ng-repeat="item in myTable.result">
+      <td class="col-sm-3 click-td" data-ng-click="goDetails(item)">{{item.routeName}}</td>
+      <td class="col-sm-1">
+      	<span class ="state-block" data-ng-class="routeStatusClass!=''?routeStatusClass:''" ng-init="routeStatusClass = getRouteStatus(item)"></span>
+      	{{item.statusForRoute}}
+      </td>
+      <td class="col-sm-1">{{item.rate}}Mbps</td>
+      <td class="col-sm-1">{{item.connectsubnetnum}}</td>
+      <td class="col-sm-2">{{item.netName == "" ?"":item.netName}}</td>
+      <td class="col-sm-4" ng-if="buttonPower.isEdit &&buttonPower.isSetGateWay &&buttonPower.isAddSubnet && buttonPower.isDelete &&buttonPower.isTag &&buttonPower.isDelete">
+      	<button class="btn btn-tablemng" type="button" data-ng-click="editRoute(item)" data-ng-show = "buttonPower.isEdit">编辑</button>
+      	<button class="btn btn-tablemng btn-left" type="button" data-ng-click="setGateway(item)" data-ng-show = "item.netName == '' && buttonPower.isSetGateWay">设置网关</button>
+      	<button class="btn btn-tablemng btn-left" type="button" data-ng-click="deleteGateWay(item)" data-ng-show = "item.netName != '' && buttonPower.isSetGateWay">清除网关</button>
+      	<button class="btn btn-tablemng btn-left" type="button" data-ng-click="connectSubNet(item)" data-ng-show = "buttonPower.isAddSubnet">添加路由子网</button>
+      	<div class="btn-group btn-left">
+		    <button  class="btn btn-tablemng dropdown-toggle" data-toggle="dropdown" data-ng-show = "buttonPower.isTag && buttonPower.isDelete">更多操作
+		   	<span class="caret"></span>
+		    </button>
+		    <ul class="dropdown-menu"style = "min-width : 80px;width : 85px;">
+		    	<li><a role="button" data-ng-click="tagResource('route',item.routeId)" style="font-size:12px;" data-ng-show = "buttonPower.isTag">标签</a></li>
+		      	<li><a role="button" data-ng-click="deleteRoute(item)" data-ng-show = "!model.isAdmin && buttonPower.isDelete" style="font-size:12px;color:#EA3200;">删除</a></li>
+		    </ul>
+		</div>
+      </td>
+      <td class="col-sm-4" ng-if="!buttonPower.isEdit &&!buttonPower.isSetGateWay &&!buttonPower.isAddSubnet && !buttonPower.isDelete &&!buttonPower.isTag &&!buttonPower.isDelete">----
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <eayun-table-page></eayun-table-page>
+</eayun-table>
+
+

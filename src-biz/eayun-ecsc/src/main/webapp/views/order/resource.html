@@ -1,0 +1,26 @@
+<div class="modal-header">
+	<span class="modal-title">查看资源</span>
+	<span class="eayunfont ef-close ey-font-huge" data-ng-click="resource.cancel()"></span>
+</div>
+
+<div class="modal-body" style="width: 800px;">
+	<eayun-table data-api="resource.resourceTable.api"
+		data-ajax-source="resource.resourceTable.source"
+		data-param="resource.resourceTable.getParams"
+		data-result="resource.resourceTable.result">
+	<table class="ey-table-muliti">
+		<thead>
+			<tr>
+				<th class="col-sm-1">资源ID</th>
+				<th class="col-sm-1">资源名称</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr data-ng-repeat="resource in resource.resourceTable.result">
+				<td ng-bind="resource.resourceId"></td>
+				<td ng-bind="resource.resourceName"></td>
+			</tr>
+		</tbody>
+	</table>
+	<eayun-table-page></eayun-table-page> </eayun-table>
+</div>

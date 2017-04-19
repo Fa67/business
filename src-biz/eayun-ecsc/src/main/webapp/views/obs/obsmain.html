@@ -1,0 +1,12 @@
+<div>
+<ul ng-if="isOpen" class="ey-nav-bread">
+	<li data-ui-sref="{{config.route}}">{{config.name}}</li>
+	<li title="{{config.bucketName}}" ng-if="config.bucketName!=''" ng-click="gotoFolder(0)"><span class="ey-ellipsis" style="max-width:300px;display: inline-block;vertical-align: middle;" >{{config.bucketName}}</span></li>
+	<li title="{{config.folderNameAddress[$index]}}" ng-if="config.folderNameAddress != ''" ng-repeat="folderName in config.folderNameAddress track by $index" ng-click="gotoFolder($index + 1)">
+	<span class="ey-ellipsis" style="max-width:300px;display: inline-block;vertical-align: middle;" >{{config.folderNameAddress[$index]}}</span></li>
+</ul>
+</div>
+
+<div ng-if="isOpen" class="ey-divider"></div>
+<!-- 子页面展示区 -->
+<div class="ey-panel ey-panel-full" data-ui-view=""></div>

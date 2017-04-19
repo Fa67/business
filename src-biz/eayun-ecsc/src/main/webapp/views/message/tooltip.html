@@ -1,0 +1,17 @@
+<div>
+<div data-ng-repeat="unread in unreadList">
+	<p>
+	<a  ng-click="openMsgDetail(unread)" style="cursor:pointer">{{unread.newsTitle.length > 10 ? unread.newsTitle.substring(0,10) + "..." : unread.newsTitle}}</a>
+	</p>
+	<div class="divider" ng-show="!$last"></div>
+</div>
+</div>
+
+<div class="row" style="position:relative;padding: 5px 10px;background-color: #EEEEEE;border-bottom-right-radius: 4px;border-bottom-left-radius: 4px;">
+  <div class="text-left" style="display: inline-block;height:18px;">
+    <!-- <button class="btn btn-primary btn-xs">新建工单</button> -->
+  </div>
+  <div style="display: inline-block;vertical-align: middle;position: absolute;right: 0;top:7.5px;">
+    <a ui-sref="app.message">查看全部 ></a>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<div class="modal-header">
+    <span class="modal-title">修改手机号码</span> 
+    <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style = "width:600px;">
+	<p style = "font-size:14px;margin-left:75px;margin-bottom:20px;">在修改您的手机号码之前，我们需要验证您的旧手机号码</p>
+	<form class="ey-form" name = "checkphone" novalidate>
+	  <div class="ey-form-group">
+	    <label class="ey-form-label">旧手机号码：</label>
+	    <span>{{checkPhone.userPhone}}</span>
+	    <button class = "ey-btn" data-ng-click="sendCode(checkPhone.userPhone)" data-ng-hide="model.doSend">
+	    	<span>发送验证码</span>
+	    </button>
+	    <button class="ey-btn ey-btn-primary.disabled" data-ng-disabled = "true" data-ng-show = "model.doSend">{{model.second}}s后可重新发送</button>
+	  </div>
+	  <div class="ey-form-group" data-ng-class="(checkphone.verCode.$dirty && checkphone.verCode.$invalid) ? 'ey-has-error' : ''">
+	    <label class="ey-form-label ey-required">验证码：</label>
+	      <input type="text" class="ey-form-input" name = "verCode" data-ng-model = "checkPhone.verCode" required>
+	      <span data-ng-show="checkphone.verCode.$dirty && checkphone.verCode.$error.required">请输入验证码</span>
+	  </div>
+	</form>
+</div>
+<div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<button class="ey-btn ey-btn-primary" data-ng-click="commit()"  data-ng-disabled="!checkphone.$valid" type = "button">下一步</button>
+		<button class="ey-btn ey-btn-default" data-ng-click="cancel()" type = "button">取 消</button>
+	</div>
+</div>

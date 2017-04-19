@@ -1,0 +1,34 @@
+<!-- 当前位置下拉列表 -->
+<div class="form-inline">
+  <div class="form-group">
+    <label class="control-label">当前位置：</label>
+
+    <div class="btn-group" role="group">
+      <eayun-select type="btn" class="" data-ng-model="name">
+        <eayun-option value="name" text="名称" selected></eayun-option>
+        <eayun-option value="status" text="状态"></eayun-option>
+        <eayun-option value="system" text="系统"></eayun-option>
+        <eayun-option value="name" text="名称" selected></eayun-option>
+        <eayun-option value="status" text="状态"></eayun-option>
+        <eayun-option value="system" text="系统"></eayun-option>
+        <eayun-option value="name" text="名称" selected></eayun-option>
+        <eayun-option value="status" text="状态"></eayun-option>
+        <eayun-option value="system" text="系55555555555555555555555555555555555统"></eayun-option>
+      </eayun-select>
+    </div>
+  </div>
+</div>
+
+<!-- 导航页签 -->
+<tabs class="nav-tabs-underline">
+  <tab-underline ui-sref-active="active" data-ui-sref="app.styletest.host">云主机</tab-underline>
+  <tab-underline ui-sref-active="active" data-ui-sref="app.styletest.hd">云硬盘</tab-underline>
+  <tab-underline ui-sref-active="active" data-ui-sref="app.styletest.mirror">镜像</tab-underline>
+  <tab-underline ui-sref-active="active" data-ui-sref="app.styletest.group">安全组</tab-underline>
+</tabs>
+
+<!-- 子页面展示区 -->
+
+    <div data-ui-view=""></div>
+  </div>
+</div>

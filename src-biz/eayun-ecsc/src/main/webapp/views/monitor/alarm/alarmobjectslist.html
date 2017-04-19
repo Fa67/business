@@ -1,0 +1,15 @@
+<span ng-style="{width:two.width[0]}" title = "{{item.vmName}}">
+		<p ng-bind="::item.vmName"></p>
+</span>
+
+<span ng-style="{width:two.width[1]}">
+		<p style="line-height: 24px;" ng-bind="'受管子网：'+(item.vmIp==''?'--':item.vmIp)"></p>
+		<p style="line-height: 24px;" ng-bind="'自管子网：'+(item.selfSubIp==''?'--':item.selfSubIp)" ng-if = "item.monitorType=='0008001'"></p>
+		<p style="line-height: 24px;" ng-bind="'公网：'+(item.floatIp==''||item.floatIp=='null'?'--':item.floatIp)" ng-if = "item.monitorType!='0008002'"></p>
+</span>
+
+<span class="eayunfont ey-font-size-super"
+      ng-class="item.$$selected?'ef-cancel-r ey-text-error':'ef-add-r ey-text-link'"
+      ng-click="two.select(item)">
+</span>
+

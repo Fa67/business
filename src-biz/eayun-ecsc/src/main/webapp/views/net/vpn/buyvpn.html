@@ -1,0 +1,516 @@
+<ul class="ey-nav-bread">
+    <li data-ui-sref="app.net.netbar.vpn">VPN</li>
+    <li>创建VPN</li>
+</ul>
+<nav class="ey-nav-online">
+    <a data-ng-click="buyVpn.viewInterAction.typeChoose('1')"
+       data-ng-class="buyVpn.vpnModel.payType == '1' ? 'active' : ''">
+        包年包月
+    </a>
+    <a data-ng-click="buyVpn.viewInterAction.typeChoose('2')"
+       data-ng-class="buyVpn.vpnModel.payType == '2' ? 'active' : ''">
+        按需付费
+    </a>
+</nav>
+<div class="row">
+    <form class="ey-form-purchase col-lg-8" name="buyForm" novalidate>
+        <fieldset>
+            <legend>数据中心</legend>
+
+            <div class="ey-form-group">
+                <label>数据中心：</label>
+                <span class="ey-mark ey-mark-width"
+                      data-ng-repeat="data in buyVpn.datacenters"
+                      data-ng-class="buyVpn.vpnModel.dcId == data.dcId ? 'active' : ''"
+                      data-ng-click="buyVpn.viewInterAction.selectDcPrj(data)"
+                      data-ng-bind="data.dcName">
+                </span>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>基本参数</legend>
+
+            <div class="ey-form-group"
+                 data-ng-class="((buyForm.vpnName.$dirty || buyVpn.fromOrder == 'backFromOrder')
+                             && !buyVpn.outOfQuota
+                             && (buyForm.vpnName.$invalid || buyVpn.isNameExist))
+                             ? 'ey-has-error' : ''">
+                <label class="ey-form-label ey-required">名称：</label>
+                <input class="ey-form-input ey-form-w6"
+                       name="vpnName"
+                       data-ng-model="buyVpn.vpnModel.vpnName"
+                       data-ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/'
+                       data-ng-change="buyVpn.viewInterAction.checkVpnNameExist()"
+                       placeholder="请输入VPN名称"
+                       maxlength="20"
+                       required>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="buyVpn.outOfQuota">
+                    VPN数量配额不足
+                </span>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="buyForm.vpnName.$dirty && !buyVpn.outOfQuota && buyForm.vpnName.$invalid">
+                    请输入1-20位字符,支持数字、中英文、下划线、空格
+                </span>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="(buyForm.vpnName.$dirty || buyVpn.fromOrder == 'backFromOrder')
+                                && !buyVpn.outOfQuota
+                                && buyForm.vpnName.$valid
+                                && buyVpn.isNameExist">
+                    该VPN名称已存在
+                </span>
+            </div>
+
+            <div class="ey-form-group">
+                <label class="ey-form-label ey-required">本端网络：</label>
+                <eayun-select class="ey-form-w6"
+                              name="network" required
+                              placeholder="请选择网络"
+                              data-ng-model="buyVpn.network"
+                              data-ng-change="buyVpn.viewInterAction.changeNetwork(buyVpn.network)">
+                    <eayun-option data-ng-repeat="network in buyVpn.networkList" value="network" text="{{network.netName}}({{network.gatewayIp}})"></eayun-option>
+                </eayun-select>
+            </div>
+
+            <div class="ey-form-group">
+                <label class="ey-form-label ey-required">本端子网：</label>
+                <eayun-select class="ey-form-w6"
+                              name="subnet" required
+                              placeholder="请选择子网"
+                              data-ng-model="buyVpn.subnet"
+                              data-ng-change="buyVpn.viewInterAction.changeSubnet(buyVpn.subnet)">
+                    <eayun-option data-ng-repeat="subnet in buyVpn.subnetList" value="subnet" text="{{subnet.subnetName}}({{subnet.cidr}})"></eayun-option>
+                </eayun-select>
+            </div>
+
+            <div class="ey-form-group" data-ng-class="buyForm.pskKey.$dirty && (buyForm.pskKey.$invalid || buyVpn.pskKeyValid) ? 'ey-has-error' : ''">
+                <label class="ey-form-label ey-required">预共享密钥：</label>
+                <input class="ey-form-input ey-form-w6"
+                       name="pskKey"
+                       data-ng-model="buyVpn.vpnModel.pskKey"
+                       data-ng-change="buyVpn.viewInterAction.checkPskKey(buyVpn.vpnModel.pskKey)"
+                       maxlength="80"
+                       placeholder="请输入预共享密钥" 
+                       required>
+                <span class="ey-text-tip ey-has-error"
+                       data-ng-show="buyForm.pskKey.$dirty && buyForm.pskKey.$error.required">
+                    预共享密钥不能为空
+                </span>
+                <span class="ey-text-tip ey-text-error"
+                      data-ng-show="buyForm.pskKey.$dirty && !buyForm.pskKey.$error.required && buyVpn.pskKeyValid">
+                    输入不能包含的特殊字符有：< > " &
+                </span>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>网络参数</legend>
+
+            <div class="ey-form-group">
+                <label class="ey-form-label ey-required">对端网关：</label>
+                <table class="ey-form-w5">
+					<tbody>
+						<tr class="ey-form-w5">
+							<td class="col-sm-3" style="padding:0;">
+								<input type="text" class="ey-form-input ey-form-w1" style="margin-right: 0px;"
+                                       data-ng-class="!buyVpn.$$addr1.flag ? 'ey-has-error' : ''" name="addr1" maxlength="3"
+                                       data-ng-model="buyVpn.$$addr1.val"
+                                       data-ng-change="buyVpn.viewInterAction.checkPeerAddress('1')">
+							</td>
+							<td style="padding:0 10px;">.</td>
+							<td class="col-sm-3" style="padding:0;">
+								<input type="text" class="ey-form-input ey-form-w1" style="margin-right: 0px;"
+                                       data-ng-class="!buyVpn.$$addr2.flag ? 'ey-has-error' : ''" maxlength="3"
+                                       data-ng-model="buyVpn.$$addr2.val"
+                                       data-ng-change="buyVpn.viewInterAction.checkPeerAddress('2')">
+							</td>
+							<td style="padding:0 10px;">.</td>
+							<td class="col-sm-3" style="padding:0;">
+								<input type="text" class="ey-form-input ey-form-w1" style="margin-right: 0px;"
+                                       data-ng-class="!buyVpn.$$addr3.flag ? 'ey-has-error' : ''" maxlength="3"
+                                       data-ng-model="buyVpn.$$addr3.val"
+                                       data-ng-change="buyVpn.viewInterAction.checkPeerAddress('3')">
+							</td>
+							<td style="padding:0 10px;">.</td>
+							<td class="col-sm-3" style="padding:0;">
+								<input type="text" class="ey-form-input ey-form-w1" style="margin-right: 0px;"
+                                       data-ng-class="!buyVpn.$$addr4.flag ? 'ey-has-error' : ''" maxlength="3"
+                                       data-ng-model="buyVpn.$$addr4.val"
+                                       data-ng-change="buyVpn.viewInterAction.checkPeerAddress('4')">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<span class="ey-text-tip ey-has-error"
+                       data-ng-show="!buyVpn.$$addr1.flag || !buyVpn.$$addr2.flag || !buyVpn.$$addr3.flag || !buyVpn.$$addr4.flag">
+                   	     请输入0-255的整数
+                </span>
+            </div>
+
+            <!--<div class="ey-form-group" data-ng-class="buyForm.peerId.$dirty && buyForm.peerId.$invalid ? 'ey-has-error' : ''">
+                <label class="ey-form-label ey-required">路由ID：</label>
+                <input class="ey-form-input ey-form-w6"
+                       name="peerId"
+                       placeholder="可填入IP地址、e-mail、键ID或者FQDN."
+                       data-ng-model="buyVpn.vpnModel.peerId"
+                       required>
+                <span class="ey-text-tip ey-has-error"
+                       data-ng-show="buyForm.peerId.$dirty && buyForm.peerId.$error.required">
+                   	     路由ID不能为空
+                </span>
+            </div>-->
+
+            <div class="ey-form-group"
+                 data-ng-class="buyForm.peerCidrs.$dirty
+                            && (buyForm.peerCidrs.$error.required
+                            || buyForm.peerCidrs.$valid
+                            && !buyVpn.checkPeerCidrsFlag) ? 'ey-has-error' : ''">
+                <label class="ey-form-label ey-required">对端子网：</label>
+                <textarea class="ey-form-textarea"
+                          name="peerCidrs" maxlength="1000"
+                          placeholder="带有子网掩码的CIDR格式，多个子网时用英文逗号分隔，例如：20.1.0.0/24,21.1.0.0/24。"
+                          data-ng-change="buyVpn.viewInterAction.checkPeerCidrs()"
+                		  data-ng-model="buyVpn.vpnModel.peerCidrs"
+                		  required></textarea>
+                <span class="ey-text-tip ey-has-error"
+                       data-ng-show="buyForm.peerCidrs.$dirty && buyForm.peerCidrs.$error.required">
+                   	     对端子网不能为空
+                </span>
+                <span class="ey-text-tip ey-has-error"
+                       data-ng-show="buyForm.peerCidrs.$dirty && buyForm.peerCidrs.$valid && !buyVpn.checkPeerCidrsFlag">
+                   	     子网格式错误。请检查是否有重复子网，以及符号是否正确。
+                </span>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>IKE策略</legend>
+
+            <div class="ey-form-group">
+                <label class="ey-form-label">版本：</label>
+                <eayun-select class="ey-form-w6"
+                              name="ikeVersion"
+                              data-ng-model="buyVpn.vpnModel.ikeVersion">
+                    <eayun-option value="'v1'" text="v1"></eayun-option>
+                    <eayun-option value="'v2'" text="v2"></eayun-option>
+                </eayun-select>
+            </div>
+
+            <div class="ey-form-group">
+                <label class="ey-form-label">协商模式：</label>
+                <span class="ey-font-size">main</span>
+            </div>
+
+            <div class="ey-form-group">
+                <label class="ey-form-label">加密算法：</label>
+                <eayun-select class="ey-form-w6"
+                              name="ikeEncryption"
+                              data-ng-model="buyVpn.vpnModel.ikeEncryption">
+                    <eayun-option value="'3des'" text="3DES"></eayun-option>
+                    <eayun-option value="'aes-128'" text="AES-128"></eayun-option>
+                    <eayun-option value="'aes-192'" text="AES-192"></eayun-option>
+                    <eayun-option value="'aes-256'" text="AES-256"></eayun-option>
+                </eayun-select>
+            </div>
+
+            <div class="ey-form-group">
+                <label class="ey-form-label">认证算法：</label>
+                <span class="ey-font-size">sha1</span>
+            </div>
+
+            <div class="ey-form-group">
+                <label class="ey-form-label">DH算法：</label>
+                <eayun-select class="ey-form-w6"
+                              name="ikeDh"
+                              data-ng-model="buyVpn.vpnModel.ikeDh">
+                    <eayun-option value="'group2'" text="GROUP2"></eayun-option>
+                    <eayun-option value="'group5'" text="GROUP5"></eayun-option>
+                    <eayun-option value="'group14'" text="GROUP14"></eayun-option>
+                </eayun-select>
+            </div>
+
+            <div class="ey-form-group"  data-ng-class="buyForm.ikeLifetime.$dirty && (buyForm.ikeLifetime.$invalid || !buyVpn.ikeSixty) ? 'ey-has-error' : ''">
+                <label class="ey-form-label ey-required">生存周期（秒）：</label>
+                <input class="ey-form-input ey-form-w6"
+                       name="ikeLifetime"
+                       maxlength="9"
+                       data-ng-pattern="/^[1-9][0-9]\d*$/"
+                       data-ng-model="buyVpn.vpnModel.ikeLifetime"
+                       data-ng-change="buyVpn.viewInterAction.checkIkeLifetime(buyVpn.vpnModel.ikeLifetime)"
+                       required>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="buyForm.ikeLifetime.$dirty && buyForm.ikeLifetime.$error.required">
+                    	生存周期不能为空
+                </span>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="buyForm.ikeLifetime.$dirty
+                                && (buyForm.ikeLifetime.$error.pattern
+                                || (buyForm.ikeLifetime.$valid
+                                && !buyVpn.ikeSixty))">
+                   	 请输入60到999999999的正整数
+                </span>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>IPsec配置</legend>
+
+            <div class="ey-form-group">
+                <label class="ey-form-label">传输协议：</label>
+                <eayun-select class="ey-form-w6"
+                              name="ipsecProtocol"
+                              data-ng-model="buyVpn.vpnModel.ipsecProtocol">
+                    <eayun-option value="'esp'" text="ESP"></eayun-option>
+                    <eayun-option value="'ah'" text="AH"></eayun-option>
+                </eayun-select>
+            </div>
+
+            <div class="ey-form-group">
+                <label class="ey-form-label">封装模式：</label>
+                <span class="ey-font-size">隧道</span>
+            </div>
+
+            <div class="ey-form-group">
+                <label class="ey-form-label">加密算法：</label>
+                <eayun-select class="ey-form-w6"
+                              name="ipsecEncryption"
+                              data-ng-model="buyVpn.vpnModel.ipsecEncryption">
+                    <eayun-option value="'3des'" text="3DES"></eayun-option>
+                    <eayun-option value="'aes-128'" text="AES-128"></eayun-option>
+                    <eayun-option value="'aes-192'" text="AES-192"></eayun-option>
+                    <eayun-option value="'aes-256'" text="AES-256"></eayun-option>
+                </eayun-select>
+            </div>
+
+            <div class="ey-form-group">
+                <label class="ey-form-label">认证算法：</label>
+                <span class="ey-font-size">sha1</span>
+            </div>
+
+            <div class="ey-form-group">
+                <label class="ey-form-label">DH算法：</label>
+                <eayun-select class="ey-form-w6"
+                              name="ipsecDh"
+                              data-ng-model="buyVpn.vpnModel.ipsecDh">
+                    <eayun-option value="'group2'" text="GROUP2"></eayun-option>
+                    <eayun-option value="'group5'" text="GROUP5"></eayun-option>
+                    <eayun-option value="'group14'" text="GROUP14"></eayun-option>
+                </eayun-select>
+            </div>
+
+            <div class="ey-form-group"  data-ng-class="buyForm.ipsecLifetime.$dirty && (buyForm.ipsecLifetime.$invalid || !buyVpn.ipsecSixty) ? 'ey-has-error' : ''">
+                <label class="ey-form-label ey-required">生存周期：</label>
+                <input class="ey-form-input ey-form-w6"
+                       name="ipsecLifetime"
+                       maxlength="9"
+                       data-ng-pattern="/^[1-9][0-9]\d*$/"
+                       data-ng-model="buyVpn.vpnModel.ipsecLifetime"
+                       data-ng-change="buyVpn.viewInterAction.checkIpsecLifetime(buyVpn.vpnModel.ipsecLifetime)"
+                       required>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="buyForm.ipsecLifetime.$dirty && buyForm.ipsecLifetime.$error.required">
+                    	生存周期不能为空
+                </span>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="buyForm.ipsecLifetime.$dirty
+                                && (buyForm.ipsecLifetime.$error.pattern
+                                || (buyForm.ipsecLifetime.$valid
+                                && !buyVpn.ipsecSixty))">
+                   	    请输入60到999999999的正整数
+                </span>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>可选配置</legend>
+
+            <div class="ey-form-group" data-ng-class="buyForm.mtu.$dirty && (buyForm.mtu.$invalid || !buyVpn.mtuSixtyEight) ? 'ey-has-error' : ''">
+                <label class="ey-form-label ey-required">最大传输单元：</label>
+                <input class="ey-form-input ey-form-w6"
+                       name="mtu"
+                       maxlength="9"
+                       data-ng-pattern="/^[1-9][0-9]\d*$/"
+                       data-ng-model="buyVpn.vpnModel.mtu"
+                       data-ng-change="buyVpn.viewInterAction.checkMtu()"
+                       required>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="buyForm.mtu.$dirty && buyForm.mtu.$error.required">
+                    	最大传输单元不能为空
+                </span>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="buyForm.mtu.$dirty
+                                && (buyForm.mtu.$error.pattern
+                                || (buyForm.mtu.$valid
+                                && !buyVpn.mtuSixtyEight))">
+                    	请输入68到999999999的正整数
+                </span>
+            </div>
+
+            <div class="ey-form-group">
+                <label class="ey-form-label">失效处理：</label>
+                <eayun-select class="ey-form-w6"
+                              name="dpdAction"
+                              data-ng-model="buyVpn.vpnModel.dpdAction">
+                    <eayun-option value="'hold'" text="保留"></eayun-option>
+                    <eayun-option value="'clear'" text="清除"></eayun-option>
+                    <!--<eayun-option value="'disabled'" text="禁用"></eayun-option>-->
+                    <eayun-option value="'restart'" text="重启"></eayun-option>
+                </eayun-select>
+            </div>
+
+            <div class="ey-form-group" data-ng-class="buyForm.dpdInterval.$dirty && buyForm.dpdInterval.$invalid ? 'ey-has-error' : ''">
+                <label class="ey-form-label ey-required">检测时间（秒）：</label>
+                <input class="ey-form-input ey-form-w6"
+                       name="dpdInterval"
+                       maxlength="9"
+                       data-ng-pattern="/^[1-9][0-9]{0,8}$/"
+                       data-ng-model="buyVpn.vpnModel.dpdInterval"
+                       data-ng-change="buyVpn.viewInterAction.checkInterval()"
+                       required>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="buyForm.dpdInterval.$dirty && buyForm.dpdInterval.$error.required">
+                    	检测时间不能为空
+                </span>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="buyForm.dpdInterval.$dirty && buyForm.dpdInterval.$error.pattern">
+                    	请输入不大于999999999的正整数
+                </span>
+            </div>
+
+            <div class="ey-form-group" data-ng-class="buyForm.dpdTimeout.$invalid || !buyVpn.checkTimeout ? 'ey-has-error' : ''">
+                <label class="ey-form-label ey-required">超时（秒）：</label>
+                <input class="ey-form-input ey-form-w6"
+                       name="dpdTimeout"
+                       maxlength="9"
+                       data-ng-pattern="/^[1-9][0-9]{0,8}$/"
+                       data-ng-model="buyVpn.vpnModel.dpdTimeout"
+                       data-ng-change="buyVpn.viewInterAction.checkInterval()"
+                       required>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="buyForm.dpdTimeout.$dirty && buyForm.dpdTimeout.$error.required">
+                    	超时不能为空
+                </span>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="buyForm.dpdTimeout.$dirty && buyForm.dpdTimeout.$error.pattern">
+                    	请输入不大于999999999的正整数
+                </span>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="buyForm.dpdTimeout.$valid && !buyVpn.checkTimeout">
+                    	超时应大于检测间隔
+                </span>
+            </div>
+
+            <div class="ey-form-group">
+                <label class="ey-form-label">发起状态：</label>
+                <eayun-select class="ey-form-w6"
+                              name="initiator"
+                              data-ng-model="buyVpn.vpnModel.initiator">
+                    <eayun-option value="'response-only'" text="只应答"></eayun-option>
+                    <eayun-option value="'bi-directional'" text="双向"></eayun-option>
+                </eayun-select>
+            </div>
+
+            <div class="ey-form-group" data-ng-if="buyVpn.vpnModel.payType == '1'">
+                <label class="ey-form-label">付款方式：</label>
+                <eayun-select class="ey-form-w3" placeholder="请选择周期类型" 
+                			  data-ng-model="buyVpn.vpnModel.cycleType" 
+                			  data-ng-change="buyVpn.viewInterAction.changeCycleType()"
+                			  required >
+                    <eayun-option ng-repeat="cycleType in buyVpn.cycleTypeList" value="cycleType.value" text="{{cycleType.text}}"></eayun-option>
+                </eayun-select>
+                <eayun-select class="ey-form-w3"
+                              placeholder="请选择购买时长"
+                              data-ng-model="buyVpn.vpnModel.buyCycle"
+                              data-ng-change="buyVpn.viewInterAction.changeBuyCycle()"
+                              required>
+                    <eayun-option ng-repeat="cycle in buyVpn.cycleList" value="cycle.value" text="{{cycle.text}}"></eayun-option>
+                </eayun-select>
+            </div>
+        </fieldset>
+    </form>
+    <div class="ey-set">
+        <h5>已选配置</h5>
+        <fieldset>
+            <ul>
+                <li>
+                    数据中心：
+                    <span class="ey-color-default">{{buyVpn.vpnModel.dcName}}</span>
+                </li>
+                <li>
+                    本端网络：
+                    <span class="ey-color-default"
+                          data-ng-if="buyVpn.network.netName"
+                          title="{{buyVpn.network.netName + '(' + buyVpn.network.gatewayIp + ')'}}">
+                        {{buyVpn.network.netName + '(' + buyVpn.network.gatewayIp + ')'}}
+                    </span>
+                </li>
+                <li>
+                    本端子网：
+                    <span class="ey-color-default"
+                          data-ng-if="buyVpn.subnet.subnetName"
+                          title="{{buyVpn.subnet.subnetName + '(' + buyVpn.subnet.cidr + ')'}}">
+                        {{buyVpn.subnet.subnetName + '(' + buyVpn.subnet.cidr + ')'}}
+                    </span>
+                </li>
+                <li>
+                    对端网关：
+                    <span class="ey-color-default">{{buyVpn.vpnModel.peerAddress}}</span>
+                </li>
+                <li>
+                    购买量：
+                    <span class="ey-color-default" data-ng-if="buyVpn.vpnModel.payType == '1'">
+                        {{buyVpn.vpnModel.buyCycle < 12 ? (buyVpn.vpnModel.buyCycle + '个月') : (buyVpn.vpnModel.buyCycle/12 + '年')}}×1个
+                    </span>
+                    <span class="ey-color-default" data-ng-if="buyVpn.vpnModel.payType == '2'">
+                        1个
+                    </span>
+                </li>
+            </ul>
+            <p class="ey-font-size-big" data-ng-if="buyVpn.vpnModel.payType == '1'">
+                总计：
+                <span class="ey-color-default" data-ng-if="buyVpn.hasGotPrice">￥&nbsp;</span>
+                <span class="ey-font-size-super ey-color-red" data-ng-if="buyVpn.hasGotPrice">
+                    {{buyVpn.totalPrice | thousand}}
+                </span>
+                <span class="ey-color-red" data-ng-if="!buyVpn.hasGotPrice">
+                    {{buyVpn.priceMsg}}
+                </span>
+            </p>
+            <p class="ey-font-size-big" data-ng-if="buyVpn.vpnModel.payType == '2'">
+                总计：
+                <span class="ey-color-default" data-ng-if="buyVpn.hasGotPrice">￥&nbsp;</span>
+                <span class="ey-font-size-super ey-color-red" data-ng-if="buyVpn.hasGotPrice">
+                    {{buyVpn.totalPrice | thousand:true}}
+                </span>
+                <span class="ey-text-default" data-ng-if="buyVpn.hasGotPrice">&nbsp;/小时</span>
+                <span class="ey-color-red" data-ng-if="!buyVpn.hasGotPrice">
+                    {{buyVpn.priceMsg}}
+                </span>
+            </p>
+			<span class="ey-color-red" data-ng-if="buyVpn.vpnModel.payType == '2'">
+				开通按需付费的云服务，您的账户余额不得低于{{buyVpn.payAfterCondition}}元，请充值后再开通，
+				<a class="ey-color-blue pointer" data-ng-click="buyVpn.viewInterAction.recharge()">立即充值</a>
+			</span>
+        </fieldset>
+        <button class="ey-btn ey-btn-primary"
+                data-ng-disabled="buyForm.$invalid
+                                || buyVpn.checkBuyBtn
+                				|| buyVpn.isNameExist
+                				|| buyVpn.pskKeyValid
+                				|| (buyVpn.isNSF && buyVpn.vpnModel.payType == '2')
+                				|| buyVpn.outOfQuota 
+                				|| buyVpn.changeOfBilling 
+                				|| !buyVpn.$$addrTotal 
+                				|| !buyVpn.checkPeerCidrsFlag
+                				|| !buyVpn.ikeSixty
+                				|| !buyVpn.ipsecSixty
+                				|| !buyVpn.mtuSixtyEight
+                				|| !buyVpn.checkTimeout
+                				|| !buyVpn.hasGotPrice"
+                data-ng-click="buyVpn.viewInterAction.buyAtOnce()">
+            立即购买
+        </button>
+        <fieldset data-ng-if="buyVpn.vpnModel.payType == '2' && buyVpn.isNSF">
+            <span class="ey-color-red">
+                您的账户余额不足{{buyVpn.payAfterCondition}}元，请立即充值
+            </span>
+        </fieldset>
+    </div>
+</div>
+

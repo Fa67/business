@@ -1,0 +1,50 @@
+<form class="form-horizontal" name="myForm">
+  
+
+<!--名称 -->
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 control-label">名称：</label>
+
+    <div class="col-sm-8" data-ng-class="(myForm.name.$dirty && myForm.name.$invalid) ? 'has-error' : ''">
+      <input type="text" maxlength="20" class="form-control" name="name" id="name" data-ng-model="model.vipName" placeholder="请输入名称" ajax-valid="checkVipName(value)" required>
+      
+      <label class="control-label" ng-show="myForm.name.$dirty && myForm.name.$error.required &&!flag">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+      <label class="control-label" ng-show="myForm.name.$dirty && myForm.name.$error.ajaxValid && !flag">VIP名称已存在</label>
+      <label class="control-label" ng-if="flag">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+    </div>
+  </div>
+ 
+  <!-- 连接限制数 -->
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 control-label">连接限制数：</label>
+
+    <div class="col-sm-8" data-ng-class="(myForm.connection_limit.$dirty && myForm.connection_limit.$invalid) ? 'has-error' : ''">
+      <input type="text" class="form-control" name="connection_limit" maxlength="9" ng-pattern="/^[1-9]\d*$/" data-ng-model="model.connectionLimit" placeholder="请输入大于0的整数" required>
+      
+      <label class="control-label" ng-show="myForm.connection_limit.$dirty && myForm.connection_limit.$error.required">请输入大于0的整数</label>
+	  <label class="control-label" ng-show="myForm.connection_limit.$dirty && myForm.connection_limit.$invalid && !myForm.connection_limit.$error.required">请输入大于0的整数</label>      
+    </div>
+  </div>
+  <!-- 管理员状态 -->
+  <!-- <div class="form-group">
+    <label class="col-sm-3 control-label">管理员状态：</label>
+
+    <div class="col-sm-8">
+      <label class="radio-inline">
+        <input type="radio" ng-model="model.adminStateup" value="1" >是
+      </label>
+      <label class="radio-inline">
+        <input type="radio" ng-model="model.adminStateup" value="0">否
+      </label>
+    </div>
+  </div> -->
+  
+  <!-- 按钮区域 -->
+  <div class="modal-footer" >
+    <button type="button" class="btn btn-primary btn-modal" ng-click="commit()"  ng-disabled="!myForm.$valid">确  定</button>
+    <button type="button" class="btn btn-default btn-modal" style="margin-left:13px;" ng-click="cancel()">取  消</button>
+  </div>
+  
+  
+  
+</form>

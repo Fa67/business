@@ -1,0 +1,13 @@
+
+<div class="ey-panel-title">
+	<nav class="ey-nav-underline">
+		<a ui-sref-active="active"  ng-show="modulePower.isFireWallView" data-ui-sref="app.safety.safetybar.firewall">防火墙</a>
+		<a ui-sref-active="active" data-ui-sref="app.safety.safetybar.group" ng-show = "modulePower.isSeGroup">安全组</a>
+		<a ui-sref-active="active" data-ui-sref="app.safety.safetybar.secretkeylist" ng-show="buttonPower.isSecretKeyList">SSH密钥</a>
+	</nav>
+</div>
+
+<!-- 子页面展示区 -->
+<div class="ey-panel-body">
+    <div data-ui-view=""></div>
+</div>

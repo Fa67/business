@@ -1,0 +1,171 @@
+<!-- 防火墙详情 -->
+<style type="text/css">
+.font-color-gay {
+	color: #cccccc;
+}
+</style>
+<div class="ey-panel panel-default clearfix">
+	<div class="panel-body">
+		<h4>防火墙详情</h4>
+
+		<div class="details">
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="details-group">
+						<div class="details-name"
+							hint="views/safety/firewallrule/editfwname.html"
+							hint-show="hintNameShow" tooltip-class="tooltip-edit"
+							tooltip-placement="right">防火墙名称：</div>
+						<div class="details-value">
+							<span ng-bind="outModel.fwName"
+								data-ng-class="vmNameEditable ? 'hide' : 'show'"></span>
+						</div>
+						<div class="badge show" ng-show="buttonPower.isEdit"
+							data-ng-click="editNameOrDesc('fwName')"
+							data-ng-class="vmNameEditable ? 'hide' : 'show'">
+							<span class="glyphicon glyphicon-pencil"></span>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="details-group">
+						<div class="details-name"
+							hint="views/safety/firewallrule/editfwdesc.html"
+							hint-show="hintDescShow" tooltip-class="tooltip-edit"
+							tooltip-placement="right">描述：</div>
+						<div class="details-value ey-ellipsis" title="{{outModel.description}}"
+							 ng-bind="outModel.description" data-ng-class="vmDescEditable ? 'hide' :''">
+						</div>
+						<div class="badge show" ng-show="buttonPower.isEdit"
+							data-ng-click="editNameOrDesc('fwDesc')"
+							data-ng-class="vmDescEditable ? 'hide' : 'show'">
+							<span class="glyphicon glyphicon-pencil"></span>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="details-group">
+						<div class="details-name">防火墙ID：</div>
+						<div class="details-value">
+							<span ng-bind="::outModel.fwId"></span>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="details-group">
+						<div class="details-name">所属数据中心：</div>
+						<div class="details-value">
+							<span ng-bind="::outModel.dcName"></span>
+						</div>
+					</div>
+				</div>
+				<!-- <div class="col-lg-6">
+					<div class="details-group">
+						<div class="details-name">所属客户：</div>
+						<div class="details-value">
+							<span ng-bind="::outModel.createName"></span>
+						</div>
+					</div>
+				</div> -->
+				<div class="col-lg-6">
+					<div class="details-group">
+						<div class="details-name">已有标签：</div>
+						<div class="details-value" ng-if="outModel.tags != null" ng-init="tags=parseJson(outModel.tags)">
+							<div ng-if="tags.gt2Tags" >
+								<span>{{tags.twoTagsString}}</span>
+	          					<div class="tag-icon ellipsis pointer"
+									ng-mouseenter="openTableBox({value:tags.allTagsString,type:'tagName',index:0})"
+									ng-mouseleave="closeTableBox({type:'tagName',index:0})"
+									hint="views/directives/ellipsispop.html"
+	       							hint-show="hintTagShow[0]"
+	       							tooltip-class="tooltip-tag"
+	       							tooltip-placement="bottom">
+	       						</div>
+							</div>
+							<div  ng-if="outModel.tags != null && !tags.gt2Tags" >{{tags.allTagsString}}</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="details-group">
+						<div class="details-name">创建时间：</div>
+						<div class="details-value">
+							<span
+								ng-bind="::outModel.createTime|date : 'yyyy-MM-dd HH:mm:ss'">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Tab panes -->
+<div class="tab-content ey-panel-body">
+	<div role="tabpanel" class="tab-pane active" id="appCloudhostHDTable">
+		<!-- Form表单 -->
+		<form class="form-inline">
+			<button type="button" class="ey-btn ey-btn-primary btn-sm"
+				ng-show="buttonPower.isCreate" style="margin-right: 20px;"
+				data-ng-click="addFwRule()">
+				<span class="eayunfont ef-plus" aria-hidden="true"></span>
+				添加规则
+			</button>
+
+			<!-- <div class="input-group has-feedback ey-search-group">
+				<input type="text" class="ey-form-control" placeholder="请输入名称搜索"
+					data-ng-model="fwrName"> <span
+					class="form-control-feedback pointer ey-search"
+					data-ng-click="queryFwRule()"></span>
+			</div> -->
+
+		</form>
+		<!-- 表格 -->
+
+		<eayun-table data-api="myTable.api" data-ajax-source="myTable.source"
+			data-param="myTable.getParams" data-result="myTable.result">
+		<table class="ey-table">
+			<thead>
+				<tr>
+					<th>优先级</th>
+					<th>规则名称</th>
+					<th>协议</th>
+					<th>源IP</th>
+					<th>源端口</th>
+					<th>目的IP</th>
+					<th>目的端口</th>
+					<th>动作</th>
+					<th class="col-sm-2">操作</th>
+				</tr>
+			</thead>
+			<tbody><tr data-ng-repeat="fwr in myTable.result"
+					data-ng-class="fwr.fwrEnabled == 0 ? 'font-color-gay' : ''">
+					<td>{{fwr.priority=='null'?'':fwr.priority}}</td>
+					<td data-ng-class="fwr.fwrEnabled == 0 ? 'font-color-gay' : 'ey-text-link'" data-ng-click="ruleDetail(fwr)" title="{{fwr.fwrName}}">{{fwr.fwrName}}</td>
+					<td style="text-transform: uppercase;">{{fwr.protocol=='any'||fwr.protocol=='null'?"所有":fwr.protocol}}</td>
+					<td title="{{(fwr.sourceIpaddress=='null' || fwr.sourceIpaddress=='0.0.0.0/0')?'所有':fwr.sourceIpaddress}}">{{(fwr.sourceIpaddress=='null' || fwr.sourceIpaddress=='0.0.0.0/0')?"所有":fwr.sourceIpaddress}}</td>
+					<td>{{fwr.protocol=='any'||fwr.protocol=='icmp'? "--" : fwr.sourcePort=='null'?"所有":fwr.sourcePort}}</td>
+					<td title="{{(fwr.destinationIpaddress=='null' || fwr.destinationIpaddress=='0.0.0.0/0')?'所有':fwr.destinationIpaddress}}">{{(fwr.destinationIpaddress=='null' || fwr.destinationIpaddress=='0.0.0.0/0')?"所有":fwr.destinationIpaddress}}</td>
+					<td>{{fwr.protocol=='any'||fwr.protocol=='icmp'? "--" : fwr.destinationPort=='null'?"所有":fwr.destinationPort}}</td>
+					<td>{{fwr.fwrAction=='allow'?"允许":""}}{{fwr.fwrAction=='deny'?"拒绝":""}}</td>
+					<td class="col-sm-2"
+						ng-if="buttonPower.isEdit||buttonPower.delFireWall||buttonPower.fwRuleIsEnabled||buttonPower.fwPolicySeq">
+						<div class="ey-btn-group" ng-if="fwr.fwrEnabled==1">
+							<button class="ey-btn" ng-show="buttonPower.fwRuleIsEnabled" data-ng-click="isEnabled(fwr,0)">禁用</button>
+							<!-- <button  class="ey-btn" ng-show="buttonPower.isEdit" data-ng-click="updateFwRule(fwr)">编辑</button> -->
+							<button class="ey-btn" ng-show="buttonPower.delFireWall" data-ng-click="delFwRule(fwr)"><span class="ey-text-error">删除</span></button>
+							<button class="ey-btn" ng-show="buttonPower.fwPolicySeq" data-ng-disabled="$last && $index==0" data-ng-click="rulesequence(fwr)">调整优先级</button>
+						</div>
+						<div class="ey-btn-group" ng-if="fwr.fwrEnabled==0">
+							<button class="ey-btn" ng-show="buttonPower.fwRuleIsEnabled" data-ng-click="isEnabled(fwr,1)">启用</button>
+							<!-- <button  class="ey-btn" ng-show="buttonPower.isEdit" data-ng-click="updateFwRule(fwr)">编辑</button> -->
+							<button class="ey-btn" ng-show="buttonPower.delFireWall" data-ng-click="delFwRule(fwr)"><span class="ey-text-error">删除</span></button>
+							<button class="ey-btn" ng-show="buttonPower.fwPolicySeq" data-ng-disabled="$last && $index==0" data-ng-click="rulesequence(fwr)">调整优先级</button>
+						</div>
+					</td>
+					<td ng-if="!buttonPower.isEdit&&!buttonPower.delFireWall&&!buttonPower.fwPolicySeq&&!buttonPower.fwRuleIsEnabled">----</td>
+				</tr></tbody>
+		</table>
+		<eayun-table-page></eayun-table-page> </eayun-table>
+	</div>
+	<div role="tabpanel" class="tab-pane" id="appCloudhostHDSnapshot">profile</div>
+</div>

@@ -1,0 +1,122 @@
+<div class="modal-header">
+    <span class="modal-title">创建账号</span>
+    <span class="eayunfont ef-close ey-font-huge" data-ng-style="{'cursor':(create.btnWait ? 'not-allowed' : 'pointer')}" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 600px;">
+    <form class="ey-form" name="createAccount" novalidate>
+        <div class="ey-form-group"
+             data-ng-class="(createAccount.accountName.$dirty && (createAccount.accountName.$invalid || create.specialName)) ? 'ey-has-error' : ''">
+            <label class="ey-form-label ey-required">
+                账号名称：
+            </label>
+            <input type="text" class="ey-form-input ey-form-w6"
+                   data-ng-model="create.account.accountName" maxlength="16"
+                   name="accountName" placeholder="请输入名称"
+                   data-ajax-valid="create.checkAccountNameExist(value)"
+                   data-ng-change="create.specialNameCheck()"
+                   data-ng-pattern='/^[a-zA-Z0-9]([_a-zA-Z0-9]{0,14}[a-zA-Z0-9]){0,1}$/'
+                   required>
+            <span class="ey-text-tip ey-has-error hide"
+                  data-ng-class="(createAccount.accountName.$dirty
+                  && createAccount.accountName.$invalid
+                  && !createAccount.accountName.$error.ajaxValid) ? 'show' : 'hide'">
+				请输入1-16位字符，支持数字、中英文、下划线
+			</span>
+			<span class="ey-text-tip ey-has-error hide"
+                  data-ng-class="(createAccount.accountName.$dirty
+                  && createAccount.accountName.$error.ajaxValid) ? 'show' : 'hide'">
+				账号名称已存在
+			</span>
+            <span class="ey-text-tip ey-has-error hide"
+                  data-ng-class="(createAccount.accountName.$dirty
+                  && createAccount.accountName.$valid
+                  && create.specialName) ? 'show' : 'hide'">
+                账号名称不能以slave_开头
+            </span>
+        </div>
+        <!--<div class="ey-form-group">
+            <label class="ey-form-label">
+                授权数据库：
+            </label>
+            <div style="width: 300px;">
+                <table class="ey-table">
+                    <thead>
+                        <th style="width: 60px;">选择</th>
+                        <th style="text-align: center;">数据库</th>
+                    </thead>
+                    <tbody><tr data-ng-repeat="database in create.databaseList">
+                        <td>
+                            <div class="ey-form-checkbox">
+                                <input type="checkbox" id="{{database.databaseId}}"
+                                       data-ng-click="create.updateSelection(database)">
+                                <label for="{{database.databaseId}}"></label>
+                            </div>
+                        </td>
+                        <td style="text-align: center;" data-ng-bind="database.databaseName"></td>
+                    </tr></tbody>
+                </table>
+            </div>
+        </div>-->
+        <div class="ey-form-group"
+             data-ng-class="(createAccount.password.$dirty && create.pwFlag) ? 'ey-has-error' : ''">
+            <label class="ey-form-label ey-required">
+                密码：
+            </label>
+            <input type="password" class="ey-form-input ey-form-w6"
+                   name="password" placeholder="请输入密码" maxlength="30"
+                   data-ng-model="create.account.password"
+                   data-ng-change="create.checkPW()"
+                   required>
+            <span class="ey-text-tip obs-line-height"
+                  data-ng-class="(createAccount.password.$dirty && create.pwFlag) ? 'ey-has-error' : ''">
+                1.长度必须为8-30个字符之间
+            </span>
+            <span class="ey-text-tip obs-line-height"
+                  data-ng-class="(createAccount.password.$dirty && create.pwFlag) ? 'ey-has-error' : ''">
+                2.须满足数字、大写字母、小写字母中的三项
+            </span>
+            <span class="ey-text-tip obs-line-height"
+                  data-ng-class="(createAccount.password.$dirty && create.pwFlag) ? 'ey-has-error' : ''">
+                3.不支持所有特殊符号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+        </div>
+        <div class="ey-form-group"
+             data-ng-class="(createAccount.confirm.$dirty && create.confirmFlag) ? 'ey-has-error' : ''">
+            <label class="ey-form-label ey-required">
+                确认密码：
+            </label>
+            <input type="password" class="ey-form-input ey-form-w6"
+                   name="confirm" placeholder="请重新输入密码" maxlength="30"
+                   data-ng-model="create.account.confirm"
+                   data-ng-change="create.checkConfirm()"
+                   required>
+            <span class="ey-text-tip ey-has-error hide"
+                  data-ng-class="(createAccount.confirm.$dirty
+                  && create.confirmFlag) ? 'show' : 'hide'">
+				确认密码与密码输入不一致
+			</span>
+        </div>
+        <div class="ey-form-group">
+            <label class="ey-form-label">
+                备注信息：
+            </label>
+            <textarea class="ey-form-textarea ey-form-w6" data-ng-model="create.account.remark" maxlength="200"></textarea>
+        </div>
+    </form>
+</div>
+<div class="ey-modal-footer ey-btn-group" >
+    <div class="ey-btn-group">
+        <button type="button"
+                class="ey-btn ey-btn-primary"
+                data-ng-click="commit()"
+                data-ng-disabled="create.btnWait || !createAccount.$valid || create.specialName || create.pwFlag || create.confirmFlag">
+            确 定
+        </button>
+        <button type="button"
+                class="ey-btn ey-btn-default"
+                data-ng-click="cancel()"
+                data-ng-disabled="create.btnWait">
+            取 消
+        </button>
+    </div>
+</div>

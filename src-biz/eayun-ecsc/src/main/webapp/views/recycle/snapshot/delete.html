@@ -1,0 +1,19 @@
+<div>
+  <div class="modal-header">
+    <span class="modal-title">
+    </span>
+    <img data-ng-click="cancel()" src="images/close.png">
+  </div>
+  <div class="modal-body">
+  	<div class="modal-confirm delete-page-msg">
+  		<p>确定要彻底删除备份
+  			<span style="color:#0077cc;">{{snapName}}</span>，删除后资源将无法恢复，请谨慎操作。
+  		</p>
+  	</div>
+  </div>
+  
+  <div class="modal-footer ey-btn-group">
+    <button class="ey-btn ey-btn-primary btn-modal" data-ng-disabled ="checkBtn" data-ng-click="ok()">确  定</button>
+    <button class="ey-btn ey-btn-default btn-modal" data-ng-click="cancel()">取  消</button>
+  </div>
+</div>

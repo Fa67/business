@@ -1,0 +1,243 @@
+<div class = "modal-header">
+	<span class=" ef-back eayunfont ey-color-blue"></span>
+	<span class = "modal-title"><a ng-click="add.cancel()">返回</a></span>
+	<span class="ey-text-tip ey-font-huge">&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span>
+	<span class = "modal-title">填写信息</span>
+</div>
+<div class="model-body ey-panel-body" >
+<form class="form-horizontal ey-form" name="myForm" novalidate>
+	<h4>主办单位信息</h4>
+	<div class="ey-form-group" data-ng-class="(myForm.unitName.$dirty && myForm.unitName.$error.required) ? 'ey-has-error' : ''">
+		<label class="ey-form-label ey-required">主办单位名称：</label>
+		<input type="text" class="ey-form-input ey-form-w7" name="unitName"
+				data-ng-model="add.model.unitName" placeholder="请输入主办单位名称" maxlength="100" 
+				required  data-ng-focus="add.doFocus($event)"  data-ng-blur="add.doBlur($event,myForm.unitName.$error.required)"> 
+		<!-- <span class="ey-color-red" ng-show="myForm.unitName.$dirty && myForm.unitName.$error.required">请输入1-100位字符</span> -->
+		<br/>
+		<div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">请输入与主办单位证件上完全一致名称。企业请输入与工商执照完全一致的公司全称。</div>
+	</div>
+
+	<div class="ey-form-group " data-ng-class="(myForm.unitNature.$dirty && myForm.unitNature.$error.required) ? 'ey-has-error' : ''">
+    <label class=" ey-form-label ey-required">主办单位性质：</label>
+      <eayun-select name="protocol" class="ey-form-select ey-form-w7" data-ng-focus="add.doFocus($event)" data-ng-blur="add.doBlur($event,myForm.unitNature.$error.required)"
+					data-ng-model="add.model.unitNature" placeholder="请选择主办单位性质" name="unitNature" required>
+		<eayun-option value="'1'" text="个人"></eayun-option>
+		<eayun-option value="'2'" text="企业"></eayun-option>
+		<eayun-option value="'3'" text="政府机关"></eayun-option>
+		<eayun-option value="'4'" text="事业单位"></eayun-option>
+		<eayun-option value="'5'" text="社会群体"></eayun-option>
+		<eayun-option value="'6'" text="军队"></eayun-option>
+      </eayun-select>
+      <!-- <span class="ey-color-red" ng-show="myForm.unitNature.$dirty && myForm.unitNature.$error.required">主办单位性质不能为空</span> -->
+      	<br/>
+		<div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">个人、企业、政府机关、事业单位、社会群体、军队。</div>
+  </div>
+  
+  <div class="ey-form-group" data-ng-class="(myForm.headName.$dirty && myForm.headName.$error.required) ? 'ey-has-error' : ''">
+		<label class=" ey-form-label ey-required">投资人或主管单位：</label>
+	    <input type="text" class="ey-form-input ey-form-w7" name="headName" 
+	    		data-ng-focus="add.doFocus($event)" data-ng-blur="add.doBlur($event,myForm.headName.$error.required)"
+				data-ng-model="add.model.headName" placeholder="请输入投资人或主管单位" maxlength="100" 
+				required> 
+	    <!-- <span class="ey-color-red" ng-show="myForm.headName.$dirty && myForm.headName.$error.required">请输入1-100位字符</span> -->
+	    <br/>
+	    <div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">请输入投资人或者主管单位名称。企业用户请填写法人姓名或者单位全称。</div>
+	</div>
+  
+   <div class="ey-form-group"  data-ng-class="(myForm.area.$dirty && myForm.area.$error.required) ? 'ey-has-error' : ''">
+    <label class=" ey-form-label ey-required">主办单位所属区域：</label>
+      <eayun-select name="area" class="ey-form-select ey-form-w3" data-ng-model="add.model.area" placeholder="请选择省份/市" data-ng-change="add.changeArea('city',add.model.area)" required>
+		<eayun-option value="'{{area.code}}'" text="{{area.cityName}}" ng-repeat="area in add.areaP"></eayun-option>
+      </eayun-select>
+      <eayun-select name="city" class="ey-form-select ey-form-w3" data-ng-model="add.model.city" placeholder="请选择城市" data-ng-change="add.changeArea('county',add.model.city)" required>
+		<eayun-option value="'{{city.code}}'" text="{{city.cityName}}" ng-repeat="city in add.areaCity"></eayun-option>
+      </eayun-select>
+      <eayun-select name="unitArea" class="ey-form-select ey-form-w3" placeholder="请选择区域" data-ng-model="add.model.unitArea" required>
+		<eayun-option value="'{{county.code}}'" text="{{county.cityName}}" ng-repeat="county in add.areaCounty"></eayun-option>
+      </eayun-select>
+      <!-- <span class="ey-color-red" ng-show="myForm.unitArea.$dirty && myForm.unitArea.$error.required">所属区域不能为空</span> -->
+  </div>
+  
+  <div class="ey-form-group" data-ng-class="(myForm.unitAddress.$dirty && myForm.unitAddress.$invalid) ? 'ey-has-error' : ''">
+		<label class=" ey-form-label ey-required">主办单位通讯地址：</label>
+			<input type="text" class="ey-form-input ey-form-w7" name="unitAddress" 
+				data-ng-focus="add.doFocus($event)" data-ng-blur="add.doBlur($event,myForm.unitAddress.$invalid)"
+				data-ng-model="add.model.unitAddress" placeholder="请输入主办单位通讯地址" maxlength="100" ng-pattern='/^([\u4e00-\u9fa5a-zA-Z0-9]+)$/'
+				required>
+			<span class="ey-color-red" ng-show="myForm.unitAddress.$dirty && myForm.unitAddress.$invalid">请输入1-100位字符，仅支持中英文和数字</span><br/>
+			<div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">
+				1.请填写真实准确的地址<br/>
+				2.通讯地址不能包含任何符号。例如：魏公村小区16-5-401，必须写成：魏公村小区16号楼5单元401室<br/>
+				3.通讯地址必须详细到具体的门牌号。<br/>
+				4.如果通讯地址无法详细到门牌号（房间号），请在备注中说明，否则会有管局驳回风险。
+			</div>
+
+	</div>
+  
+  <div class="ey-form-group " data-ng-class="(myForm.certificateType.$dirty && myForm.certificateType.$error.required) ? 'ey-has-error' : ''">
+    <label class=" ey-form-label ey-required">主办单位证件类型：</label>
+      <eayun-select name="certificateType" class="ey-form-select ey-form-w7" data-ng-focus="add.doFocus($event)" data-ng-blur="add.doBlur($event,myForm.certificateType.$error.required)"
+       data-ng-model="add.model.certificateType" placeholder="请选择单位证件类型" required>
+		<eayun-option value="'1'" text="工商营业执照"></eayun-option>
+		<eayun-option value="'2'" text="组织机构代码"></eayun-option>
+      </eayun-select>
+      <!-- <span class="ey-color-red" ng-show="myForm.certificateType.$dirty && myForm.certificateType.$error.required">主办单位证件类型不能为空</span> -->
+      <br/>
+	  <div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">根据主办单位性质不同，证件类型也不同，例如企业用户为工商营业执照或组织机构代码。</div>
+  </div>
+  
+  <div class="ey-form-group "  data-ng-class="(myForm.certificateNo.$dirty && myForm.certificateNo.$error.required) ? 'ey-has-error' : ''" >
+    <label class=" ey-form-label ey-required">主办单位证件号：</label>
+      <input type="text" class="ey-form-input ey-form-w7" data-ng-focus="add.doFocus($event)" data-ng-blur="add.doBlur($event,myForm.certificateNo.$error.required)"
+       name="certificateNo" data-ng-model="add.model.certificateNo" required placeholder="请输入主办单位证件号" maxlength="100" >
+      <!-- <span class="ey-color-red" ng-show="myForm.certificateNo.$dirty && myForm.certificateNo.$invalid">请根据证件类型，填写一致的证件号码</span> -->
+      <br/>
+	  <div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">请根据证件类型，填写与证件一致的证件号码。</div>
+  </div>
+  
+  <div class="ey-form-group "  data-ng-class="(myForm.certificateAddress.$dirty && myForm.certificateAddress.$error.required) ? 'ey-has-error' : ''" >
+    <label class=" ey-form-label ey-required">主办单位证件所在地：</label>
+      <input type="text" class="ey-form-input ey-form-w7" name="certificateAddress" data-ng-model="add.model.certificateAddress"
+       data-ng-focus="add.doFocus($event);add.doFocusPhone()" data-ng-blur="add.doBlur($event,myForm.certificateAddress.$error.required)" 
+      placeholder="请输入主办单位证件所在地" maxlength="100" required>
+     <!-- <span class="ey-color-red" ng-show="myForm.certificateAddress.$dirty && myForm.certificateAddress.$error.required">请输入1-100位字符</span> -->
+     <br/>
+	  <div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">请填写与主办单位证件上完全一致的地址。</div>
+  </div>
+  <br>
+  <h4>主办单位负责人信息</h4>
+	
+	<div class="ey-form-group " data-ng-class="(myForm.dutyName.$dirty && myForm.dutyName.$error.required) ? 'ey-has-error' : ''">
+		<label class=" ey-form-label ey-required">主体负责人姓名：</label>
+			<input type="text" class="ey-form-input ey-form-w7" name="dutyName"  data-ng-focus="add.doFocus($event)" data-ng-blur="add.doBlur($event,myForm.dutyName.$error.required)" 
+				data-ng-model="add.model.dutyName" placeholder="请输入主体负责人姓名" maxlength="100" required> 
+			<!-- <span class="ey-color-red" ng-show="myForm.dutyName.$dirty && myForm.dutyName.$error.required">请输入1-100位字符</span> -->
+			<br/>
+			<div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">
+				企业及事业单位请填写法人姓名
+			</div>
+	</div>
+	<div class="ey-form-group " data-ng-class="(myForm.dutyCertificateType.$dirty && myForm.dutyCertificateType.$error.required) ? 'ey-has-error' : ''">
+    <label class=" ey-form-label ey-required">负责人证件类型：</label>
+      <eayun-select name="dutyCertificateType" class="ey-form-select ey-form-w7" placeholder="请选择负责人证件类型" data-ng-focus="add.doFocus($event)" data-ng-blur="add.doBlur($event,myForm.dutyCertificateType.$error.required)"  data-ng-model="add.model.dutyCertificateType" required>
+		<eayun-option value="'1'" text="身份证"></eayun-option>
+		<eayun-option value="'2'" text="护照"></eayun-option>
+		<eayun-option value="'3'" text="台胞证"></eayun-option>
+		<eayun-option value="'4'" text="军官证"></eayun-option>
+      </eayun-select>
+      <!-- <span class="ey-color-red" ng-show="myForm.dutyCertificateType.$dirty && myForm.dutyCertificateType.$error.required">负责人证件类型不能为空</span> -->
+      <br/>
+	  <div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">身份证、护照、台胞证、军官证。</div>
+  </div>
+	<div class="ey-form-group " data-ng-class="(myForm.dutyCertificateNo.$dirty && myForm.dutyCertificateNo.$error.required) ? 'ey-has-error' : ''">
+		<label class=" ey-form-label ey-required">负责人证件号：</label>
+			<input type="text" class="ey-form-input ey-form-w7" name="dutyCertificateNo" data-ng-focus="add.doFocus($event)" data-ng-blur="add.doBlur($event,myForm.dutyCertificateNo.$error.required)"
+				data-ng-model="add.model.dutyCertificateNo" placeholder="请输入负责人证件号" maxlength="100" required  > 
+			<!-- <span class="ey-color-red" ng-show="myForm.dutyCertificateNo.$dirty && myForm.dutyCertificateNo.$error.required">请根据证件类型，填写一致的证件号码</span> -->
+		<br/>
+	  	<div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">请根据证件类型，填写与证件一致的证件号码。</div>
+	</div>
+	<div class="ey-form-group " data-ng-class="(myForm.phone.$dirty && myForm.phone.$invalid) ? 'ey-has-error' : ''">
+		<label class=" ey-form-label ey-required">办公室电话：</label>
+			<input type="text" class="ey-form-input ey-form-w7" name="phone" data-ng-focus="add.doFocus($event)" data-ng-blur="add.doBlur($event,myForm.phone.$invalid)" 
+				data-ng-model="add.model.phone" placeholder="请输入办公室电话" maxlength="23" required ng-pattern='/086-\d{3}-\d{8}|086-\d{4}-\d{7,8}/'> 
+			<span class="ey-color-red" ng-show="myForm.phone.$dirty && myForm.phone.$invalid">请输入正确的电话号码 如：086-010-12345678</span>
+			<br/>
+			<div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">
+				电话格式：086-010-12345678-123（分机号可不填写）。请填写真实准确的联系电话，并保证电话畅通，否则可能会影响您的备案审核。
+			</div>
+	</div>
+	<div class="ey-form-group " data-ng-class="((myForm.dutyPhone.$dirty && myForm.dutyPhone.$invalid) || !add.isdutyphone) ? 'ey-has-error' : ''">
+		<label class=" ey-form-label ey-required">手机号码：</label>
+			<input type="text" class="ey-form-input ey-form-w7" name="dutyPhone" data-ng-focus="add.doFocus($event);add.doFocusPhone()" data-ng-blur="add.doBlur($event,myForm.dutyPhone.$invalid)" 
+				data-ng-model="add.model.dutyPhone" placeholder="请输入手机号码" maxlength="11" required ng-pattern='/^1[34578]\d{9}$/'> 
+			<span class="ey-color-red" ng-show="myForm.dutyPhone.$dirty && myForm.dutyPhone.$invalid">请输入正确的手机号码</span>
+			<br/>
+			<div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">
+				请确保填写的手机号码归属地和备案主体保持一致，并保持畅通，否则可能会影响到您的备案审核。
+			</div>
+	</div>
+	<div class="ey-form-group " data-ng-class="(myForm.dutyEmail.$dirty && myForm.dutyEmail.$invalid) ? 'ey-has-error' : ''">
+		<label class=" ey-form-label ey-required">电子邮箱：</label>
+			<input type="text" class="ey-form-input ey-form-w7" name="dutyEmail" required ng-pattern='/^[a-zA-Z0-9_-]+[\.a-zA-Z0-9_-]+[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/'
+				data-ng-focus="add.doFocus($event)" data-ng-blur="add.doBlur($event,myForm.dutyEmail.$invalid)" 
+				data-ng-model="add.model.dutyEmail" placeholder="请输入电子邮箱" maxlength="100" required> 
+			<span class="ey-color-red" ng-show="myForm.dutyEmail.$dirty && myForm.dutyEmail.$error.required && myForm.dutyEmail.$invalid">请输入正确的电子邮箱</span>
+			<br/>
+			<div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">
+				此处是您注册易云账号时填写的邮箱地址，建议您不要修改，否则可能会造成您无法接收到备案状态的变更等信息；如需变更邮箱，请通知备案专员。
+			</div>
+	</div>
+	<div class="ey-form-group ">
+		<label class=" ey-form-label ">QQ：</label>
+		<input type="text" class="ey-form-input ey-form-w7" name="dutyQQ" data-ng-focus="add.doFocus($event)" data-ng-blur="add.doBlur($event,false)"  data-ng-model="add.model.dutyQQ" maxlength="20">
+		<br/>
+			<div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">
+				QQ号码。
+			</div>
+	</div>
+	<div class="ey-form-group " >
+		<label class=" ey-form-label ">备注：</label>
+		<input type="text" class="ey-form-input ey-form-w7" name="remark" data-ng-focus="add.doFocus($event)" data-ng-blur="add.doBlur($event,false)"  data-ng-model="add.model.remark" maxlength="200">
+		<br/>
+			<div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">
+				若您的通讯地址无法精确到门牌号，请您备注“主办单位的通讯地址为最详细的通讯地址。
+			</div>
+	</div>
+	
+	<br>
+  	<h4>上传资料营业执照及负责人身份证信息</h4>
+	<div class="clearfix  ey-form-group">
+		<p class="ey-form-w12" style="padding-left:0;float: none;">重要：上传资料前，请认真阅读上传文件须知！</p>
+		<div class="ey-border clearfix ey-form-w7">
+			<div class="ey-form-w3" style="float: left;padding-left:14px;">
+				<p class="ey-form-label ey-required ey-font-normal" style="margin:0 0 0 -77px;">营业执照上传</p><br/>
+				<button type="button" class="ey-btn ey-btn-sm" ngf-select="add.uploadFiles($file,'business')" ng-disabled="!add.isbusinessshangchuan"
+						ng-class="add.model.businessFileId!=null && add.model.businessFileId!='' ? 'ey-btn-primary' : 'ey-btn-default'"
+						ngf-pattern="'.'+add.fileTypes.join(',.')"  accept="{{'.'+add.fileTypes.join(',.')}}">
+					<span class="eayunfont ef-paperclip"></span>|
+						<span data-ng-if="add.model.businessFileId==null || add.model.businessFileId=='' ">上传文件</span>
+						<span  class="ey-ellipsis" style="width:90px;display: inline-block;"  data-ng-if="add.model.businessFileId!=null && add.model.businessFileId!='' " title="{{add.model.businessFile}}">{{add.model.businessFile.length>10?add.model.businessFile.substring(0,10)+'...':add.model.businessFile}}</span>
+				</button>
+				<p class="ey-text-tip ey-margin">
+					<span data-ng-if="add.model.businessFileId==null || add.model.businessFileId=='' || !add.isbusinessagain">重新上传</span>
+					<a class="ey-text-link" data-ng-if="add.model.businessFileId!=null && add.model.businessFileId!='' && add.isbusinessagain" ngf-select="add.updateRecordFile($file,add.model.businessFileId,'business')" ngf-pattern="'.'+add.fileTypes.join(',.')"  accept="{{'.'+add.fileTypes.join(',.')}}">重新上传</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<!-- <a class="ey-text-link ey-color-red" data-ng-if="add.model.businessFileId!=null && add.model.businessFileId!='' && add.isbusinessdeleteFile" data-ng-click="add.deleteRecordFile(add.model.businessFileId,'business')">删除</a>
+					<span data-ng-if="add.model.businessFileId==null || add.model.businessFileId=='' || !add.isbusinessdeleteFile">删除</span> -->
+				</p>
+			 </div>
+			<div class="ey-apply-divide"></div>
+			 <div class="ey-form-w3" style="float: left;">
+				 <p  class="ey-form-label ey-required ey-font-normal" style="margin:0 0 0 -90px;">身份证上传</p><br/>
+				<button type="button" class="ey-btn ey-btn-sm  " ngf-select="add.uploadFiles($file,'duty')" ng-disabled="!add.isdutyshangchuan"
+						ng-class="add.model.dutyFileId!=null && add.model.dutyFileId!='' ? 'ey-btn-primary' : 'ey-btn-default'"
+						ngf-pattern="'.'+add.fileTypes.join(',.')"  accept="{{'.'+add.fileTypes.join(',.')}}">
+					<span class="eayunfont ef-paperclip"></span>|
+						<span data-ng-if="add.model.dutyFileId==null || add.model.dutyFileId=='' ">上传文件</span>
+						<span  class="ey-ellipsis" style="width:90px;display: inline-block;"  data-ng-if="add.model.dutyFileId!=null && add.model.dutyFileId!='' " title="{{add.model.dutyFile}}">{{add.model.dutyFile.length>10?add.model.dutyFile.substring(0,10)+'...':add.model.dutyFile}}</span>
+				</button>
+				 <div class="ey-text-tip ey-margin">
+				 	 <span data-ng-if="add.model.dutyFileId==null || add.model.dutyFileId=='' || !add.isdutyagain">重新上传</span>
+					 <a class="ey-text-link" data-ng-if="add.model.dutyFileId!=null && add.model.dutyFileId!='' && add.isdutyagain" ngf-select="add.updateRecordFile($file,add.model.dutyFileId,'duty')" ngf-pattern="'.'+add.fileTypes.join(',.')"  accept="{{'.'+add.fileTypes.join(',.')}}">重新上传</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					 <!-- <a class="ey-text-link ey-color-red" data-ng-if="add.model.dutyFileId!=null && add.model.dutyFileId!='' && add.isdutydeleteFile" data-ng-click="add.deleteRecordFile(add.model.dutyFileId,'duty')">删除</a>
+				 	 <span data-ng-if="add.model.dutyFileId==null || add.model.dutyFileId=='' || !add.isdutydeleteFile">删除</span> -->
+				 </div>
+			 </div>
+		</div>
+
+		<div class="col-sm-4 ey-color-default ey-content-notice">
+			<h5>上传文件须知</h5>
+			1.请确保您上传的资料<span class="ey-color-blue">完整、清晰、无污物</span><br/>
+			2.上传图片要求<span class="ey-color-blue">不大于100KB</span>,且格式为<span class="ey-color-blue">JPG</span><br/>
+			3.营业执照可为营业执照<span class="ey-color-blue">副本原件照片</span>或<span class="ey-color-blue">原件扫描件</span>，需要有<span class="ey-color-blue">最新的年检公章</span>。<br/>
+			4.身份证可为<span class="ey-color-blue">原件照片</span>或<span class="ey-color-blue">彩色扫描件</span>，要求<span class="ey-color-blue">正反两面均在同一张照片</span>里。<br/>
+		</div>
+	</div>
+	<!-- 按钮区域 -->
+	<div class="ey-btn-group">
+		<button type="button" class="ey-btn ey-btn-primary btn-modal" ng-click="add.tijiao()"  ng-disabled="!myForm.$valid">完成</button>
+		<button type="button" class="ey-btn ey-btn-default btn-modal" ng-click="add.cancel()">取  消</button>
+	</div>
+	<div class="ey-btn-group"><p class="ey-font-normal ey-required ey-text-tip" ><span style="color: #EA3200;">*</span>请您确认你的资料填写无误后再提交</p></div>  
+</form>
+</div>

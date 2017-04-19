@@ -1,0 +1,284 @@
+<ul class="ey-nav-bread">
+    <li data-ui-sref="app.net.netbar.loadbalance">负载均衡器</li>
+    <li>创建负载均衡器</li>
+</ul>
+<nav class="ey-nav-online">
+    <a data-ng-click="buyPool.typeChoose('1')" ng-class="buyPool.pool.payType=='1' ? 'active' : ''">包年包月</a>
+    <a data-ng-click="buyPool.typeChoose('2')" ng-class="buyPool.pool.payType=='2' ? 'active' : ''">按需付费</a>
+</nav>
+<div class="row">
+    <form class="ey-form-purchase col-lg-8" name="buyForm" novalidate>
+        <fieldset>
+            <legend>数据中心</legend>
+            <div class="ey-form-group">
+                <label>数据中心：</label>
+                <span class="ey-mark ey-mark-width"
+                      data-ng-repeat="data in buyPool.datacenters"
+                      data-ng-class="buyPool.pool.dcId == data.dcId ? 'active' : ''"
+                      data-ng-click="buyPool.selectDcPrj(data)"
+                      data-ng-bind="data.dcName">
+                </span>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>基本参数</legend>
+            <div class="ey-form-group"
+                 data-ng-class="(buyForm.poolName.$dirty || buyPool.fromOrder == 'backFromOrder')
+                            && buyPool.quotas > 0
+                            && (buyForm.poolName.$invalid || buyPool.isNameExist)
+                            ? 'ey-has-error' : ''">
+                <label class="ey-form-label ey-required">名称：</label>
+                <input class="ey-form-input ey-form-w6"
+                       name="poolName"
+                       data-ng-model="buyPool.pool.poolName"
+                       ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/'
+                       ng-change="buyPool.checkNameExist()"
+                       placeholder="请输入负载均衡器名称"
+                       maxlength="20"
+                       required>
+                <span class="ey-text-tip ey-has-error" data-ng-show="buyPool.quotas < 1">
+                    负载均衡器数量配额不足
+                </span>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="buyForm.poolName.$dirty && buyPool.quotas > 0 && buyForm.poolName.$invalid">
+                    请输入1-20位字符,支持数字、中英文、下划线、空格
+                </span>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="(buyForm.poolName.$dirty || buyPool.fromOrder == 'backFromOrder')
+                                && buyPool.quotas > 0
+                                && buyForm.poolName.$valid
+                                && buyPool.isNameExist">
+                    该负载均衡器名称已存在
+                </span>
+            </div>
+            <div class="ey-form-group">
+                <label>模式：</label>
+                <div class="ey-form-radio">
+		              <input id="0"  type="radio" name="mode" data-ng-change="buyPool.changeConnLimit()"
+		                          data-ng-model="buyPool.pool.mode" value="0">
+		                   <label for="0" style="width: 80px;">普通模式</label>
+		              <input id="1" type="radio" name="mode" data-ng-change="buyPool.changeConnLimit()"
+		                    data-ng-model="buyPool.pool.mode" value="1">
+		             <label for="1" style="width: 80px;">主备模式</label>
+              	</div>
+            </div>
+            
+            <div class="ey-form-group">
+            <label style="height: 55px;"></label>
+              	<div class="ey-content-notice">
+						<ul style="margin-bottom:0px;">
+							<li>普通模式的负载均衡即是最常使用的用于流量分发的负载均衡。主备模式的负载均衡适用于后端成员为数据库或缓存等服务的用户，可以实现流量的无缝切换，保证您的后端成员可以不间断的提供服务。</li>
+						</ul>
+					</div>
+					</div>
+            <div class="ey-form-group">
+                <label style="height: 55px;">最大连接数：</label>
+                <div class="ey-form-radio">
+                    <input id="5k" type="radio" name="connectionLimit" data-ng-change="buyPool.changeConnLimit()"
+                           data-ng-model="buyPool.pool.connectionLimit" value="5000">
+                    <label for="5k" style="width: 70px;">5,000</label>
+                    <input id="20k" type="radio" name="connectionLimit" data-ng-change="buyPool.changeConnLimit()"
+                           data-ng-model="buyPool.pool.connectionLimit" value="20000">
+                    <label for="20k" style="width: 70px;">20,000</label>
+                    <input id="40k" type="radio" name="connectionLimit" data-ng-change="buyPool.changeConnLimit()"
+                           data-ng-model="buyPool.pool.connectionLimit" value="40000">
+                    <label for="40k" style="width: 70px;">40,000</label>
+                    <input id="100k" type="radio" name="connectionLimit" data-ng-change="buyPool.changeConnLimit()"
+                           data-ng-model="buyPool.pool.connectionLimit" value="100000">
+                    <label for="100k" style="width: 70px;">100,000</label>
+                    <br>
+                    <input id="200k" type="radio" name="connectionLimit" data-ng-change="buyPool.changeConnLimit()"
+                           data-ng-model="buyPool.pool.connectionLimit" value="200000">
+                    <label for="200k" style="width: 70px;">200,000</label>
+                    <input id="500k" type="radio" name="connectionLimit" data-ng-change="buyPool.changeConnLimit()"
+                           data-ng-model="buyPool.pool.connectionLimit" value="500000">
+                    <label for="500k" style="width: 70px;">500,000</label>
+                </div>
+            </div>
+            <div class="ey-form-group" data-ng-if="buyPool.pool.payType == '1'">
+                <label>付款方式：</label>
+                <eayun-select class="ey-form-w3" placeholder="请选择周期类型" data-ng-model="buyPool.pool.cycleType" required data-ng-change="buyPool.changeCycleType()">
+                    <eayun-option ng-repeat="cycleType in buyPool.cycleTypeList" value="cycleType.value" text="{{cycleType.text}}"></eayun-option>
+                </eayun-select>
+                <eayun-select class="ey-form-w3"
+                              placeholder="请选择购买时长"
+                              data-ng-model="buyPool.pool.buyCycle"
+                              data-ng-change="buyPool.changeBuyCycle()"
+                              required>
+                    <eayun-option ng-repeat="cycle in buyPool.cycleList" value="cycle.value" text="{{cycle.text}}"></eayun-option>
+                </eayun-select>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>网络参数</legend>
+            <div class="ey-form-group">
+                <label class="ey-form-label ey-required">网络：</label>
+                <eayun-select class="ey-form-w6"
+                              name="network"
+                              placeholder="请选择网络"
+                              data-ng-model="buyPool.network"
+                              data-ng-change="buyPool.changeNetwork()"
+                              required>
+                    <eayun-option data-ng-repeat="network in buyPool.networkList" value="network" text="{{network.netName}}"></eayun-option>
+                </eayun-select>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="buyForm.network.$dirty && buyForm.network.$error.required">
+                    网络不能为空
+                </span>
+            </div>
+            <div class="ey-form-group">
+                <label class="ey-form-label ey-required">受管子网：</label>
+                <eayun-select class="ey-form-w6"
+                              name="subnet"
+                              placeholder="请选择受管子网"
+                              data-ng-model="buyPool.subnet"
+                              data-ng-change="buyPool.changeSubnet()"
+                              required>
+                    <eayun-option data-ng-repeat="subnet in buyPool.subnetList" value="subnet" text="{{subnet.subnetName+'('+subnet.cidr+')'}}"></eayun-option>
+                </eayun-select>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="buyForm.subnet.$dirty && buyForm.subnet.$error.required">
+                    子网不能为空
+                </span>
+            </div>
+            <div class="ey-form-group">
+                <label class="ey-form-label ey-required">负载均衡方式：</label>
+                <eayun-select class="ey-form-w6"
+                              name="lbMethod"
+                              placeholder="请选择负载均衡方式"
+                              data-ng-model="buyPool.pool.lbMethod"
+                              data-ng-change="buyPool.changeLbMethod()" required>
+                    <eayun-option value="'ROUND_ROBIN'" text="轮询"></eayun-option>
+                    <eayun-option value="'LEAST_CONNECTIONS'" text="最小连接数"></eayun-option>
+                    <eayun-option value="'SOURCE_IP'" text="源地址"></eayun-option>
+                </eayun-select>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="buyForm.lbMethod.$dirty && buyForm.lbMethod.$error.required">
+                    负载均衡方式不能为空
+                </span>
+            </div>
+            <div class="ey-form-group">
+                <label class="ey-form-label ey-required">协议：</label>
+                <eayun-select class="ey-form-w6"
+                              name="poolProtocol"
+                              placeholder="请选择协议"
+                              data-ng-model="buyPool.pool.poolProtocol"
+                              required>
+                    <eayun-option value="'HTTP'" text="HTTP"></eayun-option>
+                    <eayun-option value="'TCP'" text="TCP"></eayun-option>
+                </eayun-select>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="buyForm.poolProtocol.$dirty && buyForm.poolProtocol.$error.required">
+                    协议不能为空
+                </span>
+            </div>
+            <div class="ey-form-group"
+                 data-ng-class="buyForm.vipPort.$dirty && buyForm.vipPort.$invalid ? 'ey-has-error' : ''">
+                <label class="ey-form-label ey-required">端口：</label>
+                <input class="ey-form-input ey-form-w3"
+                       name="vipPort"
+                       data-ng-model="buyPool.pool.vipPort"
+                       ng-pattern='/^([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]{1}|6553[0-5])$/'
+                       placeholder="请输入1到65535的整数"
+                       maxlength="5"
+                       required>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="buyForm.vipPort.$dirty && buyForm.vipPort.$invalid">
+                    请输入1到65535的整数
+                </span>
+            </div>
+        </fieldset>
+    </form>
+    <div class="ey-set">
+        <h5>已选配置</h5>
+        <fieldset>
+            <ul>
+                <li>
+                    数据中心：
+                    <span class="ey-color-default">{{buyPool.pool.dcName}}</span>
+                </li>
+                <li>
+                    最大连接数：
+                    <span class="ey-color-default">{{buyPool.pool.connectionLimit}}</span>
+                </li>
+                <li>
+                   模式：
+                    <span class="ey-color-default">{{buyPool.pool.mode=='0'?'普通模式':'主备模式'}}</span>
+                </li>
+                <li>
+                    网络：
+                    <span class="ey-color-default"
+                          data-ng-if="buyPool.network.netName"
+                          title="{{buyPool.network.netName}}">
+                        {{buyPool.network.netName}}
+                    </span>
+                </li>
+                <li>
+                    受管子网：
+                    <span class="ey-color-default"
+                          data-ng-if="buyPool.subnet.subnetName"
+                          title="{{buyPool.subnet.subnetName + '(' + buyPool.subnet.cidr + ')'}}">
+                        {{buyPool.subnet.subnetName + '(' + buyPool.subnet.cidr + ')'}}
+                    </span>
+                </li>
+                <li>
+                    负载均衡方式：
+                    <span class="ey-color-default" style="width: 160px;">{{buyPool.lbMethod}}</span>
+                </li>
+                <li>
+                    协议：
+                    <span class="ey-color-default">{{buyPool.pool.poolProtocol}}</span>
+                </li>
+                <li>
+                    购买量：
+                    <span class="ey-color-default" data-ng-if="buyPool.pool.payType == '1'">
+                        {{buyPool.pool.buyCycle < 12 ? (buyPool.pool.buyCycle + '个月') : (buyPool.pool.buyCycle/12 + '年')}}×1个
+                    </span>
+                    <span class="ey-color-default" data-ng-if="buyPool.pool.payType == '2'">1个</span>
+                </li>
+            </ul>
+            <p class="ey-font-size-big" data-ng-if="buyPool.pool.payType == '1'">
+                总计：
+                <span class="ey-color-default" data-ng-if="buyPool.hasGotPrice">￥&nbsp;</span>
+                <span class="ey-font-size-super ey-color-red" data-ng-if="buyPool.hasGotPrice">
+                    {{buyPool.totalPrice | thousand}}
+                </span>
+                <span class="ey-color-red" data-ng-if="!buyPool.hasGotPrice">
+                    {{buyPool.priceMsg}}
+                </span>
+            </p>
+            <p class="ey-font-size-big" data-ng-if="buyPool.pool.payType == '2'">
+                总计：
+                <span class="ey-color-default" data-ng-if="buyPool.hasGotPrice">￥&nbsp;</span>
+                <span class="ey-font-size-super ey-color-red" data-ng-if="buyPool.hasGotPrice">
+                    {{buyPool.totalPrice | thousand:true}}
+                </span>
+                <span class="ey-color-default" data-ng-if="buyPool.hasGotPrice">&nbsp;/小时</span>
+                <span class="ey-color-red" data-ng-if="!buyPool.hasGotPrice">
+                    {{buyPool.priceMsg}}
+                </span>
+            </p>
+			<span class="ey-color-red" data-ng-if="buyPool.pool.payType == '2'">
+				开通按需付费的云服务，您的账户余额不得低于{{buyPool.buyCondition}}元，请充值后再开通，
+				<a class="ey-color-blue pointer" data-ng-click="buyPool.recharge()">立即充值</a>
+			</span>
+        </fieldset>
+        <button class="ey-btn"
+                data-ng-disabled="buyForm.$invalid
+                                || buyPool.checkBuyBtn
+                                || buyPool.isNameExist
+                                || buyPool.quotas < 1
+                                || (buyPool.changeOfBilling && buyPool.pool.payType == '1')
+                                || (buyPool.isNSF && buyPool.pool.payType == '2')
+                                || !buyPool.hasGotPrice"
+                data-ng-click="buyPool.buyAtOnce()">
+            立即购买
+        </button>
+        <fieldset data-ng-if="buyPool.pool.payType == '2' && buyPool.isNSF">
+            <span class="ey-color-red">
+                您的账户余额不足{{buyPool.buyCondition}}元，请立即充值
+            </span>
+        </fieldset>
+    </div>
+</div>
+

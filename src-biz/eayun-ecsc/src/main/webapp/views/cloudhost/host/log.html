@@ -1,0 +1,19 @@
+<div class="modal-header" style="width: 960px;">
+    <span class="modal-title">云主机日志</span> 
+    <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body">
+	<div class="ey-form-group">
+		<label class="control-label">日志内容：</label>
+		<div style="width: 800px;">
+			<div class="col-md-12 log_yun" ng-bind-html="logs"></div>
+		</div>
+	</div>
+</div>
+
+<!-- 按钮区域 -->
+<div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<button type="button" class="ey-btn ey-btn-default" ng-click="cancel()">取 消</button>
+	</div>
+</div>

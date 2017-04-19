@@ -1,0 +1,45 @@
+<form class="form-horizontal" name = "addHost">
+<!--has-feedback 确定对号位置
+	data-ng-class：校验不通过时变红色
+	$dirty：是否修改过
+	$invalid：校验失败
+	$valid：校验成功
+	$error.ajaxValid：自定义后台校验（data-ajax-valid），自定义函数传入参数value，填充为当前输入的值
+	$pending.ajaxValid：校验中
+	$error.required：必填校验
+  -->
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 control-label">类型名称：</label>
+
+    <div class="col-sm-7" data-ng-class="(addHost.modelName.$dirty && addHost.modelName.$invalid) ? 'has-error' : ''">
+      <input type="text" required class="form-control" name = "modelName" placeholder="请输入类型名称" 
+      data-ng-model="model.modelName" data-ajax-valid="checkName(value)" maxlength="20"
+      ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/'>
+      <!-- <label class="control-label" ng-show="addHost.modelName.$dirty && addHost.modelName.$error.required">请输入1-20位字符,支持数字、中英文、下划线、空格</label> -->
+      <label class="control-label" ng-show="addHost.modelName.$dirty && addHost.modelName.$error.ajaxValid">云主机类型名称已存在</label>
+      <label class="control-label" ng-show="addHost.modelName.$dirty && addHost.modelName.$error.pattern">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+      <label class="control-label" ng-show="addHost.modelName.$dirty && addHost.modelName.$error.required">类型名称不能为空</label>
+      <!-- <label class="control-label" ng-show="addHost.modelName.$dirty && addHost.modelName.$pending.ajaxValid">ajaxValid校验中</label> -->
+    </div>
+  </div>
+  
+  <div class="form-group row">
+    <label class="col-sm-3 control-label">CPU：</label>
+    <div class="col-md-4">
+    	<eayun-select class="form-control" required data-ng-model="cpumodel">
+    		<eayun-option ng-repeat="cpu in cpuList" value="cpu" text = "{{cpu.nodeName}}" ></eayun-option>
+     	</eayun-select>
+    </div>
+  </div>
+  <div class="form-group row">
+    <label class="col-sm-3 control-label" >内存：</label>
+    <div class="col-md-4">
+     	<eayun-select class="form-control" data-ng-model="model.modelRam" required>
+     		<eayun-option ng-repeat="ram in ramList" value="ram.nodeName" text = "{{ram.nodeName}}" ></eayun-option>
+     	</eayun-select>
+    </div>
+  </div>
+  
+  
+  
+</form>

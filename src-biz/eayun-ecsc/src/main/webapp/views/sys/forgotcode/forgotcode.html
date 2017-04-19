@@ -1,0 +1,188 @@
+<div style="background-color: #FFFFFF;position: fixed;top: 0;bottom: 0;left: 0;right: 0;overflow: auto;">
+  <div ng-include="'views/sys/top.html'"></div>
+  <br/>
+	<!-- 步骤控件-->
+    <div class="text-center">
+      <div class="step active">
+        <span>1</span>
+
+        <div></div>
+        <p class="text-left">账号验证</p>
+      </div>
+      <div class="step" data-ng-class="step > 1 ? 'active':''">
+        <div></div>
+        <span>2</span>
+
+        <div></div>
+        <p class="text-center">验证手机</p>
+      </div>
+      <div class="step" data-ng-class="step > 2 ? 'active':''">
+        <div></div>
+        <span>3</span>
+
+        <div></div>
+        <p class="text-center">修改密码</p>
+      </div>
+      <div class="step" data-ng-class="step > 3 ? 'active':''">
+        <div></div>
+        <span>4</span>
+
+        <p class="text-right">完成</p>
+      </div>
+    </div>
+
+  <div class="container">
+
+    <form class="form-horizontal" style="width: 100%;margin: 0 auto;" name ="myForm" novalidate>
+    <!-- step 1 -->
+    <div data-ng-class="step == 1 ? 'show':'hidden'">
+    	<fieldset>
+    		<div class="form-group row">
+    			<label class="control-label col-md-5"><font size="3px" style="font-weight:bold;"><br/>请输入您的账号</font></label>
+    		</div>
+    	</fieldset>
+    	<fieldset>
+    		<div class="form-group row">
+    			<label class="control-label col-md-5">账号：</label>
+    			<div data-ng-class="((myForm.account.$dirty && user.userAccount == '') || accountFlag == false)?'ey-has-error' : ''">
+    				<input class="ey-form-input ey-form-w5" type="text" style="margin-right:10px;width:280px;" ng-change="resetAccountFlag()" data-ng-model="user.userAccount" name="account" maxlength="20" placeholder="请输入账号">
+    				<span class="" ng-show="myForm.account.$dirty && user.userAccount == ''">请输入账号</span>
+    				<span class="" ng-show="myForm.account.$dirty && accountFlag == false">账号不存在</span>
+    			</div>
+    		</div>
+    		<div class="form-group row">
+    			<label class="control-label col-md-5">验证码：</label>
+    			<div data-ng-class="myForm.imageName.$dirty && user.idCode == '' ? 'ey-has-error' : ''">
+    				<div class="col-md-2" style="padding:0;">
+    					<input class="ey-form-input ey-form-w4" type="text" data-ng-model="user.idCode" name="imageName" maxlength="4" placeholder="请输入图片验证码">
+    				</div>
+    				<div class="col-md-1">
+                		<img class="img-responsive mousecp" style="height: 34px;" id="imageCode" data-ng-click="changeCode()">
+              		</div>
+              		<div class="col-md-4" style="line-height:32px;padding:0;">
+              			<label class="control-label" style="padding-top:0;" ng-show="!(myForm.imageName.$dirty && user.idCode == '')"><font size="2px">看不清？<a ng-click="changeCode()" style="cursor:pointer">点击图片更新</a></font></label>
+              			<span class="ey-color-red" ng-show="myForm.imageName.$dirty && user.idCode == ''">请输入验证码</span>
+              		</div>
+    			</div>
+    		</div>
+    	</fieldset>
+    </div>
+    <!-- step 2 -->
+    <div data-ng-class="step == 2 ? 'show':'hidden'">
+    	<fieldset>
+    		<div class="form-group row">
+    			<label class="control-label col-md-4"><font size="3px" style="font-weight:bold;"><br/>验证您的手机</font></label>
+    		</div>
+    	</fieldset>
+    	<fieldset>
+    		<div class="form-group row">
+    			<label class="control-label" style="margin-left:35.65%">点击发送验证码以验证您的手机号</label>
+    		</div>
+    		<div class="form-group row">
+    			<label class="control-label col-md-offset-3 col-md-2">手机号：</label>
+    			<div>
+    				<!-- <div class="col-md-5"> -->
+    					<label class="control-label col-md-3" style="text-align:left">{{user.userPhone.substring(0,3) + "******" + user.userPhone.substring(9,11)}}</label>
+    				<!-- </div> -->
+    			</div>
+    		</div>
+    		<div class="form-group row">
+    			<label class="control-label col-md-offset-3 col-md-2"  style="line-height: 34px;">验证码：</label>
+    			<div data-ng-class="(myForm.phoneCode.$dirty && user.phoneCode == '') ? 'ey-has-error' : ''">
+    				<div class="col-md-2">
+    					<input class="ey-form-input" style="width:165px;" type="text" data-ng-model="user.phoneCode" name="phoneCode" maxlength="6" placeholder="请输入手机验证码">
+    				</div>
+    				<div class="col-md-1">
+    					<a class="btn btn-primary" ng-disabled="!teleCodeFlag" ng-click="refreshTelephone()">{{teleCodeName}}</a>
+    				</div>
+    				<div class="col-md-2" style="line-height: 32px;">
+    					<span class="ey-color-red" ng-show="myForm.phoneCode.$dirty && user.phoneCode == ''" style="margin-left:15px;">请输入验证码</span>
+    				</div>
+    			</div>
+    		</div>
+    	</fieldset>
+    </div>
+    <!-- step 3 -->
+    <div data-ng-class="step == 3 ? 'show':'hidden'">
+    	<fieldset>
+    		<div class="form-group row">
+    			<label class="control-label col-md-4"><font size="3px" style="font-weight:bold;"><br/>修改您的密码</font></label>
+    		</div>
+    	</fieldset>
+    	<fieldset>
+    		<div class="form-group row">
+    			<label class="control-label col-md-5">请输入新密码：</label>
+    			<div data-ng-class="(myForm.password.$dirty && (myForm.password.$invalid || userPassword == '')) ? 'ey-has-error' : ''">
+    				<div style="float:left;padding:0 10px;">
+    					<input type="password" style="display:none" data-ng-show = "false">
+    					<input class="ey-form-input ey-form-w5" type="password" data-ng-model="userPassword" data-ng-pattern="/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/" name="password" maxlength="20" placeholder="请输入登录密码">
+    				</div>
+    				<div class="col-md-4" style="line-height: 32px;padding-left: 0;">
+    					<!-- <label class="control-label" ng-show="!(myForm.password.$dirty && (myForm.password.$invalid || userPassword == ''))">&nbsp;</label> -->
+    					<span class="ey-color-red" ng-show="myForm.password.$dirty && userPassword == ''">请输入密码</span>
+    					<span class="ey-color-red" ng-show="myForm.password.$dirty && myForm.password.$invalid">密码长度为6-20位，且必须包含英文字母与数字</span>
+    				</div>
+    			</div>
+    		</div>
+    		<div class="form-group row">
+    			<label class="control-label col-md-5">请再次输入新密码：</label>
+    			<div data-ng-class="(myForm.confirmPassword.$dirty && confirmPassword == '') || (myForm.password.$valid && myForm.confirmPassword.$dirty && confirmPassword != userPassword && confirmPassword != '') ? 'ey-has-error' : ''">
+    				<div style="float:left;padding:0 10px;">
+    					<input class="ey-form-input ey-form-w5" type="password" data-ng-model="confirmPassword" name="confirmPassword" maxlength="20" placeholder="请再次输入登录密码">
+    				</div>
+    				<div class="col-md-4"  style="line-height: 32px;padding-left: 0;">
+    					<span class="ey-color-red" ng-show="myForm.confirmPassword.$dirty && confirmPassword == ''">请输入确认密码</span>
+    					<span class="ey-color-red" ng-show="myForm.password.$valid && myForm.confirmPassword.$dirty && confirmPassword != userPassword && confirmPassword != ''">两次输入的密码不一致</span>
+    				</div>
+    			</div>
+    		</div>
+    	</fieldset>
+    </div>
+    <!-- step 4 -->
+    <div data-ng-class="step == 4 ? 'show':'hidden'">
+    	<br/><br/>
+    	<fieldset>
+    		<div class="form-group row">
+    			<div class="col-md-5" style="text-align:right;">
+    				<img src="images/right.png" style="height: 74px;">
+   				</div>
+   				<div class="col-md-6">
+   					<br/>
+   					<label class="control-label"><font size="4px">您已经完成了对密码的修改</font></label>
+   				</div>
+    		</div>
+    		<div class="form-group row">
+    			<div class="col-md-5 col-md-offset-5">
+    				<div class="tab-content">
+    					<a ng-click="cancle()" style="cursor:pointer"><font size="2px">立即登录></font></a>
+    					<a href="http://www.eayun.cn/" style="margin-left:40px;"><font size="2px">返回首页></font></a>
+    				</div>
+    			</div>
+    		</div>
+    	</fieldset>
+    </div>
+    <br/>
+    	<fieldset data-ng-class="step < 4 ? 'show':'hidden'">
+	        <div class="form-group row">
+	          <div class="col-md-4 col-md-offset-4">
+	            <div class="row">
+	              <div class="tab-content ey-btn-group" style="margin-left:60px;">
+	                <button class="ey-btn ey-btn-lg ey-btn-primary" data-ng-show="step < 3"
+	                data-ng-disabled="(step == 1 && (user.userAccount == '' || user.idCode == '')) || (step == 2 && user.phoneCode == '')" 
+	                data-ng-click="next()">下一步</button>
+	                <button class="ey-btn ey-btn-lg ey-btn-primary" data-ng-show="step == 3"
+	                data-ng-disabled="!(myForm.password.$valid && userPassword == confirmPassword && userPassword != '')" 
+	                data-ng-click="done()">完 成</button>
+	                <button class="ey-btn ey-btn-lg ey-btn-default" data-ng-show="step <= 3" data-ng-click="cancle()">取 消</button>
+	              </div>
+	            </div>
+	          </div>
+	        </div>
+      	</fieldset>
+    	
+    </form>
+
+    <footer ng-include="'views/sys/bottom.html'"></footer>
+  </div>
+</div>
+

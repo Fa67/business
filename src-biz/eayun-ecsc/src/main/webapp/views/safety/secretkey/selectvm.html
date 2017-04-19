@@ -1,0 +1,101 @@
+<span ng-style="{width:two.width[0]}" data-ng-show="item.status=='SHUTOFF' && item.routeId!=''">
+	<p style="line-height: 24px;" ng-bind="::item.vmname"></p>
+	<p style="line-height: 24px;color: #cccccc;" ng-bind="'内网IP|'+(item.vmip)"></p>
+	<p style="line-height: 24px;color: #cccccc;" ng-bind="'已关机'" data-ng-if="item.status=='SHUTOFF'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'运行中'" data-ng-if="item.status=='ACTIVE'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'故障'" data-ng-if="item.status=='ERROR'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'余额不足'" data-ng-if="item.status=='1'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'已到期'" data-ng-if="item.status=='2'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'创建中'" data-ng-if="item.status=='BUILDING'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'删除中'" data-ng-if="item.status=='DELETING' || item.status=='SOFT_DELETING'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'启动中'" data-ng-if="item.status=='STARTING'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'关机中'" data-ng-if="item.status=='SHUTOFFING'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'暂停服务中'" data-ng-if="item.status=='SUSPENDEDING'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'暂停服务'" data-ng-if="item.status=='SUSPENDED'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'恢复中'" data-ng-if="item.status=='RESUMING' || item.status=='SOFT_RESUME'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'重启中'" data-ng-if="item.status=='REBOOT'"></p>
+	<p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'硬重启中'" data-ng-if="item.status=='HARD_REBOOT'"></p>
+	<p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'调整中'" data-ng-if="item.status=='RESIZE' || item.status=='VERIFY_RESIZE' || item.status=='RESIZED'"></p>
+	<p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'取消调整中'" data-ng-if="item.status=='REVERT_RESIZE'"></p>
+	<p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'已删除'" data-ng-if="item.status=='SOFT_DELETED'"></p>
+</span>
+<!-- <span ng-style="{width:two.width[1]}">
+	<p style="line-height: 24px;" ng-bind="'受管子网：'+(item.vmip)"></p>
+	<p style="line-height: 24px;" ng-bind="'公网：'+(item.floip)"></p>
+	<p style="line-height: 24px;" ng-bind="'自管子网：'+(item.seleip)"></p>
+</span> -->
+<span class="eayunfont ey-font-size-super" data-ng-show="item.status=='SHUTOFF' && item.routeId!=''" data-ng-class="item.$$selected?'ef-cancel-r ey-text-error':'ef-add-r ey-text-link'" data-ng-click="two.select(item)"> </span>
+
+<span ng-style="{width:two.width[0]}" title="请将云主机所在子网连接路由"  data-ng-show="item.routeId=='' && item.status=='SHUTOFF'">
+    <p style="line-height: 24px;" ng-bind="::item.vmname"></p>
+    <p style="line-height: 24px;color: #cccccc;" ng-bind="'内网IP|'+(item.vmip)"></p>
+    <p style="line-height: 24px;color: #cccccc;" ng-bind="'已关机'" data-ng-if="item.status=='SHUTOFF'"></p>
+    <p style="line-height: 24px;" class="ey-color-red" ng-bind="'运行中'" data-ng-if="item.status=='ACTIVE'"></p>
+    <p style="line-height: 24px;" class="ey-color-red" ng-bind="'故障'" data-ng-if="item.status=='ERROR'"></p>
+    <p style="line-height: 24px;" class="ey-color-red" ng-bind="'余额不足'" data-ng-if="item.status=='1'"></p>
+    <p style="line-height: 24px;" class="ey-color-red" ng-bind="'已到期'" data-ng-if="item.status=='2'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'创建中'" data-ng-if="item.status=='BUILDING'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'删除中'" data-ng-if="item.status=='DELETING' || item.status=='SOFT_DELETING'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'启动中'" data-ng-if="item.status=='STARTING'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'关机中'" data-ng-if="item.status=='SHUTOFFING'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'暂停服务中'" data-ng-if="item.status=='SUSPENDEDING'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'暂停服务'" data-ng-if="item.status=='SUSPENDED'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'恢复中'" data-ng-if="item.status=='RESUMING' || item.status=='SOFT_RESUME'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'重启中'" data-ng-if="item.status=='REBOOT'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'硬重启中'" data-ng-if="item.status=='HARD_REBOOT'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'调整中'" data-ng-if="item.status=='RESIZE' || item.status=='VERIFY_RESIZE' || item.status=='RESIZED'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'取消调整中'" data-ng-if="item.status=='REVERT_RESIZE'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'已删除'" data-ng-if="item.status=='SOFT_DELETED'"></p>
+</span>
+
+<span ng-style="{width:two.width[0]}" title="请将云主机所在子网连接路由"  data-ng-show="item.routeId=='' && item.status!='SHUTOFF'">
+    <p style="line-height: 24px;" ng-bind="::item.vmname"></p>
+    <p style="line-height: 24px;color: #cccccc;" ng-bind="'内网IP|'+(item.vmip)"></p>
+    <p style="line-height: 24px;color: #cccccc;" ng-bind="'已关机'" data-ng-if="item.status=='SHUTOFF'"></p>
+    <p style="line-height: 24px;" class="ey-color-red" ng-bind="'运行中'" data-ng-if="item.status=='ACTIVE'"></p>
+    <p style="line-height: 24px;" class="ey-color-red" ng-bind="'故障'" data-ng-if="item.status=='ERROR'"></p>
+    <p style="line-height: 24px;" class="ey-color-red" ng-bind="'余额不足'" data-ng-if="item.status=='1'"></p>
+    <p style="line-height: 24px;" class="ey-color-red" ng-bind="'已到期'" data-ng-if="item.status=='2'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'创建中'" data-ng-if="item.status=='BUILDING'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'删除中'" data-ng-if="item.status=='DELETING' || item.status=='SOFT_DELETING'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'启动中'" data-ng-if="item.status=='STARTING'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'关机中'" data-ng-if="item.status=='SHUTOFFING'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'暂停服务中'" data-ng-if="item.status=='SUSPENDEDING'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'暂停服务'" data-ng-if="item.status=='SUSPENDED'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'恢复中'" data-ng-if="item.status=='RESUMING' || item.status=='SOFT_RESUME'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'重启中'" data-ng-if="item.status=='REBOOT'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'硬重启中'" data-ng-if="item.status=='HARD_REBOOT'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'调整中'" data-ng-if="item.status=='RESIZE' || item.status=='VERIFY_RESIZE' || item.status=='RESIZED'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'取消调整中'" data-ng-if="item.status=='REVERT_RESIZE'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'已删除'" data-ng-if="item.status=='SOFT_DELETED'"></p>
+</span>
+
+<span ng-style="{width:two.width[0]}" title="请将云主机关机" data-ng-show="item.status!='SHUTOFF' && item.routeId!=''">
+    <p style="line-height: 24px;" ng-bind="::item.vmname"></p>
+    <p style="line-height: 24px;color: #cccccc;" ng-bind="'内网IP|'+(item.vmip)"></p>
+    <p style="line-height: 24px;color: #cccccc;" ng-bind="'已关机'" data-ng-if="item.status=='SHUTOFF'"></p>
+    <p style="line-height: 24px;" class="ey-color-red" ng-bind="'运行中'" data-ng-if="item.status=='ACTIVE'"></p>
+    <p style="line-height: 24px;" class="ey-color-red" ng-bind="'故障'" data-ng-if="item.status=='ERROR'"></p>
+    <p style="line-height: 24px;" class="ey-color-red" ng-bind="'余额不足'" data-ng-if="item.status=='1'"></p>
+    <p style="line-height: 24px;" class="ey-color-red" ng-bind="'已到期'" data-ng-if="item.status=='2'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'创建中'" data-ng-if="item.status=='BUILDING'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'删除中'" data-ng-if="item.status=='DELETING' || item.status=='SOFT_DELETING'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'启动中'" data-ng-if="item.status=='STARTING'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'关机中'" data-ng-if="item.status=='SHUTOFFING'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'暂停服务中'" data-ng-if="item.status=='SUSPENDEDING'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'暂停服务'" data-ng-if="item.status=='SUSPENDED'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'恢复中'" data-ng-if="item.status=='RESUMING' || item.status=='SOFT_RESUME'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'重启中'" data-ng-if="item.status=='REBOOT'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'硬重启中'" data-ng-if="item.status=='HARD_REBOOT'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'调整中'" data-ng-if="item.status=='RESIZE' || item.status=='VERIFY_RESIZE' || item.status=='RESIZED'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'取消调整中'" data-ng-if="item.status=='REVERT_RESIZE'"></p>
+    <p style="line-height: 24px;color: #cccccc;" class="ey-color-red" ng-bind="'已删除'" data-ng-if="item.status=='SOFT_DELETED'"></p>
+</span>
+
+
+
+
+
+
+
+

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style type="text/css">
+    body {
+      padding: 0 50px;
+      font-family: "微软雅黑", "Microsoft YaHei", "Arial", serif !important;
+      font-size: 14px;
+      color: #555555;
+    }
+    a {
+      text-decoration: none;
+    }
+    .blue {
+      color: #0077cc;
+    }
+    .red {
+      color: #EA3200;
+    }
+    .help-block {
+      color: #999999;
+      font-size: 12px;
+    }
+    table {
+      width: 100%;
+      border-spacing: 0;
+      border-collapse: collapse;
+    }
+    table thead {
+      background-color: #e3e3e3;
+      white-space: nowrap;
+    }
+    table tr {
+      border: 1px solid #dbdbdb;
+    }
+    table thead th,
+    table tbody td {
+      font-weight: normal;
+      text-align: left;
+      padding: 10px 20px;
+    }
+  </style>
+</head>
+<body>
+<div style="width: 650px;margin:0 auto;">
+<div style="padding: 10px;border-bottom: 2px solid #DCDCDC;">
+  <img src="{imgUrl}" style="height: 30px;">
+</div>
+
+<div style="padding: 10px 20px;">
+  <p style="padding: 15px 0;"><strong>尊敬的客户，您好：</strong></p>
+  <p>您在易云公有云租用的{monitorName}发生报警，请登录<a class="blue" href="{ecscUrl}">管理控制台</a>处理，谢谢。
+  </p>
+  <p>报警信息：</p>
+  <table>
+    <thead>
+    <tr>
+      <th width="20%">数据中心</th>
+      <th width="20%">{monitorName}名称</th>
+      <th width="40%">报警信息</th>
+      <th width="40%">报警时间</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="help-block">
+      <td>{dcName}</td>
+      <td>{vmName}</td>
+      <td>{detail}</td>
+      <td>{alarmTime}</td>
+    </tr>
+    </tbody>
+  </table>
+  
+  <p style="padding: 15px 0;">易云捷讯科技（北京）股份有限公司</p>
+  <p class="help-block" style="padding: 15px 0;">此为系统邮件，请勿回复<br>如有任何疑问，可发送邮件至：<span
+    class="blue">service@eayun.com</span>，或者拨打全国统一客服热线：<span
+    class="blue">400-606-6396</span>，我们的客服人员将会在第一时间为您解答。</p>
+</div>
+
+<div style="text-align: center;border-top: 1px solid #DCDCDC;">
+  <p class="help-block">&copy; 2011-2017 易云捷讯科技（北京）股份有限公司, 版权所有</p>
+</div>
+</div>
+</body>
+</html>

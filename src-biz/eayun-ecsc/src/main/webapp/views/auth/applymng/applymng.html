@@ -1,0 +1,390 @@
+<eayun-select data-ng-model="model.projectvoe" show-length = "14">
+		<eayun-option ng-repeat="project in cloudprojectList" value="project" text="{{project.dcName}}"></eayun-option>
+</eayun-select><br>
+ <div class="ey-search-bar ey-search-bar-white" style= "margin-top:15px;" data-ng-show="buttonPower.isApplyWork">
+	 <button type="button" class="ey-btn ey-btn-primary ey-btn-sm" data-ng-disabled="prj.isHaswork=='1'" data-ng-show="buttonPower.isApplyWork" data-ng-click="addApplyWork(prj)">
+		 <span class="eayunfont ef-plus"></span>
+		 <span>申请配额</span>
+	</button>
+ </div>
+<div class="row"style="padding-top:20px;">
+	<div class="col-sm-9" style="width:100%;">
+		<div class="col-sm-6">
+			<div class="row">
+				<div class="row">
+					<div class="col-sm-3">云主机（台）</div>
+					<div class="col-sm-6">
+						<div class="progress" 
+							ng-mouseenter="openProPop('Host')" 
+							ng-mouseleave="hintHostShow=false"
+				       		hint-show="hintHostShow"
+				       		tooltip-class="tooltip-progress"
+				       		tooltip-placement="top">
+							<div class="progress-bar" 
+								data-role="progressbar"
+								data-aria-valuenow="40"
+								data-aria-valuemin="10"
+								data-aria-valuemax="100"
+								data-ng-style="{'width':(prj.usedVmCount/prj.hostCount)*100+'%'}"
+								data-ng-class="prj.usedVmCount/prj.hostCount>=0.8?'error-pro':'info-pro'"
+					       		style="top:5px;">
+				      		</div>
+						</div>
+					</div>
+					<div class="col-sm-3">{{prj.usedVmCount}}/{{prj.hostCount}}</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3">CPU（核）</div>
+					<div class="col-sm-6">
+						<div class="progress" 
+							ng-mouseenter="openProPop('Cpu')" 
+							ng-mouseleave="hintCpuShow=false"
+				       		hint-show="hintCpuShow"
+				       		tooltip-class="tooltip-progress"
+				       		tooltip-placement="top">
+							<div class="progress-bar" 
+								data-role="progressbar"
+								data-aria-valuenow="40"
+								data-aria-valuemin="10"
+								data-aria-valuemax="100"
+								data-ng-style="{'width':(prj.usedCpuCount/prj.cpuCount)*100+'%'}" 
+								data-ng-class="prj.usedCpuCount/prj.cpuCount>=0.8?'error-pro':'info-pro'"
+					       		style="top:5px;">
+				      		</div>
+						</div>
+					</div>
+					<div class="col-sm-3">{{prj.usedCpuCount}}/{{prj.cpuCount}}</div>
+				</div> 
+				<div class="row">
+					<div class="col-sm-3">内存（GB）</div>
+					<div class="col-sm-6">
+						<div class="progress" 
+							ng-mouseenter="openProPop('Mem')" 
+							ng-mouseleave="hintMemShow=false"
+				       		hint-show="hintMemShow"
+				       		tooltip-class="tooltip-progress"
+				       		tooltip-placement="top">
+							<div class="progress-bar" 
+								data-role="progressbar"
+								data-aria-valuenow="40"
+								data-aria-valuemin="10"
+								data-aria-valuemax="100"
+								data-ng-style="{'width':((prj.usedRam/1024/prj.memory)>1?1:(prj.usedRam/1024/prj.memory))*100+'%'}" 
+								data-ng-class="prj.usedRam/1024/prj.memory>=0.8?'error-pro':'info-pro'"
+					       		style="top:5px;">
+				      		</div>
+						</div>
+					</div>
+					<div class="col-sm-3">{{null==prj.usedRam?'':prj.usedRam/1024}}/{{prj.memory}}</div>
+				</div>
+				<div class="row">
+					<div style="height:15px;margin-bottom:25px;"></div>
+				</div>
+				<div class="row">
+					<div style="height:15px;margin-bottom:25px;"></div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3 ">云硬盘（块）</div>
+					<div class="col-sm-6">
+						<div class="progress" 
+							ng-mouseenter="openProPop('Vol')" 
+							ng-mouseleave="hintVolShow=false"
+				       		hint-show="hintVolShow"
+				       		tooltip-class="tooltip-progress"
+				       		tooltip-placement="top">
+							<div class="progress-bar" 
+								data-role="progressbar"
+								data-aria-valuenow="40"
+								data-aria-valuemin="10"
+								data-aria-valuemax="100"
+								data-ng-style="{'width':(prj.diskCountUse/prj.diskCount)*100+'%'}"
+								data-ng-class="prj.diskCountUse/prj.diskCount>=0.8?'error-pro':'info-pro'"
+					       		style="top:5px;">
+				      		</div>
+						</div>
+					</div>
+					<div class="col-sm-3">{{prj.diskCountUse}}/{{prj.diskCount}}</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3 ">云硬盘容量（GB）</div>
+					<div class="col-sm-6">
+						<div class="progress" 
+							ng-mouseenter="openProPop('VolSize')" 
+							ng-mouseleave="hintVolSizeShow=false"
+				       		hint-show="hintVolSizeShow"
+				       		tooltip-class="tooltip-progress"
+				       		tooltip-placement="top">
+							<div class="progress-bar" 
+								data-role="progressbar"
+								data-aria-valuenow="40"
+								data-aria-valuemin="10"
+								data-aria-valuemax="100"
+								data-ng-style="{'width':(prj.usedDiskCapacity/prj.diskCapacity)*100+'%'}"
+								data-ng-class="prj.usedDiskCapacity/prj.diskCapacity>=0.8?'error-pro':'info-pro'"
+					       		style="top:5px;">
+				      		</div>
+						</div>
+					</div>
+					<div class="col-sm-3">{{prj.usedDiskCapacity}}/{{prj.diskCapacity}}</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3">云硬盘备份（个）</div>
+					<div class="col-sm-6">
+						<div class="progress" 
+							ng-mouseenter="openProPop('Snap')" 
+							ng-mouseleave="hintSnapShow=false"
+				       		hint-show="hintSnapShow"
+				       		tooltip-class="tooltip-progress"
+				       		tooltip-placement="top">
+							<div class="progress-bar" 
+								data-role="progressbar"
+								data-aria-valuenow="40"
+								data-aria-valuemin="10"
+								data-aria-valuemax="100"
+								data-ng-style="{'width':(prj.diskSnapshotUse/prj.diskSnapshot)*100+'%'}"
+								data-ng-class="prj.diskSnapshotUse/prj.diskSnapshot>=0.8?'error-pro':'info-pro'"
+					       		style="top:5px;">
+				      		</div>
+						</div>
+					</div>
+					<div class="col-sm-3">{{prj.diskSnapshotUse}}/{{prj.diskSnapshot}}</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3 ">云硬盘备份容量（GB）</div>
+					<div class="col-sm-6">
+						<div class="progress" 
+							ng-mouseenter="openProPop('SnapSize')" 
+							ng-mouseleave="hintSnapSizeShow=false"
+				       		hint-show="hintSnapSizeShow"
+				       		tooltip-class="tooltip-progress"
+				       		tooltip-placement="top">
+							<div class="progress-bar" 
+								data-role="progressbar"
+								data-aria-valuenow="40"
+								data-aria-valuemin="10"
+								data-aria-valuemax="100"
+								data-ng-style="{'width':(prj.usedSnapshotCapacity/prj.snapshotSize)*100+'%'}"
+								data-ng-class="prj.usedSnapshotCapacity/prj.snapshotSize>=0.8?'error-pro':'info-pro'"
+					       		style="top:5px;">
+				      		</div>
+						</div>
+					</div>
+					<div class="col-sm-3">{{prj.usedSnapshotCapacity}}/{{prj.snapshotSize}}</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="row">
+				<div class="col-sm-3">网络（个）</div>
+				<div class="col-sm-6">
+					<div class="progress" 
+						ng-mouseenter="openProPop('Net')" 
+						ng-mouseleave="hintNetShow=false"
+			       		hint-show="hintNetShow"
+			       		tooltip-class="tooltip-progress"
+			       		tooltip-placement="top">
+						<div class="progress-bar" 
+								data-role="progressbar"
+								data-aria-valuenow="40"
+								data-aria-valuemin="10"
+								data-aria-valuemax="100"
+								data-ng-style="{'width':(prj.netWorkUse/prj.netWork)*100+'%'}"
+								data-ng-class="prj.netWorkUse/prj.netWork>=0.8?'error-pro':'info-pro'"
+					       		style="top:5px;">
+			      		</div>
+					</div>
+				</div>
+				<div class="col-sm-3">{{prj.netWorkUse}}/{{prj.netWork}}</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3">子网（个）</div>
+				<div class="col-sm-6">
+					<div class="progress" 
+						ng-mouseenter="openProPop('Sub')" 
+						ng-mouseleave="hintSubShow=false"
+			       		hint-show="hintSubShow"
+			       		tooltip-class="tooltip-progress"
+			       		tooltip-placement="top">
+						<div class="progress-bar" 
+								data-role="progressbar"
+								data-aria-valuenow="40"
+								data-aria-valuemin="10"
+								data-aria-valuemax="100"
+								data-ng-style="{'width':(prj.subnetCountUse/prj.subnetCount)*100+'%'}"
+								data-ng-class="prj.subnetCountUse/prj.subnetCount>=0.8?'error-pro':'info-pro'"
+					       		style="top:5px;">
+			      		</div>
+					</div>
+				</div>
+				<div class="col-sm-3">{{prj.subnetCountUse}}/{{prj.subnetCount}}</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3">安全组（个）</div>
+				<div class="col-sm-6">
+					<div class="progress" 
+						ng-mouseenter="openProPop('Safe')" 
+						ng-mouseleave="hintSafeShow=false"
+			       		hint-show="hintSafeShow"
+			       		tooltip-class="tooltip-progress"
+			       		tooltip-placement="top">
+						<div class="progress-bar" 
+								data-role="progressbar"
+								data-aria-valuenow="40"
+								data-aria-valuemin="10"
+								data-aria-valuemax="100"
+								data-ng-style="{'width':(prj.safeGroupUse/prj.safeGroup)*100+'%'}"
+								data-ng-class="prj.safeGroupUse/prj.safeGroup>=0.8?'error-pro':'info-pro'"
+					       		style="top:5px;">
+			      		</div>
+					</div>
+				</div>
+				<div class="col-sm-3">{{prj.safeGroupUse}}/{{prj.safeGroup}}</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3">公网IP（个）</div>
+				<div class="col-sm-6">
+					<div class="progress" 
+						ng-mouseenter="openProPop('Float')" 
+						ng-mouseleave="hintFloatShow=false"
+			       		hint-show="hintFloatShow"
+			       		tooltip-class="tooltip-progress"
+			       		tooltip-placement="top">
+						<div class="progress-bar" 
+								data-role="progressbar"
+								data-aria-valuenow="40"
+								data-aria-valuemin="10"
+								data-aria-valuemax="100"
+								data-ng-style="{'width':(prj.outerIPUse/prj.outerIP)*100+'%'}"
+								data-ng-class="prj.outerIPUse/prj.outerIP>=0.8?'error-pro':'info-pro'"
+					       		style="top:5px;">
+			      		</div>
+					</div>
+				</div>
+				<div class="col-sm-3">{{prj.outerIPUse}}/{{prj.outerIP}}</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3">负载均衡（个）</div>
+				<div class="col-sm-6">
+					<div class="progress" 
+						ng-mouseenter="openProPop('Load')" 
+						ng-mouseleave="hintLoadShow=false"
+			       		hint-show="hintLoadShow"
+			       		tooltip-class="tooltip-progress"
+			       		tooltip-placement="top">
+						<div class="progress-bar" 
+								data-role="progressbar"
+								data-aria-valuenow="40"
+								data-aria-valuemin="10"
+								data-aria-valuemax="100"
+								data-ng-style="{'width':(prj.usedPool/prj.quotaPool)*100+'%'}"
+								data-ng-class="prj.usedPool/prj.quotaPool>=0.8?'error-pro':'info-pro'"
+					       		style="top:5px;">
+			      		</div>
+					</div>
+				</div>
+				<div class="col-sm-3">{{prj.usedPool}}/{{prj.quotaPool}}</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3 ">VPN（个）</div>
+				<div class="col-sm-6">
+					<div class="progress" 
+						ng-mouseenter="openProPop('VPN')" 
+						ng-mouseleave="hintVPNShow=false"
+			       		hint-show="hintVPNShow"
+			       		tooltip-class="tooltip-progress"
+			       		tooltip-placement="top">
+						<div class="progress-bar" 
+							data-role="progressbar"
+							data-aria-valuenow="40"
+							data-aria-valuemin="10"
+							data-aria-valuemax="100"
+							data-ng-style="{'width':(prj.countVpnUse/prj.countVpn)*100+'%'}"
+							data-ng-class="prj.countVpnUse/prj.countVpn>=0.8?'error-pro':'info-pro'"
+				       		style="top:5px;">
+			      		</div>
+					</div>
+				</div>
+				<div class="col-sm-3">{{prj.countVpnUse}}/{{prj.countVpn}}</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3">端口映射（个）</div>
+				<div class="col-sm-6">
+					<div class="progress" 
+						ng-mouseenter="openProPop('Mapping')" 
+						ng-mouseleave="hintMappingShow=false"
+			       		hint-show="hintMappingShow"
+			       		tooltip-class="tooltip-progress"
+			       		tooltip-placement="top">
+						<div class="progress-bar" 
+								data-role="progressbar"
+								data-aria-valuenow="40"
+								data-aria-valuemin="10"
+								data-aria-valuemax="100"
+								data-ng-style="{'width':(prj.portMappingUse/prj.portMappingCount)*100+'%'}"
+								data-ng-class="prj.portMappingUse/prj.portMappingCount>=0.8?'error-pro':'info-pro'"
+					       		style="top:5px;">
+			      		</div>
+					</div>
+				</div>
+				<div class="col-sm-3">{{prj.portMappingUse}}/{{prj.portMappingCount}}</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3">带宽（Mbps）</div>
+				<div class="col-sm-6">
+					<div class="progress" 
+						ng-mouseenter="openProPop('Band')" 
+						ng-mouseleave="hintBandShow=false"
+			       		hint-show="hintBandShow"
+			       		tooltip-class="tooltip-progress"
+			       		tooltip-placement="top">
+						<div class="progress-bar" 
+							data-role="progressbar"
+							data-aria-valuenow="40"
+							data-aria-valuemin="10"
+							data-aria-valuemax="100"
+							data-ng-style="{'width':(prj.countBandUse/prj.countBand)*100+'%'}"
+							data-ng-class="prj.countBandUse/prj.countBand>=0.8?'error-pro':'info-pro'"
+				       		style="top:5px;">
+			      		</div>
+					</div>
+				</div>
+				<div class="col-sm-3">{{prj.countBandUse}}/{{prj.countBand}}</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3">报警短信配额（条）</div>
+				<div class="col-sm-6">
+					<div class="progress" ng-mouseenter="openProPop('Sms')"
+						ng-mouseleave="hintSmsShow=false"
+						hint-show="hintSmsShow" tooltip-class="tooltip-progress"
+						tooltip-placement="top">
+						<div class="progress-bar" data-role="progressbar"
+							data-aria-valuenow="40" data-aria-valuemin="10"
+							data-aria-valuemax="100"
+							data-ng-style="{'width':(prj.smsQuota/prj.smsCount)*100+'%'}"
+							data-ng-class="prj.smsQuota/prj.smsCount>=0.8?'error-pro':'info-pro'"
+							style="top:5px;">
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3">{{prj.smsQuota}}/{{prj.smsCount}}</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3">MySQL实例（个）</div>
+				<div class="col-sm-6">
+					<div class="progress" tooltip-class="tooltip-progress"
+						tooltip-placement="top">
+						<div class="progress-bar" data-role="progressbar"
+							data-aria-valuenow="40" 
+							data-aria-valuemin="10"
+							data-aria-valuemax="100"
+							data-ng-style="{'width':(prj.totalInstanceUse/(prj.maxMasterInstance*(1+prj.maxSlaveIOfCluster)))*100+'%'}"
+							data-ng-class="prj.totalInstanceUse/(prj.maxMasterInstance*(1+prj.maxSlaveIOfCluster))>=0.8?'error-pro':'info-pro'"
+							style="top:5px;">
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3">{{prj.totalInstanceUse}}/{{prj.maxMasterInstance*(1+prj.maxSlaveIOfCluster)}}</div>
+			</div>
+		</div>
+	</div>
+</div>

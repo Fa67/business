@@ -1,0 +1,213 @@
+<div class="clearfix">
+<div class="">
+	<h4>负载均衡器详情</h4>
+	<eayun-auto-refresh refresh="refresh" interval="5000"></eayun-auto-refresh>
+	<div class="details">
+		<div class="row">
+		<div class="col-sm-6 ">
+			<div class="details-group">
+				<div class="details-name"
+					 hint="views/net/loadbalance/pool/editpoolname.html"
+					 hint-show="hintNameShow"
+					 tooltip-class="tooltip-edit"
+					 tooltip-placement="right">名称：</div>
+				<div class="details-value">{{item.poolName}}</div>
+				<span class="badge"
+					  data-ng-class="poolNameEditable ? 'hide' : 'show'"
+					  data-ng-show="buttonPower.isEdit && item.chargeState == '0'"
+					  data-ng-click="editPoolName()">
+		      		<span class="glyphicon glyphicon-pencil"></span>
+	      		</span>
+			</div>
+			<div class="details-group">
+				<div class="details-name">状态：</div>
+				<div class="details-value">
+				<span class ="state-block" data-ng-class="poolStatusClass!=''?poolStatusClass:''"></span>
+				{{item.statusForPool}}
+				</div>
+			</div>
+			<div class="details-group">
+				<div class="details-name">协议：</div>
+				<div class="details-value">{{item.poolProtocol}}</div>
+			</div>
+			<div class="details-group">
+				<div class="details-name">网络：</div>
+				<div class="details-value">{{item.netName}}</div>
+			</div>
+			<div class="details-group">
+				<div class="details-name">受管子网IP：</div>
+				<div class="details-value">{{item.subnetIp}}</div>
+			</div>
+			<div class="details-group">
+				<div class="details-name">均衡方式：</div>
+				<div class="details-value">{{item.lbMethodCn}}</div>
+			</div>
+			<div class="details-group">
+				<div class="details-name">所属数据中心：</div>
+				<div class="details-value">{{item.dcName}}</div>
+			</div>
+			<!--<div class="details-group">
+				<div class="details-name">所属项目：</div>
+				<div class="details-value">{{item.prjName}}</div>
+			</div>-->
+			<div class="details-group">
+				<div class="details-name">创建时间：</div>
+				<div class="details-value">{{item.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</div>
+			</div>
+			<div class="details-group">
+				<div class="details-name">到期时间：</div>
+				<div class="details-value" data-ng-if="item.payType == '1'">
+					{{item.endTime|date:'yyyy-MM-dd HH:mm:ss'}}
+				</div>
+				<div class="details-value" data-ng-if="item.payType == '2'">
+					--
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="details-group">
+				<div class="details-name">ID：</div>
+				<div class="details-value">{{item.poolId}}</div>
+			</div>
+			<div class="details-group">
+				<div class="details-name">模式：</div>
+				<div class="details-value">{{item.mode=='1'?'主备模式':'普通模式'}}</div>
+			</div>
+			<div class="details-group">
+				<div class="details-name">标签：</div>
+				<div class="details-value" ng-if="resourceTags.gt2Tags">
+					<span>{{resourceTags.twoTagsString}}</span>
+					<div class="detail-icon ellipsis pointer"
+			       		ng-mouseenter="openPopBox({value:resourceTags.allTagsString,type:'tagName'})"
+		       		    ng-mouseleave="closePopBox('tagName')"
+						hint="views/cloudhost/volume/volumedescription.html"
+			       		hint-show="tagShow"
+			       		tooltip-class="tooltip-description"
+			       		tooltip-placement="bottom">
+			       	</div>
+		       	</div>
+		       	<div class="details-value" ng-if="!resourceTags.gt2Tags">
+		       		<span>{{resourceTags.allTagsString}}</span>
+		       	</div>
+			</div>
+			<div class="details-group">
+				<div class="details-name">端口：</div>
+				<div class="details-value">{{item.vipPort!=0?item.vipPort:''}}</div>
+			</div>
+			<div class="details-group">
+				<div class="details-name">子网：</div>
+				<div class="details-value">{{item.subnetName}}({{item.subnetCidr}})</div>
+			</div>
+			<div class="details-group">
+				<div class="details-name">公网IP：</div>
+				<div class="details-value">{{item.floatIp}}</div>
+			</div>
+			<div class="details-group">
+				<div class="details-name">连接限制数：</div>
+				<div class="details-value">{{item.connectionLimit!=0?item.connectionLimit:''}}</div>
+				<span class="details-value ey-text-link"
+					  data-ng-show="buttonPower.isChange && item.chargeState == '0'"
+					  data-ng-click="changeConnectionLimit(item)"
+					  style="float: right;">
+					更改
+				</span>
+			</div>
+			<div class="details-group">
+				<div class="details-name">健康管理：</div>
+				<div class="details-value">{{item.monitorStatus}}</div>
+				<div class="details-value ey-text-link"
+					 data-ng-show="buttonPower.isSetDetachHealthMonitor && item.chargeState == '0'&&item.checkMonitor"
+					 data-ng-click="unBindMonitor(item)"
+					 style="float: right;">
+					<span>&nbsp;&nbsp;&nbsp;解除关联</span>
+				</div>
+				<div class="details-value ey-text-link"
+					 data-ng-show="buttonPower.isSetDetachHealthMonitor && item.chargeState == '0'"
+					 data-ng-click="bindMonitor(item)"
+					 style="float: right;">
+					<span>关联</span>
+				</div>
+				
+			</div>
+			<div class="details-group">
+				<div class="details-name">计费状态</div>
+				<div class="details-value">
+					<span>{{item.payTypeStr}}</span>
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+</div>
+</div>
+<div class="ey-divider"></div>
+<div class="clearfix">
+<div class="">
+	<h4>成员列表</h4>
+	<form class="form-inline">
+		<button class="ey-btn ey-btn-primary"
+				data-ng-click="addMember(item)"
+				data-ng-show="buttonPower.isAddMember"
+				data-ng-disabled="item.chargeState != '0'">
+			<span class="eayunfont ef-plus"></span> 添加成员
+		</button>
+		<button class="ey-btn ey-btn-primary detail-btn-left" 
+				data-ng-click="gotoMonitor(item)"
+				data-ng-disabled="item.chargeState != '0'" >
+			查看成员监控详情
+		</button>
+	</form>
+	<!-- 表格 -->
+	<div><eayun-auto-refresh refresh="refreshMember" interval="5000"></eayun-auto-refresh>
+		<table class="ey-table-muliti">
+			<thead>
+				<tr>
+					<th>名称</th>
+					<th>状态</th>
+					<th>受管子网IP地址</th>
+					<th>端口</th>
+					<th>权重</th>
+					<th ng-if="item.mode=='1'" style="width:200px;">
+						<eayun-table-filter list-data="roleList" text-field="text" item-clicked="selectRole($item, $event)"></eayun-table-filter>
+					</th>
+					<th ng-if="item.mode=='1'">优先级</th>
+					<th class="col-sm-2">操作</th>
+				</tr>
+			</thead>
+			<tbody><tr data-ng-repeat="member in members">
+				<td title="{{member.vmName}}">{{member.vmName}}</td>
+				<td>
+					<span class="state-block"
+						  data-ng-class="memberStatusClass != '' ? memberStatusClass : ''"
+						  data-ng-init="memberStatusClass = getMemberStatus(member)">
+                	</span>
+					<span data-ng-bind="member.statusForMember"></span>
+				</td>
+				<td>{{member.memberAddress}}</td>
+				<td>{{member.protocolPort}}</td>
+				<td ng-if="item.mode=='1'">{{member.role=='Active'?member.memberWeight:'--'}}</td>
+				<td ng-if="item.mode=='0'">{{member.memberWeight}}</td>
+				<td ng-if="item.mode=='1'">{{member.role=='Active'?'主节点':'从节点'}}<span class="red-font-color" ng-if="member.isUndertaker==true">(流量承担者)</span></td>
+				<td ng-if="item.mode=='1'">{{member.role=='Active'?'--':member.priority}}</td>
+				<td class="col-sm-3 ey-table-operation">
+					<div class="ey-btn-group">
+						<button class="ey-btn"
+								data-ng-click="updateMember(member,item)"
+								data-ng-show="buttonPower.isEditMember"
+								data-ng-disabled="item.chargeState != '0'">
+							编辑
+						</button>
+						<button class="ey-btn"
+								data-ng-click="deleteMember(member)"
+								data-ng-show="buttonPower.isDeleteMember"
+								data-ng-disabled="item.chargeState != '0'">
+							<span class="ey-text-error">删除</span>
+						</button>
+						<span data-ng-show="!buttonPower.isEditMember && !buttonPower.isDeleteMember">----</span>
+					</div>
+				</td>
+			</tr></tbody>
+		</table>
+	</div>
+</div>
+</div>

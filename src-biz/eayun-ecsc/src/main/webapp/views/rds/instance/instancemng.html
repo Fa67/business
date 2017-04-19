@@ -1,0 +1,112 @@
+<!-- <span>敬请期待刘壮壮童鞋精彩表演</span>
+<button data-ng-click="instance.detail('015faf59-ff9d-49e4-928f-ef463b998b1d')"></button> -->
+
+<!-- button 按钮的权限为控制 -->
+ <div class="ey-search-bar ey-search-bar-white">
+	 <button class="ey-btn ey-btn-primary ey-btn-sm" 
+	 		 data-ng-click="buyInstance()"
+	 		 data-ng-if="instanceListPermissions.createRdsInstance">
+		 <span class="eayunfont ef-plus"></span>
+		 <span>创建实例</span>
+	</button>
+ 	<eayun-search class="eayun-table-search" data-ng-model="search" options="options"></eayun-search>
+ </div>
+ 
+ <!-- 表格 -->
+<eayun-auto-refresh refresh="refresh" interval="5000"></eayun-auto-refresh>
+<eayun-table data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams" data-result="myTable.result">
+  <table class="ey-table-muliti ey-table-instance">
+    <thead>
+    <tr>
+      <th class="ey-instance-th"></th>
+      <th>名称</th>
+      <th style="width: 9%;" >
+      	<eayun-table-filter list-data="rdsStatusList" text-field="nodeName" item-clicked="selectRdsStatus($item, $event)"></eayun-table-filter>
+      </th>
+      <th style="width: 6%;">类型</th>
+      <th style="width: 9%;">
+	  	<eayun-table-filter list-data="rdsVersionList" text-field="nodeName" item-clicked="selectRdsVersion($item, $event)"></eayun-table-filter>
+	  </th>
+      <th>配置</th>
+      <th style="width: 184px;">IP地址</th>
+      <th style="width: 206px;">计费状态</th>
+      <th style="width: 146px;">创建时间</th>
+      <th style="width: 110px;">操作</th>
+    </tr>
+    </thead>
+
+    <tbody><tr ng-repeat-start="rds in myTable.result" data-ng-class="((myTable.result.length == 1 && !!rds.isShow) || (myTable.result.length == 1 && rds.children == null))?'ey-instance-tr-only':''">
+      <td class="ey-instance-td" data-ng-click="isShowSlave(rds)">
+      	<span class="eayunfont" ng-class="!rds.isShow?'ef-menu-up':'ef-menu-down'" data-ng-if="rds.children != null"></span>
+      </td>
+      <td class="click-td" data-ng-click="managerds(rds.rdsId)" title="{{rds.rdsName}}">{{rds.rdsName}}</td>
+      <td>
+	      <span class ="eayunfont ef-square" data-ng-class="rdsStatusClass!=''?rdsStatusClass:''" ng-init="rdsStatusClass = checkrdsStatus(rds)">
+	      </span>
+	      {{rds.statusStr}}
+	  </td>
+	  <td>
+	  	<span data-ng-if="rds.isMaster == 1">主库</span>
+	  	<span data-ng-if="rds.isMaster == 0">从库</span>
+	  </td>
+	  <td>
+	  	 {{rds.type == 'mysql'?'MySQL ':''}}{{rds.version}}
+	  </td>
+      <td title="{{rds.cpu}}核\{{rds.ram/1024}}GB\{{rds.volumeSize}}GB">
+      	<span>{{rds.cpu}}核\{{rds.ram/1024}}GB\{{rds.volumeSize}}GB</span><br>
+      </td>
+      <td>
+      	<span>受管子网：{{rds.rdsIp=='null' ? '未加入':rds.rdsIp}}<br></span>
+      </td>
+      <td>
+      	<span>{{rds.payTypeStr}}<br></span>
+      	<span data-ng-if="rds.payType==1">{{'到期时间：'+(rds.endTime|date:'yyyy-MM-dd HH:mm:ss')}}<br></span>
+      </td>
+      <td>{{rds.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>
+      	<div class="ey-btn-group">
+	        <button class="ey-btn" data-ng-click="managerds(rds.rdsId)">管理</button>
+	        <button class="ey-btn" data-ng-if="rds.payType=='1' && instanceListPermissions.renewRdsInstance" data-ng-click="renewInstance(rds)">续费</button>
+      	</div>
+      </td>
+      
+    </tr>
+    <tr ng-repeat='child in rds.children' 
+    	data-ng-class="!rds.isShow?'ey-show-instance':'hide'"
+    	class="ey-instance-tr">
+    	<td></td>
+		<td class="click-td" data-ng-click="managerds(child.rdsId)" title="{{child.rdsName}}">{{child.rdsName}}</td>
+	      <td>
+		      <span class ="eayunfont ef-square" data-ng-class="rdsStatusClass!=''?rdsStatusClass:''" ng-init="rdsStatusClass = checkrdsStatus(child)">
+		      </span>
+		      {{child.statusStr}}
+		  </td>
+		  <td>
+		  	<span data-ng-if="child.isMaster == 1">主库</span>
+		  	<span data-ng-if="child.isMaster == 0">从库</span>
+		  </td>
+		  <td>
+	  	 	{{rds.type == 'mysql'?'MySQL ':''}}{{rds.version}}
+	      </td>
+	      <td title="{{child.cpu}}核\{{child.ram/1024}}GB\{{child.volumeSize}}GB">
+	      	<span>{{child.cpu}}核\{{child.ram/1024}}GB\{{child.volumeSize}}GB</span><br>
+	      </td>
+	      <td>
+	      	<span>受管子网：{{child.rdsIp=='null' ? '未加入':child.rdsIp}}<br></span>
+	      </td>
+	      <td>
+	      	<span>{{child.payTypeStr}}<br></span>
+	      	<span data-ng-if="child.payType==1">{{'到期时间：'+(child.endTime|date:'yyyy-MM-dd HH:mm:ss')}}<br></span>
+	      </td>
+	      <td>{{child.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+	      <td>
+	      	<div class="ey-btn-group">
+		        <button class="ey-btn" data-ng-click="managerds(child.rdsId)">管理</button>
+		        <button class="ey-btn" data-ng-if="child.payType=='1' && instanceListPermissions.renewRdsInstance" data-ng-click="renewrds(child)">续费</button>
+	      	</div>
+	      </td>
+	</tr>
+    <tr ng-repeat-end></tr></tbody>
+  </table>
+  <eayun-table-page></eayun-table-page>
+</eayun-table>

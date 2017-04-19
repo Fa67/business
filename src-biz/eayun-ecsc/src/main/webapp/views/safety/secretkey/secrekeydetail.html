@@ -1,0 +1,148 @@
+
+<div class="panel panel-default clearfix">
+	<div class="panel-body">
+		<h4 style="margin-left:10px;">SSH密钥详情</h4>
+
+		<div class="details">
+
+			<eayun-Table data-api="myTable.api" data-ajax-source="myTable.source"
+				data-param="myTable.getParams" data-result="myTable.result">
+			<form class="row" data-ng-repeat="sk in myTable.result">
+
+
+
+
+				<div class="col-lg-6">
+					<div class="details-group">
+
+						<div class="details-name">名称：</div>
+						<div class="details-value" ng-bind="::sk.secretkeyName"></div>
+
+
+					</div>
+
+
+
+
+
+					<div class="details-group">
+						<div class="details-name">公钥内容：</div>
+						<div class="details-value">
+							<span data-ng-show="sk.publicKey.length>20"><span>{{sk.publicKey.substring(0,20)+'...'}}</span>
+								<div class="tag-icon ellipsis pointer"
+									ng-mouseenter="openTableBox({value:sk.publicKey,type:'tagName',index:0})"
+									ng-mouseleave="closeTableBox({type:'tagName',index:0})"
+									hint="views/directives/ellipsispop.html"
+									hint-show="hintTagShow[0]" tooltip-class="tooltip-tag"
+									tooltip-placement="bottom"></div></span> <span
+								data-ng-show="sk.publicKey.length<20">{{sk.publicKey}}</span>
+								<span class="ey-color-blue ey-copy-sk ey-cursor" data-clipboard-text="{{sk.publicKey}}" data-ng-click="copyToClipboard()">复制公钥内容</span>
+						</div>
+					</div>
+
+
+					<div class="details-group">
+						<div class="details-name">创建时间：</div>
+						<div class="details-value"
+							ng-bind="::sk.createTime |date : 'yyyy-MM-dd HH:mm:ss'"></div>
+					</div>
+				</div>
+
+
+				<div class="col-lg-6">
+					<div class="details-group">
+						<div class="details-name">密钥ID：</div>
+						<div class="details-value" ng-bind="::sk.fingerPrint"></div>
+					</div>
+					<div class="details-group">
+						<div class="details-name">公钥描述：</div>
+						<div class="details-value">
+
+
+							<span data-ng-show="sk.secretkeyDesc.length>30"><span>{{sk.secretkeyDesc.substring(0,30)+'...'}}</span>
+								<div class="tag-icon ellipsis pointer"
+									ng-mouseenter="openTableBox({value:sk.secretkeyDesc,type:'tagName',index:1})"
+									ng-mouseleave="closeTableBox({type:'tagName',index:1})"
+									hint="views/directives/ellipsispop.html"
+									hint-show="hintTagShow[1]" tooltip-class="tooltip-tag"
+									tooltip-placement="bottom"></div></span> <span
+								data-ng-show="sk.secretkeyDesc.length<30">{{sk.secretkeyDesc}}</span>
+								
+
+						</div>
+					</div>
+				</div>
+
+
+
+			</form>
+			<br>
+
+			<div style="  border-bottom:1px solid #dbdbdb;margin:10px 0;"></div>	<br>
+
+
+
+
+
+			</eayun-Table>
+
+
+
+
+			<eayun-table data-api="skvmmyTable.api"
+				data-ajax-source="skvmmyTable.source"
+				data-param="skvmmyTable.getParams" data-result="skvmmyTable.result">
+
+			<h4 >已绑定云主机</h4>
+			<table class="ey-table">
+				<thead>
+					<tr>
+						<th class="col-sm-2">云主机名称</th>
+						<th class="col-sm-1">状态</th>
+						<th class="col-sm-2">操作系统</th>
+						<th class="col-sm-3">配置</th>
+						<th class="col-sm-2">IP地址</th>
+						<th class="col-sm-1">操作</th>
+
+					</tr>
+				</thead>
+				<tbody>
+
+					<tr data-ng-repeat="skvm in skvmmyTable.result">
+						<td ng-bind="::skvm.vmname"
+							data-ui-sref="app.cloud.cloudhost.hostdetail({vmId: skvm.vmId})"
+							class="color-info pointer"></td>
+						<td>
+						  <span class ="eayunfont ef-square" data-ng-class="vmStatusClass!=''?vmStatusClass:''" ng-init="vmStatusClass = checkVmStatus(skvm)"></span>
+						  {{skvm.status}}
+						</td>
+						<td ng-bind="::skvm.osType"></td>
+						<td>CPU<span
+							ng-bind="::skvm.cpus+'核/'+'内存'+skvm.rams+'GB/'+'系统盘'+skvm.sysdisks+'GB/'+'数据盘'+skvm.datedisk+'GB'"></span>
+						</td>
+						<td>
+                            <span data-ng-bind="'受管子网：'+(skvm.vmip==''?'未加入':skvm.vmip)" style="line-height: 22px;"></span><br>
+							<span data-ng-bind="'公网：'+(skvm.floip==''?'未加入':skvm.floip)" style="line-height: 22px;"></span><br>
+							<span data-ng-bind="'自管子网：'+(skvm.netIp==''?'未加入':skvm.netIp)" style="line-height: 22px;"></span>
+
+						</td>
+						<td>
+						  <button class="ey-btn" ng-disabled="!(skvm.isremoveVm&&skvm.isroute)" ng-show="buttonPower.isSecretKeyUnBind && !skvm.isremoveVm" 
+								type="button" title="请将云主机关机">解绑</button> 
+						  <button class="ey-btn" ng-disabled="!(skvm.isremoveVm&&skvm.isroute)" ng-show="buttonPower.isSecretKeyUnBind && !skvm.isroute && skvm.isremoveVm" 
+								type="button" title="请将云主机所在子网连接路由">解绑</button> 
+								
+						  <button class="ey-btn"  ng-show="buttonPower.isSecretKeyUnBind&&(skvm.isremoveVm&&skvm.isroute)" 
+								type="button" data-ng-click="Unbundling(skvm.skId,skvm.vmId,model.secretkeyName)" >解绑</button> 
+								
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<eayun-table-page></eayun-table-page> </eayun-table>
+
+		</div>
+
+	</div>
+</div>
+

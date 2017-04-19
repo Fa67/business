@@ -1,0 +1,86 @@
+<div style="position:relative;border:1px solid #e3e3e3;">
+<!-- 左侧联系组列表 -->
+<div class="" style="width: 250px;border-right:1px solid #e3e3e3;position: absolute;left: 0;top: 0;bottom: 0;overflow-y: auto;">
+	<div style="margin:15px;border-bottom:1px solid #e3e3e3;">
+		<h5>
+			<label class="color-blue" role="button" data-ng-click = "addContactGroup()">
+				<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;添加联系组
+			</label>
+		</h5>
+	</div>
+	<div style="margin:15px;border-bottom:1px solid #e3e3e3;" 
+		data-ng-repeat="ctcGrp in contactGroupList" ng-if="ctcGrp.name==='default'">
+		<div style="float:left;cursor:pointer;" 
+			data-ng-click="getContactInDefaultGroup({value:'default',index:'default'})"><strong ng-class="lineIndex == 'default' ? 'color-blue' : ''">默认联系组</strong></div>
+		<br>
+		<div style="padding-top:5px;padding-bottom:5px;">
+			<font color="#e2e2e2">共{{ctcGrp.contactNum}}个联系人</font>
+		</div>
+	</div>
+	<div style="margin:15px;border-bottom:1px solid #e3e3e3;" 
+		data-ng-repeat="ctcGrp in contactGroupList" ng-if="ctcGrp.name!='default'">
+		<div style="float:left;cursor:pointer" data-ng-click="getContactInDefaultGroup({value:ctcGrp.name,index:ctcGrp.id})"><strong ng-class="lineIndex == ctcGrp.id ? 'color-blue' : ''">{{::ctcGrp.name}}</strong></div>
+		<div style="float:right; margin-right:0px;">
+			<span class="glyphicon glyphicon-pencil" style="cursor:pointer" data-ng-click="editContactGroup(ctcGrp)"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+			<span class="glyphicon glyphicon-trash " style="cursor:pointer" data-ng-click="deleteContactGroup(ctcGrp)" ng-if="ctcGrp.contactNum===0"></span>
+			<span class="glyphicon glyphicon-trash " style="color: #e3e3e3;" ng-if="ctcGrp.contactNum!=0"></span>
+		</div>
+		<br>
+		<div style="padding-top:5px;padding-bottom:5px;">
+			<font color="#e2e2e2">共{{ctcGrp.contactNum}}个联系人</font>
+		</div>
+	</div>
+</div>
+<!-- TODO 中间组内联系人eayun-table -->
+<div class="" style="margin-left: 250px; margin-right: 250px;">
+	<eayun-table data-api="contactTable.api" data-ajax-source="contactTable.source" data-param="contactTable.getParams"
+                data-result="contactTable.result" style="min-height:550px;">
+      <table class="ey-table">
+		<thead>
+	        <tr>
+	          <th>姓名</th>
+	          <th>手机号</th>
+	          <th>电子邮件</th>
+	          <th>操作</th>
+	        </tr>
+        </thead>
+        <tbody><tr data-ng-repeat="contact in contactTable.result">
+	          <td style="word-break:break-all; word-wrap:break-all;">{{contact.name}}</td>
+	          <td>{{contact.phone}}</td>
+	          <td>{{contact.email.length>25?contact.email.substring(0,24):contact.email}}</td>
+	          <td>
+	          	<img src="images/removeContact.png" onmouseover="this.src='images/removeContactHover.png'" onmouseout="this.src='images/removeContact.png'" 
+	          		style="cursor:pointer" data-ng-click="removeContactFromGroup(contact)"
+				  	ng-if="contact.isAdmin!=1 || contactGroupName!='default'"/>
+				  <!-- 
+				  <button  class="btn btn-default" data-ng-click="removeContactFromGroup(contact)"
+				  	data-ng-disabled="contact.isAdmin==1 && contactGroupName==='default'">移除</button> -->
+	          </td>
+	        </tr></tbody>
+      </table>
+      <eayun-table-page></eayun-table-page>
+    </eayun-table>
+</div>
+<!-- 右侧组外联系人 -->
+<div class="" style="width: 250px;border-left: 1px solid #ddd;position: absolute;top: 0;right: 0;bottom:0;overflow-y: auto;">
+	<div style="margin:15px;border-bottom:1px solid #e3e3e3;" 
+		data-ng-repeat="ctc in contactsOutOfGroup">
+		<div style="float:left"><strong>{{ctc.name}}</strong></div>
+		<div style="float:right; margin-right:0px;">
+			<img src="images/addContact.png" onmouseover="this.src='images/addContactHover.png'" onmouseout="this.src='images/addContact.png'" 
+				style="cursor:pointer" data-ng-click="addToGroup(ctc)"/>
+			<!-- <span class="glyphicon glyphicon-plus" aria-hidden="true" style="cursor:pointer" data-ng-click="addToGroup(ctc)"></span> -->
+		</div>
+		<br>
+		<div style="padding-top:5px;padding-bottom:5px;">
+			<font color="#999999">手机号：{{ctc.phone}}</font>
+			<br>
+			<font color="#999999">邮箱：{{ctc.email.length>25?ctc.email.substring(0,24):ctc.email}}</font>
+		</div>
+	</div>
+	<div style="margin:15px;"
+	ng-show="contactsOutOfGroup.length==0">
+		<font color="#999999">当前无待选联系人</font>
+	</div>
+</div>
+</div>

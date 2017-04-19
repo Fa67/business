@@ -1,0 +1,87 @@
+<div class="modal-header">
+    <span class="modal-title">重置密码</span>
+    <span class="eayunfont ef-close ey-font-huge" data-ng-style="{'cursor':(reset.btnWait ? 'not-allowed' : 'pointer')}" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 600px;">
+    <form class="ey-form" name="resetPW" novalidate>
+        <!--<div class="ey-content-notice">
+            <p>此操作立即生效，新密码将通过短信方式发送给您，请注意查</p>
+            <p>收并妥善保管。</p>
+        </div>
+        <div class="ey-form-group" style="margin-top: 20px;">
+            <label class="ey-form-label">
+                管理员账号：
+            </label>
+            <span class="ey-form-w2">root</span>
+            <div class="ey-form-checkbox">
+                <input id="isReset"
+                       type="checkbox"
+                       data-ng-disabled="reset.btnWait"
+                       style="width: 16px;height: 16px;"
+                       data-ng-model="reset.isReset">
+                <label for="isReset">重置密码</label>
+            </div>
+        </div>-->
+        <div class="ey-form-group">
+            <label class="ey-form-label">
+                管理员账号：
+            </label>
+            <span>root</span>
+        </div>
+        <div class="ey-form-group"
+             data-ng-class="(resetPW.password.$dirty && reset.pwFlag) ? 'ey-has-error' : ''">
+            <label class="ey-form-label ey-required">
+                新密码：
+            </label>
+            <input type="password" class="ey-form-input ey-form-w6"
+                   name="password" placeholder="请输入密码" maxlength="30"
+                   data-ng-model="reset.root.password"
+                   data-ng-change="reset.checkPW()"
+                   required>
+            <span class="ey-text-tip obs-line-height"
+                  data-ng-class="(resetPW.password.$dirty && reset.pwFlag) ? 'ey-has-error' : ''">
+                1.长度必须为8-30个字符之间
+            </span>
+            <span class="ey-text-tip obs-line-height"
+                  data-ng-class="(resetPW.password.$dirty && reset.pwFlag) ? 'ey-has-error' : ''">
+                2.只支持数字、大写字母、小写字母中的三项
+            </span>
+            <span class="ey-text-tip obs-line-height"
+                  data-ng-class="(resetPW.password.$dirty && reset.pwFlag) ? 'ey-has-error' : ''">
+                3.不支持所有特殊符号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+        </div>
+        <div class="ey-form-group"
+             data-ng-class="(resetPW.confirm.$dirty && reset.confirmFlag) ? 'ey-has-error' : ''">
+            <label class="ey-form-label ey-required">
+                确认新密码：
+            </label>
+            <input type="password" class="ey-form-input ey-form-w6"
+                   name="confirm" placeholder="请再次输入新密码" maxlength="30"
+                   data-ng-model="reset.root.confirm"
+                   data-ng-change="reset.checkConfirm()"
+                   required>
+            <span class="ey-text-tip ey-has-error hide"
+                  data-ng-class="(resetPW.confirm.$dirty
+                  && reset.confirmFlag) ? 'show' : 'hide'">
+                确认密码与密码输入不一致
+            </span>
+        </div>
+    </form>
+</div>
+<div class="ey-modal-footer ey-btn-group" >
+    <div class="ey-btn-group">
+        <button type="button"
+                class="ey-btn ey-btn-primary"
+                data-ng-click="commit()"
+                data-ng-disabled="resetPW.$invalid || reset.btnWait || reset.pwFlag || reset.confirmFlag">
+            确 定
+        </button>
+        <button type="button"
+                class="ey-btn ey-btn-default"
+                data-ng-click="cancel()"
+                data-ng-disabled="reset.btnWait">
+            取 消
+        </button>
+    </div>
+</div>

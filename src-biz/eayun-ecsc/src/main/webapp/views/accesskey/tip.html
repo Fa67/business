@@ -1,0 +1,22 @@
+<!-- <div class="modal-confirm ng-binding">
+      <span class="glyphicon glyphicon-remove alert-error"></span>
+     操作失败
+</div>
+ -->
+ <div class="modal-header">
+	<span
+		class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 550px;">
+	<div class="modal-confirm ng-binding">
+      <span>
+        <span class="eayunfont ef-warning ey-color-yellow-dark"></span>
+      </span>
+       请验证手机号后再操作！
+</div>
+</div>
+ 
+<div class="modal-footer" style="margin-left:100px;">
+    <button class="btn btn-primary btn-modal" ng-click="cancel()" type = "button">关闭</button>
+	<a class="ey-text-link" style="font-size:14px;margin-left:90px;" data-ng-click="commit()">去验证</a>
+</div>

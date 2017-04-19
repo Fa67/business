@@ -1,0 +1,84 @@
+<!-- Tab panes -->
+		<!-- data-format="yyyy-MM-dd" -->
+		<h4>消息中心</h4>
+
+		<div class="ey-search-bar">
+		<label style="margin-left: 15px; font-size: 14px;">时间范围：</label>
+		<date-time-picker class="form-group"
+			data-format="yyyy-MM-dd" data-ng-model="data.beginTime"
+			max-date="data.endTime" show-time="false"></date-time-picker>
+		<span style="margin-left: 5px;">—</span>
+		<date-time-picker class="form-group" style="margin-left:5px;"
+			data-ng-model="data.endTime" min-date="data.beginTime"
+			show-time="false"></date-time-picker>
+		<label style="margin-left: 15px; font-size: 14px;">主题名称：</label>
+			<input
+			class="ey-form-input ey-form-w3" type="text"
+			placeholder="请输入主题名称" ng-model="data.newsTitle">
+		<button class="ey-btn ey-btn-default" style="margin-left: 15px;"
+			type="button" data-ng-click="queryNewsList()">
+			查&nbsp;&nbsp;&nbsp;询
+		</button>
+		<div style="display: none;">
+			<iframe id="excel-export-iframe" frameborder="0"></iframe>
+		</div>
+
+	</div>
+<!-- 表格 -->
+
+
+<div class="ey-form-checkbox">
+					<input type="checkbox" id="direction2" ng-click="check(data)" >
+					<label for="direction2">仅显示收藏消息</label>
+				</div>
+
+<eayun-table data-api="myTable.api" data-ajax-source="myTable.source"
+	data-param="myTable.getParams" data-result="myTable.result">
+<table class="ey-table striped-text-middle">
+	<thead>
+		<tr>
+			<th width="7%"></th>
+			
+			<th>主题</th>
+			<!-- <th>收件人</th> -->
+			<th width="15%">时间</th>
+			<th width="25%">发件人</th>
+			<th width="15%">操作</th>
+
+		</tr>
+	</thead>
+	<tbody><tr data-ng-repeat="model in myTable.result" data-ng-show="true"
+			ng-class="model.statu == '0' ? 'unreaded' : 'readed'">
+			<td style="width: 100px;"><img ng-show="model.statu=='0'"
+				src="images/message-noread.png" data-ng-click="openMsgDetail(model)"
+				style="cursor: pointer"></img> <img ng-show="model.statu=='1'"
+				src="images/message-read.png" data-ng-click="openMsgDetail(model)"
+				style="cursor: pointer"></img> &nbsp;&nbsp; <img
+				ng-show="model.isCollect=='0'" data-ng-click="collect(model)"
+				style="cursor: pointer" src="images/message-noshoucang.png"></img> <img
+				ng-show="model.isCollect=='1'" data-ng-click="uncollect(model)"
+				style="cursor: pointer" src="images/message-shouchang.png"></img> <!-- <button class="btn btn-default" data-ng-click="uncollect(model)">改变收藏</button> -->
+			</td>
+			<!-- 状态   1:已读  0：未读 -->
+			
+			<td class="striped-text-middle">{{model.newsTitle}}</td>
+			<!-- <td>{{model.cusName=="null"?"全部客户":model.cusName}}{{model.recType=='1'?"管理员":"全部账号"}}</td> -->
+			<td style="width: 170px;">{{model.sendDate |date:"yyyy-MM-dd
+				HH:mm:ss"}}</td>
+				<td style="width: 280px;">{{model.sendPerson}}</td>
+			<td style="width: 150px;"><span
+				data-ng-click="openMsgDetail(model)"
+				style="font-weight: normal; cursor: pointer; color: #0077cc">查看</span>
+				<!-- &nbsp;&nbsp;&nbsp; --> <span ng-show="model.isCollect=='0'"
+				data-ng-click="collect(model)"
+				style="font-weight: normal; cursor: pointer; margin-left: 15px; color: #0077cc">收藏</span>
+				<span ng-show="model.isCollect=='1'"
+				data-ng-click="uncollect(model)"
+				style="font-weight: normal; cursor: pointer; margin-left: 15px; color: #0077cc">取消收藏</span>
+			</td>
+		</tr></tbody>
+</table>
+<eayun-table-page></eayun-table-page> </eayun-table>
+
+
+

@@ -1,0 +1,37 @@
+<div class="modal-header">
+    <span class="modal-title">已标记资源列表</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 800px;">
+<h6>当前标签：{{tagName}}</h6>
+<eayun-table data-api="tagResTable.api" data-ajax-source="tagResTable.source" data-param="tagResTable.getParams" data-result="tagResTable.result">
+	<table class="ey-table">
+		<thead>
+			<tr>
+				<th width= "30%">资源名称</th>
+				<th width= "20%">资源类别</th>
+				<th width= "30%">
+					<eayun-table-filter list-data="dcStatus" text-field="text" item-clicked="dcItemClicked($item, $event)"></eayun-table-filter>
+				</th>
+				<th width= "20%">操作</th>
+			</tr>
+		</thead>
+		<tbody><tr data-ng-repeat="model in tagResTable.result">
+				<td style="word-break:break-all; word-wrap:break-all;">{{model.resourceName}}</td>
+				<td>{{model.resourceTypeName}}</td>
+				<td>{{model.projectName}}</td>
+				<td>
+					<button class="ey-btn"
+						data-ng-click="untagResource(tagId, tagGroupId, model.resourceType, model.resourceId)">取消标记</button>
+				</td>
+			</tr></tbody>
+	</table>
+	<eayun-table-page></eayun-table-page>
+</eayun-table>
+</div>
+
+<div class="ey-modal-footer">
+    <div class="ey-btn-group">
+        <button type="button" class="ey-btn ey-btn-default"
+                ng-click="cancel()">关 闭</button>
+    </div>
+</div>

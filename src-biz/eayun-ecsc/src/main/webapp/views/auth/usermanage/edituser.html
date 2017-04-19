@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <span class="modal-title">编辑用户</span> 
+    <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style = "width:600px;">
+<form class="ey-form" novalidate>
+  <div class="ey-form-group">
+    <label class="ey-form-label">账号：</label>
+    <span>{{usermodel.userAccount}}</span>
+  </div>
+  <div class="ey-form-group">
+    <label class="ey-form-label">账号说明：</label>
+    <input type="text" class="ey-form-input ey-form-w6" data-ng-model = "usermodel.userExplain" maxlength="200">
+  </div>
+</form>
+</div>
+<div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<button class="ey-btn ey-btn-primary" data-ng-click="commit()" type = "button">确  定</button>
+		<button class="ey-btn ey-btn-default" data-ng-click="cancel()" type = "button">取 消</button>
+	</div>
+</div>

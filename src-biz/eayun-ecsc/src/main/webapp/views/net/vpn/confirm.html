@@ -1,0 +1,126 @@
+<ul class="ey-nav-bread">
+    <a class="ey-color-blue pointer"
+       data-ng-if="confirmBuy.temp.orderType == '0'"
+       data-ng-click="confirmBuy.returnToConfig()">
+        返回修改配置
+    </a>
+    <span class="ey-text-tip" data-ng-if="confirmBuy.temp.orderType == '0'">|</span>
+    <li data-ui-sref="app.net.netbar.vpn">VPN</li>
+    <li>创建VPN</li>
+</ul>
+<h4>订单确认</h4>
+<div class="ey-warm" data-ng-if="!confirmBuy.errFlag">
+    <span class="eayunfont ef-warning ey-font-size-big"></span>
+    <span></span>
+    <span>{{confirmBuy.errMsg}}</span>
+</div>
+<table class="ey-order-table">
+    <tbody>
+    <tr>
+        <td>产品名称</td>
+        <td>{{confirmBuy.temp.payType == '1' ? 'VPN-包年包月' : 'VPN-按需付费'}}</td>
+        <td>产品数量</td>
+        <td>1个</td>
+    </tr>
+    <tr>
+        <td>购买周期</td>
+        <td data-ng-if="confirmBuy.temp.orderType == '0' && confirmBuy.temp.payType == '1'">
+            {{confirmBuy.temp.buyCycle >= 12 ? (confirmBuy.temp.buyCycle/12 + '年') : (confirmBuy.temp.buyCycle +
+            '个月')}}
+        </td>
+        <td data-ng-if="confirmBuy.temp.orderType != '0' || confirmBuy.temp.payType != '1'">--</td>
+        <td>付款方式</td>
+        <td>{{('1' == confirmBuy.temp.payType) ? '预付费' : '后付费'}}</td>
+    </tr>
+    <tr>
+        <td>具体配置</td>
+        <td colspan="3">
+            <p>数据中心 ：{{confirmBuy.temp.dcName}}<br></p>
+            <p>本端网络 ：{{confirmBuy.temp.networkName}}({{confirmBuy.temp.gatewayIp}})<br></p>
+            <p>本端子网 ：{{confirmBuy.temp.subnetName}}({{confirmBuy.temp.subnetCidr}})<br></p>
+            <p>对端网关 ：{{confirmBuy.temp.peerAddress}}<br></p>
+            <p><span style="word-break:break-all;">对端子网 ：{{confirmBuy.temp.peerCidrs}}</span><br></p>
+        </td>
+    </tr>
+    <tr>
+        <td>金额</td>
+        <td colspan="3" class="ey-color-red" data-ng-if="confirmBuy.temp.payType == '1'">
+            ￥&nbsp;{{confirmBuy.temp.price | thousand}}
+        </td>
+        <td colspan="3" class="ey-color-red" data-ng-if="confirmBuy.temp.payType == '2'">
+            ￥&nbsp;{{confirmBuy.temp.price | thousand:true}}&nbsp;<span class="ey-color-default">/小时</span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div data-ng-class="confirmBuy.temp.payType == '1' ? 'ey-pay-panel' : ''">
+    <div class="ey-pay-body" data-ng-if="confirmBuy.temp.payType == '1'">
+        <table>
+            <tbody>
+            <tr>
+                <td width="30px">
+                    <span class="eayunfont ef-wallet ey-font-hugest ey-color-yellow-dark"></span>
+                </td>
+                <td width="110px">使用余额支付：</td>
+                <td width="20px">
+                    <div class="ey-form-checkbox">
+                        <input id="check1"
+                               data-ng-model="confirmBuy.useVpn"
+                               data-ng-disabled="confirmBuy.accountQuota <= 0"
+                               data-ng-change="confirmBuy.useVpnPay()"
+                               type="checkbox">
+                        <label for="check1"></label>
+                    </div>
+                </td>
+                <td width="60px">余额支付</td>
+                <td width="20px">
+                    <span class="ey-text-tip">|</span>
+                </td>
+                <td width="180px">
+                    <span class="ey-text-tip">可用金额&nbsp;</span>
+                    <span class="ey-color-blue">￥&nbsp;{{confirmBuy.accountQuota | thousand}}</span>
+                </td>
+                <td width="110px" data-ng-show="confirmBuy.useVpn">
+                    <span class="ey-text-tip">扣除&nbsp;</span>
+                    <span class="ey-color-red">￥&nbsp;{{confirmBuy.temp.accountPayment | thousand}}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <p data-ng-if="confirmBuy.temp.payType == '2'">
+        <span class="ey-color-red">*</span>
+        <span class="ey-text-tip">按需付费的资源，采用先使用后扣费的模式，扣费时精确到厘，具体扣费请以账单为准。</span>
+    </p>
+    <ul class="ey-order-list">
+        <li class="ey-font-size-big" data-ng-if="confirmBuy.temp.payType == '1'">
+            <span>产品金额：</span>
+            <span>￥&nbsp;{{confirmBuy.temp.price | thousand}}</span>
+        </li>
+        <li class="ey-font-size-big" data-ng-if="confirmBuy.temp.payType == '1'">
+            <span>余额支付：</span>
+            <span>￥&nbsp;-{{confirmBuy.temp.accountPayment | thousand}}</span>
+        </li>
+        <div class="divider" data-ng-if="confirmBuy.temp.payType == '1'"></div>
+        <li class="ey-font-size-bigger ey-font-bold">
+            <span>应付款：</span>
+            <span class="ey-text-tip">
+                <span>￥&nbsp;</span>
+                <span class="ey-color-red ey-font-size-superior" data-ng-if="confirmBuy.temp.payType == '1'">
+                    {{confirmBuy.temp.thirdPartPayment | thousand}}
+                </span>
+                <span class="ey-color-red ey-font-size-superior" data-ng-if="confirmBuy.temp.payType == '2'">
+                    {{0 | thousand}}
+                </span>
+            </span>
+        </li>
+        <li>
+            <button class="ey-btn ey-btn-primary"
+                    data-ng-disabled="!confirmBuy.commitOrderFlag"
+                    data-ng-click="confirmBuy.commitOrder()">
+                提交订单
+            </button>
+        </li>
+    </ul>
+</div>

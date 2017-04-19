@@ -1,0 +1,375 @@
+<div class="container" style="padding: 0">
+<div  id="loadingBar" style="border:1px;width:100%; height:100%; background:rgba(0,0,0,0.5); position:absolute;z-index:999999;display:none">
+<div style="position:relative; height:100%;">
+	<img src="images/loadingbar.gif" style="position:absolute; top:35%; left:44%; z-index:1000;"/>
+</div>
+</div>
+  <!-- 右侧区域 -->
+  <div class="col-sm-7" style="height: 780px">
+    <!-- 头部标题区域 -->
+    <div class="modal-header" style="padding: 15px 0px 0px 0px">
+    <span class="modal-title">
+      {{title}}
+    </span>
+    	<img ng-click="cancel()" src="images/close.png">
+    </div>
+    <!-- 步骤控件-->
+    <div class="text-center">
+      <div class="step active">
+        <span>1</span>
+
+        <div></div>
+        <p class="text-left">属性</p>
+      </div>
+      <div class="step" data-ng-class="step > 1 ? 'active':''">
+        <div></div>
+        <span>2</span>
+
+        <div></div>
+        <p class="text-center">镜像</p>
+      </div>
+      <div class="step" data-ng-class="step > 2 ? 'active':''">
+        <div></div>
+        <span>3</span>
+
+        <p class="text-right">密码</p>
+      </div>
+    </div>
+    <!-- 表单区域 -->
+    <div class="modal-body">
+      <div class="eayun-modal-dialog" style="width: 500px;">
+        <form name="myForm">
+          <!-- Step 1 -->
+          <div data-ng-class="step == 1 ? 'show':'hidden'">
+            <div class="form-group row">
+              <label class="col-md-12 control-label">所属项目：</label>
+              <div class="col-md-9">
+                <eayun-select class="form-control" placeholder="请选择项目" data-ng-model="model.project" name="project" required ng-change="changePrj()">
+                	<eayun-option ng-repeat="project in projects" value="project" text = "{{project.prjName}}" ></eayun-option>
+                </eayun-select>
+              </div>
+            </div>
+            
+            <div class="form-group row">
+              <label class="col-md-12 control-label">所在子网：</label>
+              <div class="col-md-9" data-ng-class="(myForm.subnet.$dirty && myForm.subnet.$invalid)?'has-error' : ''">
+                <eayun-select class="form-control col-md-9 eayun-select-vm" name="subnet" required placeholder="请选择子网" data-ng-model="model.subnet" show-format="substrSubnetName(text)">
+                	<eayun-option ng-repeat="subnet in subnetList" value="subnet" text = "{{subnet.subnetName+'('+subnet.cidr+')'}}"></eayun-option>
+                </eayun-select>
+                <label class="control-label" ng-show="myForm.subnet.$dirty && myForm.subnet.$invalid">请选择子网</label>
+              </div>
+            </div>
+            
+	        <div class="form-group row">
+        		<label class="col-md-12 control-label">云主机名称：</label>
+              	<div class="col-md-9" data-ng-class="(myForm.vmName.$dirty && (myForm.vmName.$invalid||!checkVmName))?'has-error' : ''">
+	              	<div class="has-feedback">
+	                	<input type="text" class="form-control" placeholder="请输入云主机名称"  maxlength="{{vmMaxlength}}"
+	                	data-ng-model="model.vmName" name="vmName" required ng-change="checkVmNameExist(value)"
+	                	ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/' >
+	     				<label class="control-label " ng-show="myForm.vmName.$dirty && myForm.vmName.$invalid">请输入1-{{vmMaxlength}}位字符,支持数字、中英文、下划线、空格</label>
+	     				<label class="control-label" ng-show="myForm.vmName.$dirty && myForm.vmName.$valid&&!checkVmName">云主机名称已存在</label>
+	              	</div>
+              	</div>
+            </div>
+            
+            <div class="form-group row">
+              <label class="col-md-12 control-label">云主机类型：</label>
+              <div class="col-md-9" data-ng-class="(myForm.vmType.$dirty && myForm.vmType.$invalid)?'has-error' : ''">
+              <div class="has-feedback">
+                <eayun-select class="form-control" name="vmType" required placeholder="请选择主机类型" data-ng-model="model.vmType" ng-change="changeVmType()">
+                    <eayun-option ng-repeat="vmType in vmTypeList" value="vmType" text = "{{vmType.modelName}}"></eayun-option>
+                    <eayun-option value="'-1'" text = "自定义"></eayun-option>
+                </eayun-select>
+                <label class="control-label" ng-show="myForm.vmType.$dirty && myForm.vmType.$invalid">{{checkUsedMsg}}</label>
+                <label class="control-label" ng-show="myForm.vmType.$dirty && myForm.vmType.$invalid">请选择云主机类型</label>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group row" ng-show="model.vmType=='-1'">
+            	<div style="width: 193px;float: left; margin-left: 15px;">
+	              <label class="control-label" style="width: 65px;float: left; ">CPU(核)：</label>
+	              <div style="margin-top: -6px;width:100px;float: left; ">
+	              	<eayun-select class="form-control" data-ng-model="model.customCpus" ng-change="changeCpu()">
+            			<eayun-option ng-repeat="cpu in cpuList" value="cpu"
+            		 	text = "{{cpu.nodeName.substr(0, cpu.nodeName.length-1)}}" ></eayun-option>
+             		</eayun-select>
+	              </div>
+            	</div>
+            	
+            	<div style="width: 195px;float: left; ">
+            		 <label class="control-label" style="width: 75px;float: left; ">内存(GB)：</label>
+	              	<div style="margin-top: -6px;width:100px;float: left; ">
+                		<eayun-select class="form-control" data-ng-model="model.customRams" ng-change="changeRam()">
+           					<eayun-option ng-repeat="ram in ramList" value="ram.nodeName" text = "{{ram.nodeName.substr(0, ram.nodeName.length-2)}}" ></eayun-option>
+           				</eayun-select>
+	             	 </div>
+            	</div>
+            </div>
+            
+            <div class="form-group row" >
+              <label class="col-md-12 control-label">云主机数量：</label>
+              <div class="col-md-9" data-ng-class="((myForm.number.$dirty && myForm.number.$invalid) || 
+            model.number>(model.project.hostCount-model.project.usedVmCount))?'has-error' : ''">
+	              <div class="has-feedback">
+	                <input type="text" class="form-control" name="number" placeholder="请输入数量" data-ng-model="model.number" 
+	                ng-change="checkVmNum()" ng-pattern='/^[1-9][0-9]{0,1}$/' required maxlength="2">
+	   				<label class="control-label" ng-show="myForm.number.$dirty && myForm.number.$invalid && myForm.number.$error.required">请输入云主机数量</label>
+	   				<label class="control-label" ng-show="myForm.number.$dirty && myForm.number.$invalid && !myForm.number.$error.required">请输入小于100的正整数</label>
+	   				<label class="control-label" ng-show="model.number>(model.project.hostCount-model.project.usedVmCount)">云主机数量超过项目限额</label>
+	   			</div>
+              </div>
+            </div>
+            <div class="form-group row has-feedback" >
+              <div class="col-md-12">
+                <p class="help-block">*如添加多台云主机则会在云主机名称后自动加序号。</p>
+                <p class="help-block">例如：云主机名称A，数量3，则会添加A_1、A_2、A_3，三台云主机。</p>
+              </div>
+            </div>
+            
+            <div class="form-group row" >
+              <label class="control-label" style="float: left;margin-left: 18px;">数据盘容量(GB)：</label>
+              <div data-ng-class="(myForm.dataCapacity.$invalid)?'has-error' : ''" style="margin-top: -6px;float: left;width: 250px;">
+	              <div class="has-feedback">
+	                <input type="text" class="form-control" ng-disabled="model.number&&model.number!=1" maxlength="4" 
+			      ng-pattern='/^([5-9]|[1-9][0-9]{1,2}|1[0-9][0-9][0-9]|20[0-3][0-9]|204[0-8])$/' ng-trim="false"
+			      placeholder="请输入数据盘容量"  ng-change="checkUsedQuato()" data-ng-model="model.dataCapacity" name="dataCapacity" >
+	   			</div>
+              </div>
+              <div style="width: 300px;margin-left: 18px;" class="has-error">
+	   				<label class="control-label" ng-show="myForm.dataCapacity.$dirty && myForm.dataCapacity.$invalid">请输入5-2048的正整数</label>
+              </div>
+            </div>
+            
+          </div>
+          <!-- Step 2 -->
+          <div class="hide" data-ng-class="step == 2 ? 'show':'hidden'">
+            <div class="form-group row" >
+              <label class="col-md-12 control-label">镜像来源：</label>
+              <div class="col-md-9" data-ng-class="(myForm.vmFrom.$dirty && myForm.vmFrom.$invalid)?'has-error' : ''">
+	              <div class="has-feedback">
+	                <eayun-select required class="form-control" name="vmFrom" placeholder="请选择镜像来源" data-ng-model="model.vmFrom" ng-change="changeImage()">
+	                	<eayun-option value="'publicImage'" text = "公共镜像" ></eayun-option>
+	                	<eayun-option value="'privateImage'" text = "自定义镜像" ></eayun-option>
+	                </eayun-select>
+	                <label class="control-label" ng-show="myForm.vmFrom.$dirty && myForm.vmFrom.$invalid">请选择镜像来源</label>
+                 </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-12 control-label">系统：</label>
+              <div class="col-md-9" data-ng-class="(myForm.osType.$dirty  && myForm.osType.$invalid)?'has-error' : ''">
+	               <div class="has-feedback">
+		                <eayun-select class="form-control" required name="osType" placeholder="请选择操作系统类别" data-ng-model="model.osType" ng-change="changeSys()">
+		                	<eayun-option ng-repeat="os in osTypeList" value="os" text = "{{os.nodeName}}"></eayun-option>
+		                </eayun-select>
+		                 <label class="control-label" ng-show="myForm.osType.$dirty && myForm.osType.$invalid">请选择操作系统类别</label>
+	               </div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-md-9" data-ng-class="(myForm.sysType.$dirty && myForm.sysType.$invalid)?'has-error' : ''">
+              	<div class="has-feedback">
+	                <eayun-select class="form-control" required name="sysType" placeholder="请选择系统" data-ng-model="model.sysType" ng-change="changeImage()">
+	                	<eayun-option ng-repeat="system in sysTypeList" value="system.nodeId" text = "{{system.nodeName}}"></eayun-option>
+	                </eayun-select>
+	                <label class="control-label" ng-show="myForm.sysType.$dirty && myForm.sysType.$invalid">请选择系统</label>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <p class="help-block">*选择Windows系统，默认系统盘为60GB;Linux系统默认系统盘20G</p>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-md-12 control-label">镜像文件：</label>
+              <div class="col-md-9" data-ng-class="(myForm.fromImage.$dirty  && myForm.fromImage.$invalid)?'has-error' : ''">
+	              <div class="has-feedback">
+	                <eayun-select class="form-control" name="fromImage" required placeholder="{{chekImageMsg}}" data-ng-model="model.fromImage" ng-change="changeSubnet()">
+	                	<eayun-option ng-repeat="image in imageList" value="image" text = "{{image.imageName}}"></eayun-option>
+	                </eayun-select>
+	                <label class="control-label" ng-show="myForm.fromImage.$dirty&& myForm.fromImage.$invalid">请选择镜像文件</label>
+	              </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Step 3 -->
+          <div class="hide" data-ng-class="step == 3 ? 'show':'hidden'">
+          	<div class="form-group row">
+        		<label class="col-md-12 control-label">用户名：<span style="margin-left: 15px;">{{model.vmUsername}}</span></label>
+            </div>
+            
+            <div class="form-group row">
+        		<label class="control-label" style="margin-left: 15px;float: left;">密码：</label>
+              	<div style="width: 300px;margin-top: -6px;float: left;margin-left: 28px;" data-ng-class="(myForm.vmPassword.$dirty && (myForm.vmPassword.$invalid||checkPasswordFlag))?'has-error' : ''">
+	              	<div class="has-feedback">
+	                	<input type="password" class="form-control " placeholder="请输入密码" maxlength="30" data-ng-model="model.vmPassword" name="vmPassword" required ng-change="checkPassword()">
+	              	</div>
+              	</div>
+              	<div class="has-error" style="margin-left: 84px;width: 310px;">
+	    			<label class="control-label" ng-show="myForm.vmPassword.$dirty && (myForm.vmPassword.$invalid||checkPasswordFlag)">
+	    			长度为8-30位，至少包含数字、大写字母、小写字母和特殊字符中的三种
+	    			</label>
+              	</div>
+            </div>
+            
+            <div class="form-group row">
+        		<label class="control-label" style="margin-left: 15px;float: left;">确认密码：</label>
+              	<div style="width: 300px;margin-top: -6px;float: left;" data-ng-class="(myForm.repassword.$dirty && (myForm.repassword.$invalid||(model.vmPassword!=model.repassword))) ? 'has-error' : ''">
+                	<input type="password" class="form-control" placeholder="请输入确认密码" maxlength="30" data-ng-model="model.repassword" name="repassword" required >
+   				</div>
+            </div>
+            <div class="has-error" style="margin-left: 70px;width: 310px;float: left;margin-top: -17px;" >
+				<label class="control-label" ng-show="myForm.repassword.$dirty && (myForm.repassword.$invalid)">请输入确认密码</label>
+				<label class="control-label" ng-show="myForm.repassword.$valid&&(model.vmPassword!=model.repassword)">确认密码与密码输入不一致</label>	              	
+            </div>
+            
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- 按钮区域 -->
+    <div class="modal-footer" style="text-align: right;position: absolute;bottom: 0;left: 0;right: 15px;">
+      <button class="btn btn-default btn-modal" ng-click="cancel()">取 消</button>
+      <button style="margin-left: 15px;" class="btn btn-primary btn-modal" ng-click="back()" data-ng-show="step>1">上一步</button>
+      <button style="margin-left: 15px;" class="btn btn-primary btn-modal" ng-click="next()" 
+      ng-disabled="(step==1&&
+      (myForm.vmName.$invalid||!checkVmName
+      ||myForm.vmType.$invalid
+      ||myForm.number.$invalid||model.number>(model.project.hostCount-model.project.usedVmCount)
+      ||(checkUsedMsg !=''&&checkUsedMsg !='云硬盘容量超过项目上限')
+      ||myForm.vmType.$invalid
+      ||(!model.cpus)
+      ||(!model.rams)
+      ||myForm.subnet.$invalid
+      ||myForm.dataCapacity.$invalid)
+      ||((step==2)&&
+      (myForm.vmFrom.$invalid
+      ||myForm.osType.$invalid
+      ||myForm.sysType.$invalid
+      ||myForm.fromImage.$invalid ||checkUsedMsg!=''
+      ))||(step==3&&(myForm.vmPassword.$invalid)))"
+        data-ng-show="step<3">下一步</button>
+      <button style="margin-left: 15px;" class="btn btn-primary btn-modal" ng-disabled="myForm.vmPassword.$invalid||myForm.repassword.$invalid || checkToken||checkPasswordFlag ||(model.vmPassword!=model.repassword)"
+       ng-click="done()" data-ng-show="step==3">确定</button>
+    </div>
+
+  </div>
+  <!-- 左侧区域 -->
+  <div class="col-sm-5"
+       style="height: 780px;padding-top:20px;background: #F8F8F8;border-bottom-right-radius: 4px;border-top-right-radius: 4px;">
+    <h4>方案详情</h4>
+
+    <div class="panel panel-default">
+      <div class="panel-body text-le">
+        <form class="form-horizontal" name="typeForm">
+          <div class="form-group row" style="margin-bottom: 15px;">
+            <label class="col-sm-3 control-label" style="font-weight: bold">所属项目：</label>
+            <label class="col-sm-9 control-label" style="text-align: left">{{model.project.prjName}}</label>
+          </div>
+          <div class="form-group row"  style="margin-bottom: 15px;">
+            <label class="col-sm-3 control-label" style="font-weight: bold">所在子网：</label>
+            <label class="col-sm-9 control-label" style="text-align: left">{{model.subnet.subnetName?substrSubnetName(model.subnet.subnetName+'('+model.subnet.cidr+')'):''}}</label>
+          </div>
+          <div class="form-group row" style="margin-bottom: 15px;">
+            <label class="col-sm-3 control-label" style="font-weight: bold">主机名称：</label>
+            <label class="col-sm-9 control-label" style="text-align: left">{{model.vmName}}</label>
+          </div>
+          <div class="form-group row" style="margin-bottom: 15px;">
+          	<div style="margin-left: 28px;float: left;width: 150px;">
+	            <label class="control-label" style="font-weight: bold">CPU(核)：</label>
+	            <label class="control-label" style="text-align: left;margin-left: 30px;">{{model.cpus}}</label>
+          	</div>
+          	<div style="margin-left: 62px;float: left;width: 150px;">
+	            <label class="control-label" style="font-weight: bold">内存(GB)：</label>
+	            <label class="control-label" style="text-align: left ;margin-left: 30px;">{{model.rams?model.rams/1024:''}}</label>
+          	</div>
+          </div>
+          <div class="form-group row" style="margin-bottom: 15px;">
+          	<div style="float: left;width: 150px;">
+	            <label class="control-label" style="font-weight: bold">主机数量(台)：</label>
+	            <label class="control-label" style="text-align: left ;margin-left: 30px;">{{model.number}}</label>
+          	</div>
+          	<div style="margin-left: 48px;float: left;width: 180px;">
+	            <label class="control-label" style="font-weight: bold">数据盘容量(GB)：</label>
+            	<label class="control-label" style="text-align: left ;margin-left: 30px;">{{model.dataCapacity}}</label>
+          	</div>
+          </div>
+          
+          <div class="form-group row" style="margin-bottom: 0px;">
+            <label class="col-sm-3 control-label" style="font-weight: bold">镜像名称：</label>
+            <label class="col-sm-9 control-label" style="text-align: left;word-break:break-all; word-wrap:break-all;">{{model.fromImage.imageName}}</label>
+          </div>
+          
+          <div class="row has-error" data-ng-class="checkUsed ? 'show':'hidden'" style="margin-top: 15px;">
+	          <div class="col-md-12">
+		          <div class="has-feedback">
+		          	<label class="control-label" style="font-size: 14px;font-weight: bold">{{checkUsedMsg}}</label>
+		          </div>
+	          </div>
+          </div>
+          
+        </form>
+      </div>
+    </div>
+
+    <h4>项目限定</h4>
+
+    <div style="margin-bottom: 10px;">
+	    <span>云主机数量(台)：</span>
+	    <span style="float: right;" >{{model.project.hostCount}}中的{{model.project.usedVmCount+1*(model.number?model.number:0)}}已使用</span>
+    </div>
+
+    <div class="progress" style="height: 15px;margin-bottom: 12px;">
+      <div class="progress-bar" data-ng-class="100*(model.project.usedVmCount+1*((model.number)?model.number:0))/model.project.hostCount>100?'progress-bar-danger progress_danger':'progress_success'" role="progressbar"  
+       ng-style="{'width': (100*(model.project.usedVmCount+1*((model.number)?model.number:0))/model.project.hostCount)+'%'}" >
+      </div>
+    </div>
+    <div style="margin-bottom: 10px;">
+	    <span>云硬盘数量(块)：</span>
+	    <span style="float: right;" >{{model.project.diskCount}}中的{{model.project.diskCountUse+1*(model.number?model.number:0)+1*(checkVolume?1:0)}}已使用</span>
+    </div>
+
+    <div class="progress" style="height: 15px;margin-bottom: 12px;">
+      <div class="progress-bar" data-ng-class="100*(model.project.diskCountUse+1*((model.number)?model.number:0)+1*(checkVolume?1:0))/model.project.diskCount>100?'progress-bar-danger progress_danger':'progress_success'" role="progressbar"  
+       ng-style="{'width': (100*(model.project.diskCountUse+1*((model.number)?model.number:0)+1*(checkVolume?1:0))/model.project.diskCount)+'%'}" >
+      </div>
+    </div>
+    
+    <div style="margin-bottom: 10px;">
+	    <span style="margin: 0px 0px 5px;" >CPU核数(核)：</span>
+	    <span style="float: right;" >{{model.project.cpuCount}}中的{{model.project.usedCpuCount+1*((model.number&&((model.vmType !='-1'&&model.vmType!=undefined)||(model.vmType =='-1'&&model.cpus)))?model.number*(model.vmType !='-1'? model.vmType.modelVcpus:(1.0*model.cpus)):0)}}已使用</span>
+    </div>
+
+    <div class="progress" style="height: 15px;margin-bottom: 12px;">
+      <div class="progress-bar" data-ng-class="100*(model.project.usedCpuCount+1*((model.number&&((model.vmType !='-1'&&model.vmType!=undefined)||(model.vmType =='-1'&&model.cpus!='')))?model.number*(model.vmType !='-1'? model.vmType.modelVcpus:(1.0*model.cpus)):0))/model.project.cpuCount>100?'progress-bar-danger progress_danger':'progress_success'" role="progressbar"
+       ng-style="{'width': (100*(model.project.usedCpuCount+1*((model.number&&((model.vmType !='-1'&&model.vmType!=undefined)||(model.vmType =='-1'&&model.cpus!='')))?model.number*(model.vmType !='-1'? model.vmType.modelVcpus:(1.0*model.cpus)):0))/model.project.cpuCount)+'%'}" >
+      </div>
+    </div>
+    <div style="margin-bottom: 10px;">
+	    <span style="margin: 0px 0px 5px;" >内存总计(GB)：</span>
+	    <span style="float: right;" >{{model.project.memory/1024}}中的{{(model.project.usedRam+1*((model.number&&((model.vmType !='-1'&&model.vmType!=undefined)||(model.vmType =='-1'&&model.rams)))?
+	    model.number*(model.vmType !='-1'? model.vmType.modelRam:model.rams):0))/1024}}已使用</span>
+    </div>
+    <div class="progress" style="height: 15px;margin-bottom: 12px;">
+      <div class="progress-bar" data-ng-class="100*(model.project.usedRam+1*((model.number&&((model.vmType !='-1'&&model.vmType!=undefined)||(model.vmType =='-1'&&model.rams)))?
+	    model.number*(model.vmType !='-1'? model.vmType.modelRam:model.rams):0))/model.project.memory>100?'progress-bar-danger progress_danger':'progress_success'" role="progressbar" 
+		ng-style="{'width': (100*(model.project.usedRam+1*((model.number&&((model.vmType !='-1'&&model.vmType!=undefined)||(model.vmType =='-1'&&model.rams)))?
+	    model.number*(model.vmType !='-1'? model.vmType.modelRam:model.rams):0))/model.project.memory)+'%'}" >
+      </div>
+    </div>
+    <div style="margin-bottom: 10px;">
+	    <span style="margin: 0px 0px 5px;" >云硬盘容量总计(GB)：</span>
+	    <span style="float: right;" >{{model.project.diskCapacity}}中的{{model.project.usedDataCapacity+1*((model.number&&checkVolume)?model.number*model.dataCapacity:0)+1*((model.number&&model.osType)?model.number*model.disks:0)}}已使用</span>
+    </div>
+
+    <div class="progress" style="height: 15px;margin-bottom: 12px;">
+      <div class="progress-bar" data-ng-class="100*(model.project.usedDataCapacity+1*((model.number&&checkVolume)?model.number*model.dataCapacity:0)+
+      1*((model.number&&model.disks)?model.number*model.disks:0))/model.project.diskCapacity>100?'progress-bar-danger progress_danger':'progress_success'" role="progressbar" 
+      ng-style="{'width': (model.project.usedDataDiskPrecent+1*((model.number&&checkVolume)?100*model.number*model.dataCapacity/model.project.diskCapacity:0)
+      +1*((model.number&&model.disks)?100*model.number*model.disks/model.project.diskCapacity:0))+'%'}" >
+      </div>
+    </div>
+  </div>
+</div>

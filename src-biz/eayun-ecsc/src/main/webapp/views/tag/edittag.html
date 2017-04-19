@@ -1,0 +1,41 @@
+<div class="modal-header">
+    <span class="modal-title">编辑标签</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+
+<div class="modal-body" style="width: 600px;">
+    <form class="ey-form" name="edittag" novalidate>
+        <div class="ey-form-group" >
+            <label class="ey-form-label ey-required">标签类别：</label>
+
+            <input type="text" class="ey-form-input ey-form-w6"  name="name"
+                       data-ng-model="tagGroup.abbreviation" disabled="true">
+        </div>
+
+        <div class="ey-form-group" data-ng-class="(edittag.name.$dirty && edittag.name.$invalid)?'ey-has-error':''">
+            <label class="ey-form-label ey-required">标签名称：</label>
+
+            <input type="text" class="ey-form-input ey-form-w6" placeholder="请输入标签名称" name="name"
+                   data-ng-model="editTagModel.name" required
+                   data-ajax-valid="checkTagName(value)" maxlength=10/>
+            <span ng-show="edittag.name.$dirty && edittag.name.$error.required && !nameflag">标签名称不能为空</span>
+            <span ng-show="edittag.name.$dirty && edittag.name.$error.ajaxValid && !nameflag">标签名称已存在</span>
+            <span ng-if="nameflag">请输入1-10位字符,支持数字、中英文、下划线、空格</span>
+        </div>
+
+        <div class="ey-form-group">
+            <label class="ey-form-label">描述：</label>
+
+            <textarea type="text" class="ey-form-textarea ey-form-w6" placeholder="请输入描述"
+                      data-ng-model="editTagModel.description" maxlength="200"></textarea>
+        </div>
+    </form>
+</div>
+
+<div class="ey-modal-footer">
+    <div class="ey-btn-group">
+        <button type="button" class="ey-btn ey-btn-primary"
+                ng-click="commit()" ng-disabled="!edittag.$valid">确定</button>
+        <button type="button" class="ey-btn ey-btn-default"
+                ng-click="cancel()">取 消</button>
+    </div>
+</div>

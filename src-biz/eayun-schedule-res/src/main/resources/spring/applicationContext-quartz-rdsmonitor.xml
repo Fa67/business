@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<bean id="instanceVolumeDetailGatherJob"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.database.monitor.job.InstanceVolumeDetailGatherJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataAsMap">
+			<map>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="rdsMonirotSummaryGatherJob_3min"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.database.monitor.job.RdsMonitorSummaryGatherJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="interval" value="3min"></entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="rdsMonirotSummaryGatherJob_5min"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.database.monitor.job.RdsMonitorSummaryGatherJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="interval" value="5min"></entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="rdsMonirotSummaryGatherJob_10min"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.database.monitor.job.RdsMonitorSummaryGatherJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="interval" value="10min"></entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="rdsMonirotSummaryGatherJob_1h"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.database.monitor.job.RdsMonitorSummaryGatherJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="interval" value="1h"></entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="rdsMonirotSummaryGatherJob_1d"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.database.monitor.job.RdsMonitorSummaryGatherJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="interval" value="1d"></entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="instanceVolumeDetailGatherTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="instanceVolumeDetailGatherJob"></property>
+		<property name="cronExpression" value="0 0/1 * * * ? *"></property>
+	</bean>
+
+	<bean id="rdsMonirotSummaryGatherTrigger_3min"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="rdsMonirotSummaryGatherJob_3min"></property>
+		<property name="cronExpression" value="5 0/3 * * * ? *"></property>
+	</bean>
+	<bean id="rdsMonirotSummaryGatherTrigger_5min"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="rdsMonirotSummaryGatherJob_5min"></property>
+		<property name="cronExpression" value="5 0/5 * * * ? *"></property>
+	</bean>
+	<bean id="rdsMonirotSummaryGatherTrigger_10min"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="rdsMonirotSummaryGatherJob_10min"></property>
+		<property name="cronExpression" value="6 0/10 * * * ? *"></property>
+	</bean>
+	<bean id="rdsMonirotSummaryGatherTrigger_1h"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="rdsMonirotSummaryGatherJob_1h"></property>
+		<property name="cronExpression" value="10 0 0/1 * * ? *"></property>
+	</bean>
+	<bean id="rdsMonirotSummaryGatherTrigger_1d"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="rdsMonirotSummaryGatherJob_1d"></property>
+		<property name="cronExpression" value="0 4 0 * * ? *"></property><!--每天零点4分执行  -->
+	</bean>
+
+	<!-- 定时任务调度器 -->
+	<bean class="com.eayun.common.job.EayunSchedulerFactoryBean" id="RdsMonitorSchedulerFactory">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+		<property name="configLocation" value="classpath:quartz.properties" />
+		<property name="triggers">
+			<list>
+				<ref bean="rdsMonirotSummaryGatherTrigger_3min" />
+				<ref bean="rdsMonirotSummaryGatherTrigger_5min" />
+				<ref bean="rdsMonirotSummaryGatherTrigger_10min" />
+				<ref bean="rdsMonirotSummaryGatherTrigger_1h" />
+				<ref bean="rdsMonirotSummaryGatherTrigger_1d" />
+				<ref bean="instanceVolumeDetailGatherTrigger" />
+			</list>
+		</property>
+	</bean>
+</beans>

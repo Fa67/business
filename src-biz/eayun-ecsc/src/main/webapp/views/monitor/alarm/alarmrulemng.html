@@ -1,0 +1,42 @@
+<!-- Tab panes -->
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active" id="alarmRuleList">
+  		<div class = "ey-search-bar ey-search-bar-white">
+			<button class="ey-btn ey-btn-primary" style="margin-right: 20px;" data-ng-click="createAlarmRule()">
+				<span class="eayunfont ef-plus" aria-hidden="true"></span><span>创建报警规则</span>
+			</button>
+			<eayun-search-text value="model.alarmRuleName" search="queryAlarmRule()" placeholder="请输入名称搜索"></eayun-search-text>
+		</div>
+    <eayun-table data-api="alarmRuleTable.api" data-ajax-source="alarmRuleTable.source" data-param="alarmRuleTable.getParams"
+                data-result="alarmRuleTable.result">
+      <table class="ey-table">
+		<thead>
+	        <tr>
+	          <th>名称</th>
+	          <th>触发条件</th>
+	          <th>
+	          	<eayun-table-filter list-data="itemStatus" text-field="text" item-clicked="monitorItemClicked($item, $event)"></eayun-table-filter>
+	          </th>
+	          <th>报警对象数量</th>
+	          <th>最后修改时间</th>
+	          <th>操作</th>
+	        </tr>
+        </thead>
+        <tbody><tr data-ng-repeat="alarmRule in alarmRuleTable.result">
+	          <td title = "{{alarmRule.name}}" class="click-td" data-ng-click="showAlarmRuleDetail(alarmRule.id)" >{{alarmRule.name}}</td>
+	          <td title = "{{alarmRule.triggerCondition}}">{{alarmRule.triggerCondition}}</td>
+	          <td>{{alarmRule.monitorItemName}}</td>
+	          <td>{{alarmRule.alarmObjectNumber}}</td>
+	          <td>{{alarmRule.lastModifyTime}}</td>
+	          <td>
+	          	<div class = "ey-btn-group">
+	          		<button class="ey-btn" ng-click="copyAlarmRule(alarmRule)">复制</button>
+	          		<button class="ey-btn" ng-click="deleteAlarmRule(alarmRule)"><span class="ey-text-error">删除</span></button>
+	          	</div>
+	          </td>
+	        </tr></tbody>
+      </table>
+      <eayun-table-page></eayun-table-page>
+    </eayun-table>
+  </div>
+</div>

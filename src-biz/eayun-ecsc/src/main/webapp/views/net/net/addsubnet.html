@@ -1,0 +1,359 @@
+<style type="text/css">
+	.cidr-div{
+		border: 1px solid #ccc;
+		border-radius:4px;
+	}
+	.cidr-error{
+		border: 1px solid #EA3200;
+		border-radius:4px;
+	}
+	.cidr-show{
+		text-align: left!important;
+		padding-left: 8%;
+		height: 20px;
+	}
+	.cidr-show-error{
+		text-align: left!important;
+		padding-left: 8%;
+		height: 20px;
+		color: #EA3200;
+	}
+</style>
+<div class="modal-header">
+	<span class="modal-title">{{type == 'add1' ? '增加子网' : '编辑子网'}}</span>
+	<span class="eayunfont ef-close ey-font-huge" data-ng-style="{'cursor':(visible ? 'not-allowed' : 'pointer')}" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 770px;min-height: 230px;">
+	<form class="ey-form" name="addSubNetWork" novalidate>
+		<div class="ey-form-group"
+			 data-ng-class="(addSubNetWork.subnetName.$dirty && addSubNetWork.subnetName.$invalid) ? 'ey-has-error' : ''">
+			<label class="ey-form-label ey-required">
+				子网名称：
+			</label>
+			<input type="text" class="ey-form-input ey-form-w6"
+				   data-ng-model="subNetWork.subnetName" maxlength="20"
+				   name="subnetName" placeholder="请输入子网名称"
+				   data-ajax-valid="checkSubNetName(value)"
+				   data-ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/'
+				   data-ng-disabled="visible"
+				   required>
+			<span class="ey-text-tip ey-has-error"
+				  data-ng-show="addSubNetWork.subnetName.$dirty && addSubNetWork.subnetName.$error.ajaxValid">
+				子网名称已存在
+			</span>
+			<span class="ey-text-tip ey-has-error"
+				  data-ng-show="addSubNetWork.subnetName.$dirty && addSubNetWork.subnetName.$invalid && !addSubNetWork.subnetName.$error.ajaxValid">
+				请输入1-20位字符,支持数字、中英文、下划线、空格
+			</span>
+		</div>
+		<div class="ey-form-group" data-ng-if="type != 'edit'" style="margin-bottom: 0px;">
+			<label class="ey-form-label">子网类型：</label>
+			<div class="ey-form-radio">
+				<input id="1" type="radio" data-ng-model="subNetWork.subnetType" value="1" data-ng-disabled="visible" required>
+				<label for="1" style="margin-right: 20px;">受管</label>
+				<input id="2" type="radio" data-ng-model="subNetWork.subnetType" value="0" data-ng-disabled="visible" required>
+				<label for="2">自管</label>
+			</div>
+			<br>
+		</div>
+		<div class="ey-form-group" data-ng-if="type != 'edit'">
+			<span class="ey-text-tip" data-ng-show="subNetWork.subnetType == '1'">受管子网可以使用公网IP、负载均衡、VPN等高级功能</span>
+			<span class="ey-text-tip" data-ng-show="subNetWork.subnetType == '0'">自管子网需要您自行配置和管理，无法使用高级功能</span>
+		</div>
+		<div class="ey-form-group" data-ng-show="type!='edit'" style="margin-bottom: 0px;">
+			<label class="ey-form-label">网络地址：</label>
+		</div>
+		<div class="ey-form-group" data-ng-show="type!='edit'" style="padding-left: 90px;">
+			<div class="ey-form-w11" data-ng-class="cidrError ? 'cidr-error' : 'cidr-div'" style="margin-top: 10px;">
+				<table class="col-sm-12">
+					<tbody>
+						<tr class="col-sm-12" style="padding-top: 10px;">
+							<td>
+								<div class="ey-form-radio">
+									<input id="testA" type="radio" name="radio" data-ng-model="cidr" value="A" data-ng-disabled="visible" data-ng-click="changeRadio()">
+									<label for="testA"></label>
+								</div>
+							</td>
+							<td class="col-sm-2">
+								<input type="text" class="ey-form-input ey-form-w1" value="10" disabled="disabled">
+							</td>
+							<td>.</td>
+							<td class="col-sm-2">
+								<input type="text" class="ey-form-input ey-form-w1" data-ng-model="ab"
+									   data-ng-class="abError ? 'ey-has-error' : ''"
+									   data-ng-change="checkTypeCidr('ab','focus')"
+									   data-ng-focus="checkTypeCidr('ab','focus')"
+									   data-ng-blur="checkTypeCidr('ab','blur')"
+									   data-ng-disabled="aTypeDis || visible">
+							</td>
+							<td>.</td>
+							<td class="col-sm-2">
+								<input type="text" class="ey-form-input ey-form-w1" data-ng-model="ac"
+									   data-ng-class="acError ? 'ey-has-error' : ''"
+									   data-ng-change="checkTypeCidr('ac','focus')"
+									   data-ng-focus="checkTypeCidr('ac','focus')"
+									   data-ng-blur="checkTypeCidr('ac','blur')"
+									   data-ng-disabled="aTypeDis || visible">
+							</td>
+							<td>.</td>
+							<td class="col-sm-2">
+								<input type="text" class="ey-form-input ey-form-w1" value="0" disabled="disabled">
+							</td>
+							<td>/</td>
+							<td class="col-sm-2">
+								<input type="text" class="ey-form-input ey-form-w1" data-ng-model="ae"
+									   data-ng-class="aeError ? 'ey-has-error' : ''"
+									   data-ng-change="checkTypeCidr('ae','focus')"
+									   data-ng-focus="checkTypeCidr('ae','focus')"
+									   data-ng-blur="checkTypeCidr('ae','blur')"
+									   data-ng-disabled="aTypeDis || visible">
+							</td>
+						</tr>
+						<tr class="col-sm-12" style="padding-top: 5px;">
+							<td>
+								<div class="ey-form-radio">
+									<input id="testB" type="radio" name="radio" data-ng-model="cidr" value="B" data-ng-disabled="visible" data-ng-click="changeRadio()" >
+									<label for="testB"></label>
+								</div>
+							</td>
+							<td class="col-sm-2">
+								<input type="text" class="ey-form-input ey-form-w1" value="172" disabled="disabled">
+							</td>
+							<td>.</td>
+							<td class="col-sm-2">
+								<input type="text" class="ey-form-input ey-form-w1" data-ng-model="bb"
+									   data-ng-class="bbError ? 'ey-has-error' : ''"
+									   data-ng-change="checkTypeCidr('bb','focus')"
+									   data-ng-focus="checkTypeCidr('bb','focus')"
+									   data-ng-blur="checkTypeCidr('bb','blur')"
+									   data-ng-disabled="bTypeDis || visible">
+							</td>
+							<td>.</td>
+							<td class="col-sm-2">
+								<input type="text" class="ey-form-input ey-form-w1" data-ng-model="bc"
+									   data-ng-class="bcError ? 'ey-has-error' : ''"
+									   data-ng-change="checkTypeCidr('bc','focus')"
+									   data-ng-focus="checkTypeCidr('bc','focus')"
+									   data-ng-blur="checkTypeCidr('bc','blur')"
+									   data-ng-disabled="bTypeDis || visible">
+							</td>
+							<td>.</td>
+							<td class="col-sm-2">
+								<input type="text" class="ey-form-input ey-form-w1" value="0" disabled="disabled">
+							</td>
+							<td>/</td>
+							<td class="col-sm-2">
+								<input type="text" class="ey-form-input ey-form-w1" data-ng-model="be"
+									   data-ng-class="beError ? 'ey-has-error' : ''"
+									   data-ng-change="checkTypeCidr('be','focus')"
+									   data-ng-focus="checkTypeCidr('be','focus')"
+									   data-ng-blur="checkTypeCidr('be','blur')"
+									   data-ng-disabled="bTypeDis || visible">
+							</td>
+						</tr>
+						<tr class="col-sm-12" style="padding-top:5px;padding-bottom: 10px;">
+							<td>
+								<div class="ey-form-radio">
+									<input id="testC" type="radio" name="radio" data-ng-model="cidr" value="C" data-ng-disabled="visible" data-ng-click="changeRadio()">
+									<label for="testC"></label>
+								</div>
+							</td>
+							<td class="col-sm-2">
+								<input type="text" class="ey-form-input ey-form-w1" value="192" disabled="disabled">
+							</td>
+							<td>.</td>
+							<td class="col-sm-2">
+								<input type="text" class="ey-form-input ey-form-w1" value="168" disabled="disabled">
+							</td>
+							<td>.</td>
+							<td class="col-sm-2">
+								<input type="text" class="ey-form-input ey-form-w1" data-ng-model="cc"
+									   data-ng-class="ccError ? 'ey-has-error' : ''"
+									   data-ng-change="checkTypeCidr('cc','focus')"
+									   data-ng-focus="checkTypeCidr('cc','focus')"
+									   data-ng-blur="checkTypeCidr('cc','blur')"
+									   data-ng-disabled="cTypeDis || visible">
+							</td>
+							<td>.</td>
+							<td class="col-sm-2">
+								<input type="text" class="ey-form-input ey-form-w1" value="0" disabled="disabled">
+							</td>
+							<td>/</td>
+							<td class="col-sm-2">
+								<input type="text" class="ey-form-input ey-form-w1" value="24" disabled="disabled">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<span class="ey-text-tip">说明：默认DNS为<span>{{dns}}</span>，创建子网成功后DNS可编辑<br></span>
+			<span class="ey-text-tip" data-ng-class="cidrShowError ? 'cidr-show-error' : 'cidr-show'">{{range}}</span>
+		</div>
+		<div class="ey-form-group" data-ng-show="type == 'edit'">
+			<label class="ey-form-label">DNS配置：</label>
+			<div class="ey-form-w10" style="padding-top: 10px">
+				<div class="col-sm-11" data-ng-class="dnsError ? 'cidr-error' : 'cidr-div'">
+					<table class="col-sm-12">
+						<tbody>
+							<tr class="col-sm-12" style="padding-top: 10px;"
+								data-ng-class="dnsa.checkDNS ? 'ey-has-error' : ''">
+								<td>
+									<div class="ey-form-checkbox">
+										<input id="dnsA" type="checkbox" data-ng-model="dnsa.check"
+											   data-ng-click="changeDnsBox(dnsa,'a')" style="width: 16px;height: 16px;">
+										<label for="dnsA"></label>
+									</div>
+								</td>
+								<td class="col-sm-3">
+									<input type="text" class="ey-form-input ey-form-w1" data-ng-model="dnsa.addr1.val"
+										   data-ng-class="dnsa.addr1.error ? 'ey-has-error' : ''"
+										   data-ng-disabled="!dnsa.check" maxlength="3"
+										   data-ng-change="checkDNS(dnsa.addr1)"
+										   data-ng-focus="checkDNS(dnsa.addr1)"
+										   data-ng-blur="checkDNS(dnsa.addr1,'dis')">
+								</td>
+								<td>.</td>
+								<td class="col-sm-3">
+									<input type="text" class="ey-form-input ey-form-w1" maxlength="3" data-ng-model="dnsa.addr2.val"
+										   data-ng-class="dnsa.addr2.error ? 'ey-has-error' : ''"
+										   data-ng-change="checkDNS(dnsa.addr2)"
+										   data-ng-focus="checkDNS(dnsa.addr2)"
+										   data-ng-blur="checkDNS(dnsa.addr2,'dis')"
+										   data-ng-disabled="!dnsa.check">
+								</td>
+								<td>.</td>
+								<td class="col-sm-3">
+									<input type="text" class="ey-form-input ey-form-w1" maxlength="3" data-ng-model="dnsa.addr3.val"
+										   data-ng-class="dnsa.addr3.error ? 'ey-has-error' : ''"
+										   data-ng-change="checkDNS(dnsa.addr3)"
+										   data-ng-focus="checkDNS(dnsa.addr3)"
+										   data-ng-blur="checkDNS(dnsa.addr3,'dis')"
+										   data-ng-disabled="!dnsa.check">
+								</td>
+								<td>.</td>
+								<td class="col-sm-3">
+									<input type="text" class="ey-form-input ey-form-w1" maxlength="3" data-ng-model="dnsa.addr4.val"
+										   data-ng-class="dnsa.addr4.error ? 'ey-has-error' : ''"
+										   data-ng-change="checkDNS(dnsa.addr4)"
+										   data-ng-focus="checkDNS(dnsa.addr4)"
+										   data-ng-blur="checkDNS(dnsa.addr4,'dis')"
+										   data-ng-disabled="!dnsa.check">
+								</td>
+							</tr>
+							<tr class="col-sm-12" style="padding-top: 5px;"
+								data-ng-class="dnsb.checkDNS ? 'ey-has-error' : ''">
+								<td>
+									<div class="ey-form-checkbox">
+										<input id="dnsB" type="checkbox" data-ng-model="dnsb.check"
+											   data-ng-click="changeDnsBox(dnsb,'b')" style="width: 16px;height: 16px;">
+										<label for="dnsB"></label>
+									</div>
+								</td>
+								<td class="col-sm-3">
+									<input type="text" class="ey-form-input ey-form-w1" maxlength="3" data-ng-model="dnsb.addr1.val"
+										   data-ng-class="dnsb.addr1.error ? 'ey-has-error' : ''"
+										   data-ng-change="checkDNS(dnsb.addr1)"
+										   data-ng-focus="checkDNS(dnsb.addr1)"
+										   data-ng-blur="checkDNS(dnsb.addr1,'dis')"
+										   data-ng-disabled="!dnsb.check">
+								</td>
+								<td>.</td>
+								<td class="col-sm-3">
+									<input type="text" class="ey-form-input ey-form-w1" maxlength="3" data-ng-model="dnsb.addr2.val"
+										   data-ng-class="dnsb.addr2.error ? 'ey-has-error' : ''"
+										   data-ng-change="checkDNS(dnsb.addr2)"
+										   data-ng-focus="checkDNS(dnsb.addr2)"
+										   data-ng-blur="checkDNS(dnsb.addr2,'dis')"
+										   data-ng-disabled="!dnsb.check">
+								</td>
+								<td>.</td>
+								<td class="col-sm-3">
+									<input type="text" class="ey-form-input ey-form-w1"  maxlength="3" data-ng-model="dnsb.addr3.val"
+										   data-ng-class="dnsb.addr3.error ? 'ey-has-error' : ''"
+										   data-ng-change="checkDNS(dnsb.addr3)"
+										   data-ng-focus="checkDNS(dnsb.addr3)"
+										   data-ng-blur="checkDNS(dnsb.addr3,'dis')"
+										   data-ng-disabled="!dnsb.check">
+								</td>
+								<td>.</td>
+								<td class="col-sm-3">
+									<input type="text" class="ey-form-input ey-form-w1" maxlength="3" data-ng-model="dnsb.addr4.val"
+										   data-ng-class="dnsb.addr4.error ? 'ey-has-error' : ''"
+										   data-ng-change="checkDNS(dnsb.addr4)"
+										   data-ng-focus="checkDNS(dnsb.addr4)"
+										   data-ng-blur="checkDNS(dnsb.addr4,'dis')"
+										   data-ng-disabled="!dnsb.check">
+								</td>
+							</tr>
+							<tr class="col-sm-12" style="padding-top:5px;padding-bottom: 10px;"
+								data-ng-class="dnsc.checkDNS ? 'ey-has-error' : ''">
+								<td>
+									<div class="ey-form-checkbox">
+										<input id="dnsC" type="checkbox" data-ng-model="dnsc.check"
+											   data-ng-click="changeDnsBox(dnsc,'c')" style="width: 16px;height: 16px;">
+										<label for="dnsC"></label>
+									</div>
+								</td>
+								<td class="col-sm-3">
+									<input type="text" class="ey-form-input ey-form-w1" maxlength="3" data-ng-model="dnsc.addr1.val"
+										   data-ng-class="dnsc.addr1.error ? 'ey-has-error' : ''"
+										   data-ng-change="checkDNS(dnsc.addr1)"
+										   data-ng-focus="checkDNS(dnsc.addr1)"
+										   data-ng-blur="checkDNS(dnsc.addr1,'dis')"
+										   data-ng-disabled="!dnsc.check">
+								</td>
+								<td>.</td>
+								<td class="col-sm-3">
+									<input type="text" class="ey-form-input ey-form-w1" maxlength="3"
+										   data-ng-class="dnsc.addr2.error ? 'ey-has-error' : ''"
+										   data-ng-model="dnsc.addr2.val"
+										   data-ng-change="checkDNS(dnsc.addr2)"
+										   data-ng-focus="checkDNS(dnsc.addr2)"
+										   data-ng-blur="checkDNS(dnsc.addr2,'dis')"
+										   data-ng-disabled="!dnsc.check">
+								</td>
+								<td>.</td>
+								<td class="col-sm-3">
+									<input type="text" class="ey-form-input ey-form-w1" maxlength="3" data-ng-model="dnsc.addr3.val"
+										   data-ng-class="dnsc.addr3.error ? 'ey-has-error' : ''"
+										   data-ng-change="checkDNS(dnsc.addr3)"
+										   data-ng-focus="checkDNS(dnsc.addr3)"
+										   data-ng-blur="checkDNS(dnsc.addr3,'dis')"
+										   data-ng-disabled="!dnsc.check">
+								</td>
+								<td>.</td>
+								<td class="col-sm-3">
+									<input type="text" class="ey-form-input ey-form-w1" maxlength="3" data-ng-model="dnsc.addr4.val"
+										   data-ng-class="dnsc.addr4.error ? 'ey-has-error' : ''"
+										   data-ng-change="checkDNS(dnsc.addr4)"
+										   data-ng-focus="checkDNS(dnsc.addr4)"
+										   data-ng-blur="checkDNS(dnsc.addr4,'dis')"
+										   data-ng-disabled="!dnsc.check">
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<span class="ey-text-tip cidr-show" ng-class="dnsShowError || dnsNonformat ? 'cidr-show-error' : ''">{{dnsShowError ? dnsErrMsg : dnsInfoMsg}}</span>
+			</div>
+		</div>
+
+	</form>
+</div>
+<div class="ey-modal-footer ey-btn-group" >
+	<div class="ey-btn-group">
+		<button type="button"
+				class="ey-btn ey-btn-primary"
+				data-ng-click="commit()"
+				data-ng-hide="visible"
+				data-ng-disabled="addSubNetWork.$invalid || btnDis || (type!='edit' && (cidr==null || cidrError))||(type=='edit'&&dnsError)">
+			确 定
+		</button>
+		<button type="button" class="ey-btn" disabled data-ng-show="visible">
+			<span class="eayunfont ef-load" style="margin-right: 0px;color: #999999;"></span>
+		</button>
+		<button type="button" class="ey-btn ey-btn-default" data-ng-disabled="btnDis" data-ng-click="cancel()">
+			取 消
+		</button>
+	</div>
+</div>

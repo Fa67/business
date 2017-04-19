@@ -1,0 +1,997 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ErrorList>
+<!-- 项目转译开始 -->
+	<Error>
+		<error>badRequest-->Malformed request url</error>
+		<transfer>服务异常，请稍后重试或联系客服</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Security group id should be uuid</error>
+		<transfer>服务异常，请稍后重试或联系客服</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Invalid input received: ram must be an integer</error>
+		<transfer>内存必须为整数</transfer>
+	</Error>
+	<Error>
+		<error>error-->Conflict occurred attempting to store project - Duplicate Entry</error>
+		<transfer>该项目已存在，不能重复创建</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Quota limit @ for ram must be greater than or equal to already used and reserved @.</error>
+		<transfer>修改的内存配额必须大于已使用的配额</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Quota limit @ for instances must be greater than or equal to already used and reserved @.</error>
+		<transfer>修改的云主机数量配额必须大于已使用的配额</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Quota value @ instances are less than already used and reserved @</error>
+		<transfer>项目云主机配额应不小于资源保有量</transfer> 
+	</Error>
+	<Error>
+		<error>NeutronError-->Quota exceeded for resources: ['port']</error>
+		<transfer>端口数量超过项目规定限额，请申请配额</transfer> 
+	</Error>
+	<Error>
+		<error>itemNotFound-->The resource could not be found.</error>
+		<transfer>资源不存在</transfer> 
+	</Error>
+<!-- 项目转义结束 -->
+<!-- 云硬盘转译开始 -->
+    <Error>
+		<error>badRequest-->Invalid volume: Volume to be restored to must be available</error>
+		<transfer>云硬盘状态不为空闲中，无法回滚</transfer>
+	</Error>
+    <Error>
+		<error>conflictingRequest-->Cannot 'attach_volume' while instance is in vm_state suspended</error>
+		<transfer>云主机已暂停服务，无法挂载云硬盘</transfer>
+	</Error>
+    <Error>
+		<error>conflictingRequest-->Cannot 'attach_volume' while instance is in task_state powering-off</error>
+		<transfer>云主机关机中无法绑定云硬盘，请稍候再试</transfer>
+	</Error>
+    <Error>
+		<error>badRequest-->Invalid volume: Volume status must be available or error, but current status is: backing-up</error>
+		<transfer>云硬盘快照创建中，请稍候</transfer>
+	</Error>
+    <Error>
+		<error>badRequest-->Invalid input received: Invalid volume: Unable to detach volume. Volume status must be 'in-use' and attach_status must be 'attached' to detach. Currently: status: 'detaching', attach_status: 'attached'</error>
+		<transfer>无法解绑云硬盘，请确认云硬盘状态为使用中</transfer>
+	</Error>
+    <Error>
+		<error>badRequest-->Invalid input received: Invalid volume: Unable to detach volume. Volume status must be 'in-use' and attach_status must be 'attached' to detach. Currently: status: 'available', attach_status: 'detached'</error>
+		<transfer>无法解绑云硬盘，请确认云硬盘状态为使用中</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Invalid volume: status must be 'available'</error>
+		<transfer>云硬盘已被使用，请刷新后查看</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'detach_volume' while instance is in task_state powering-on</error>
+		<transfer>云主机正在启动，请稍后重试</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Instance @ in task_state powering-off. Cannot stop while the instance is in this state.</error>
+		<transfer>云主机关机中，请稍候</transfer>
+	</Error>
+	<Error>
+		<error>forbidden-->Can't detach root device volume</error>
+		<transfer>云主机正在关机中，请稍后重试</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'detach_volume' while instance is in vm_state suspended</error>
+		<transfer>云主机正在挂起，请稍后重试</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Instance @ in task_state powering-off. Cannot force_delete while the instance is in this state.</error>
+		<transfer>云主机关机中，请稍候再试</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'detach_volume' while instance is in vm_state error</error>
+		<transfer>错误状态的云主机无法解绑云硬盘</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'detach_volume' while instance is in task_state image_uploading</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'attach_volume' while instance is in task_state image_pending_upload</error>
+		<transfer>当前云主机正在创建自定义镜像，请稍后重试</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'attach_volume' while instance is in task_state image_snapshot</error>
+		<transfer>当前云主机正在创建自定义镜像，请稍后重试</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'attach_volume' while instance is in task_state image_uploading</error>
+		<transfer>当前云主机正在创建自定义镜像，请稍后重试</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'resize' while instance is in task_state image_pending_upload</error>
+		<transfer>当前云主机正在创建自定义镜像，请稍后重试</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'reboot' while instance is in task_state image_pending_upload</error>
+		<transfer>当前云主机正在创建自定义镜像，请稍后重试</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'createImage' while instance is in task_state image_uploading</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'createImage' while instance is in task_state image_pending_upload</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'createImage' while instance is in task_state deleting</error>
+		<transfer>云主机删除中，无法创建自定义镜像</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'suspend' while instance is in task_state image_pending_upload</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Instance @ in task_state image_pending_upload. Cannot stop while the instance is in this state.</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'suspend' while instance is in task_state image_uploading</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'reboot' while instance is in task_state image_uploading</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'resize' while instance is in task_state resize_prep</error>
+		<transfer>云主机正在准备调整中，请稍后重试</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'resize' while instance is in task_state image_uploading</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'createImage' while instance is in task_state image_snapshot</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'resume' while instance is in task_state image_pending_upload</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'resume' while instance is in task_state image_uploading</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'rebuild' while instance is in task_state image_uploading</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Instance @ in task_state image_uploading. Cannot start while the instance is in this state.</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Instance @ in task_state image_uploading. Cannot stop while the instance is in this state.</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'detach_volume' while instance is in task_state deleting</error>
+		<transfer>挂载的云主机正在删除，无法执行解绑操作</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'suspend' while instance is in task_state suspending</error>
+		<transfer>云主机暂停服务中，请稍候</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'detach_volume' while instance is in task_state suspending</error>
+		<transfer>云主机暂停服务中，请稍候再试</transfer>
+	</Error>
+	<Error>
+		<error>itemNotFound-->volume_id not found</error>
+		<transfer>未找到该云硬盘</transfer>
+	</Error>
+	<Error>
+		<error>itemNotFound-->Instance @ could not be found.</error>
+		<transfer>云主机已不存在</transfer>
+	</Error>
+	<Error>
+		<error>itemNotFound-->ImageNotFound: Image @ could not be found</error>
+		<transfer>镜像已不存在</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Invalid input received: Image @ is not active.</error>
+		<transfer>镜像非就绪状态，请稍后</transfer>
+	</Error>
+	<Error>
+		<error>overLimit-->VolumeLimitExceeded: Maximum number of volumes allowed (@) exceeded</error>
+		<transfer>云硬盘数量超过项目规定限额，请申请配额</transfer>
+	</Error> 
+	<Error>
+		<error>overLimit-->VolumeSizeExceedsAvailableQuota: Requested volume or snapshot exceeds allowed Gigabytes quota. Requested @G, quota is @G and @G has been consumed.</error>
+		<transfer>云硬盘与云硬盘快照容量之和超过项目规定限额，请申请配额</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Invalid input received: Volume size @GB cannot be smaller than the snapshot size @GB.They must be >=original snapshot size.</error>
+		<transfer>云硬盘容量不能小于快照大小</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Invalid volume: Volume still has @ dependent snapshots</error>
+		<transfer>已基于云硬盘创建快照，无法删除</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Invalid volume: Volume status must be available or error, but current status is: in-use</error>
+		<transfer>云硬盘已被挂载，需解绑后重新操作</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Invalid volume: Volume status must be available or error, but current status is: detaching</error>
+		<transfer>云硬盘正在解绑中，需解绑后重新操作</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Invalid volume: Volume status must be available or error, but current status is: deleting</error>
+		<transfer>云硬盘正在删除中，请稍后重新操作</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Invalid volume: Volume must be attached in order to detach.</error>
+		<transfer>云硬盘必须为使用中才可解绑</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Instance @ in vm_state active. Cannot start while the instance is in this state.</error>
+		<transfer>云主机启动中，请稍候</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'reboot' while instance is in task_state reboot_started</error>
+		<transfer>云主机重启中，请稍候</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Unable to associate floating ip @ to fixed ip @ for instance @. Error: Cannot associate floating IP @ (@) with port @ using fixed IP @, as that fixed IP already has a floating IP on external network @.</error>
+		<transfer>公网IP已绑定，不可重复操作</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'reboot' while instance is in task_state powering-off</error>
+		<transfer>云主机关机中，无法重启</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Instance @ in task_state reboot_started. Cannot stop while the instance is in this state.</error>
+		<transfer>云主机重启中，无法关机</transfer> 
+	</Error>
+	<Error>
+		<error>badRequest-->Instance @ in task_state powering-off. Cannot force_delete while the instance is in this state.</error>
+		<transfer>云主机关机中，请稍候再试</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'reboot' while instance is in vm_state stopped</error>
+		<transfer>云主机已关机，无法重启</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Instance @ in vm_state stopped. Cannot stop while the instance is in this state.</error>
+		<transfer>云主机已关机，状态异常请联系客服</transfer> 
+	</Error>
+	<Error>
+		<error>badRequest-->Instance @ in task_state deleting. Cannot force_delete while the instance is in this state.</error>
+		<transfer>云主机删除中，请稍候</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Instance @ in task_state restoring. Cannot force_delete while the instance is in this state.</error>
+		<transfer>云主机正在从回收站中恢复，无法删除</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'detach_interface' while instance is in task_state image_uploading</error>
+		<transfer>云主机正在创建自定义镜像，请稍后再试</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Instance @ in task_state suspending. Cannot stop while the instance is in this state.</error>
+		<transfer>云主机挂起中，无法关闭</transfer>
+	</Error>
+	<Error>
+		<error>computeFault-->The server has either erred or is incapable of performing the requested operation.</error>
+		<transfer>云主机挂起中，无法重启</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'attach_interface' while instance is in task_state image_uploading</error>
+		<transfer>云主机正在创建自定义镜像，请稍后再试</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Instance @ in vm_state resized. Cannot start while the instance is in this state.</error>
+		<transfer>云主机正在调整配置，请稍后再试</transfer>
+	</Error>
+<!-- 云硬盘转译结束 -->
+<!-- 云硬盘转译ecsc未用到 -->
+	<Error>
+		<error>badRequest-->Invalid input received: Size of specified image @ is larger than volume size @.</error>
+		<transfer>所选镜像容量大于云硬盘容量，请重新输入</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Invalid input received: Volume size @GB cannot be smaller than the image minDisk size @GB.</error>
+		<transfer>磁盘容量应不小于镜像所占磁盘容量，请重新输入</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Invalid volume: must be available</error>
+		<transfer>当前云硬盘状态异常，无法创建快照</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->The server could not comply with the request since it is either malformed or otherwise incorrect.</error>
+		<transfer>无法创建云硬盘</transfer>
+	</Error>
+<!-- 云硬盘转译ecsc未用到 -->
+<!-- 云硬盘快照转译开始 -->
+    <Error>
+		<error>badRequest-->Invalid backup: Backup status must be available or error</error>
+		<transfer>备份占用中，请稍后重试</transfer>
+	</Error>
+	<Error>
+		<error>itemNotFound-->Snapshot could not be found</error>
+		<transfer>云硬盘快照不存在</transfer>
+	</Error>
+	<Error>
+		<error>overLimit-->SnapshotLimitExceeded: Maximum number of snapshots allowed (@) exceeded</error>
+		<transfer>云硬盘快照数量超过项目规定限额，请先申请配额</transfer>
+	</Error>
+	<Error> 
+		<error>itemNotFound-->Volume could not be found</error>
+		<transfer>云硬盘不存在</transfer>
+	</Error>
+<!-- 云硬盘快照转译结束 -->		
+<!-- openstack挂掉或获取不到token转译开始 -->
+	<Error>
+		<error>error-->The request you have made requires authentication.</error>
+		<transfer>服务异常，请稍后重试或者联系客服</transfer>
+	</Error>
+	<Error>
+		<error>error-->The resource could not be found</error>
+		<transfer>服务异常，请稍后重试或者联系客服</transfer>
+	</Error>
+	<Error>
+		<error>Connect to @ failed: Connection timed out: connect</error>
+		<transfer>服务异常，请稍后重试或者联系客服</transfer>
+	</Error>
+	<Error>
+		<error>error-->No server is available to handle this request.</error>
+		<transfer>服务异常，请稍后重试或者联系客服</transfer>
+	</Error>
+	<Error> 
+		<error>504,syntax error, pos 1</error>
+		<transfer>服务异常，请稍后重试或者联系客服</transfer>
+	</Error>
+	<Error>
+		<error>401,syntax error, pos 1</error>
+		<transfer>服务异常，请稍后重试或者联系客服</transfer>
+	</Error>
+	<Error>
+		<error>503,syntax error, pos 1</error>
+		<transfer>服务异常，请稍后重试或者联系客服</transfer>
+	</Error>
+	<Error>
+		<error>404,not close json text, token : int</error>
+		<transfer>服务异常，请稍后重试或者联系客服</transfer>
+	</Error>
+	<Error>
+		<error>error-->An unexpected error prevented the server from fulfilling your request: (OperationalError) (@, "Lost connection to MySQL server at 'reading initial communication packet', system error: @") None None (Disable debug mode to suppress these details.)</error>
+		<transfer>服务异常，请稍后重试或者联系客服</transfer>
+	</Error>
+<!-- openstack挂掉或获取不到token转译结束 -->
+<!-- 资源池转译开始 -->
+	<Error>
+		<error>NeutronError-->Quota exceeded for resources: ['pool']</error>
+		<transfer>负载均衡器数量超过项目规定限额，请先申请配额</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Floating IP @ could not be found</error>
+		<transfer>公网IP不存在</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Pool @ could not be found</error>
+		<transfer>负载均衡器不存在</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Vip @ could not be found</error>
+		<transfer>负载均衡器不存在</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Member @ could not be found</error>
+		<transfer>成员不存在</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->health_monitor @ is already associated with pool @</error>
+		<transfer>负载均衡器已关联了该健康检查规则</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Invalid input for max_retries. Reason: @ is too large - must be no larger than @.</error>
+		<transfer>请输入小于等于10的正整数</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Delay must be greater than or equal to timeout</error>
+		<transfer>间隔应该大于等于超时时间</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Pool @ is still in use</error>
+		<transfer>已绑定了vip，需解绑后操作</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Invalid input for protocol_port. Reason: @ is too large - must be no larger than '65535'.</error>
+		<transfer>请输入1到65535的整数</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Member with address @ and port @ already present in pool @</error>
+		<transfer>成员已在负载均衡器中</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Health monitor @ still has associations with pools</error>
+		<transfer>健康检查规则已和负载均衡器关联，不能删除</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Health_monitor @ could not be found</error>
+		<transfer>健康检查不存在</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Floating IP @ could not be found</error>
+		<transfer>公网IP不存在</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Quota exceeded for resources: ['vip']</error>
+		<transfer>vip数量超过限定配额</transfer>
+	</Error>
+	<Error>
+		<error>itemNotFound-->No more floating ips in pool @</error>
+		<transfer>外部网络IP数量不足</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Health monitor @ still has associations with pools</error>
+		<transfer>健康检查规则已和负载均衡器关联，不能删除</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Router@ is used by VPNService @</error>
+		<transfer>路由已被VPN占用，无法删除</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Metering label@ does not exist</error>
+		<transfer>流量统计标签不存在</transfer>
+	</Error>
+	
+	<Error>
+		<error>NeutronError-->No eligible backend for pool @</error>
+		<transfer> 服务器故障，请稍后重试或者联系客服</transfer>
+	</Error>
+	<!-- External network @ is not reachable from subnet @. Therefore, cannot associate Port @ with a Floating IP. -->
+	<Error>
+		<error>NeutronError-->External network @ is not reachable from subnet @.  Therefore, cannot associate Port @ with a Floating IP.</error>
+		<transfer>绑定对象所在的子网已解绑路由，或所在的私有网络未设置网关，请处理后再执行该操作</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->External network @ is not reachable from subnet @</error>
+		<transfer>绑定对象所在的子网已解绑路由，请连接路由后再执行该操作</transfer>
+	</Error>
+<!-- 负载均衡器重复提交绑定公网ip导致底层抛错转义 开始 -->
+	<Error>
+	    <error>NeutronError-->Cannot associate floating IP @ (@) with port @ using fixed IP @, as that fixed IP already has a floating IP on external network @.</error>
+	    <transfer>已绑定公网IP，不可重复操作</transfer>
+	</Error>
+<!-- 负载均衡器重复提交绑定公网ip导致底层抛错转义 结束 -->
+	<Error>
+		<error>conflictingRequest-->Instance @ in vm_state soft-delete. Cannot stop while the instance is in this state.</error>
+		<transfer>云主机已进入回收站，无法关闭</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'reboot' while instance is in vm_state soft-delete</error>
+		<transfer>云主机已进入回收站，无法重启</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Instance @ in vm_state soft-delete. Cannot start while the instance is in this state.</error>
+		<transfer>云主机已进入回收站，无法启动</transfer>
+	</Error>
+<!-- 资源池转译结束 -->
+<!-- 资源池转译未使用-->
+	<Error>
+		<error>NeutronError-->Another Vip already exists for pool @</error>
+		<transfer>负载均衡器已经被VIP使用，请选择其他的负载均衡器！</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Request Failed: internal server error while processing your request.</error>
+		<transfer>服务异常，请稍后重试或者联系客服</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Invalid input for address. Reason: @ is not a valid IP address.</error>
+		<transfer>输入的Ip不是一个有效的Ip地址！</transfer>
+	</Error>
+<!-- 资源池转译未使用-->
+<!-- 云主机转译开始 -->
+	<Error>
+		<error>conflictingRequest-->Cannot 'resume' while instance is in vm_state active</error>
+		<transfer>正常状态的云主机，无需进行恢复</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'resize' while instance is in vm_state error</error>
+		<transfer>错误状态的云主机，无法调整大小</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->No valid host was found. No valid host found for resize</error>
+		<transfer>服务器资源不足，请联系客服</transfer> 
+	</Error>
+	<Error>
+		<error>itemNotFound-->Unable to get console</error>
+		<transfer>目前无法连接到控制台，请稍后重试或联系客服</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'resize' while instance is in task_state image_pending_upload</error>
+		<transfer>当前云主机正在创建自定义镜像，请稍后重试</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'reboot' while instance is in task_state image_pending_upload</error>
+		<transfer>当前云主机正在创建自定义镜像，请稍后重试</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'createImage' while instance is in task_state image_uploading</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'createImage' while instance is in task_state image_pending_upload</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'createImage' while instance is in task_state deleting</error>
+		<transfer>云主机删除中，无法创建自定义镜像</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'suspend' while instance is in task_state image_pending_upload</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Instance @ in task_state image_pending_upload. Cannot stop while the instance is in this state.</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'suspend' while instance is in task_state image_uploading</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'reboot' while instance is in task_state image_uploading</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'resize' while instance is in task_state resize_prep</error>
+		<transfer>云主机正在准备调整中，请稍后重试</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'resize' while instance is in task_state image_uploading</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'createImage' while instance is in task_state image_snapshot</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'resume' while instance is in task_state image_pending_upload</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'resume' while instance is in task_state image_uploading</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'rebuild' while instance is in task_state image_uploading</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Instance @ in task_state image_uploading. Cannot start while the instance is in this state.</error>
+		<transfer>云主机正在创建自定义镜像，请稍后重试</transfer> 
+	</Error>
+	<Error>
+		<error>badRequest-->Network @ could not be found.</error>
+		<transfer>网络不存在</transfer>
+	</Error>
+	<Error>
+		<error>itemNotFound-->Instance could not be found</error>
+		<transfer>云主机不存在</transfer>
+	</Error>
+	<Error>
+		<error>itemNotFound-->Instance not found</error>
+		<transfer>云主机不存在</transfer>
+	</Error>
+	<Error>
+		<error>itemNotFound-->Security group @ is not found for project</error>
+		<transfer>安全组不存在</transfer>
+	</Error>
+	<Error>
+		<error>computeFault-->Floating ip @ is not associated with instance</error>
+		<transfer>公网IP未关联云主机，无法执行解绑操作</transfer> 
+	</Error>
+	<Error> 
+		<error>badRequest-->Image @ is not active.</error>
+		<transfer>镜像非就绪状态</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'rebuild' while instance is in task_state rebuild_spawning</error>
+		<transfer>当前云主机处于重建状态,请稍后重试</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Flavor's disk is too small for requested image.</error>
+		<transfer>模板磁盘容量应不小于所选镜像容量</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Network @ requires a subnet in order to boot instances on.</error>
+		<transfer>该私有网络下无子网</transfer> 
+	</Error>
+	<Error>
+		<error>forbidden-->Quota exceeded for instances: Requested @, but already used @ of @ instances</error>
+		<transfer>您的配额已满，请申请配额</transfer>
+	</Error>
+	<Error>
+		<error>forbidden-->Quota exceeded for cores,instances: Requested @, but already used @ of @ cores</error>
+		<transfer>您的配额已满，请申请配额</transfer> 
+	</Error>
+	<Error>
+		<error>forbidden-->Quota exceeded for cores,instances,ram: Requested @, but already used @ of @ cores</error>
+		<transfer>您的配额已满，请申请配额</transfer> 
+	</Error>
+	<Error>
+		<error>forbidden-->Quota exceeded for cores: Requested @, but already used @ of @ cores</error>
+		<transfer>您的配额已满，请申请配额</transfer> 
+	</Error>
+	<Error>
+		<error>forbidden-->Quota exceeded for ram: Requested @, but already used @ of @ ram</error>
+		<transfer>您的配额已满，请申请配额</transfer> 
+	</Error>
+	<Error>
+		<error>forbidden-->Quota exceeded for cores,ram: Requested @, but already used @ of @ cores</error>
+		<transfer>您的配额已满，请申请配额</transfer> 
+	</Error>
+	<Error>
+		<error>overLimit-->Quota exceeded for instances: Requested @, but already used @ of @ instances</error>
+		<transfer>您的配额已满，请申请配额</transfer> 
+	</Error>
+	<Error>
+		<error>overLimit-->Quota exceeded for ram: Requested @, but already used @ of @ ram</error>
+		<transfer>您的配额已满，请申请配额</transfer> 
+	</Error>
+	<Error>
+		<error>overLimit-->Quota exceeded for cores: Requested @, but already used @ of @ cores</error>
+		<transfer>您的配额已满，请申请配额</transfer> 
+	</Error>
+	<Error>
+		<error>overLimit-->Quota exceeded for cores,ram: Requested @, but already used @ of @ cores</error>
+		<transfer>您的配额已满，请申请配额</transfer> 
+	</Error> 
+	<Error>
+		<error>badRequest-->Flavor's memory is too small for requested image.</error>
+		<transfer>模板内存容量应不小于所选镜像容量</transfer> 
+	</Error>
+	<Error>
+		<error>badRequest-->Unable to associate floating ip @ to fixed ip @ for instance @. Error: External network @ is not reachable from subnet @.  Therefore, cannot associate Port @ with a Floating IP.</error>
+		<transfer>绑定公网IP失败， 请检查绑定对象已在受管子网下，私有网络设置了网关，受管子网连接到了路由</transfer> 
+	</Error>
+	<Error>
+		<error>badRequest-->Unable to associate floating ip @ to fixed ip @ for instance @. Error: Bad floatingip request: Cannot add floating IP to port on subnet @ which has no gateway_ip</error>
+		<transfer>绑定公网IP失败， 请检查绑定对象已在受管子网下，私有网络设置了网关，受管子网连接到了路由</transfer> 
+	</Error>
+	<Error>
+		<error>badRequest-->Unable to associate floating ip @ to fixed ip @ for instance @. Error: Cannot associate floating IP @ with port @ using fixed IP @, as that fixed IP already has a floating IP on external network @.</error>
+		<transfer>不能绑定相同子网所对应的公网IP</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Multiple security_group matches found for name '@', use an ID to be more specific.</error>
+		<transfer>存在重名的安全组</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Instance @ in vm_state suspended. Cannot stop while the instance is in this state.</error>
+		<transfer>云主机已暂停服务，无法关机</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'reboot' while instance is in vm_state suspended</error>
+		<transfer>云主机已暂停服务，无法重启</transfer> 
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'detach_interface' while instance is in vm_state suspended</error>
+		<transfer>云主机已暂停服务，无法修改子网</transfer> 
+	</Error>
+<!-- 云主机转译结束 -->
+<!-- 云主机转译未知-->	
+	<Error>
+		<error>badRequest-->Error. Unable to associate floating ip</error>
+		<transfer>无法绑定公网IP</transfer>
+	</Error> 
+	<Error>
+		<error>itemNotFound-->Security group @ is not found for project</error>
+		<transfer>安全组已被删除</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->No nw_info cache associated with instance</error>
+		<transfer>绑定对象所在的子网已解绑路由，请连接路由后再执行该操作</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Missing imageRef attribute</error>
+		<transfer>无效的镜像资源</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Could not parse imageRef from request.</error>
+		<transfer>没有找到镜像</transfer> 
+	</Error>
+<!-- 云主机转译未知-->	
+<!-- 网络转译开始 -->
+	<Error>
+		<error>NeutronError-->Metering lable rule @ does not exist</error>
+		<transfer>私有网络流量标签不存在，请稍后重试或者联系客服</transfer> 
+	</Error>
+	<Error>
+		<error>NeutronError-->Unable to create the network. No tenant network is available for allocation.</error>
+		<transfer>私有网络服务异常，请稍后重试或者联系客服</transfer> 
+	</Error>
+	<Error>
+		<error>NeutronError-->No more IP addresses available on network @</error>
+		<transfer>当前子网下已无可用IP</transfer> 
+	</Error>
+	<Error>
+		<error>NeutronError-->Bad router request: Cidr @ of subnet @ overlaps with cidr @ of subnet @</error>
+		<transfer>该私有网络与已连接到路由的子网冲突，请重新选择</transfer> 
+	</Error>
+	<Error>
+		<error>NeutronError-->Subnet @ could not be found</error>
+		<transfer>子网不存在</transfer> 
+	</Error>
+	<Error>
+		<error>NeutronError-->Network @ could not be found</error>
+		<transfer>私有网络不存在</transfer> 
+	</Error>
+	<Error>
+		<error>NeutronError-->Current gateway ip @ already in use by port @ Unable to update.</error>
+		<transfer>网关IP已被占用，不允许修改</transfer> 
+	</Error>
+	<Error>
+		<error>NeutronError-->Quota exceeded for resources: ['subnet']</error>
+		<transfer>子网数量超过项目规定限额，请申请配额</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Invalid input for operation: gateway_ip @ does not match the ip_version '4'.</error>
+		<transfer>网关IP不属于IPv4类型,请重新输入</transfer> 
+	</Error>
+	<Error>
+		<error>NeutronError-->Invalid input for operation: gateway_ip @ does not match the ip_version '6'.</error>
+		<transfer>网关IP不属于IPv6类型,请重新输入</transfer> 
+	</Error>
+	<Error>
+		<error>NeutronError-->Invalid input for gateway_ip. Reason: @ is not a valid IP address.</error>
+		<transfer>输入的网关IP无效</transfer> 
+	</Error>
+	<Error>
+		<error>NeutronError-->Invalid input for operation: Gateway is not valid on subnet.</error>
+		<transfer>输入的网关IP无效</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->The allocation pool {u'start': u'@', u'end': u'@'} spans beyond the subnet cidr @.</error>
+		<transfer>网络地址池不应超出网络地址范围，请重新输入</transfer> 
+	</Error> 
+	<Error>
+		<error>NeutronError-->Gateway ip @ conflicts with allocation pool @</error>
+		<transfer>网关IP不应包含在网络地址池内，请重新输入</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Invalid input for operation: Requested subnet with cidr: @ for network: @ overlaps with another subnet.</error>
+		<transfer>IP地址和其他子网冲突，请重新设置</transfer> 
+	</Error>
+	<Error>
+		<error>NeutronError-->Invalid input for sorce_ip_address. Reason : ' ' is not a valid IP address and ' ' is not a valid IP subnet</error>
+		<transfer>请输入有效的网络地址范围</transfer> 
+	</Error>
+	<Error>
+		<error>NeutronError-->The allocation pool {u'start': u'@', u'end': u'@'} is not valid.</error>
+		<transfer>请输入有效的网络地址范围</transfer> 
+	</Error>
+	<Error>
+		<error>NeutronError-->Invalid input for allocation_pools. Reason: '@' is not a valid IP address.</error>
+		<transfer>请输入有效的网络地址范围</transfer> 
+	</Error>
+	<Error>
+		<error>NeutronError-->Unable to complete operation on network @ There are one or more ports still in use on the network.</error>
+		<transfer>私有网络已被使用，不允许删除</transfer> 
+	</Error>
+	<Error>
+		<error>NeutronError-->Unable to complete operation on subnet @. One or more ports have an IP allocation from this subnet.</error>
+		<transfer>子网IP已被占用，不能删除</transfer>
+	</Error>
+	<Error>
+	    <error>NeutronError-->Invalid input for name. Reason: 'None' is not a valid string.</error>
+	    <transfer>null 不是合法字符串，请重新命名。</transfer>
+	</Error>
+<!-- 网络转译结束 -->
+<!-- 端口映射 开始 -->
+    <Error>
+        <error>NeutronError-->Quota exceeded for resources: ['portmapping']</error>
+        <transfer>您的端口映射数量配额不足，请提交工单申请配额！</transfer>
+    </Error>
+    <Error>
+        <error>NeutronError-->Portmapping @ could not be found.</error>
+        <transfer>端口映射已被删除！</transfer>
+    </Error>
+<!-- 端口映射 结束 -->
+<!-- vpn转译 开始 -->
+    <Error>
+        <error>NeutronError-->Invalid input for peer_cidrs. Reason: @</error>
+        <transfer>对端子网格式输入不合法，请核对后操作</transfer>
+    </Error>
+<!-- vpn转译 结束 -->
+<!-- 网络转译未知-->
+	<Error>
+		<error>NeutronError-->Unable to complete operation on network @.There are one or more ports still in use on the network.</error>
+		<transfer>私有网络正在被云主机或路由占用，请先进行解绑操作！</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Quota exceeded for resources: ['network']</error>
+		<transfer>私有网络数量超过项目规定限额，请先申请配额！</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Gateway cannot be updated for router @, since a gateway to external network @ is required by one or more floating IPs.</error>
+		<transfer>这是清除带有浮动IP的 网关的提示语   需要转译！</transfer> 
+	</Error>
+<!-- 网络转译未知-->
+<!-- 浮动Ip开始 -->
+	<Error>
+		<error>itemNotFound-->Floating ip pool not found.</error>
+		<transfer>公网Ip池不存在</transfer>
+	</Error>
+	<Error>
+		<error>itemNotFound-->Floating ip not found for id</error>
+		<transfer>公网Ip不存在</transfer>
+	</Error>
+	<Error>
+		<error>itemNotFound-->No more floating ips in pool @.</error>
+		<transfer>外部网络IP数量不足</transfer>
+	</Error>
+	<Error>
+		<error>forbidden-->IP allocation over quota in pool @.</error>
+		<transfer>公网IP数量已超过项目规定限额，请申请配额</transfer> 
+	</Error> 
+<!-- 浮动Ip开始 -->
+<!-- 路由开始 -->
+	<Error>
+		<error>NeutronError-->Router @ still has ports</error>
+		<transfer> 路由已连接子网，需解绑子网后操作</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Bad router request: Router already has a port on subnet @</error>
+		<transfer>路由已连接此子网，请选择其他子网</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Bad router request: Subnet for router interface must have a gateway IP</error>
+		<transfer>子网无网关，无法关联</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Router interface for subnet @ on router @ cannot be deleted, as it is required by one or more floating IPs</error>
+		<transfer>子网IP已被占用，不能删除</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Gateway cannot be updated for router @, since a gateway to external network @ is required by one or more floating IPs.</error>
+		<transfer>网关已被路由占用，请先解绑云主机的公网IP</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Unable to complete operation for network @. The IP address @ is in use.</error>
+		<transfer>该内部网络已经被使用，请选择其他的内部网络</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Gateway cannot be updated for router @, since a gateway to external network @ is required by one or more floating IPs.</error>
+		<transfer>网关已被云主机或负载均衡占用，请先解绑其公网IP</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Quota exceeded for resources: ['router']</error>
+		<transfer>路由数量超过项目规定限额，请先申请配额</transfer>
+	</Error>
+	<Error>
+		<error>NeutronErrorBad router request: Cidr @ of subnet @ overlaps with cidr @ of subnet @</error>
+		<transfer>选中的外网和连接到路由的子网地址冲突，无法设置网关</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Router @ could not be found</error>
+		<transfer>路由不存在</transfer>
+	</Error>
+<!-- 路由结束 -->
+<!-- 安全组转译开始 -->
+	<Error>
+		<error>itemNotFound-->Security group @ does not exist</error>
+		<transfer>安全组不存在</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Security group rule already exists. Rule id is @.</error>
+		<transfer>规则已存在</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Updating default security group not allowed.</error>
+		<transfer>默认的安全组不允许修改</transfer>
+	</Error> 
+	<Error>
+		<error>NeutronError-->Invalid value for ICMP code (port_range_max) 65535. It must be 0 to 255.</error>
+		<transfer>ICMP编码设置错误</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->Security Group @ in use.</error>
+		<transfer>无法删除，请移除安全组下的云主机后操作</transfer>
+	</Error> 
+	<Error>
+		<error>NeutronError-->Quota exceeded for resources: ['security_group']</error>
+		<transfer>安全组数量超过配额，请提交工单申请配额</transfer>
+	</Error>
+	<Error>
+		<error>badRequest-->409-{u'NeutronError': {u'message': u'Security Group @ in use.', u'type': u'SecurityGroupInUse', u'detail': u''}}</error>
+		<transfer>安全组正在被云主机使用，请先进行解绑操作</transfer>
+	</Error> 
+	<Error>
+		<error>itemNotFound-->Security group @ not associated with the instance @</error>
+		<transfer>云主机未在安全组下，无法从安全组中移除</transfer>
+	</Error>
+<!-- 安全组转译结束 -->
+<!-- 防火墙开始 -->
+	<Error>
+		<error>NeutronError-->Source, destination port are not allowed when protocol is set to ICMP.</error>
+		<transfer>当前协议为ICMP， 不应该包含端口号和端口范围</transfer>
+	</Error>
+    <Error>
+		<error>NeutronError-->Quota exceeded for resources: ['firewall_policy']</error>
+		<transfer>防火墙策略超过项目规定限额</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Operation cannot be performed since associated Firewall @ is in PENDING_CREATE</error>
+		<transfer>防火墙处于待创建状态，不允许修改</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Firewall @ could not be found.</error>
+		<transfer>防火墙不存在</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Operation cannot be performed since associated Firewall @ is in PENDING_CREATE.</error>
+		<transfer>防火墙处于待创建状态，不可以修改</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Exceeded allowed count of firewalls for tenant @. Only one firewall is supported per tenant.</error>
+		<transfer>仅允许创建一个防火墙</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Operation cannot be performed since associated Firewall @ is in PENDING_DELETE.</error>
+		<transfer>防火墙删除中，请稍后</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Source,destination port are not allowed when protocol is set to ICMP.</error>
+		<transfer>协议是ICMP的防火墙规则，不允许分配端口</transfer>
+	</Error>
+	<Error>
+		<error>NeutronError-->Invalid input for action. Reason: '' is not in ['allow','deny'].</error>
+		<transfer>创建防火墙规则时，动作为必选项</transfer>
+	</Error> 
+	<Error>
+		<error>NeutronError-->Operation cannot be performed since associated Firewall @ is in PENDING_UPDATE</error>
+		<transfer>待更新状态的防火墙不能进行其他操作</transfer>
+	</Error>
+<!-- 防火墙结束 -->
+<!-- 镜像开始 -->
+	<Error>
+		<error>Internal Server Error</error>
+		<transfer>服务异常，请稍后重试或者联系客服</transfer>
+	</Error>
+	<Error>
+		<error>Snapshot Not Found.</error>
+		<transfer>镜像不存在</transfer>
+	</Error>
+	<Error>
+		<error>Gateway Time-out,The server didn't respond in time.</error>
+		<transfer>服务异常，请稍后重试或者联系客服</transfer>
+	</Error>
+	<Error>
+		<error>error-->An unexpected error prevented the server from fulfilling your request</error>
+		<transfer>请求异常，请稍候再试</transfer>
+	</Error>
+	<Error>
+		<error>conflictingRequest-->Cannot 'restore' while instance is in task_state restoring</error>
+		<transfer>云主机恢复中，请稍候</transfer>
+	</Error>
+<!-- 镜像结束 -->
+<!-- 密钥转译开始 -->
+    <Error>
+        <error>forbidden-->Quota exceeded, too many key pairs.</error>
+        <transfer>底层密钥数量超过配额，请联系管理员</transfer>
+    </Error>
+    <Error>
+        <error>badRequest-->Keypair data is invalid: failed to generate fingerprint</error>
+        <transfer>您输入的公钥不合法</transfer>
+    </Error>
+<!-- 密钥转译结束 -->
+    <Error>
+        <error>badRequest-->Validation error: backup['name'] u'@' does not match '^\\S+$'</error>
+        <transfer>云数据库备份名称不可以包含空格</transfer>
+    </Error>
+</ErrorList>

@@ -1,0 +1,14 @@
+<div style="width=200px;">
+<div data-ng-repeat="webs in webs.ipList">
+	 <div>
+         
+                <span data-ng-bind-html="webs.dcId"></span>&nbsp
+                <span ng-bind="webs.webService=='1'?'云主机': webs.webService=='2'?'负载均衡':''"></span>
+                &nbsp;
+                <span ng-bind="webs.ip"></span>
+           
+        </div>
+	 <div class="divider" ng-show="!$last"></div>
+</div>
+</div>
+

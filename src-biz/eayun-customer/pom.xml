@@ -1,0 +1,111 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>eayun-customer</artifactId>
+	<description>客户</description>
+	<parent>
+		<groupId>com.eayun</groupId>
+		<artifactId>eayun-build</artifactId>
+		<version>1.0.0-RELEASE</version>
+		<relativePath>../../src-intf/eayun-build/pom.xml</relativePath>
+	</parent>
+
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>5.0.0.Alpha2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.msgpack/msgpack -->
+		<dependency>
+			<groupId>org.msgpack</groupId>
+			<artifactId>msgpack</artifactId>
+			<version>0.6.12</version>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+
+
+
+		<!--&lt;!&ndash; https://mvnrepository.com/artifact/org.jboss.marshalling/jboss-marshalling-river &ndash;&gt;-->
+		<!--<dependency>-->
+			<!--<groupId>org.jboss.marshalling</groupId>-->
+			<!--<artifactId>jboss-marshalling-river</artifactId>-->
+			<!--<version>1.3.0.CR9</version>-->
+		<!--</dependency>-->
+		<!--&lt;!&ndash; https://mvnrepository.com/artifact/org.jboss.marshalling/jboss-marshalling &ndash;&gt;-->
+		<!--<dependency>-->
+			<!--<groupId>org.jboss.marshalling</groupId>-->
+			<!--<artifactId>jboss-marshalling</artifactId>-->
+			<!--<version>1.3.0.CR9</version>-->
+		<!--</dependency>-->
+
+
+
+
+
+		<dependency>
+			<groupId>com.eayun</groupId>
+			<artifactId>eayun-log-intf</artifactId>
+			<version>1.0.0-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>com.eayun</groupId>
+			<artifactId>eayun-mail-intf</artifactId>
+			<version>1.0.0-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>com.eayun</groupId>
+			<artifactId>eayun-customer-intf</artifactId>
+			<version>1.0.0-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>com.eayun</groupId>
+			<artifactId>eayun-sms-intf</artifactId>
+			<version>1.0.0-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>com.eayun</groupId>
+			<artifactId>eayun-auth-intf</artifactId>
+			<version>1.0.0-RELEASE</version>
+		</dependency>
+        <dependency>
+        	<groupId>com.eayun</groupId>
+        	<artifactId>eayun-virtualization-intf</artifactId>
+        	<version>1.0.0-RELEASE</version>
+        </dependency>
+        <dependency>
+			<groupId>com.eayun</groupId>
+			<artifactId>eayun-eayunstack</artifactId>
+			<version>1.0.0-RELEASE</version>
+		</dependency>
+        <dependency>
+        	<groupId>com.eayun</groupId>
+        	<artifactId>eayun-workorder-intf</artifactId>
+        	<version>1.0.0-RELEASE</version>
+        </dependency>
+        <dependency>
+        	<groupId>com.eayun</groupId>
+        	<artifactId>eayun-notice-intf</artifactId>
+        	<version>1.0.0-RELEASE</version>
+        </dependency>
+		<dependency>
+			<groupId>com.eayun</groupId>
+			<artifactId>eayun-money-intf</artifactId>
+			<version>1.0.0-RELEASE</version>
+		</dependency>
+		<dependency>
+            <groupId>com.eayun</groupId>
+            <artifactId>eayun-invoice-intf</artifactId>
+            <version>1.0.0-RELEASE</version>
+        </dependency>
+	</dependencies>
+	
+</project>

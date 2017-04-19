@@ -1,0 +1,52 @@
+<!-- 为资源打标签页面 -->
+<div class="modal-header">
+    <span class="modal-title">标记资源</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+
+<div class="modal-body" style="width: 800px;">
+	<form name="form">
+        <div class="ey-form-group" ><!--data-ng-class="(form.taggroupname.$dirty && form.taggroupname.$invalid) ? 'ey-has-error' : ''" -->
+            <eayun-select name="taggroupname" data-ng-model="tagGroupID"  placeholder="请选择标签类别" required>
+                <eayun-option value="'stay'" text="创建标签类别" ng-click="createTagGroup()" ></eayun-option>
+                <eayun-option value="tagGroup.id" text="{{tagGroup.abbreviation}}"
+                              data-ng-repeat="tagGroup in tagGroupList"
+                              ng-click="getTagListById(tagGroup.id)" ></eayun-option>
+            </eayun-select>
+
+            <eayun-select name="tagname" data-ng-model="tagID"  placeholder="请选择标签" data-ng-show="form.taggroupname.$valid && tagGroupID!='stay'">
+                <eayun-option value="'stay'" text="创建标签" ng-click="createTag(tagGroupID)" ></eayun-option>
+                <eayun-option value="tag.id" text="{{tag.name}}"
+                              data-ng-repeat="tag in tagList"></eayun-option>
+            </eayun-select>
+
+            <button class="ey-btn ey-btn-primary" data-ng-click="doTagResource(resType, resId, tagGroupID, tagID)"
+                    ng-disabled="!form.taggroupname.$valid || tagGroupID=='stay'" >确定标记</button>
+        </div>
+	</form>
+<br>
+	<table class="ey-table" >
+		<thead>
+			<tr>
+				<th>已标记标签类别</th>
+				<th>已标记标签</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<!-- 查询当前资源已标记的标签类别和标签并ng-repeat到下面 
+		<tr data-ng-repeat="tagGroup in tagGroupList"> -->
+		<tbody><tr data-ng-repeat="resTags in resourceTags">
+				<td >{{resTags.tagGroupName}}</td>
+				<td >{{resTags.tagName}}</td>
+				<td>
+					<button class="ey-btn" data-ng-click="untagResource(resTags.tagId, tagGroupID,resType, resId)" >取消标记</button>
+				</td>
+			</tr></tbody>
+	</table>
+</div>
+
+<div class="ey-modal-footer">
+    <div class="ey-btn-group">
+        <button type="button" class="ey-btn ey-btn-default"
+                ng-click="cancel()">关 闭</button>
+    </div>
+</div>

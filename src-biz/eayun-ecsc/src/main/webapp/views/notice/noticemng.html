@@ -1,0 +1,29 @@
+<div class = "modal-dialog" style= "width:800px;">
+<div class = "modal-content clearfix">
+<div class = "modal-header">
+	<span class = "modal-title">全部公告</span>
+	<span class = "eayunfont ef-close ey-font-huge" style = "cursor:pointer;" data-ng-click = "close()"></span>
+</div>
+	<div class = "ey-announce clearfix">
+		<ul style = "height: 550px; overflow-y:auto;width:260px;">
+			<li data-ng-repeat="model in noticemngList" data-ng-click = "clickNotice(model)" data-ng-class="model.isThis?'active':''">
+			{{model.title}}</li>
+		</ul>
+		<div style="font-size:14px;height: 550px; overflow-y:auto;width:530px;">
+			<div class="" style="font-family:Microsoft YaHei;">
+				<label class="control-label" style="padding-left:0px;text-align:left;font-size:14px;"><span style="color:#0077cc;">{{noticeModel.title}}</span></label>
+			</div>
+			<div class="" style="font-family:Microsoft YaHei;margin-top:10px;">
+				<label class="control-label" style="padding-left:0px;text-align:left;font-size:12px;">
+				<p ng-bind-html="noticeModel.content" style="font-family:Microsoft YaHei;
+				word-break:break-all; word-wrap:break-all;line-height:2;text-indent:2em;">
+				{{noticeModel.content}}</p></label>
+			</div>
+			<br/>
+			<div style = "margin-bottom:30px;">
+				<a id="url" ng-if="noticeModel.url!='' && noticeModel.url!=null" ng-click="isOverdue(noticeModel)" target="_blank" style="cursor:pointer;">点此查看详情</a>
+			</div>
+		</div>
+	</div>
+</div>
+</div>

@@ -1,0 +1,14 @@
+<div class="ey-panel ey-panel-full">
+	<div class="ey-success">
+		<div>
+			<span class="eayunfont ef-yes"></span>
+	        <span ng-if="subject === '充值'" class="ey-font-hugest">充值成功</span>
+	        <span ng-if="subject !== '充值'" class="ey-font-hugest">支付成功</span>
+		</div>
+		<div class="ey-btn-group ey-font-size-big">
+			<span ng-if="subject === '充值'" ui-sref="app.costcenter" class="ey-text-link">返回账户总览>></span>
+	        <span ng-if="subject !== '充值'" ui-sref="app.order" class="ey-text-link">返回订单列表>></span>
+	        <span class="ey-text-link" ui-sref="app">跳转至管理控制台>></span>
+		</div>
+	</div>
+</div>

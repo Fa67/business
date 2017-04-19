@@ -1,0 +1,41 @@
+<div class="modal-header">
+    <span class="modal-title" ng-if="address.id == null || address.id == ''">创建邮寄地址</span>
+    <span class="modal-title" ng-if="address.id != null && address.id!=''">编辑邮寄地址</span>
+    <span class="eayunfont ef-close ey-font-huge"  ng-click="cancel()"></span>
+</div>
+<form name="editForm" novalidate>
+<div class="modal-body ey-form" style="width: 684px;">
+    
+    <div class="ey-form-group" data-ng-class="(editForm.receiverName.$dirty && editForm.receiverName.$invalid) ? 'ey-has-error' : ''">
+        <label class="ey-form-label ey-required">收件人姓名：</label>
+        <input class="ey-form-input ey-form-w8" type="text" name="receiverName" ng-model="address.receiverName" maxlength="20" required placeholder="请输入收件人姓名"/>
+        <span class="ey-color-red" ng-show="editForm.receiverName.$dirty && editForm.receiverName.$invalid">请输入有效的收件人姓名</span>
+    </div>
+    <div class="ey-form-group" data-ng-class="(editForm.receiverTel.$dirty && editForm.receiverTel.$invalid) ? 'ey-has-error' : ''">
+        <label class="ey-form-label ey-required">收件人联系方式：</label>
+        <input class="ey-form-input ey-form-w8" type="text" name="receiverTel" ng-model="address.receiverTel" maxlength="500" required  placeholder="请输入收件人有效联系方式，手机或固话"/>
+        <span class="ey-color-red" ng-show="editForm.receiverTel.$dirty && editForm.receiverTel.$invalid">请输入有效的收件人联系方式</span>
+    </div>
+    <div class="ey-form-group" data-ng-class="(editForm.address.$dirty && editForm.address.$invalid) ? 'ey-has-error' : ''">
+        <label class="ey-form-label ey-required">邮寄地址：</label>
+        <textarea class="ey-form-textarea ey-form-w8" type="text"
+         name="address" ng-model="address.address" maxlength="500" required 
+         placeholder="请输入收件人详细收件地址，如北京市海淀区理工科技大厦8层808室">
+        </textarea>
+        <span class="ey-color-red" ng-show="editForm.address.$dirty && editForm.address.$invalid">请输入有效的邮寄地址</span>
+    </div>
+    <div class="ey-form-group" data-ng-class="(editForm.zipCode.$dirty && editForm.zipCode.$invalid) ? 'ey-has-error' : ''">
+        <label class="ey-form-label ey-required">邮政编码：</label>
+        <input class="ey-form-input ey-form-w8" type="text" name="zipCode"
+        ng-model="address.zipCode" maxlength="500" required placeholder="请输入有效邮政编码"/>
+        <span class="ey-color-red" ng-show="editForm.zipCode.$dirty && editForm.zipCode.$invalid">请输入有效的邮政编码</span>
+    </div>
+</div>
+<div class="ey-modal-footer">
+    <div class="ey-btn-group">
+        <button class="ey-btn ey-btn-primary" ng-disabled="editForm.$invalid" ng-click="commit()">确定</button>
+        <button class="ey-btn ey-btn-default" ng-click="cancel()">取消</button>
+    </div>
+</div>
+</form>
+

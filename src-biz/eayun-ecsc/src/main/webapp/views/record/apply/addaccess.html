@@ -1,0 +1,63 @@
+<div class = "modal-header">
+<span class=" ef-back eayunfont ey-color-blue"></span>
+	<span class = "modal-title"><a ng-click="access.cancel()">返回</a></span>
+	<span class="ey-text-tip ey-font-huge">&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;</span>
+	<span class = "modal-title">填写信息</span>
+</div>
+<form class="ey-form" name="myForm" novalidate>
+	<div class="ey-panel-body">
+		<h4>新增接入备案信息</h4>
+		<div class="ey-form-group " data-ng-class="(myForm.webRecordNo.$dirty && myForm.webRecordNo.$error.required) ? 'ey-has-error' : ''">
+			<label class=" ey-form-label ey-required">网站备案编号：</label>
+			<input type="text" class="ey-form-input ey-form-w7" name="webRecordNo" required data-ng-focus="access.doFocus($event)" data-ng-blur="access.doBlur($event,myForm.webRecordNo.$error.required)" data-ng-model="access.model.webRecordNo" maxlength="20">
+			<span class="ey-color-red" ng-show="myForm.webRecordNo.$dirty && myForm.webRecordNo.$error.required">请输入网站备案编号</span>
+			<br/>
+			<div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">
+				请填写网站备案号，区别于主体备案号，例如京ICP备 11028869号-1
+			</div>
+		</div>
+		<div class="ey-form-group " data-ng-class="(myForm.webPassword.$dirty && myForm.webPassword.$error.required) ? 'ey-has-error' : ''">
+			<label class=" ey-form-label ey-required">ICP备案密码：</label>
+			<input type="password" class="ey-form-input ey-form-w7" name="webPassword" required data-ng-focus="access.doFocus($event)" data-ng-blur="access.doBlur($event,myForm.webPassword.$error.required)" data-ng-model="access.model.webPassword" maxlength="100">
+			<span class="ey-color-red" ng-show="myForm.webPassword.$dirty && myForm.webPassword.$error.required">请输入ICP备案密码</span>
+			<br/>
+			<div class="ey-form-w7 ey-color-default ey-content-notice ey-margin" style="float:none;display:none;">
+				请输入管局发放的ICP备案密码
+			</div>
+		</div>
+		<div class="ey-form-group"  data-ng-class="(myForm.serviceIp.$dirty && myForm.serviceIp.$invalid) ? 'ey-has-error' : ''">
+		<label class="col-sm-3 ey-form-label ey-required">IP：</label>
+            <div data-ng-repeat="ipservice in access.ipList" class="ey-float-none ey-margin">
+                <eayun-select placeholder="请选择数据中心" name="dcId{{$index}}"
+                    data-ng-focus="access.doFocus($event)"
+                    data-ng-change="access.changeServiceIP($index)"
+                    data-ng-blur="access.doBlur($event,myForm.dcId$index.$error.required)"
+                    class="ey-form-select ey-form-w3" data-ng-model="ipservice.dcId"
+                    required> 
+                    <eayun-option value="{{dc.dcId}}" text="{{dc.dcName}}" ng-repeat="dc in access.cloudprojectList"></eayun-option>
+                </eayun-select>
+                <eayun-select placeholder="请选择所需备案的云服务" name="webService{{$index}}" ng-disabled="ipservice.dcId==null"
+                    data-ng-model="ipservice.webService"
+                    data-ng-change="access.selectIP(ipservice.dcId,ipservice.webService,$index)"
+                    class="ey-form-select ey-form-w4" required> 
+                    <eayun-option value="1" text="云主机"></eayun-option> 
+                    <eayun-option value="2" text="负载均衡"></eayun-option> 
+                </eayun-select>
+                <eayun-select class="ey-form-select ey-form-w3" placeholder="请选择" ng-disabled="ipservice.dcId==null" name="serviceIp{{$index}}"
+                    data-ng-model="ipservice.ip" required data-ng-change="access.reomveIP(ipservice.ip,$index)" data-ng-click="access.getIP(ipservice.ip)"> 
+                    <eayun-option value="'{{ip}}'" text="{{ip}}" ng-repeat="ip in access.ips[$index]"></eayun-option>
+                </eayun-select>
+                <button ng-click="access.copyIPservice()" data-ng-if="$index==0" style="margin-top: 15px;" class="eayunfont ey-font-size-superior ey-cursor ey-color-blue ef-add-r ey-middle ey-addweb-btn" data-ng-disabled="access.ipList.length>=5"></button>
+                <span ng-click="access.deleteIPservice($index)" data-ng-if="$index!=0" style="margin-top: 15px;" class="eayunfont ey-font-size-superior ey-cursor ey-color-red ef-cancel-r ey-middle"></span>
+                <br />
+            </div>
+			<span class="ey-color-red" ng-show="myForm.serviceIp.$dirty && myForm.serviceIp.$error.required">请输入IP地址</span>
+	  </div>
+
+		<!-- 按钮区域 -->
+		<div class="ey-btn-group">
+				<button type="button" class="ey-btn ey-btn-primary btn-modal" ng-click="access.commit()" ng-disabled="!myForm.$valid">完  成</button>
+				<button type="button" class="ey-btn ey-btn-default btn-modal" ng-click="access.cancel()">取  消</button>
+		</div>
+	</div>
+</form>

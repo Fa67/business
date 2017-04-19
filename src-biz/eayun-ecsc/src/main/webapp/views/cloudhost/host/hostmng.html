@@ -1,0 +1,59 @@
+<!-- Form表单 -->
+ <div class="ey-search-bar ey-search-bar-white">
+	 <button  data-ng-show = "vmListPermissions.isAddHost" class="ey-btn ey-btn-primary ey-btn-sm" ng-click="buyVm()">
+		 <span class="eayunfont ef-plus"></span>
+		 <span>创建云主机</span>
+	</button>
+ 	<eayun-search class="eayun-table-search" data-ng-model="search" options="options"></eayun-search>
+ </div>
+
+<!-- 表格 -->
+<eayun-table data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams" data-result="myTable.result">
+  <table class="ey-table-muliti">
+    <thead>
+    <tr>
+      <th>名称</th>
+      <th class="vm-table-td-btn" >
+      	<eayun-table-filter list-data="vmStatusList" text-field="nodeName" item-clicked="selectVmStatus($item, $event)"></eayun-table-filter>
+      </th>
+      <th>配置</th>
+      <th class="vm-table-td-ips">IP地址</th>
+      <th class="vm-table-td-charge">计费状态</th>
+      <th class="vm-table-td-date">创建时间</th>
+      <th class="vm-table-td-btn">操作</th>
+    </tr>
+    </thead>
+
+    <tbody><tr data-ng-repeat="vm in myTable.result">
+      <td class="click-td" data-ng-click="manageVm(vm)" title="{{vm.vmName}}">{{vm.vmName}}</td>
+      <td class="vm-table-td-left">
+	      <span class ="eayunfont ef-square" data-ng-class="vmStatusClass!=''?vmStatusClass:''" ng-init="vmStatusClass = checkVmStatus(vm)">
+	      </span>
+	      {{vm.vmStatusStr}}
+	  </td>
+      <td>
+      	<span>{{vm.cpus}}核\{{vm.rams/1024}}GB\{{vm.disks}}GB\{{vm.dataCapacity}}GB</span><br>
+      	<span>{{vm.sysType}}</span>
+      </td>
+      <td>
+      	<span>受管子网：{{vm.vmIp=='null' ? '未加入':vm.vmIp}}<br></span>
+      	<span>公网：{{vm.floatIp=='null'?'未分配':vm.floatIp}}<br></span>
+      	<span>自管子网：{{vm.selfIp=='null' ? '未加入':vm.selfIp}}</span>
+      </td>
+      <td>
+      	<span>{{vm.payTypeStr}}<br></span>
+      	<span data-ng-if="vm.payType==1">{{'到期时间：'+(vm.endTime|date:'yyyy-MM-dd HH:mm:ss')}}<br></span>
+      </td>
+      <td>{{vm.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+      <td>
+      	<div class="ey-btn-group">
+	        <button class="ey-btn" data-ng-click="manageVm(vm)">管理</button>
+	        <button class="ey-btn" data-ng-if="vm.payType=='1' && vmListPermissions.renewHost" data-ng-click="renewVm(vm)">续费</button>
+      	</div>
+      </td>
+    </tr></tbody>
+  </table>
+  <eayun-table-page></eayun-table-page>
+</eayun-table>
+
+

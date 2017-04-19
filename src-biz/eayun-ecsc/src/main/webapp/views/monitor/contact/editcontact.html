@@ -1,0 +1,44 @@
+<div class="modal-header">
+    <span class="modal-title">编辑联系人</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 600px;">
+	<form class="ey-form" name="editcontact" novalidate>
+	    <div class="ey-form-group" data-ng-class="(editcontact.name.$dirty && (editcontact.name.$invalid || contactModel.name=='')) ? 'ey-has-error' : ''">
+	        <label class="ey-form-w3 ey-form-label ey-required">姓名：</label>
+	
+	            <input type="text" class="ey-form-input ey-form-w6" placeholder="请输入姓名"  name="name"
+	                   data-ng-model="contactModel.name" 
+	                   data-ajax-valid="checkContactName(value)" maxlength=20/> 
+	            <span ng-show="editcontact.name.$dirty && editcontact.name.$error.ajaxValid && !nameflag">姓名已存在</span>
+	      		<span ng-show="editcontact.name.$dirty && contactModel.name=='' && !nameflag">姓名不能为空</span>
+	     		<span ng-if="nameflag">请输入正确的姓名</span>
+	    </div>
+	    <div class="ey-form-group" data-ng-class="(editcontact.phone.$dirty && (editcontact.phone.$invalid || contactModel.phone=='')) ? 'ey-has-error' : ''">
+	        <label class="ey-form-w3 ey-form-label ey-required">手机号：</label>
+	
+	            <input type="text" class="ey-form-input ey-form-w6" placeholder="请输入手机号" name="phone"
+	                   data-ng-model="contactModel.phone" data-ng-pattern = "/^1\d{10}$/"  maxlength=11/> 
+	      		<span ng-show="editcontact.phone.$dirty && contactModel.phone==''">手机号不能为空</span>
+	     		<span ng-show="editcontact.phone.$dirty && editcontact.phone.$error.pattern">请输入正确的手机号</span>
+	      
+	    </div>
+	    <div class="ey-form-group" data-ng-class="(editcontact.email.$dirty && (editcontact.email.$invalid || contactModel.email=='')) ? 'ey-has-error' : ''">
+	        <label class="ey-form-w3 ey-form-label ey-required">电子邮箱：</label>
+	
+	        <div class="ey-form-w6" data-ng-class="(editcontact.email.$dirty && (editcontact.email.$invalid || contactModel.email=='')) ? 'has-error' : ''">
+	            <input type="text" class="ey-form-input ey-form-w6" placeholder="请输入电子邮箱" name="email"
+	                   data-ng-model="contactModel.email"  data-ng-pattern = "/^[a-zA-Z0-9_-]+[\.a-zA-Z0-9_-]+[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/" maxlength=100/> 
+	      		<span ng-show="editcontact.email.$dirty && contactModel.email==''">邮箱不能为空</span>
+	      		<span ng-show="editcontact.email.$dirty && editcontact.email.$error.pattern ">请输入正确的邮箱地址</span>
+	        </div>
+	    </div>
+	    
+	</form>
+</div>
+<!-- 按钮区域 -->
+  <div class="ey-modal-footer">
+  	<div class="ey-btn-group">
+  		<button type="button" class="ey-btn ey-btn-primary" ng-click="commit()"  ng-disabled="(editcontact.$dirty && editcontact.$invalid) || contactModel.phone=='' || contactModel.email==''">确定</button>
+    	<button type="button" class="ey-btn ey-btn-default" ng-click="cancel()">取  消</button>
+  	</div>
+  </div>

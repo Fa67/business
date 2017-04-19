@@ -1,0 +1,85 @@
+<form class="ey-search-bar ey-search-bar-white">
+    <button class="ey-btn ey-btn-primary"
+            data-ng-click="account.create()"
+            data-ng-if="account.modulePower.accountCreate"
+            data-ng-disabled="!((account.instance.rdsStatus == 'ACTIVE'
+                            || account.instance.rdsStatus == 'RESTART_REQUIRED')
+                            && account.instance.chargeState == '0')">
+        <span class="eayunfont ef-plus"></span>
+        <span>创建账号</span>
+    </button>
+</form>
+
+<eayun-table data-api="account.table.api" data-ajax-source="account.table.source" data-param="account.table.getParams"
+             data-result="account.table.result">
+    <table class="ey-table-muliti">
+        <thead>
+        <tr>
+            <th>账号</th>
+            <th>
+                <eayun-table-filter list-data="account.statusList" text-field="key" item-clicked="account.changeStatus($item, $event)"></eayun-table-filter>
+            </th>
+            <th>所属数据库</th>
+            <th>备注</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody><tr data-ng-repeat="user in account.table.result">
+            <td data-ng-bind="user.accountName"></td>
+            <td data-ng-bind="user.dbIdList.length == 0 ? '未激活' : '已激活'"></td>
+            <td>
+                <span data-ng-bind-html="user.dbNameList|multiline:5"></span>
+            </td>
+            <td data-ng-bind="account.showRemark(user.remark)" title="{{user.remark}}"></td>
+            <td data-ng-if="user.accountName != 'root'" class="ey-table-operation">
+                <div class="ey-btn-group">
+                    <button class="ey-btn"
+                            data-ng-click="account.authorize(user)"
+                            data-ng-if="account.modulePower.accountAuthorize"
+                            data-ng-disabled="!((user.status == 'ACTIVE'
+                                            || user.status == 'RESTART_REQUIRED')
+                                            && account.instance.chargeState == '0')">
+                        修改权限
+                    </button>
+                    <button class="ey-btn"
+                            data-ng-click="account.updatePW(user)"
+                            data-ng-if="account.modulePower.accountUpdatePW"
+                            data-ng-disabled="!((user.status == 'ACTIVE'
+                                            || user.status == 'RESTART_REQUIRED')
+                                            && account.instance.chargeState == '0')">
+                        修改密码
+                    </button>
+                    <button class="ey-btn"
+                            data-ng-click="account.delete(user)"
+                            data-ng-if="account.modulePower.accountDelete"
+                            data-ng-disabled="!((user.status == 'ACTIVE'
+                                            || user.status == 'RESTART_REQUIRED')
+                                            && account.instance.chargeState == '0')">
+                        <span class="ey-text-error">删除</span>
+                    </button>
+                    <span data-ng-if="!account.modulePower.accountAuthorize
+                                   && !account.modulePower.accountUpdatePW
+                                   && !account.modulePower.accountDelete">
+                        ----
+                    </span>
+                </div>
+            </td>
+            <td data-ng-if="user.accountName == 'root'" class="ey-table-operation">
+                <div class="ey-btn-group">
+                    <button class="ey-btn"
+                            data-ng-click="account.resetPW(user)"
+                            data-ng-if="account.modulePower.accountResetPW"
+                            data-ng-disabled="!((user.status == 'ACTIVE'
+                                            || user.status == 'RESTART_REQUIRED')
+                                            && account.instance.chargeState == '0')">
+                        重置密码
+                    </button>
+                    <span data-ng-if="!account.modulePower.accountResetPW">
+                        ----
+                    </span>
+                </div>
+            </td>
+        </tr></tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

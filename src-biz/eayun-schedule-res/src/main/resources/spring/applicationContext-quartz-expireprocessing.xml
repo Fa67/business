@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="ResourceExpirationJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.eayun.virtualization.job.ResourceExpirationJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="ResourceExceedJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.eayun.virtualization.job.ResourceExceedJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	
+	
+	
+	 <bean id="resourceExpirationProcessing_1d"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="ResourceExpirationJob"></property>
+		<property name="cronExpression" value="0 0 0 * * ? *"></property>
+	</bean> 
+	<bean id="resourceExceedProcessing_1h"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="ResourceExceedJob"></property>
+		<property name="cronExpression" value="0 0 0/1 * * ? *"></property>
+	</bean> 
+	
+	
+	
+	
+	
+	
+
+	<!-- 定时任务调度器 -->
+	<bean class="com.eayun.common.job.EayunSchedulerFactoryBean" id="resourceExpirationSchedulerFactory">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+		<property name="configLocation" value="classpath:quartz.properties" />
+		<property name="triggers">
+			<list>
+				<ref bean="resourceExpirationProcessing_1d" />
+				<ref bean="resourceExceedProcessing_1h" />
+			</list>
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,105 @@
+<div class="row">
+    <form class="ey-form-purchase col-lg-8 ng-pristine ng-valid" name="vpcForm">
+        <fieldset>
+            <div class="ey-form-group">
+                <label>数据中心：</label>
+                <span class="ey-mark"
+                      data-ng-repeat="data in payPakeNet.datacenters"
+                      data-ng-click="payPakeNet.selectDcPrj(data)"
+                      data-ng-class="payPakeNet.netWork.dcId == data.dcId?'active':''">
+                    {{data.dcName}}
+                </span>
+            </div>
+            <div class="ey-form-group" data-ng-class="vpcForm.netName.$dirty
+                                                    && !payPakeNet.outOfQuota
+                                                    && (vpcForm.netName.$invalid || payPakeNet.isNameExist)
+                                                    ? 'ey-has-error' : ''">
+                <label class="ey-form-label ey-required"> 网络名称：</label>
+                <input type="text" class="ey-form-input" name="netName" data-ng-model="payPakeNet.netWork.netName"
+                       placeholder="请输入名称"
+                       data-ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/'
+                       data-ng-change="payPakeNet.checkNetworkNameExist()" required>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="payPakeNet.outOfQuota">
+                    私有网络数量配额不足
+                </span>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="vpcForm.netName.$dirty && !payPakeNet.outOfQuota && vpcForm.netName.$invalid">
+                    请输入1-20位字符,支持数字、中英文、下划线、空格
+                </span>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="vpcForm.netName.$dirty && !payPakeNet.outOfQuota && vpcForm.netName.$valid && payPakeNet.isNameExist">
+                    该私有网络名称已存在
+                </span>
+            </div>
+            <div class="ey-form-group" style="margin-bottom: 0px;">
+                <label class="ey-form-label ey-required"> 带宽：</label>
+                <eayun-progress class="ey-form-w8 " ng-model="payPakeNet.netWork.rate" max-value="100"
+                     min-value="1" text="Mbps" on-value-change="payPakeNet.changeRate($value)"></eayun-progress>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="payPakeNet.netWork.rate > payPakeNet.bandQuotas">
+                    带宽配额不足
+                </span>
+            </div>
+            <div class="ey-form-group">
+                <span class="ey-text-tip">
+                    1Mbps - 100Mbps
+                </span>
+            </div>
+            <div class="ey-form-group">
+                <label>付款方式：</label>
+                <eayun-select data-ng-model="payPakeNet.netWork.cycleType" 
+                			  data-ng-change="payPakeNet.changeCycleType()"
+                			  required >
+                	<eayun-option ng-repeat="cycleType in payPakeNet.cycleTypeList" value="cycleType.nodeId" text="{{cycleType.nodeName}}"></eayun-option>
+                </eayun-select>
+                <eayun-select data-ng-model="payPakeNet.netWork.buyCycle" 
+                			  data-ng-change="payPakeNet.getPrice()"
+                			  required >
+                    <eayun-option ng-repeat="cycle in payPakeNet.cycleList" value="cycle.nodeNameEn" text="{{cycle.nodeName}}"></eayun-option>
+                </eayun-select>
+            </div>
+        </fieldset>
+    </form>
+    <div class="ey-set">
+        <h5>已选配置</h5>
+        <fieldset>
+            <ul>
+                <li>
+                    数据中心：
+                    <span class="ey-color-default" data-ng-bind="payPakeNet.netWork.dcName"></span>
+                </li>
+                <li>
+                    带宽：
+                    <span class="ey-color-default" data-ng-bind="payPakeNet.netWork.rate + 'Mbps'"></span>
+                </li>
+                <li>
+                    购买量：
+                    <span class="ey-color-default" data-ng-show="payPakeNet.netWork.buyCycle != null">
+                        {{payPakeNet.netWork.buyCycle < 12 ? (payPakeNet.netWork.buyCycle + '个月') : (payPakeNet.netWork.buyCycle/12 + '年')}}×1个
+                    </span>
+                </li>
+            </ul>
+            <p class="ey-font-size-big">
+                总计：
+                <span data-ng-if="payPakeNet.hasGotPrice">￥</span>
+                <span class="ey-font-size-super ey-color-red"
+                      data-ng-if="payPakeNet.hasGotPrice">
+                    {{payPakeNet.netWork.price | thousand}}
+                </span>
+                <span class="ey-color-red"
+                      data-ng-if="!payPakeNet.hasGotPrice"
+                      data-ng-bind="payPakeNet.priceMsg"></span>
+            </p>
+        </fieldset>
+        <button class="ey-btn"
+                data-ng-click="payPakeNet.goToOrder()"
+                data-ng-disabled="vpcForm.$invalid
+                                || payPakeNet.outOfQuota
+                                || payPakeNet.bandQuotas < payPakeNet.netWork.rate
+                                || payPakeNet.isNameExist
+                                || !payPakeNet.hasGotPrice">
+            立即购买
+        </button>
+    </div>
+</div>

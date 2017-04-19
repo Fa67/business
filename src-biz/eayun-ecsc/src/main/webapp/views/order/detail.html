@@ -1,0 +1,149 @@
+
+	<div class="ey-panel-body">
+		<h4>订单概要</h4>
+		<form class="form-inline">
+			<button
+				data-ng-if="detailMng.order.orderState=='1' && detailMng.permissions.hasPayPower"
+				data-ng-click="detailMng.orderPay(detailMng.order.orderNo)"
+				class="ey-btn ey-btn-primary">立即支付</button>
+
+			<button
+				data-ng-if="detailMng.order.orderState=='1' && detailMng.permissions.hasCancelPower"
+				data-ng-click="detailMng.cancelOrder(detailMng.order.orderId)"
+				class="ey-btn ey-btn-primary">取消订单</button>
+
+			<button
+				data-ng-if="detailMng.order.orderType=='0' && (detailMng.order.orderState=='3'||detailMng.order.orderState=='5') && detailMng.permissions.hasReorderPower"
+				data-ng-click="detailMng.reorder(detailMng.order.resourceType, detailMng.order.orderNo)"
+				class="ey-btn ey-btn-primary">重新下单</button>
+
+			<button
+				data-ng-if="detailMng.order.orderType == '0' && detailMng.order.orderState=='4' && detailMng.permissions.hasResourcePower"
+				data-ng-click="detailMng.orderResource(detailMng.order.orderNo)"
+				class="ey-btn ey-btn-primary">查看资源</button>
+		</form>
+
+		<table class="ey-order-table" data-ng-if="detailMng.permissions.hasListPower">
+			<tr>
+				<td
+					style="background-color: #EEE; font-weight: bold; font-size: 14px;">订单编号</td>
+				<td>
+					<span data-ng-bind="::detailMng.order.orderNo"></span>
+				</td>
+				<td
+					style="background-color: #EEE; font-weight: bold; font-size: 14px;">产品名称</td>
+				<td>
+					<span data-ng-bind="::detailMng.order.prodName"></span>
+				</td>
+			</tr>
+			<tr>
+				<td
+					style="background-color: #EEE; font-weight: bold; font-size: 14px;">类型</td>
+				<td>
+					<span data-ng-bind="::detailMng.order.orderTypeName"></span>
+				</td>
+				<td
+					style="background-color: #EEE; font-weight: bold; font-size: 14px;">订单状态</td>
+				<td>
+					<span data-ng-bind="detailMng.order.orderStateName"></span>
+				</td>
+			</tr>
+			<tr>
+				<td
+					style="background-color: #EEE; font-weight: bold; font-size: 14px;">创建时间</td>
+				<td>
+					<span
+						data-ng-bind="::detailMng.order.createTime|date:'yyyy-MM-dd HH:mm:ss'"></span>
+				</td>
+				<td
+					style="background-color: #EEE; font-weight: bold; font-size: 14px;"
+					data-ng-if="detailMng.order.orderState != '3' && detailMng.order.orderState != '5' ">完成时间</td>
+				<td
+					data-ng-if="detailMng.order.orderState != '3' && detailMng.order.orderState != '5' ">
+					<span
+						data-ng-bind="detailMng.order.completeTime==null?'--':detailMng.order.completeTime|date:'yyyy-MM-dd HH:mm:ss' ">
+					</span>
+				</td>
+				<td
+					style="background-color: #EEE; font-weight: bold; font-size: 14px;"
+					data-ng-if="detailMng.order.orderState == '3' || detailMng.order.orderState == '5' ">取消时间</td>
+				<td
+					data-ng-if="detailMng.order.orderState == '3' || detailMng.order.orderState == '5' ">
+					<span
+						data-ng-bind="detailMng.order.canceledTime|date:'yyyy-MM-dd HH:mm:ss'">
+					</span>
+				</td>
+			</tr>
+			<tr>
+				<td
+					style="background-color: #EEE; font-weight: bold; font-size: 14px;">金额</td>
+				<td colspan="3">
+					<span class="ey-color-blue ey-font-huge" style="font-weight: bold;">￥ {{::detailMng.order.paymentAmount|number:2}}　</span>
+					<span class ="ey-text-tip"
+						data-ng-if="detailMng.order.payType != '2' && (detailMng.order.orderState == '2' || detailMng.order.orderState == '4')">
+						=（现金支付：￥ {{::detailMng.order.thirdPartPayment|number:2}}）
+						+（余额支付：￥ {{::detailMng.order.accountPayment|number:2}}） </span>
+				</td>
+			</tr>
+		</table>
+
+
+		<h4 style="margin-top: 30px;">订单详情</h4>
+		<table class="ey-table-muliti ey-table-auto">
+			<thead>
+				<tr>
+					<th width="13%">产品名称</th>
+					<th>数量</th>
+					<th width="32%">具体配置</th>
+					<th width="30%" data-ng-if="detailMng.order.orderState != '4'">购买周期</th>
+					<th width="30%" data-ng-if="detailMng.order.orderState == '4'">起止时间</th>
+					<th>付款方式</th>
+					<th>金额</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td data-ng-bind="::detailMng.order.prodName"></td>
+					<td data-ng-bind="::detailMng.order.prodCount"></td>
+					<td data-ng-bind-html="::detailMng.formatProdConfig(detailMng.order.prodConfig)"
+						style="text-align: left;line-height:24px;"></td>
+					<td data-ng-if="detailMng.order.payType=='1' && detailMng.order.orderState != '4' && detailMng.order.orderType!='2'">
+					   {{detailMng.order.buyCycle}}个月
+					</td>
+					<td data-ng-if="detailMng.order.payType=='2' || (detailMng.order.payType=='1' && detailMng.order.orderState != '4' && detailMng.order.orderType=='2')" data-ng-bind="'--'">
+					<td data-ng-if="detailMng.order.payType=='1' && detailMng.order.orderState == '4'">
+						{{detailMng.order.resourceBeginTime|date:'yyyy-MM-dd HH:mm:ss' }}
+						 至 {{detailMng.order.resourceExpireTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+					<td data-ng-bind="::detailMng.order.payTypeName"></td>
+					<td class="ey-text-error">
+						<span class="ey-color-blue">￥ {{::detailMng.order.paymentAmount|number:2}}</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="ey-panel">
+			<ul class="ey-order-list">
+				<li class="ey-font-huge">
+					<span>应付款：</span>
+					<span class="ey-text-tip">
+						￥ <span class="ey-color-blue">{{::detailMng.order.paymentAmount|number:2}}</span>
+					</span>
+				</li>
+<!-- 				<li class="ey-font-huge" data-ng-if="detailMng.order.payType != '2'">
+					<span>余额支付：</span>
+					<span class="ey-text-tip">
+						-￥
+						<span class="ey-color-blue">{{::detailMng.order.accountPayment|number:2}}</span>
+					</span>
+				</li> -->
+				<div class="divider"></div>
+				<li class="ey-font-huger ey-font-bold">
+					<span class="ey-font-bold">实际付款：</span>
+					<span class="ey-text-tip">
+						￥ 
+						<span class="ey-color-blue ey-font-size-superior">{{::detailMng.order.paymentAmount|number:2}}</span>
+					</span>
+				</li>
+			</ul>
+		</div>
+	</div>

@@ -1,0 +1,219 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <meta name="format-detection" content="telephone=no">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="dist/eayun.min.css?v=20170214">
+    <link rel="stylesheet" href="styles/ecscstyle.css">
+    <link rel="shortcut  icon" type="image/x-icon" href="favicon.ico" media="screen"/>
+    <title>易云公有云管理控制台</title>
+</head>
+<body ng-app="eayunApp">
+<!--[if lte IE 8]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<!-- 主页面展示区域 -->
+<eayun-loading></eayun-loading>
+<div data-ui-view="" style="height: 100%;"></div>
+
+<!--
+<div class="footer">
+  <div class="container">
+    <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
+  </div>
+</div>
+-->
+
+<script src="bower_components/clipboard/dist/clipboard.js"></script>
+<script src="bower_components/clipboard/dist/clipboard.min.js"></script>
+
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/angular/angular.min.js"></script>
+<script src="bower_components/angular-animate/angular-animate.min.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/angular-ui-bootstrap/src/modal/modal.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+
+<script src="dist/echarts.js"></script>
+<!-- <script src="dist/echarts-all.js"></script>-->
+<script src="dist/chart/line.js"></script>
+<script src="dist/chart/bar.js"></script>
+
+<script src="bower_components/angular-ui-bootstrap/src/datepicker/dateparser.js"></script>
+<script src="bower_components/angular-ui-bootstrap/src/datepicker/datepicker.js"></script>
+<script src="bower_components/angular-ui-bootstrap/src/datepicker/position.js"></script>
+
+<script src="bower_components/file-upload/ng-file-upload-shim.min.js"></script>
+<script src="bower_components/file-upload/ng-file-upload.min.js"></script>
+
+<script src="bower_components/angular-ui-bootstrap/src/tooltip/bindHtml.js"></script>
+<script src="bower_components/angular-ui-bootstrap/src/tooltip/tooltip.js"></script>
+<script src="bower_components/des/des.js"></script>
+
+<script src="dist/components.min.js?v=20170214"></script>
+<script src="dist/templates.js?v=20170214"></script>
+
+<!-- build:appjs scripts/app.js -->
+<script src="scripts/app.js?v=20170214"></script>
+<script src="scripts/services/commonservice.js?v=20170214"></script>
+<script src="scripts/interceptors/SubmitHandler.js?v=20170214"></script>
+<script src="scripts/interceptors/LoadingHandler.js?v=20170214"></script>
+<script src="scripts/interceptors/AuthHandler.js?v=20170214"></script>
+<script src="scripts/services/utils/math.js?v=20170214"></script>
+<script src="scripts/services/utils/password.js?v=20170214"></script>
+<script src="scripts/config/config.js?v=20170214"></script>
+<script src="scripts/controllers/main.js?v=20170214"></script>
+
+<script src="scripts/controllers/sys/login/login.js?v=20170214"></script>
+<script src="scripts/controllers/sys/register/register.js?v=20170214"></script>
+<script src="scripts/controllers/sys/forgotcode/forgotcode.js?v=20170214"></script>
+<script src="scripts/controllers/overview.js?v=20170214"></script>
+<!--<script src="scripts/directives/component.js?v=20170214"></script>-->
+<script src="scripts/services/obsservice.js?v=20170214"></script>
+<script src="scripts/services/datacenter/datacenterservice.js?v=20170214"></script>
+<script src="scripts/services/net/poolservice.js?v=20170214"></script>
+<script src="scripts/services/net/floatipservice.js?v=20170214"></script>
+<script src="scripts/services/net/portmappingservice.js?v=20170214"></script>
+<script src="scripts/services/net/vpnservice.js?v=20170214"></script>
+<script src="scripts/services/net/vpcservice.js?v=20170214"></script>
+<script src="scripts/services/net/volumeservice.js?v=20170214"></script>
+<script src="scripts/services/net/vmservice.js?v=20170214"></script>
+<script src="scripts/services/rds/databaseservice.js?v=20170214"></script>
+<script src="scripts/services/rds/accountservice.js?v=20170214"></script>
+<script src="scripts/services/rds/backupservice.js?v=20170214"></script>
+<script src="scripts/services/rds/configgroupservice.js?v=20170214"></script>
+<script src="scripts/services/rds/rdsinstance.js?v=20170214"></script>
+<script src="scripts/controllers/syssetup/syssetup.js?v=20170214"></script>
+<script src="scripts/controllers/tag/tag.js?v=20170214"></script>
+<script src="scripts/controllers/log/log.js?v=20170214"></script>
+<script src="scripts/controllers/work/work.js?v=20170214"></script>
+<script src="scripts/controllers/message/message.js?v=20170214"></script>
+<script src="scripts/services/constant.js?v=20170214"></script>
+<script src="scripts/controllers/cloudhost/cloud.js?v=20170214"></script>
+<script src="scripts/controllers/cloudhost/cloudhost.js?v=20170214"></script>
+<script src="scripts/controllers/cloudhost/cloudvolume.js?v=20170214"></script>
+<script src="scripts/controllers/cloudhost/cloudsnapshot.js?v=20170324"></script>
+<script src="scripts/controllers/cloudhost/cloudimage.js?v=20170214"></script>
+<script src="scripts/controllers/rds/rds.js?v=20170214"></script>
+<script src="scripts/controllers/rds/instance/instance.js?v=20170214"></script>
+<script src="scripts/controllers/rds/instance/buyinstance.js?v=20170214"></script>
+<script src="scripts/controllers/rds/instance/buyslaveinstance.js?v=20170214"></script>
+<script src="scripts/controllers/rds/instance/detail.js?v=20170214"></script>
+<script src="scripts/controllers/rds/instance/detail/instancedetail.js?v=20170214"></script>
+<script src="scripts/controllers/rds/instance/database/database.js?v=20170214"></script>
+<script src="scripts/controllers/rds/instance/database/create.js?v=20170214"></script>
+<script src="scripts/controllers/rds/backup/create.js?v=20170214"></script>
+<script src="scripts/controllers/rds/instance/account/account.js?v=20170214"></script>
+<script src="scripts/controllers/rds/instance/account/create.js?v=20170214"></script>
+<script src="scripts/controllers/rds/instance/account/authorize.js?v=20170214"></script>
+<script src="scripts/controllers/rds/instance/account/updatepw.js?v=20170214"></script>
+<script src="scripts/controllers/rds/instance/account/resetpw.js?v=20170214"></script>
+<script src="scripts/controllers/rds/backup/backup.js?v=20170214"></script>
+<script src="scripts/controllers/rds/backup/enableautobackup.js?v=20170214"></script>
+<script src="scripts/controllers/rds/config/config.js?v=20170214"></script>
+<script src="scripts/controllers/rds/instance/detail/modifyconfiguration.js?v=20170214"></script>
+<script src="scripts/controllers/rds/instance/detail/deleterdsinstance.js?v=20170214"></script>
+<script src="scripts/controllers/rds/instance/detail/detachreplica.js?v=20170214"></script>
+<script src="scripts/controllers/rds/instance/detail/resizeinstance.js?v=20170214"></script>
+<script src="scripts/controllers/rds/instance/verifyinstance.js?v=20170214"></script>
+<script src="scripts/controllers/rds/instance/renewinstance.js?v=20170214"></script>
+<script src="scripts/controllers/auth/customer.js?v=20170214"></script>
+<script src="scripts/controllers/auth/user.js?v=20170214"></script>
+<script src="scripts/controllers/auth/usermanage.js?v=20170214"></script>
+<script src="scripts/controllers/accesskey/accesskey.js?v=20170214"></script>
+<script src="scripts/controllers/role/role.js?v=20170214"></script>
+<script src="scripts/controllers/net/net.js?v=20170214"></script>
+<script src="scripts/controllers/net/portmapping.js?v=20170214"></script>
+<script src="scripts/controllers/net/floatip.js?v=20170214"></script>
+<script src="scripts/controllers/net/load.js?v=20170214"></script>
+<script src="scripts/controllers/net/route.js?v=20170214"></script>
+<script src="scripts/controllers/net/vpn.js?v=20170214"></script>
+<script src="scripts/controllers/safety/safety.js?v=20170214"></script>
+<script src="scripts/controllers/styletest.js?v=20170214"></script>
+<script src="scripts/controllers/auth/applymng.js?v=20170214"></script>
+
+<script src="scripts/controllers/safety/cloudgroup.js?v=20170314"></script>
+<script src="scripts/controllers/safety/cloudfirewall.js?v=20170214"></script>
+<script src="scripts/controllers/safety/cloudfwpolicy.js?v=20170214"></script>
+<script src="scripts/controllers/safety/cloudfirewallrule.js?v=20170214"></script>
+<script src="scripts/controllers/count/count.js?v=20170214"></script>
+<script src="scripts/controllers/recycle/recycle.js?v=20170214"></script>
+<script src="scripts/controllers/net/member.js?v=20170214"></script>
+<script src="scripts/controllers/net/healthmonitor.js?v=20170214"></script>
+<script src="scripts/controllers/net/vip.js?v=20170214"></script>
+<script src="scripts/controllers/monitor/monitor.js?v=20170214"></script>
+<script src="scripts/controllers/monitor/resourcemonitor.js?v=20170214"></script>
+<script src="scripts/controllers/monitor/alarm.js?v=20170214"></script>
+<script src="scripts/controllers/monitor/contact.js?v=20170214"></script>
+<script src="scripts/controllers/obs/obs.js?v=20170314"></script>
+<script src="scripts/controllers/obs/obsgroup.js?v=20170214"></script>
+<script src="scripts/controllers/costcenter/accountoverview.js?v=20170214"></script>
+<script src="scripts/controllers/costcenter/costcenter.js?v=20170214"></script>
+<script src="scripts/controllers/costcenter/report.js?v=20170214"></script>
+<script src="scripts/controllers/pay/recharge.js?v=20170214"></script>
+<script src="scripts/controllers/pay/result.js?v=20170214"></script>
+<script src="scripts/controllers/order/order.js?v=20170214"></script>
+<script src="scripts/services/orderservice.js?v=20170214"></script>
+<script src="scripts/filter/thousand.js?v=20170214"></script>
+<script src="scripts/filter/multiline.js?v=20170214"></script>
+
+<script src="scripts/controllers/record/record.js?v=20170214"></script>
+<script src="scripts/controllers/record/apply/main.js?v=20170214"></script>
+<script src="scripts/controllers/record/apply/access.js?v=20170214"></script>
+<script src="scripts/controllers/record/unit/main.js?v=20170214"></script>
+<script src="scripts/controllers/record/apply/recordList.js?v=20170214"></script>
+<script src="scripts/controllers/record/unit/unitList.js?v=20170214"></script>
+<script src="scripts/controllers/record/apply/unitDetail.js?v=20170214"></script>
+<script src="scripts/controllers/record/website/changeWeb.js?v=20170214"></script>
+<script src="scripts/controllers/invoice/apply.js?v=20170227"></script>
+<script src="scripts/controllers/invoice/info.js?v=20170228"></script>
+<script src="scripts/controllers/invoice/address.js?v=20170228"></script>
+<script src="scripts/controllers/safety/secretkey.js?v=20170227"></script>
+<script src="scripts/controllers/safety/secretkeydetail.js?v=20170227"></script>
+<script src="scripts/controllers/monitor/ldpoolmonitor.js?v=20170315"></script>
+<script src="scripts/controllers/monitor/clouddatamonitor.js?v=20170315"></script>
+<script type="text/javascript">
+    //处理键盘事件 禁止后退键（Backspace）密码或单行、多行文本框除外
+    function banBackSpace(e) {
+        var ev = e || window.event;//获取event对象
+        var obj = ev.target || ev.srcElement;//获取事件源
+        var t = obj.type || obj.getAttribute('type');//获取事件源类型
+        //获取作为判断条件的事件类型
+        var vReadOnly = obj.getAttribute('readonly');
+        var vEnabled = obj.getAttribute('enabled');
+        //处理null值情况
+        vReadOnly = (vReadOnly == null) ? false : vReadOnly;
+        vEnabled = (vEnabled == null) ? true : vEnabled;
+        //当敲Backspace键时，事件源类型为密码或单行、多行文本的，
+        //并且readonly属性为true或enabled属性为false的，则退格键失效
+        var flag1 = (ev.keyCode == 8 && (t == "password" || t == "text" || t == "textarea") && (vReadOnly || vEnabled != true)) ? true : false;
+        //当敲Backspace键时，事件源类型非密码或单行、多行文本的，则退格键失效
+        /* var flag2=(ev.keyCode == 8 && t != "password" && t != "text" && t != "textarea") ? true : false;
+         //判断
+         if(flag2){
+         return false;
+         } */
+        if (flag1) {
+            return false;
+        }
+    }
+    //禁止后退键 作用于Firefox、Opera
+    document.onkeypress = banBackSpace;
+    //禁止后退键 作用于IE、Chrome
+    document.onkeydown = banBackSpace;
+</script>
+<!-- endbuild -->
+</body>
+</html>

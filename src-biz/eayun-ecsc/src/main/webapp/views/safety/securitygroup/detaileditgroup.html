@@ -1,0 +1,47 @@
+<div>
+	<form name="editHostNameTable" novalidate>
+	<div class="col-md-10"data-ng-class="editHostNameTable&&(editHostNameTable.sgName.$dirty&&(editHostNameTable.sgName.$invalid||!checkVmNameFlag||!checkNameMoren||!checkNamedefault)) ? 'ey-has-error' : ''"style="padding-left: 0px;">
+		<input class="ey-form-input"   name="sgName" type="text" maxlength="20"
+			placeholder="请输入安全组名称" data-ng-model="vmEditModel.sgName"
+			data-ng-change="checkFwNameExist()"
+			ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/'
+			required>
+			<!--  <label class="control-label hide"
+                               data-ng-class="editHostNameTable.fwName.$dirty && editHostNameTable.fwName.$error.required ? 'show' : 'hide'"
+                               style="text-align: left;">请填写数据中心名称</label>
+			 -->
+			<span class="ey-text-tip ey-text-error hide"
+			style="padding-top: 17px;"
+			data-ng-class="vmNameEditable && editHostNameTable.sgName.$dirty && editHostNameTable.sgName.$invalid ? 'show' : 'hide'">
+			<span>请输入1-20位字符,支持数字、中英文、下划线、空格  </span>
+		</span>
+		<span class="ey-text-tip ey-text-error hide"
+			style="padding-top: 17px; text-align: left;"
+			data-ng-class="editHostNameTable.sgName.$dirty && editHostNameTable.sgName.$valid && !checkVmNameFlag ? 'show' : 'hide'">
+			<span>安全组名称已存在</span>
+		</span>
+		<span class="ey-text-tip ey-text-error hide"
+			style="padding-top: 17px; text-align: left;"
+			data-ng-class="editHostNameTable.sgName.$dirty && editHostNameTable.sgName.$valid && !checkNameMoren ? 'show' : 'hide'">
+			<span>安全组名称已存在</span>
+		</span>
+		<span class="ey-text-tip ey-text-error hide"
+			style="padding-top: 17px; text-align: left;"
+			data-ng-class="editHostNameTable.sgName.$dirty && editHostNameTable.sgName.$valid && !checkNamedefault ? 'show' : 'hide'">
+			<span>不能创建名为default的安全组，请输入其他名称</span>
+		</span>
+		
+	
+	</div>
+	<span class="badge hide"
+		style="margin-left: 10px; background-color: green; color: #ffffff;"
+		data-ng-class="vmNameEditable && (editHostNameTable.sgName.$dirty && (editHostNameTable.sgName.$valid && checkVmNameFlag&&checkNameMoren&&checkNamedefault)) ? 'show' : 'hide'"
+		data-ng-click="saveEdit('fwName')"> <span
+		class="glyphicon glyphicon-ok"></span>
+	</span> <span class="badge" data-ng-click="cancelEdit('fwName')"> <span
+		class="glyphicon glyphicon-remove"></span>
+	</span> </form>
+</div>
+
+
+	

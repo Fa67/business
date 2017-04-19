@@ -1,0 +1,35 @@
+<div class="modal-header">
+    <span class="modal-title">解绑云硬盘</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 600px;">
+	<form class="ey-form ey-text-tip" name="myForm" novalidate>
+	  	<div style="margin: 20px 40px;font-size: 16px;text-indent:2em;">
+			<span style="line-height:30px;word-break: break-all;">
+				解绑云硬盘前，建议您先停止对该云硬盘的读写操作，并在云主机系统内对该云硬盘执行
+				<a href="http://www.eayun.com/document/faq/ecd.html" target="_blank">
+					<span class="ey-text-link">Umount或脱机</span>
+				</a>操作。
+			</span>
+			<br><br>
+			<span style="line-height:30px;word-break: break-all;" >
+				 注：强行解绑会导致数据丢失或云主机无法再执行挂载/解绑操作，直到您重启云主机后才能恢复操作。
+			</span>
+	 	</div>
+
+	
+	
+		<div class="ey-form-checkbox" style="margin: 0px 40px;">
+			<input id="check1" type="checkbox" data-ng-model="isSure" >
+			<label for="check1" style="float: right;">已完成脱机，确定解绑</label>
+		</div>
+		
+	</form>
+</div>
+
+<!-- 按钮区域 -->
+<div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<button type="button" class="ey-btn ey-btn-primary" data-ng-disabled="!isSure" data-ng-click="commit()">确定</button>
+		<button type="button" class="ey-btn ey-btn-default" data-ng-click="cancel()">取 消</button>
+	</div>
+</div>

@@ -1,0 +1,22 @@
+<h4>角色权限</h4>
+<eayun-table data-api="roleTable.api" data-ajax-source="roleTable.source" data-param="roleTable.getParams" data-result="roleTable.result">
+  <table class="ey-table">
+    <thead>
+    <tr>
+      <th width= "30%">角色名称</th>
+      <th width= "50%">角色说明</th>
+      <th width= "20%">操作</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr data-ng-repeat="model in roleTable.result">
+      <td>{{model.roleName}}</td>
+      <td>{{model.roleDesc}}</td>
+      <td>
+        <button class="ey-btn" data-ng-click="manageRole(model.roleId)">查看详情</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</eayun-table>

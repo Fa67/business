@@ -1,0 +1,45 @@
+
+
+  <h4>业务参数配置</h4>
+  <label class="control-label">当前用户：{{model.userName}}</label><br>
+  <label class="control-label" style = "margin-top:15px;">设置您的云主机默认类型：</label>
+<!-- Form表单 -->
+<form class="form-inline" style = "margin-top:20px;">
+  <button type="button" class="ey-btn ey-btn-primary ey-btn-sm" data-ng-click="newModel()" id = "newModel"><span class="glyphicon glyphicon-plus" aria-hidden="true" data-ng-show = "modulePower.isSysMng"></span>&nbsp;创建云主机类型
+  </button>
+</form>
+
+<!-- 表格 -->
+<eayun-table data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams" data-result="myTable.result">
+  <!--  data-api        ：把这个表格的api方法给myTable对象,目前只有draw()方法
+        data-ajax-source：表格对应的查询url是myTable对象的source属性的值
+        data-param      ：获取查询参数的方法是myTable的getParams方法
+        data-result     ：查询结果赋值给myTable的result对象
+  -->
+  <table class="ey-table">
+    <thead>
+    <tr>
+      <th class="col-sm-1">编号</th>
+      <th>类型名称</th>
+      <th class="col-sm-2">CPU</th>
+      <th class="col-sm-2">内存</th>
+      <th class="col-sm-2">操作</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr data-ng-repeat="model in myTable.result">
+      <td>{{$index+1}}</td>
+      <td>{{model.modelName}}</td>
+      <td>{{model.modelVcpus}} 核</td>
+      <td>{{(model.modelRam % 1024) === 0?(model.modelRam / 1024)+'GB':model.modelRam+'MB'}}</td>
+      <td>
+        <button class="ey-btn" data-ng-click="updateModel(model.modelId)" data-ng-show = "modulePower.isSysMng">编辑</button>
+        <button class="ey-btn btn-tabledel" data-ng-click="deleteModel(model.modelId,model.modelName)" data-ng-show = "modulePower.isSysMng" style = "margin-left:15px;"><span class="ey-text-error">删除</span></button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</eayun-table>
+<span style="color:red">*</span><label class="control-label" style = "font-style:oblique;font-size:12px;">最多可设置三种云主机类型</label>
+

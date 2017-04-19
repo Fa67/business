@@ -1,0 +1,33 @@
+<div class="modal-header">
+    <span class="modal-title">{{title}}</span> 
+    <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style = "width:575px;">
+	<p style = "font-size:14px;margin-left:75px;margin-bottom:20px;" data-ng-if="!model.isHavePhone">请输入要绑定的手机号码</p>
+	<form class="ey-form" name = "editphone" novalidate>
+	  <div class="ey-form-group" data-ng-class="(editphone.phone.$dirty && editphone.phone.$invalid) ? 'ey-has-error' : ''">
+	    <label class="ey-form-label" data-ng-class="!model.isHavePhone ? 'ey-required' : ''">手机号码：</label>
+	    	<span data-ng-if="model.isHavePhone">{{editPhone.userPhone}}</span>
+	    	<input data-ng-if="!model.isHavePhone" type = "text" name = "phone" data-ng-model = "editPhone.userPhone" data-ajax-valid = "checknewPhone(value)" 
+	    		class="ey-form-input" required  data-ng-pattern = "/^1\d{10}$/" style = "width:168px;" maxlength="11">
+	    	<button class = "ey-btn ey-btn-primary" data-ng-click="sendCode()"  data-ng-disabled="(!editphone.phone.$valid && (!model.isHavePhone))" data-ng-hide="model.doSend">
+	    		<span>发送验证码</span>
+	    	</button>
+	    	<button class="ey-btn ey-btn-primary.disabled" data-ng-disabled = "true" data-ng-show = "model.doSend">{{model.second}}s后可重新发送</button>
+	    	<span data-ng-show="editphone.phone.$dirty && editphone.phone.$error.ajaxValid">该手机号码已使用</span>
+	    	<span data-ng-show="editphone.phone.$dirty && editphone.phone.$error.required">请输入正确的手机号码</span>
+	    	<span data-ng-show="editphone.phone.$dirty && editphone.phone.$error.pattern">请输入正确的手机号码</span>
+	  </div>
+	  <div class="ey-form-group" data-ng-class="(editphone.verCode.$dirty && editphone.verCode.$invalid) ? 'ey-has-error' : ''">
+	    <label class="ey-form-label ey-required">验证码：</label>
+	      <input type="text" name = "verCode" class="ey-form-input" data-ng-model = "editPhone.verCode" required style = "width:168px;">
+	      <span data-ng-show="editphone.verCode.$dirty && editphone.verCode.$error.required">请输入验证码</span>
+	  </div>
+	</form>
+</div>
+<div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<button class="ey-btn ey-btn-primary" data-ng-click="commit()" type = "button" data-ng-disabled="!editphone.$valid">确定</button>
+		<button class="ey-btn ey-btn-default" data-ng-click="cancel()" type = "button">取 消</button>
+	</div>
+</div>

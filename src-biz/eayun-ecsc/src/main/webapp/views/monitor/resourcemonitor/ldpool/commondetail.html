@@ -1,0 +1,48 @@
+<div class="panel panel-default clearfix">
+    <div class="panel-body">
+        <h4>负载均衡（普通模式）名称：<label class="click-td"data-ng-click="gotoLdpooldetail(commonModel.ldPoolId)">{{commonModel.ldPoolName}}</label>
+            <label style="margin-left:40px;">所属网络：{{commonModel.netName}}</label></h4>
+        <form class="form-inline">
+            <div style="margin-top:40px;">
+                <label class="control-label" style="">截止时间：</label>
+				<date-time-picker data-init="[]" name="endTime" data-ng-model="data.endTime" class="form-group" show-time = "true" max-date="today" required></date-time-picker>
+		      	<label class="control-label" style="margin-left:20px;">时间范围：</label>
+		      	<eayun-select data-ng-model="data.timeRange">
+		        	<eayun-option value="3" text="30分钟" selected></eayun-option>
+		        	<eayun-option value="5" text="1小时"></eayun-option>
+		        	<eayun-option value="30" text="6小时"></eayun-option>
+		        	<eayun-option value="60" text="12小时"></eayun-option>
+		        	<eayun-option value="120" text="1天"></eayun-option>
+		        	<eayun-option value="720" text="7天"></eayun-option>
+		      	</eayun-select>
+            </div>
+        </form>
+        <eayun-table data-api="commonExpTable.api" data-ajax-source="commonExpTable.source" data-param="commonExpTable.getParams"
+                data-result="commonExpTable.result">
+	      <table class="ey-table">
+			<thead>
+		        <tr>
+		          <th><eayun-table-filter list-data="memNames" text-field="text" item-clicked="memNameClicked($item, $event)"></eayun-table-filter></th>
+		          <th>受管子网IP地址</th>
+		          <th width="80px">端口</th>
+		          <th><eayun-table-filter list-data="healths" text-field="text" item-clicked="healthClicked($item, $event)"></eayun-table-filter></th>
+		          <th width="150px">成员异常时间</th>
+		          <th width="25%">健康检查事件</th>
+		          <th width="130px"><eayun-table-filter list-data="repairStatus" text-field="text" item-clicked="repairClicked($item, $event)"></eayun-table-filter>
+		        </tr>
+	        </thead>
+	        <tbody><tr data-ng-repeat="commonexp in commonExpTable.result">
+	        		<td title= "{{commonexp.memberName}}" class="click-td">{{commonexp.memberName}}</td>
+	        		<td title= "{{commonexp.vmIp=='null'?'':commonexp.vmIp}}">{{commonexp.vmIp=='null'?'':commonexp.vmIp}}</td>
+	        		
+	        		<td title= "{{commonexp.port=='null'?'':commonexp.port}}">{{commonexp.port=='null'?'':commonexp.port}}</td>
+	        		<td title= "{{commonexp.healthName=='null'?'':commonexp.healthName}}">{{commonexp.healthName=='null'?'':commonexp.healthName}}</td>
+	                <td ng-bind="::commonexp.expTime| date: 'yyyy-MM-dd HH:mm:ss'"></td>
+	                <td title= "{{commonexp.expDetails=='null'?'':commonexp.expDetails}}">{{commonexp.expDetails=='null'?'':commonexp.expDetails}}</td>
+	                <td ng-bind="'1' == commonexp.isRepair?'是':'否'"></td>
+		        </tr></tbody>
+	      </table>
+   		<eayun-table-page></eayun-table-page>
+	  </eayun-table>
+    </div>
+</div>

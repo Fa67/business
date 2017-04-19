@@ -1,0 +1,133 @@
+<ul class="ey-nav-bread">
+    <li data-ui-sref="app.net.netbar.floatip">弹性公网IP</li>
+    <li>申请弹性公网IP</li>
+</ul>
+<nav class="ey-nav-online">
+    <a data-ng-class="buyFloatIp.floatIp.payType == '1' ? 'active' : ''"
+       data-ng-click="buyFloatIp.viewInterAction.typeChoose('1')">
+        包年包月
+    </a>
+    <a data-ng-class="buyFloatIp.floatIp.payType == '2' ? 'active' : ''"
+       data-ng-click="buyFloatIp.viewInterAction.typeChoose('2')">
+        按需付费
+    </a>
+</nav>
+<div class="row">
+    <form class="ey-form-purchase col-lg-8" name="buyForm" novalidate>
+        <fieldset style="margin-bottom: 200px;">
+            <div class="ey-form-group">
+                <label>数据中心：</label>
+                <span class="ey-mark ey-mark-width"
+                      data-ng-repeat="data in buyFloatIp.datacenters"
+                      data-ng-class="buyFloatIp.floatIp.dcId == data.dcId ? 'active' : ''"
+                      data-ng-click="buyFloatIp.viewInterAction.selectDcPrj(data)">
+                    {{data.dcName}}
+                </span>
+            </div>
+            <div class="ey-form-group">
+                <label class="ey-form-label ey-required">数量：</label>
+                <div class="ey-form-input-group ey-has-suffix ey-form-w3"
+                     data-ng-class="((buyForm.productCount.$dirty && buyForm.productCount.$invalid) || buyFloatIp.quotas < buyFloatIp.floatIp.productCount)?'ey-has-error' : ''"><!--type="number"-->
+                    <input class="ey-form-input"
+                           min="1" maxlength="3"
+                           name="productCount"
+                           data-ng-model="buyFloatIp.productCount"
+                           data-ng-pattern="/^[1-9][0-9]*$/"
+                           data-ng-change="buyFloatIp.viewInterAction.changeProductCount()"
+                           required>
+                    <span class="ey-suffix">个</span>
+                </div>
+                <span class="ey-text-tip ey-text-error"
+                      data-ng-show="buyFloatIp.quotas < buyFloatIp.floatIp.productCount">
+                    公网IP数量配额不足
+                </span>
+                <span class="ey-text-tip ey-text-error"
+                      data-ng-show="buyForm.productCount.$dirty
+                                && buyForm.productCount.$invalid"><!--&& buyFloatIp.quotas >= buyFloatIp.floatIp.productCount-->
+                    请输入正整数
+                </span>
+            </div>
+            <div class="ey-form-group" data-ng-if="buyFloatIp.floatIp.payType == '1'">
+                <label>付款方式：</label>
+                <eayun-select class="ey-form-w3"
+                              data-ng-model="buyFloatIp.floatIp.cycleType"
+                              data-ng-change="buyFloatIp.viewInterAction.changeCycleType()">
+                    <eayun-option data-ng-repeat="cycleType in buyFloatIp.cycleTypeList"
+                                  value="cycleType.value" text="{{cycleType.text}}"></eayun-option>
+                </eayun-select>
+                <eayun-select class="ey-form-w3"
+                              data-ng-model="buyFloatIp.floatIp.buyCycle"
+                              data-ng-change="buyFloatIp.viewInterAction.changeBuyCycle()">
+                    <eayun-option data-ng-repeat="buyCycle in buyFloatIp.cycleList"
+                                  value="buyCycle.value" text="{{buyCycle.text}}"></eayun-option>
+                </eayun-select>
+            </div>
+        </fieldset>
+    </form>
+    <div class="ey-set">
+        <h5>已选配置</h5>
+        <fieldset>
+            <ul>
+                <li>
+                    数据中心：
+                    <span class="ey-color-default" data-ng-bind="buyFloatIp.floatIp.dcName"></span>
+                </li>
+                <li>
+                    购买量：
+
+                    <span class="ey-color-default"
+                          data-ng-if="buyFloatIp.floatIp.payType == '1' && buyForm.productCount.$valid">
+                        {{buyFloatIp.floatIp.buyCycle < 12
+                        ? (buyFloatIp.floatIp.buyCycle + '个月')
+                        : (buyFloatIp.floatIp.buyCycle / 12 + '年')}}×{{buyFloatIp.floatIp.productCount}}个
+                    </span>
+                    <span class="ey-color-default"
+                          data-ng-if="buyFloatIp.floatIp.payType == '2' && buyForm.productCount.$valid">
+                        {{buyFloatIp.floatIp.productCount}}个
+                    </span>
+                </li>
+            </ul>
+            <p class="ey-font-size-big" data-ng-if="buyFloatIp.floatIp.payType == '1'">
+                总计：
+                <span data-ng-if="buyFloatIp.hasGotPrice"><span
+                        class="ey-font-size-big ey-text-tip ey-color-default">￥&nbsp;</span></span>
+                <span class="ey-font-size-super ey-color-red"
+                      data-ng-if="buyFloatIp.hasGotPrice">
+                    {{buyFloatIp.floatIp.price|number:2}}
+                </span>
+                <span class="ey-color-red"
+                      data-ng-if="!buyFloatIp.hasGotPrice"
+                      data-ng-bind="buyFloatIp.priceMsg"></span>
+            </p>
+            <p class="ey-font-size-big" data-ng-if="buyFloatIp.floatIp.payType == '2'">
+                总计：
+                <span data-ng-if="buyFloatIp.hasGotPrice"><span
+                        class="ey-font-size-big ey-text-tip ey-color-default">￥&nbsp;</span></span>
+                <span class="ey-font-size-super ey-color-red"
+                      data-ng-if="buyFloatIp.hasGotPrice">
+                    {{buyFloatIp.floatIp.price | thousand:true}}
+                </span>
+                <span data-ng-if="buyFloatIp.hasGotPrice">&nbsp;/小时</span>
+                <span class="ey-color-red"
+                      data-ng-if="!buyFloatIp.hasGotPrice"
+                      data-ng-bind="buyFloatIp.priceMsg"></span>
+            </p>
+            <span class="ey-color-red" data-ng-if="buyFloatIp.floatIp.payType == '2'">
+                开通按需付费的云服务，您的账户余额不得低于{{buyFloatIp.buyCondition}}元，请充值后再开通，
+                <a class="ey-color-blue pointer" data-ng-click="buyFloatIp.viewInterAction.recharge()">立即充值</a>
+            </span>
+        </fieldset>
+        <button class="ey-btn"
+                data-ng-disabled="buyForm.$invalid || !buyFloatIp.hasGotPrice
+                                || buyFloatIp.quotas < buyFloatIp.floatIp.productCount
+                                || (buyFloatIp.isNSF && buyFloatIp.floatIp.payType == '2')"
+                data-ng-click="buyFloatIp.viewInterAction.buyAtOnce()">
+            立即购买
+        </button>
+        <fieldset data-ng-if="buyFloatIp.floatIp.payType == '2' && buyFloatIp.isNSF">
+            <span class="ey-color-red">
+                您的账户余额不足{{buyFloatIp.buyCondition}}元，请立即充值
+            </span>
+        </fieldset>
+    </div>
+</div>

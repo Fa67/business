@@ -1,0 +1,136 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	   xsi:schemaLocation="http://www.springframework.org/schema/rabbit
+           http://www.springframework.org/schema/rabbit/spring-rabbit.xsd
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="rabbitmqConnectionFactory"
+		  class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+		<property name="addresses" value="${rabbitmq_address}"></property>
+		<property name="username" value="${rabbitmq_username}" />
+		<property name="password" value="${rabbitmq_password}" />
+		<property name="virtualHost" value="${rabbitmq_vhost}" />
+		<property name="publisherConfirms" value="${rabbitmq_publisher_confirms}" />
+		<property name="channelCacheSize" value="${rabbitmq_channel_cache_size}" />
+	</bean>
+
+	<bean id="retryTemplate" class="org.springframework.retry.support.RetryTemplate">
+		<property name="backOffPolicy">
+			<bean class="org.springframework.retry.backoff.ExponentialBackOffPolicy">
+				<property name="initialInterval" value="500" />
+				<property name="multiplier" value="10.0" />
+				<property name="maxInterval" value="10000" />
+			</bean>
+		</property>
+	</bean>
+
+	<rabbit:annotation-driven />
+
+	<rabbit:admin id="rabbitAdmin" connection-factory="rabbitmqConnectionFactory" />
+
+	<!-- 余额变动监听队列 -->
+	<rabbit:queue name="BALANCE_CHANGE" durable="true" auto-delete="false" exclusive="false" />
+	<!-- OBS计费队列 -->
+	<rabbit:queue name="BILL_OBS_GATHER_SUCCEED" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 新购资源计费队列 -->
+	<rabbit:queue name="BILL_RESOURCE_PURCHASE" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 变配资源计费队列 -->
+	<rabbit:queue name="BILL_RESOURCE_UPGRADE" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 删除资源计费队列 -->
+	<rabbit:queue name="BILL_RESOURCE_DELETE" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 限制资源服务计费队列 -->
+	<rabbit:queue name="BILL_RESOURCE_RESTRICT" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 恢复资源服务计费队列 -->
+	<rabbit:queue name="BILL_RESOURCE_RECOVER" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 客户解冻计费队列 -->
+	<rabbit:queue name="BILL_CUSTOMER_UNBLOCK" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 资源放入回收站计费队列 -->
+	<rabbit:queue name="BILL_RESOURCE_RECYCLE" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 资源在回收站中还原计费队列 -->
+	<rabbit:queue name="BILL_RESOURCE_RESTORE" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 欠费但在保留时长内队列 -->
+	<rabbit:queue name="ARREARAGE_IN_RENTENTIONTIME" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 欠费达到信用额度队列 -->
+	<rabbit:queue name="ARREARAGE_REACH_CREDITLIMIT" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 欠费且在保留时长外队列 -->
+	<rabbit:queue name="ARREARAGE_OUT_RENTENTIONTIME" durable="true" auto-delete="false" exclusive="false" />
+
+	<!-- 订单支付完成后云主机队列 -->
+	<rabbit:queue name="order.pay.vm" durable="true" auto-delete="false" exclusive="false" />
+	
+	<!-- 订单支付完成后云硬盘队列-->
+	<rabbit:queue name="order.pay.volume" durable="true" auto-delete="false" exclusive="false" />
+	
+	<!-- 订单支付完成后网络队列  -->
+	<rabbit:queue name="order.pay.vpc" durable="true" auto-delete="false" exclusive="false" />
+	
+	<!-- 订单支付完成后负载均衡队列  -->
+    <rabbit:queue name="order.pay.balancer" durable="true" auto-delete="false" exclusive="false" />
+    
+	<!-- 订单支付完成后网络队列  -->
+    <rabbit:queue name="order.pay.floatip" durable="true" auto-delete="false" exclusive="false" />
+    
+    <!-- 订单支付完成后vpn队列  -->
+    <rabbit:queue name="order.pay.vpn" durable="true" auto-delete="false" exclusive="false" />
+    
+    <!-- 订单支付完成后rdsInstance队列  -->
+    <rabbit:queue name="order.pay.rdsInstance" durable="true" auto-delete="false" exclusive="false" />
+	
+	<!-- 资源续费模块监听该队列 -->
+	<rabbit:queue name="RESOURCE_RENEW" durable="true" auto-delete="false" exclusive="false" />
+	
+	<!-- 第三方支付后通知订单队列 -->
+    <rabbit:queue name="order.thirdpart.pay" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 消息对象json转换类 -->
+	<bean id="jsonMessageConverter"
+		  class="org.springframework.amqp.support.converter.Jackson2JsonMessageConverter" />
+
+	<rabbit:listener-container  
+		connection-factory="rabbitmqConnectionFactory"
+		acknowledge="manual"
+		group ="ecsc"
+		concurrency="${rabbitmq_concurrent_consumers}"
+		max-concurrency="${rabbitmq_maxconcurrent_consumers}">
+		
+		<!-- 订单支付完成后云硬盘队列-->
+		<!-- <rabbit:listener ref="volumeConsumer" method="onMessage" queue-names="order.pay.volume" /> -->
+		<!-- <rabbit:listener ref="vmConsumer" method="onMessage" queue-names="order.pay.vm" /> -->
+		<!-- <rabbit:listener ref="payToOrderConsumer" method="onMessage" queue-names="order.thirdpart.pay" /> -->
+		<!-- 订单支付完成后私有网络队列  -->
+		<!-- <rabbit:listener ref="networkConsumer" method="onMessage" queue-names="order.pay.vpc" /> -->
+		<!-- 订单支付完成后负载均衡队列  -->
+		<!-- <rabbit:listener ref="ldPoolConsumer" method="onMessage" queue-names="order.pay.balancer" /> -->
+		<!-- 订单支付完成后公网队列  -->
+		<!-- <rabbit:listener ref="floatIpConsumer" method="onMessage" queue-names="order.pay.floatip" /> -->
+		<!-- 订单支付完成后vpn队列  -->
+		<!-- <rabbit:listener ref="vpnConsumer" method="onMessage" queue-names="order.pay.vpn" /> -->
+		<!-- 订单支付完成后rdsInstance队列  -->
+		<!-- <rabbit:listener ref="rdsInstanceConsumer" method="onMessage" queue-names="order.pay.rdsInstance" /> -->
+		<!-- 欠费但在保留时长内队列 -->
+		 <!-- <rabbit:listener ref="arrearageInRententionTimeConsumer" method="onMessage" queue-names="ARREARAGE_IN_RENTENTIONTIME" /> -->
+		<!-- 欠费且在保留时长外队列 -->
+		 <!-- <rabbit:listener ref="arrearageOutRententionTimeConsumer" method="onMessage" queue-names="ARREARAGE_OUT_RENTENTIONTIME" /> -->
+		<!-- 欠费达到信用额度队列 -->
+        <!-- <rabbit:listener ref="arrearageReachCreditLimitConsumer" method="onMessage" queue-names="ARREARAGE_REACH_CREDITLIMIT" /> -->
+        <!-- 续费成功消息队列 -->
+        <!-- <rabbit:listener ref="resourceRenewConsumer" method="onMessage" queue-names="RESOURCE_RENEW" /> -->
+
+        <!-- 后付费资源计费相关队列 BEGIN -->
+        <!-- 
+        <rabbit:listener ref="billResourcePurchaseConsumer" method="onMessage" queue-names="BILL_RESOURCE_PURCHASE" />
+        <rabbit:listener ref="billResourceUpgradeConsumer" method="onMessage" queue-names="BILL_RESOURCE_UPGRADE" />
+        <rabbit:listener ref="billResourceDeleteConsumer" method="onMessage" queue-names="BILL_RESOURCE_DELETE" />
+        <rabbit:listener ref="billResourceRestrictConsumer" method="onMessage" queue-names="BILL_RESOURCE_RESTRICT" />
+        <rabbit:listener ref="billResourceRecoverConsumer" method="onMessage" queue-names="BILL_RESOURCE_RECOVER" />
+        <rabbit:listener ref="billResourceUnblockConsumer" method="onMessage" queue-names="BILL_CUSTOMER_UNBLOCK" />
+        <rabbit:listener ref="billResourceRecycleConsumer" method="onMessage" queue-names="BILL_RESOURCE_RECYCLE" />
+        <rabbit:listener ref="billResourceRestoreConsumer" method="onMessage" queue-names="BILL_RESOURCE_RESTORE" />
+        <rabbit:listener ref="chargeObsConsumer" method="onMessage" queue-names="BILL_OBS_GATHER_SUCCEED" />
+         -->
+        <!-- 后付费资源计费相关队列 END -->
+        <!-- 余额变动消息监听队列 -->
+        <!-- <rabbit:listener ref="balanceChangeConsumer" method="onMessage" queue-names="BALANCE_CHANGE" /> -->
+
+	</rabbit:listener-container>
+</beans>

@@ -1,0 +1,36 @@
+<div class="modal-header">
+    <span class="modal-title">角色权限</span> 
+    <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body">
+	<div class="row">
+		<div class="col-sm-4">
+			<div class="list-group" style = "height: 520px;margin-bottom:0;">
+			<a role="button" class="list-group-item" data-ng-repeat="model in modelone" style = "border-radius:4px;" 
+			data-ng-click = "clickFirst(model.powerId)" data-ng-class="model.isThis?'active':''">{{model.powerName}}</a>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="list-group" style = "height: 520px;margin-bottom:0;">
+			  <a role="button" class="list-group-item" data-ng-repeat="model in modeltwo" style = "border-radius:4px;"
+			  data-ng-click = "clickSecond(model.powerId)" data-ng-class="model.isThis?'active':''">{{model.powerName}}</a>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<ul class="list-group" style = "height: 520px;margin-bottom:0;">
+			  <li class="list-group-item color-item" data-ng-repeat="model in modelthree"  style = "border-radius:4px;">{{model.powerName}}
+			  <span data-ng-show = "isShow" style="float:right;" class="glyphicon" data-ng-class="model.isCheck?'glyphicon-ok alert-success':''">
+	    		</span>
+	    	  <span data-ng-show = "!isShow" style="float:right;">
+	    	  	<label><input type="checkbox" data-ng-model="model.isCheck" data-ng-click = "doCheck(model)"></label>
+	    		</span>
+	    	  </li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<button type="button" class="ey-btn ey-btn-default" data-ng-click="cancel()">取 消</button>
+	</div>
+</div>

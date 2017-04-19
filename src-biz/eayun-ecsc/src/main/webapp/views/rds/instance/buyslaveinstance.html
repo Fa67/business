@@ -1,0 +1,77 @@
+<ul class="ey-nav-bread">
+    <li data-ng-click="buySlaveInstance.goToDetail(buySlaveInstance.instance.masterId)">实例详情</li>
+    <li>创建从库</li>
+</ul>
+<nav class="ey-nav-online">
+    <a data-ng-class="''">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+    <a data-ng-class="'active'">按需付费</a>
+</nav>
+
+<div class="row">
+	<form class="ey-form-purchase col-lg-8" name="myForm" novalidate="novalidate">
+		<fieldset style="margin-bottom: 300px;">
+			<div class="ey-form-group">
+				<label>主库实例名称：</label>	
+				<span>{{buySlaveInstance.instance.masterRdsName}}
+			    </span>
+			</div>
+			<div class="ey-form-group">
+				<label>主库实例配置：</label>	
+				<span>{{buySlaveInstance.instance.configName}}
+			    </span>
+			</div>
+			<div class="ey-form-group" data-ng-class="(myForm.rdsName.$dirty && (myForm.rdsName.$invalid || !buySlaveInstance.checkRdsName)) ||
+			(!myForm.rdsName.$dirty && myForm.rdsName.$valid && !buySlaveInstance.checkRdsName)?'ey-has-error' : ''">
+				<label class="ey-form-label ey-required">从库实例名称：</label>	
+				<div>
+					<input class="ey-form-input ey-form-w6" 
+						   type="text" 
+						   placeholder="请输入实例名称" 
+						   data-ng-model="buySlaveInstance.instance.rdsName"  
+						   name="rdsName" 
+						   data-ng-change="buySlaveInstance.checkRdsNameExist(value)"
+						   ng-pattern='/^[a-zA-Z0-9]([_a-zA-Z0-9]{0,18}[a-zA-Z0-9])?$/'
+						   maxlength="20" required>
+					<p data-ng-if="myForm.rdsName.$dirty && myForm.rdsName.$invalid" style="margin-bottom:0;">请输入1-20位字符,支持数字、英文、下划线</p>
+					<p data-ng-if="myForm.rdsName.$valid && !buySlaveInstance.checkRdsName" style="margin-bottom:0;">实例名称已存在</p>
+					<span class="ey-text-tip ey-has-error" data-ng-if="!buySlaveInstance.checkQuota">{{buySlaveInstance.checkQuotaMsg}}</span>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+	<div class="ey-set">
+		<h5>已选配置</h5>
+		<fieldset>
+			<ul>
+				<li>
+					数据中心：
+					<span class="ey-color-default">{{buySlaveInstance.instance.dcName}}</span>
+				</li>
+				<li>
+					从库数量：
+					<span class="ey-color-default" title="">1 个</span>
+				</li>
+			</ul>
+			<!-- <h6>费用明细</h6> -->
+			<p class="ey-font-size-big">
+				总计：
+				<span class="ey-font-size-big ey-text-tip ey-color-default" data-ng-if="buySlaveInstance.hasGotPrice">￥&nbsp;</span>
+				<span class="ey-font-size-super ey-color-red" data-ng-if="buySlaveInstance.hasGotPrice">{{buySlaveInstance.priceDetails.totalPrice | number:2}}</span>
+				<span class="ey-color-default" data-ng-if="buySlaveInstance.hasGotPrice">&nbsp;/小时</span>
+				<span class="ey-color-red" data-ng-if="!buySlaveInstance.hasGotPrice">{{buySlaveInstance.priceMsg}}</span>
+			</p>
+			<span class="ey-color-red">
+				开通按需付费的云服务，您的账户余额不得低于{{buySlaveInstance.payAfpterPayment}}元，请充值后再开通，
+				<a class="ey-color-blue pointer" data-ng-click="buySlaveInstance.recharge()">立即充值</a>
+			</span>
+		</fieldset>
+		<button class="ey-btn ey-btn-primary" 
+				data-ng-disabled="myForm.$invalid || !buySlaveInstance.hasGotPrice || buySlaveInstance.isNSF || !buySlaveInstance.checkRdsName || !buySlaveInstance.checkQuota" 
+				data-ng-click="buySlaveInstance.commitBuyRds()">立即购买
+		</button>
+		<fieldset data-ng-if="buySlaveInstance.isNSF">
+			<span class="ey-color-red">您的账户余额不足{{buySlaveInstance.payAfpterPayment}}元，请充值后操作</span>
+		</fieldset>
+	</div>
+</div>
+

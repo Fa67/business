@@ -1,0 +1,103 @@
+<div class="row">
+    <form class="ey-form-purchase col-lg-8 ng-pristine ng-valid" name="vpcForm">
+        <fieldset>
+            <div class="ey-form-group">
+                <label>数据中心：</label>
+                <span class="ey-mark"
+                      data-ng-repeat="data in buyNetWork.datacenters"
+                      data-ng-click="payRequiredNet.selectDcPrj(data)"
+                      data-ng-class="payRequiredNet.netWork.dcId == data.dcId?'active':''">
+                    {{data.dcName}}
+                </span>
+            </div>
+            <div class="ey-form-group" data-ng-class="vpcForm.netName.$dirty
+                                                    && !payRequiredNet.outOfQuota
+                                                    && (vpcForm.netName.$invalid || payRequiredNet.isNameExist)
+                                                    ? 'ey-has-error' : ''">
+                <label class="ey-form-label ey-required"> 网络名称：</label>
+                <input type="text" class="ey-form-input" name="netName" data-ng-model="payRequiredNet.netWork.netName"
+                       placeholder="请输入名称"
+                       data-ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/'
+                       data-ng-change="payRequiredNet.checkNetworkNameExist()" required>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="payRequiredNet.outOfQuota">
+                    私有网络数量配额不足
+                </span>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="vpcForm.netName.$dirty && !payRequiredNet.outOfQuota && vpcForm.netName.$invalid">
+                    请输入1-20位字符,支持数字、中英文、下划线、空格
+                </span>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="vpcForm.netName.$dirty && !payRequiredNet.outOfQuota && vpcForm.netName.$valid && payRequiredNet.isNameExist">
+                    该私有网络名称已存在
+                </span>
+            </div>
+            <div class="ey-form-group" style="margin-bottom: 0px;">
+                <label class="ey-form-label ey-required"> 带宽：</label>
+                <eayun-progress class="ey-form-w8 " ng-model="payRequiredNet.netWork.rate" max-value="100"
+                                min-value="1" text="Mbps" on-value-change="payRequiredNet.changeRate($value)"></eayun-progress>
+                <span class="ey-text-tip ey-has-error"
+                      data-ng-show="payRequiredNet.netWork.rate > payRequiredNet.bandQuotas">
+                    带宽配额不足
+                </span>
+            </div>
+            <div class="ey-form-group">
+                <span class="ey-text-tip">
+                    1Mbps - 100Mbps
+                </span>
+            </div>
+        </fieldset>
+    </form>
+    <div class="ey-set">
+        <h5>已选配置</h5>
+        <fieldset>
+            <ul>
+                <li>
+                    数据中心：
+                    <span class="ey-color-default" data-ng-bind="payRequiredNet.netWork.dcName"></span>
+                </li>
+                <li>
+                    带宽：
+                    <span class="ey-color-default" data-ng-bind="payRequiredNet.netWork.rate + 'Mbps'"></span>
+                </li>
+                <li>
+                    购买量：
+                    <span class="ey-color-default">1个</span>
+                </li>
+            </ul>
+        </fieldset>
+        <fieldset>
+            <p class="ey-font-size-big">
+                总计：
+                <span data-ng-if="payRequiredNet.hasGotPrice">￥</span>
+                <span class="ey-font-size-super ey-color-red"
+                      data-ng-if="payRequiredNet.hasGotPrice">
+                    {{payRequiredNet.netWork.price | thousand}}/小时
+                </span>
+                <span class="ey-color-red"
+                      data-ng-if="!payRequiredNet.hasGotPrice"
+                      data-ng-bind="payRequiredNet.priceMsg"></span>
+            </p>
+            <span class="ey-color-red">开通按需付费的云服务，您的账户余额不得低于{{payRequiredNet.limit}}元，请充值后再开通，
+                <a class="ey-color-blue pointer" data-ng-click="payRequiredNet.recharge()">立即充值</a>
+            </span>
+        </fieldset>
+        <!--data-ng-class="payRequiredNet.balance < payRequiredNet.limit ? 'ey-btn-default' : 'ey-btn-primary'"-->
+        <button class="ey-btn"
+
+                data-ng-click="payRequiredNet.goToOrder()"
+                data-ng-disabled="(vpcForm.$invalid
+                                || payRequiredNet.outOfQuota
+                                || payRequiredNet.isNameExist
+                                || payRequiredNet.netWork.rate > payRequiredNet.bandQuotas
+                                || payRequiredNet.balance < payRequiredNet.limit)
+                                || !payRequiredNet.hasGotPrice">
+            立即购买
+        </button>
+        <fieldset data-ng-show="payRequiredNet.balance < payRequiredNet.limit">
+            <span class="ey-color-red">
+                您的账户余额不足{{payRequiredNet.limit}}元，请充值后再开通
+            </span>
+        </fieldset>
+    </div>
+</div>

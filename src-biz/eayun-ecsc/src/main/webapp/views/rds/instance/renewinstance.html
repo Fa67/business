@@ -1,0 +1,74 @@
+<div class="modal-header">
+    <span class="modal-title">MySQL实例续费</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body">
+	<form class="ey-form " name="myForm" novalidate>
+	  <div class="ey-form-group" >
+	    <label class="ey-form-label">实例名称：</label>
+	    <span data-ng-bind="renewInstance.instance.rdsName"></span>
+	  </div>
+  
+	  <div class="ey-form-group" >
+	    <label class="ey-form-label">状态：</label>
+	    <span class ="eayunfont ef-square" 
+	    	  data-ng-class="renewInstance.rdsStatusClass!=''?renewInstance.rdsStatusClass:''" 
+	    	  data-ng-init="renewInstance.rdsStatusClass = renewInstance.checkRdsStatus(renewInstance.instance)">
+		      </span>
+		{{renewInstance.instance.statusStr}}
+	  </div>
+	  
+	   <div class="ey-form-group" >
+	    <label class="ey-form-label">规格：</label>
+		<span>{{renewInstance.instance.cpu}}核\{{renewInstance.instance.ram/1024}}GB\{{renewInstance.instance.volumeTypeName == 'Normal'?'普通型':'性能型'}}{{renewInstance.instance.volumeSize}}GB</span>
+	   </div>
+	   
+	   <div class="ey-form-group" >
+	    <label class="ey-form-label">到期时间：</label>
+		<span>{{renewInstance.instance.endTime | date:"yyyy-MM-dd HH:mm:ss"}}</span>
+	   </div>
+
+  	   <div class="ey-form-group">
+			<label class="ey-form-label">付款方式：</label>
+			<eayun-select class="ey-form-w3" 
+						  placeholder="请选择周期类型" 
+						  data-ng-model="renewInstance.instance.cycleType" 
+						  required 
+						  data-ng-change="renewInstance.changeCycleType()">
+				<eayun-option ng-repeat="data in renewInstance.cycleTypeList" value="data.nodeId" text="{{data.nodeName}}"></eayun-option>
+			</eayun-select>
+			<eayun-select class="ey-form-w3" 
+						  placeholder="请选择购买时长" 
+						  data-ng-model="renewInstance.instance.buyCycle" 
+						  required 
+						  data-ng-change="renewInstance.getLastTimeAndPrice()">
+				<eayun-option ng-repeat="data in renewInstance.cycleList" value="data.nodeNameEn" text="{{data.nodeName}}"></eayun-option>
+			</eayun-select>
+	   </div>
+  
+  <div class="ey-form-group" >
+    	<label class="ey-form-label">续费后到期时间：</label>
+		<span>{{renewInstance.lastTime | date:"yyyy-MM-dd HH:mm:ss"}}</span>
+  </div>
+  
+</form>
+</div>
+
+<!-- 按钮区域 -->
+  <div class="ey-modal-footer" >
+      <div class="ey-btn-group">
+  	      <span class="ey-font-bold">总价：
+  	      	  <span class="ey-color-red ey-font-bold" data-ng-if="renewInstance.hasGotPrice">￥&nbsp;</span>
+		      <span class="ey-font-huger ey-color-red ey-font-bold"  
+		      		data-ng-if="renewInstance.hasGotPrice" 
+		      		data-ng-bind="(renewInstance.instance.price | thousand)"></span>
+		      
+		      <span class="ey-color-red ey-font-bold" data-ng-if="!renewInstance.hasGotPrice">{{renewInstance.priceMsg}}</span>
+		  </span>
+  		<button type="button" 
+  				class="ey-btn ey-btn-primary" 
+  				data-ng-click="commit()"  
+  				data-ng-disabled="!myForm.$valid || !renewInstance.hasGotPrice || renewInstance.checkBtn">确定
+  	    </button>
+    	<button type="button" class="ey-btn ey-btn-default" data-ng-click="cancel()">取  消</button>
+  	  </div>
+  </div>

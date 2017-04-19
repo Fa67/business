@@ -1,0 +1,52 @@
+<style>
+.ul-notice {
+	list-style:none;
+	margin:0;
+	padding:0;
+	width:160px;
+}
+.li-notice-suang {
+	list-style-type:none;
+	cursor: pointer;
+	background-color: #DCDCDC;
+	border-top: 1px solid #d4d4d4;
+	border-left: 1px solid #d4d4d4;
+	border-right: 1px solid #d4d4d4;
+	line-height: 32px;
+	text-align: center;
+}
+.li-notice-dan {
+	list-style-type:none;
+	cursor: pointer;
+	background-color: #ffffff;
+	border-top: 1px solid #d4d4d4;
+	border-left: 1px solid #d4d4d4;
+	border-right: 1px solid #d4d4d4;
+	line-height: 32px;
+	text-align: center;
+}
+.li-notice-click {
+	background-color: #58b8f0;
+	color: #ffffff;
+	list-style-type:none;
+	cursor: pointer;
+	border-top: 1px solid #d4d4d4;
+	border-left: 1px solid #d4d4d4;
+	border-right: 1px solid #d4d4d4;
+	line-height: 32px;
+	text-align: center;
+}
+.content-p {
+	line-height: 28px;
+}
+</style>
+<div style="font-size:14px;border-top: 1px solid #cccccc;margin-top: -20px;">
+	<div class="form-group" style="font-family:Microsoft YaHei;float: left;width: 30%;margin-top: 5px;">
+		<ul class="ul-notice" data-ng-repeat="notice in noticeList">
+			<li data-ng-class="$index%2 == 0 ? 'li-notice-suang' : 'li-notice-dan'" ng-bind="notice.title.length > 10 ? notice.title.substring(0,10) + '...' : notice.title" data-ng-click="noticeDeils(notice.content,$index)"></li>
+		</ul>
+	</div>
+	<div class="form-group" style="font-family:Microsoft YaHei;float: right;width: 70%; margin-top: 5px;">
+		<p class="content-p">{{noticecontent}}</p>
+	</div>
+</div>

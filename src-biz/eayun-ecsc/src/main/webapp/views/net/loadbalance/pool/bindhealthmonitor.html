@@ -1,0 +1,73 @@
+<div class="modal-header">
+	<span class="modal-title">关联健康检查</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 700px;">
+	<form class="form-horizontal" name="myForm" novalidate>
+		<div class="form-group">
+			<label class="col-sm-8 control-label"
+				   style="font-weight: bold;text-align: left;"
+				   data-ng-show="!monitors || monitors.length == 0">
+				当前数据中心未创建健康检查!
+			</label>
+			<div class="col-sm-12" data-ng-if="monitors&&monitors.length != 0">
+				<div class="col-sm-12" style="padding-left:0px;padding-right:0px;">
+					<eayun-table>
+					<table class="ey-table-muliti" style="margin-bottom: 0px;;">
+						<thead>
+							<tr>
+								<th style="width: 10px;border-right: 0px;"></th>
+								<th style="width: 65px;">名称</th>
+								<th style="width: 60px;">协议</th>
+								<th style="width: 60px;">间隔</th>
+								<th style="width: 60px;">超时</th>
+								<th style="width: 60px;">超时重复次数</th>
+							</tr>
+						</thead>
+						<tbody class="ey-table-overflow" style="width:658px;">
+						<tr class="control-label" style="height: 30px" data-ng-repeat="monitor in monitors">
+								<td style="width: 10px;height: 50px;border-bottom: 1px solid #DCDCDC;">
+								<div class = "ey-form-radio">
+						      		<input type="radio" name="rolesId" value="{{monitor.ldmId}}"   id = "{{monitor.ldmId}}" data-ng-model="monitor.checkRadio" data-ng-change="changeRadio(monitor.ldmId)">
+						      		 <label for="{{monitor.ldmId}}"></label>
+						  		</div>
+								</td>
+								<td style="width: 130px;height: 50px;border-bottom: 1px solid #DCDCDC; text-align: left" title="{{monitor.ldmName}}">
+									{{monitor.ldmName.length > 10 ? monitor.ldmName.substr(0,10) + '...' : monitor.ldmName}}
+								</td>
+								<td style="width: 120px;height: 50px; border-bottom: 1px solid #DCDCDC;text-align: left;">
+									{{monitor.ldmType}}
+								</td>
+								<td style="width: 120px;height: 50px;border-bottom: 1px solid #DCDCDC;text-align: left;">
+									{{monitor.ldmDelay}}秒
+								</td>
+								<td style="width: 120px;height: 50px;border-bottom: 1px solid #DCDCDC;text-align: left;">
+									{{monitor.maxRetries}}次
+								</td>
+								<td style="width: 113px;height: 50px;border-bottom: 1px solid #DCDCDC;text-align: left;">
+									{{monitor.ldmTimeout}}秒
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</eayun-table>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+  <!-- 按钮区域 -->
+<div class="ey-modal-footer" >
+	<div class="ey-btn-group">
+		<button type="button"
+				class="ey-btn ey-btn-primary"
+				data-ng-click="commit()"
+				data-ng-disabled="!monitors || monitors.length == 0 || checkBtn||!checkMonitor">
+			确  定
+		</button>
+		<button type="button"
+				class="ey-btn ey-btn-default"
+				data-ng-click="cancel()">
+			取  消
+		</button>
+	</div>
+</div>

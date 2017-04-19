@@ -1,0 +1,16 @@
+<h4>标签管理</h4>
+<div class="second-menu-page">
+  <div class="second-menu" style="overflow-y: auto;overflow-x: hidden;">
+    <div class="second-menu-target" ui-sref-active="active" data-target="#second-menu" data-expander-show="true" data-ui-sref="app.business.tag.tagGroupList" style="margin-top:7px;">
+      标签类别
+    </div>
+
+    <div class="second-menu-group" id="second-menu">
+      <div class="second-menu-item"  data-ng-repeat="model in leftTagGroupList" ui-sref-active="active"
+      	data-ui-sref="app.business.tag.tagDetail({tagGroupId:model.id})">{{model.abbreviation}}</div>
+    </div>
+  </div>
+  <div class="second-menu-right">
+  	<div data-ui-view=""></div>
+  </div>
+</div>

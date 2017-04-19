@@ -1,0 +1,57 @@
+<div class="modal-header">
+    <span class="modal-title">备份数据库</span>
+    <span class="eayunfont ef-close ey-font-huge" data-ng-style="{'cursor':(mbc.btnWait ? 'not-allowed' : 'pointer')}" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 600px;">
+    <form class="ey-form" name="backupDB" novalidate>
+        <div class="ey-content-notice" style="margin-left: 20px; margin-right:20px; margin-bottom: 20px;">
+            <ul style="margin-top: 10px;">
+                <li>除每天例行的自动备份外，您也可以使用手动备份在任意时间点备份数据；如果此实例的手动备份数已经达到{{mbc.manualBackupCount}}个，最早期的手动备份会被默认删除</li>
+            </ul>
+        </div>
+        <div class="ey-form-group">
+            <label class="ey-form-label">
+                实例名称：
+            </label>
+            <span class="ey-form-w6">{{mbc.instanceName}}</span>
+        </div>
+        <div class="ey-form-group"
+             data-ng-class="(backupDB.backupName.$dirty && backupDB.backupName.$invalid) ? 'ey-has-error' : ''">
+            <label class="ey-form-label ey-required">
+                备份名称：
+            </label>
+            <input type="text" class="ey-form-input ey-form-w6"
+                   data-ng-model="mbc.backup.name" maxlength="20"
+                   name="backupName" placeholder="请输入名称"
+                   data-ajax-valid="mbc.verifyBackupName(value)"
+                   data-ng-pattern='/^[a-zA-Z0-9][_a-zA-Z0-9]{0,18}[a-zA-Z0-9]{0,1}$/'
+                   required>
+            <span class="ey-text-tip ey-has-error hide"
+                  data-ng-class="(backupDB.backupName.$dirty
+                  && backupDB.backupName.$error.pattern) ? 'show' : 'hide'">
+				请输入1-20位字符，支持数字、大小写字母、下划线
+			</span>
+			<span class="ey-text-tip ey-has-error hide"
+                  data-ng-class="(backupDB.backupName.$dirty
+                  && backupDB.backupName.$error.ajaxValid) ? 'show' : 'hide'">
+				备份名称已存在
+			</span>
+        </div>
+    </form>
+</div>
+<div class="ey-modal-footer ey-btn-group" >
+    <div class="ey-btn-group">
+        <button type="button"
+                class="ey-btn ey-btn-primary"
+                data-ng-click="commit()"
+                data-ng-disabled="mbc.btnWait || !backupDB.$valid">
+            确 定
+        </button>
+        <button type="button"
+                class="ey-btn ey-btn-default"
+                data-ng-click="cancel()"
+                data-ng-disabled="mbc.btnWait">
+            取 消
+        </button>
+    </div>
+</div>

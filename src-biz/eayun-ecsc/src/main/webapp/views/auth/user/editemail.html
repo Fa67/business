@@ -1,0 +1,40 @@
+<div class="modal-header">
+    <span class="modal-title">修改邮箱</span> 
+    <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style = "width:600px;">
+	<p style = "font-size:14px;margin-left:88px;margin-bottom:20px;" data-ng-if = "isShow">请您输入新的邮箱</p>
+	<form class="ey-form" name="editemail" novalidate>
+	  <div class="ey-form-group" data-ng-class="(editemail.email.$dirty && editemail.email.$invalid) ? 'ey-has-error' : ''" data-ng-if="isShow">
+	    <label class="ey-form-label ey-required">新邮箱：</label>
+	    	<input type="text" class="ey-form-input ey-form-w5" name = "email" data-ng-model = "newEmail.email" maxlength="50"
+	    		ng-pattern="/^[a-zA-Z0-9_-]+[\.a-zA-Z0-9_-]+[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/" required data-ajax-valid = "checknewMail(value)">
+    		 <span ng-show="editemail.email.$dirty && editemail.email.$error.ajaxValid">该邮箱已使用</span>
+             <span data-ng-show="editemail.email.$dirty && editemail.email.$error.required">请输入邮箱</span>
+   			 <span data-ng-show="editemail.email.$dirty && editemail.email.$error.pattern">请输入正确的邮箱地址</span>
+	  </div>
+	  <div class="ey-form-group" data-ng-class="(editemail.imgCode.$dirty && editemail.imgCode.$invalid) ? 'ey-has-error' : ''" data-ng-if="isShow">
+	    <label class="ey-form-label ey-required">验证码：</label>
+	      <input type="text" class="ey-form-input ey-form-w3" name = "imgCode" data-ng-model = "newEmail.imgCode" required>
+	      <img class="img-responsive mousecp" data-ng-click="changeCode()" title="切换验证码" data-ng-src='{{src}}'/>
+	      <span data-ng-show="editemail.imgCode.$dirty && editemail.imgCode.$error.required">请输入验证码</span>
+	  </div>
+	</form>
+	<div class="ey-form-group" data-ng-if = "!isShow" style = "margin-left:88px;">
+		<span style = "font-size:14px;">
+		您设置的新电子邮箱为：{{newEmail.email.substring(0,3)+'****'+newEmail.email.substring(newEmail.email.lastIndexOf("@"),newEmail.email.length)}}</span>
+	</div>
+	<div class="ey-form-group" data-ng-if = "!isShow" style = "margin-left:88px;">
+	  	<span style = "font-size:14px;">我们将向您的新电子邮箱发送一封邮件，请注意查收</span>
+	</div>
+	<div class="ey-form-group" data-ng-if = "!isShow" style = "margin-left:88px;">
+	  	<!-- <button class="btn btn-primary" data-ng-click="openEmail(newEmail.email)">去我的邮箱查看</button> -->
+	  	<a role="button" data-ng-click = "nextOpen()" style = "font-size:14px;">稍后去邮箱验证</a>
+	</div>
+</div>
+<div class="ey-modal-footer" data-ng-if="isShow">
+	<div class="ey-btn-group">
+		<button class="ey-btn ey-btn-primary" data-ng-click="commit()" data-ng-disabled="!editemail.$valid" type = "button">立即验证</button>
+		<button class="ey-btn ey-btn-default" data-ng-click="cancel()" type = "button">取 消</button>
+	</div>
+</div>

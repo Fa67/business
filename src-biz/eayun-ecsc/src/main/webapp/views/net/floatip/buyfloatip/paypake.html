@@ -1,0 +1,76 @@
+<div class="row">
+    <form class="ey-form-purchase col-lg-8 ng-pristine ng-valid" name="floatIpForm">
+        <fieldset>
+            <div class="ey-form-group">
+                <label>数据中心：</label>
+                <span class="ey-mark"
+                      data-ng-repeat="data in buyFloatIpCtrl.datacenters"
+                      data-ng-class="payPake.floatOrder.dcId == data.dcId?'active':''"
+                      data-ng-click="payPake.selectDc(data)">
+                    {{data.dcName}}
+                </span>
+            </div>
+            <div class="ey-form-group" data-ng-class="floatIpForm.floatNumber.$dirty && floatIpForm.floatNumber.$invalid ? 'ey-has-error' : ''">
+                <label class="ey-form-label ey-required"> 数量：</label>
+                <div class="ey-form-input-group ey-has-suffix ey-form-w3">
+                    <input name="floatNumber"
+                           class="ey-form-input"
+                           data-ng-pattern="/^[1-9][0-9]*$/"
+                           data-ng-model="payPake.floatOrder.productCount"
+                           data-ng-change="payPake.getPrice()"
+                           required>
+                    <span class="ey-suffix">个</span>
+                </div>
+                <span class="ey-text-tip ey-text-error"
+                      data-ng-show="floatIpForm.floatNumber.$dirty && floatIpForm.floatNumber.$invalid">
+                    请输入正整数
+                </span>
+            </div>
+            <div class="ey-form-group">
+                <label>付款方式：</label>
+                <eayun-select data-ng-model="payPake.floatOrder.$$buyCycleYear" data-ng-change="payPake.getPrice()">
+                    <eayun-option value="12" text="年付"></eayun-option>
+                    <eayun-option value="1" text="月付"></eayun-option>
+                </eayun-select>
+                <eayun-select data-ng-model="payPake.floatOrder.$$buyCycleMonth" data-ng-change="payPake.getPrice()">
+                    <eayun-option data-ng-repeat="list in payPake.list" value="list.value" text="{{list.text}}"></eayun-option>
+                </eayun-select>
+            </div>
+        </fieldset>
+    </form>
+    <div class="ey-set">
+        <h5>已选配置</h5>
+        <fieldset>
+            <ul>
+                <li>
+                    数据中心：
+                    <span class="ey-color-default" data-ng-bind="payPake.floatOrder.dcName"></span>
+                </li>
+                <li>
+                    购买量：
+                    <span class="ey-color-default" data-ng-if="payPake.floatOrder.productCount > 0">
+                        {{payPake.floatOrder.buyCycle < 12 ? (payPake.floatOrder.buyCycle + '个月') : (payPake.floatOrder.buyCycle/12 + '年')}}×{{payPake.floatOrder.productCount}}个
+                    </span>
+                </li>
+            </ul>
+        </fieldset>
+        <fieldset>
+            <p class="ey-font-size-big">
+                总计：
+                <span data-ng-if="payPake.hasGotPrice">￥</span>
+                <span class="ey-font-size-super ey-color-red"
+                      data-ng-if="payPake.hasGotPrice">
+                    {{payPake.floatOrder.price | thousand}}
+                </span>
+                <span class="ey-color-red"
+                      data-ng-if="!payPake.hasGotPrice"
+                      data-ng-bind="payPake.priceMsg"></span>
+            </p>
+        </fieldset>
+        <button class="ey-btn ey-btn-primary"
+                data-ng-disabled="floatIpForm.$invalid || !payPake.hasGotPrice"
+                data-ng-click="payPake.goToOrder()">
+            立即购买
+        </button>
+    </div>
+</div>

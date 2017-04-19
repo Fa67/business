@@ -1,0 +1,55 @@
+<div class="modal-header" style="width: 600px;">
+    <span class="modal-title">调整配置</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body">
+	<form class="ey-form " name="myForm" novalidate>
+		<div class="ey-form-group">
+			<label class="ey-form-label">当前配置：</label>
+			<span>CPU&nbsp;{{oldCpu}}核&nbsp;&nbsp;&nbsp;&nbsp;内存&nbsp;{{oldRam}}GB</span>
+		</div>
+
+		<div class="ey-form-group">
+			<label class="ey-form-label">目标CPU核数：</label>
+			<div>
+				<span class="ey-mark" ng-repeat="data in cpuList"  data-ng-click="selectCpu(data)"
+				ng-class="model.cpus == data.nodeName.substr(0,data.nodeName.length-1) ? 'active' : ''">{{data.nodeName}}</span>
+			</div> 
+			<div class="dialog-clear-left">
+				<span class="ey-text-tip ey-has-error" data-ng-if="(project.cpuCount - project.usedCpuCount + oldCpu)<model.cpus">CPU超过配额</span>
+			</div>
+		</div>
+
+		<div class="ey-form-group">
+			<label class="ey-form-label">目标内存容量：</label> 
+			<div>
+				<span class="ey-mark" ng-repeat="data in ramList"  data-ng-click="selectRam(data)"
+				ng-class="model.rams == data.nodeName.substr(0,data.nodeName.length-2) ? 'active' : ''">{{data.nodeName}}</span>
+			</div>
+			<div class="dialog-clear-left">
+				<span class="ey-text-tip ey-has-error" data-ng-if="(project.memory - project.usedRam + oldRam*1024)<model.rams*1024">内存超过配额</span>
+			</div>
+		</div>
+		
+	</form>
+</div>
+
+<!-- 按钮区域 -->
+<div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<span class="ey-font-bold">总价： 
+			<span class="ey-color-red" data-ng-if="!priceError">￥&nbsp;</span>
+			<span class="ey-font-huger ey-color-red ey-font-bold" data-ng-if="!priceError">{{(model.payType == '1'?(priceDetails |number:2):(priceDetails.totalPrice|number:2))}}</span>
+			<span class="ey-color-default" data-ng-if="!priceError && model.payType == '2'">&nbsp;/小时</span>
+			<span data-ng-if="priceError" class="ey-color-red ey-font-bold">{{priceError}}</span>
+		</span>
+		<button type="button" class="ey-btn ey-btn-primary"
+			ng-click="commit()"
+			ng-disabled="!myForm.$valid || checkBtn ||isNSF||priceError||
+	    ((project.memory - project.usedRam + oldRam*1024)<model.rams*1024) 
+	    ||((project.cpuCount - project.usedCpuCount + oldCpu)<model.cpus) 
+	    ||(model.cpus<=oldCpu && model.rams<=oldRam&&model.payType == '1')
+	    ||(model.cpus==oldCpu && model.rams==oldRam&&model.payType == '2')">确定</button>
+		<button type="button" class="ey-btn ey-btn-default"
+			ng-click="cancel()">取 消</button>
+	</div>
+</div>

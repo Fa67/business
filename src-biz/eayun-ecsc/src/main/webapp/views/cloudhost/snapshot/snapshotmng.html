@@ -1,0 +1,57 @@
+<div class="ey-search-bar ey-search-bar-white">
+	  <eayun-search-text search="search($value,$event)" placeholder="请输入名称搜索"></eayun-search-text>
+</div>
+<eayun-table data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams" data-result="myTable.result">
+      <table class="ey-table-muliti">
+        <thead>
+        <tr>
+          <th>备份名称</th>
+          <th style="width:110px;">状态</th>
+          <th style="width:100px;">分类</th>
+          <th>源硬盘名称</th>
+          <th style="width:80px;">备份大小</th>
+          <th style="width:100px;">计费状态</th>
+          <th style="width:150px;">创建时间</th>
+          <th style="width:180px;">操作</th>
+        </tr>
+        </thead>
+        <tbody><tr data-ng-repeat="snap in myTable.result">
+          <td class="click-td" data-ng-click="detail(snap)">{{snap.snapName}}</td>
+          <td>
+	         <span class ="eayunfont ef-square" data-ng-class="snapStatusClass!=''?snapStatusClass:''" ng-init="snapStatusClass = getSnapStatus(snap)"></span>
+	         {{snap.statusForDis}}
+	  	  </td>
+          <td>{{'1'==snap.snapType?'系统盘备份':'数据盘备份'}}</td>
+          <td  class="click-td" data-ng-if="snap.volName!='null'&&snap.volName!=null&&snap.volName!=''" title="{{snap.volName!='null'?snap.volName:''}}" data-ng-click="goToVolume(snap)">
+          	{{snap.volName!='null'?snap.volName:''}}
+          </td>
+          <td data-ng-if="snap.volName=='null'||snap.volName==null||snap.volName==''" ></td>
+          <td>{{snap.snapSize}}GB</td>
+          <td>{{snap.payType=='1'?'包年包月':'按需付费'}}</td>
+          <td>{{snap.createTimeForDis}}</td>
+            <td class="ey-table-operation" data-ng-if="buttonPower.isEdit||buttonPower.isAddDisk||buttonPower.isTag||buttonPower.delSnap||buttonPower.rollBackVol">
+                <div class="ey-btn-group">
+                    <button class="ey-btn" data-ng-if="buttonPower.rollBackVol" data-ng-click="rollBack(snap)" data-ng-disabled="snap.chargeState!='0'||snap.snapStatus!='AVAILABLE'">回滚云硬盘</button>
+                    <div class="ey-btn ey-btn-more" eayun-toggle="open" data-ng-if="(buttonPower.isAddDisk||buttonPower.isEdit||buttonPower.isTag||buttonPower.delSnap)&&snap.snapStatus!='CREATING'&&snap.snapStatus!='DELETING'"> 更多操作 <span class="eayunfont ef-triangle"></span>
+                        <ul class="ey-drop-menu">
+                            <li data-ng-if="buttonPower.isAddDisk&&snap.snapStatus=='AVAILABLE'&&snap.chargeState=='0'" data-ng-click="AddVolume(snap)">
+                                <a>创建云硬盘</a>
+                            </li>
+                            <li data-ng-if="buttonPower.isEdit&&snap.snapStatus=='AVAILABLE'&&snap.chargeState=='0'" data-ng-click="updateSnapshot(snap)">
+                                <a>编辑</a>
+                            </li>
+                            <li data-ng-if="buttonPower.isTag&&snap.snapStatus!='CREATING'&&snap.snapStatus!='DELETING'&&snap.chargeState=='0'"  data-ng-click="tagResource('diskSnapshot',snap.snapId)">
+                                <a>标签</a>
+                            </li>
+                            <li data-ng-if="buttonPower.delSnap&&snap.snapStatus!='DELETING'"  data-ng-click="deleteSnap(snap)">
+                                <a  class="ey-text-error">删除</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+          </td>
+          <td  data-ng-if="!buttonPower.rollBackVol&&!buttonPower.isEdit&&!buttonPower.isAddDisk&&!buttonPower.isTag&&!buttonPower.delSnap">----</td>
+        </tr></tbody>
+      </table>
+      <eayun-table-page></eayun-table-page>
+</eayun-table>

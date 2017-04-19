@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="newsCountJob"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.eayun.news.job.NewsCountJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataAsMap">
+			<map>
+			</map>
+		</property>
+	</bean>
+	<bean id="newsDeleteJob"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.eayun.news.job.NewsDeleteJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataAsMap">
+			<map>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="newsCountTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="newsCountJob"></property>
+		<property name="cronExpression" value="0/30 * * * * ? *"></property>
+	</bean>
+	<bean id="newsDeleteTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="newsDeleteJob"></property>
+		<property name="cronExpression" value="0 15 0 * * ? *"></property>
+	</bean>
+
+	<!-- 定时任务调度器 -->
+	<bean class="com.eayun.common.job.EayunSchedulerFactoryBean" id="NewsSchedulerFactory">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+		<property name="configLocation" value="classpath:quartz.properties" />
+		<property name="triggers">
+			<list>
+				<ref bean="newsDeleteTrigger" />
+				<ref bean="newsCountTrigger" />
+			</list>
+		</property>
+	</bean>
+</beans>

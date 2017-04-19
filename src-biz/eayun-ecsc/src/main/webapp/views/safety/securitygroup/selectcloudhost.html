@@ -1,0 +1,29 @@
+
+ <div class="modal-header">
+  <span class="modal-title">添加云主机</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 800px;">
+
+	<eayun-select-two-way class="ey-font-size"  list-data="list" text-field="vmname,vmip,floip,seleip"
+		headers="主机名称,IP地址" 	header-width="150px,40%" title="云主机" name="cloudhostlist"
+		item-template-url='views/safety/securitygroup/addcloudselect.html'>
+
+
+	</eayun-select-two-way>
+
+
+   
+   </div>
+   
+   <!-- 按钮区域 -->
+<div class="ey-modal-footer">
+	 <div class="ey-btn-group">
+		<button type="button" class="btn ey-btn-primary btn-modal"
+			ng-click="commit()"
+			ng-disabled="!cloudhostlist.count">确
+			定</button>
+		<button type="button" class="btn btn-default btn-modal"
+			style="margin-left: 15px;" ng-click="cancel()">取 消</button>
+	</div>
+</div>
+   

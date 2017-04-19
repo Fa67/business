@@ -1,0 +1,99 @@
+<div class="modal-header">
+  <span class="modal-title">编辑成员</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 600px;">
+<form class="ey-form" name="myForm" novalidate>
+  <!-- 主机名 -->
+  <div class="ey-form-group">
+    <label class="ey-form-label">主机名：</label>
+
+    <span class="control-label" style="text-align: left;">{{model.vmName}}</span>
+  </div>
+  
+ <!-- 协议端口 -->
+  <div class="ey-form-group">
+    <label class="ey-form-label">端口：</label>
+    <span class="control-label" style="text-align: left;" data-ng-bind="model.protocolPort"></span>
+    <!--<div data-ng-class="(myForm.protocol_port.$dirty && (myForm.protocol_port.$invalid||!checkExist)) ? 'ey-has-error' : ''">
+      <input type="text"
+             class="ey-form-input ey-form-w4"
+      	     name="protocol_port"
+             data-ng-model="model.protocolPort"
+             placeholder="请输入监听端口"
+             disabled>
+      <label class="ey-text-tip ey-text-error"
+             data-ng-show="myForm.protocol_port.$dirty && myForm.protocol_port.$invalid">
+        请输入1至65535的整数
+      </label>
+      <label class="ey-text-tip ey-text-error"
+             data-ng-show="myForm.protocol_port.$dirty && myForm.protocol_port.$valid && !checkExist">
+        协议端口名称已存在
+      </label>
+    </div>-->
+  </div>
+  <!-- 角色 -->
+  <div class="ey-form-group" ng-if="pool.mode=='1'">
+    <label class="ey-form-label">角色：</label>
+    <span class="control-label" style="text-align: left;" >{{model.role=='Active'?'主节点':'从节点'}}</span>
+    <!--<div data-ng-class="(myForm.protocol_port.$dirty && (myForm.protocol_port.$invalid||!checkExist)) ? 'ey-has-error' : ''">
+      <input type="text"
+             class="ey-form-input ey-form-w4"
+      	     name="protocol_port"
+             data-ng-model="model.protocolPort"
+             placeholder="请输入监听端口"
+             disabled>
+      <label class="ey-text-tip ey-text-error"
+             data-ng-show="myForm.protocol_port.$dirty && myForm.protocol_port.$invalid">
+        请输入1至65535的整数
+      </label>
+      <label class="ey-text-tip ey-text-error"
+             data-ng-show="myForm.protocol_port.$dirty && myForm.protocol_port.$valid && !checkExist">
+        协议端口名称已存在
+      </label>
+    </div>-->
+  </div>
+   <!-- 权重 -->
+  <div class="ey-form-group" ng-if="pool.mode=='0'||model.role=='Active'">
+    <label class="ey-form-label">权重：</label>
+
+    <div data-ng-class="(myForm.weight.$dirty && myForm.weight.$invalid) ? 'ey-has-error' : ''">
+      <input type="text"
+             class="ey-form-input ey-form-w4"
+             name="weight"
+             ng-pattern="/(^[1-9][0-9]$)|(^[1-9]$)|100$/"
+             data-ng-model="model.memberWeight"
+             placeholder="请输入权重"
+             required>
+      <span class="ey-text-tip ey-text-error"
+             data-ng-show="myForm.weight.$dirty && myForm.weight.$invalid">
+        请输入1到100的整数
+      </span>
+    </div>
+  </div>
+  <!-- 优先级 -->
+  <div class="ey-form-group" ng-if="pool.mode=='1'&&model.role=='Backup'">
+    <label class="ey-form-label">优先级：</label>
+
+    <div data-ng-class="(myForm.priority.$dirty && myForm.priority.$invalid) ? 'ey-has-error' : ''">
+      <input type="text"
+             class="ey-form-input ey-form-w4"
+             name="priority"
+             ng-pattern="/^(([0-9]|([1-9]\d)|(1\d\d)|(2([0-4]\d|5[0-5]))))$/"
+             data-ng-model="model.priority"
+             placeholder="请输入优先级"
+             required>
+      <span class="ey-text-tip ey-text-error"
+             data-ng-show="myForm.priority.$dirty && myForm.priority.$invalid">
+        请输入0到255的整数
+      </span>
+    </div>
+  </div>
+</form>
+</div>
+  <!-- 按钮区域 -->
+  <div class="ey-modal-footer" >
+    <div class="ey-btn-group">
+      <button type="button" class="ey-btn ey-btn-primary" data-ng-click="commit()"  ng-disabled="!myForm.$valid||!checkExist||checkBtn">确  定</button>
+      <button type="button" class="ey-btn ey-btn-default" data-ng-click="cancel()">取  消</button>
+    </div>
+  </div>

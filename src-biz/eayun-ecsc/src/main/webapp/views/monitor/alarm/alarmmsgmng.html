@@ -1,0 +1,67 @@
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active" id="alarmMsgList">
+  		<div class = "ey-search-bar ey-search-bar-white">
+			<button class="ey-btn ey-btn-primary" data-ng-click="eraseAlarmMsg()">
+				<span class="eayunfont ef-close ey-font-size-big" aria-hidden="true"></span><span>消除报警</span>
+			</button>
+			<button class="ey-btn ey-btn-primary-light" data-ng-click="export2Excel()" style="margin-left:20px;">
+				<span class="eayunfont ef-export"></span> <span>导出</span>
+			</button>
+			<div style="display: none;">
+				<iframe id="file-export-iframe" frameborder="0"></iframe>
+			</div>
+			<eayun-search-text value="model.vmName" search="queryAlarmMsg()" placeholder="请输入资源名称搜索"></eayun-search-text>
+		</div>
+    <eayun-table data-api="alarmMsgTable.api" data-ajax-source="alarmMsgTable.source" data-param="alarmMsgTable.getParams"
+                data-result="alarmMsgTable.result">
+      <table class="ey-table">
+		<thead>
+	        <tr>
+	          <th style="width:60px;">
+	          	<div class = "ey-form-checkbox">
+              		<input type="checkbox" data-ng-model="alarmMsgTable.isAllChecked" data-ng-click="checkAll()" id = "allMsg"/>
+              		<label for = "allMsg"></label>
+              	</div>
+			  </th>
+	          <th style="width:170px;">
+	          	<eayun-table-filter list-data="dcStatus" text-field="text" item-clicked="dcItemClicked($item, $event)"></eayun-table-filter>
+	          </th>
+	          <th style="width:190px;">
+	          	<eayun-table-filter list-data="resTypeStatus" text-field="text" item-clicked="resTypeItemClicked($item, $event)"></eayun-table-filter>
+	          </th>
+	          <th>资源名称</th>
+	          <th style="width:170px;">
+	          	<eayun-table-filter list-data="alarmTypeStatus" text-field="name" item-clicked="alarmTypeClicked($item, $event)"></eayun-table-filter>
+	          </th>
+	          <th>报警时间</th>
+	          <th>报警信息</th>
+	          <th style="width:170px;">
+	          	<eayun-table-filter list-data="signStatus" text-field="text" item-clicked="signClicked($item, $event)"></eayun-table-filter>
+			  </th>
+	        </tr>
+        </thead>
+        <tbody><tr data-ng-repeat="alarmMsg in alarmMsgTable.result">
+	          <td style="width:60px;">
+	          <div class = "ey-form-checkbox">
+              	<input type="checkbox" id={{alarmMsg.id}} 
+              		ng-model = "alarmMsg.isChecked"
+              		ng-checked="isSelected(alarmMsg.id)" 
+              		ng-click="updateSelection($event,alarmMsg.id)"
+              		ng-disabled="alarmMsg.isProcessed==1" id = "{{alarmMsg.id}}">
+              		<label for = "{{alarmMsg.id}}"></label>
+            	</div>
+	          </td>
+	          <td style="width:170px;">{{alarmMsg.projectName}}</td>
+	          <td title = "{{alarmMsg.vmName}}">{{alarmMsg.monitorTypeName}}</td>
+	          <td title = "{{alarmMsg.vmName}}">{{alarmMsg.vmName}}</td>
+	          <td style="width:170px;">{{alarmMsg.alarmTypeName}}</td>
+	          <td title = "{{alarmMsg.alarmTime}}">{{alarmMsg.alarmTime}}</td>
+	          <td title = "{{alarmMsg.detail}}">{{alarmMsg.detail}}</td>
+	          <td data-ng-show = "alarmMsg.isProcessed==0" style="color:#ea3200;" style="width:170px;">{{alarmMsg.alarmSign}}</td>
+	          <td data-ng-show = "alarmMsg.isProcessed==1" style="color:#a8a8a8;" style="width:170px;">{{alarmMsg.alarmSign}}</td><!-- 未处理是红色，已处理是灰色 -->
+	        </tr></tbody>
+      </table>
+      <eayun-table-page></eayun-table-page>
+    </eayun-table>
+  </div>
+</div>

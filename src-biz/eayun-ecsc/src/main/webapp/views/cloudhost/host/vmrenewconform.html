@@ -1,0 +1,87 @@
+
+    <ul class="ey-nav-bread">
+        <li data-ui-sref="app.cloud.cloudhost.host">云主机</li>
+        <li>续费</li>
+    </ul>
+    <h4>订单确认</h4>
+    <div class="ey-warm" ng-show="isLight||isError">
+    	<span class="eayunfont ef-warning ey-font-size-big"></span>
+    	<span>{{errorMsg}}</span></div>
+    <table class="ey-order-table">
+        <tbody><tr>
+            <td>产品名称</td>
+            <td>云主机-续费</td>
+            <td>产品数量</td>
+            <td>1台</td>
+        </tr>
+        <tr>
+            <td>购买周期</td>
+            <td>
+            	<span ng-show="model.cycle>=12">{{model.cycle/12}}年</span>
+                <span ng-show="model.cycle<12">{{model.cycle}}个月</span>
+            </td>
+            <td>付款方式</td>
+            <td>{{model.payType=='1'?'预付费':'后付费'}}</td>
+        </tr>
+        <tr>
+            <td>具体配置</td>
+            <td colspan="3">
+            	<p>数据中心：{{model.dcName}}</p>
+            	<p>云主机ID：{{model.vmId}}</p>
+            	<p>云主机名称：{{model.vmName}}</p>
+            	<p>主机规格：{{model.cpus}}核\{{model.rams/1024}}GB</p>
+            	<p>系统盘：{{model.volumeTypeAs}}{{model.disk}}GB</p>
+            	<p>系统：{{model.sysType}}</p>
+            </td>
+        </tr>
+        <tr>
+            <td>金额</td>
+            <td class="ey-color-red" colspan="3"><strong>￥&nbsp;{{model.needPay | number :2}}</strong></td>
+        </tr></tbody>
+    </table>
+    <div class="ey-pay-panel">
+        <div class="ey-pay-body">
+            <table>
+                <tbody><tr>
+                    <td width="30px"><span class="eayunfont ef-wallet ey-font-hugest ey-color-yellow-dark"></span></td>
+                    <td width="110px">使用余额支付：</td>
+                    <td width="20px">
+                        <div class="ey-form-checkbox">
+                        	<input type="checkbox" id="check1" ng-model="model.isCheck" ng-click="useBalance()" data-ng-disabled="model.accountMoney <= 0">
+                        	<label for="check1"></label>
+                        </div>
+                    </td>
+                    <td width="60px">余额支付</td>
+                    <td width="20px"><span class="ey-text-tip">|</span></td>
+                    <td width="200pxpx"><span class="ey-text-tip">可用金额&nbsp;</span>
+                    	￥&nbsp;<span class="ey-color-blue" >{{model.accountMoney > 0 ? (model.accountMoney | number :2) : (0.00 | number :2)}}&nbsp;</span>
+                    </td>
+                    <td width="110px" ng-show ="isUse"><span class="ey-text-tip">扣除&nbsp;</span><span class="ey-color-red">￥&nbsp;{{model.deductMoney | number :2}}</span>
+                    </td>
+                </tr></tbody>
+            </table>
+        </div>
+        
+    </div>
+		<ul class="ey-order-list">
+            <li class="ey-font-size-big"><span>产品金额：</span><span>￥&nbsp;{{model.needPay | number :2}}</span></li>
+            <li class="ey-font-size-big"><span>余额支付：</span><span>￥&nbsp;-{{model.deductMoney | number :2}}</span></li>
+            <div class="divider"></div>
+            <li class="ey-font-size-bigger ey-font-bold">
+            	<span>应付款：</span>
+            	<span class="ey-color-red ey-font-size-superior">
+            			￥&nbsp;{{model.actualPay | number :2}}
+            	</span>
+            	
+            </li>
+            <li>
+                <button class="ey-btn ey-btn-primary" ng-disabled="flag || isError" ng-click="submitOrder()">提交订单</button>
+            </li>
+            <li>
+            	<div class="ey-form-checkbox">
+					<input id="check2" type="checkbox" ng-model="model.isAgree" ng-click="checkAgree()">
+					<label for="check2" class="ey-text-tip">我同意</label>
+				</div>
+				<a href="http://www.eayun.com/document/product/ech.html" target="_blank"><label class="ey-text-link">《云主机ECH服务条款》</label></a>
+			</li>
+        </ul>

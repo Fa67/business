@@ -1,0 +1,24 @@
+
+
+
+	<span ng-style="{width:two.width[0]}">
+		<p ng-bind="::item.vmname"></p>
+		
+	</span>
+	<span ng-style="{width:two.width[1]}">
+		<p style="line-height: 24px;" ng-bind="'受管子网：'+(item.vmip)"></p>
+		<p style="line-height: 24px;" ng-bind="'公网：'+(item.floip)"></p>
+		<p style="line-height: 24px;" ng-bind="'自管子网：'+(item.seleip)"></p>
+	</span>
+	<span class="eayunfont ey-font-size-super"
+		ng-class="item.$$selected?'ef-cancel-r ey-text-error':'ef-add-r ey-text-link'"
+		ng-click="two.select(item)"> </span>
+
+
+
+
+
+
+
+
+

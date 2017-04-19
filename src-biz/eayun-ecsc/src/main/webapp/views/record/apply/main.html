@@ -1,0 +1,251 @@
+<br>
+<div class="ey-btn-group">
+<button type="button" class="ey-btn ey-btn-primary ey-btn-sm" data-ng-show="apply.buttonPower.isNewRecord" data-ng-click="apply.recharge()">
+	<span class="eayunfont ef-plus" aria-hidden="true"></span>新增备案
+</button> 
+<button type="button" class="ey-btn ey-btn-primary ey-btn-sm" data-ng-show="apply.buttonPower.isAccess" data-ng-disabled="!apply.isShowUnit" data-ng-click="apply.unitList()">
+	<span class="eayunfont ef-definite" aria-hidden="true"></span>选择已有备案
+</button> 
+<button type="button" class="ey-btn ey-btn-primary ey-btn-sm" data-ng-show="apply.buttonPower.isList" data-ng-click="apply.access()">
+	<span class="eayunfont ef-plus" aria-hidden="true"></span>新增接入
+</button> 
+</div>
+<div class="ey-divider"></div>
+
+
+ <div data-ng-if="!apply.isTrue">
+ 	<p>易云通过初审的客户，请将下列材料准备齐全（包括纸质版材料、对应的电子版和备案照片），并邮寄给我们。北京地区客户可将材料送至我司现场核验。</p>
+	
+	<h5 style="margin: 40px 0 20px 0;font-weight: bold;">纸质材料&电子版</h5>
+
+	<p>1. <span class="ey-color-blue"><a href="ecsc/record/downRecordQuestionFile.do?name=网络备案信息真实性核验单&link=http://beian.eayun.cn/FCKUploadFiles/2016_10_25_17_14_10_41045.doc">《网络备案信息真实性核验单》</a></span>，<span class="ey-color-red">签名+加盖公章+电子版</span>；单位类型：<span class="ey-color-red">单位</span></p>
+
+	<p>2. <span class="ey-color-blue"><a href="ecsc/record/downRecordQuestionFile.do?name=互联网信息安全承诺书&link=http://beian.eayun.cn/FCKUploadFiles/2016_10_25_17_14_49_17897.doc">《互联网信息安全承诺书》</a></span>，客户在“客户（签字 盖章）”处<span class="ey-color-red">加盖公章+网站负责人签名+日期</span></p>
+
+	<p>3. <span class="ey-color-blue"><a href="ecsc/record/downRecordQuestionFile.do?name=网站信息备案登记表&link=http://beian.eayun.cn/FCKUploadFiles/2016_10_25_17_15_15_40245.doc">《网站信息备案登记表》</a></span>，请按照格式填写真实的网站设备信息；备案类型：<span class="ey-color-red">新增备案</span></p>
+
+	<p>4. 网站负责人身份证复印件，公司法人身份证复印件。</p>
+
+	<p>5.企业证件复印件<span class="ey-color-red">加盖公章</span>（例如：组织机构代码证或营业执照）</p>
+
+	<p>6. 域名证书，域名证书上的注册人必须是备案的公司名称。（没有可不提供）</p>
+
+	<p>7. <span  class="ey-color-blue"><a href="ecsc/record/downRecordQuestionFile.do?name=单位备案委托书&link=http://beian.eayun.cn/FCKUploadFiles/2016_10_25_17_13_47_59110.doc">单位备案委托书</a></span>（网站负责人非法人时使用），<span class="ey-color-red">亲笔签字后+加盖公章</span></p>
+ 
+ 	<h5  style="margin: 40px 0 20px 0;font-weight: bold;">办理拍照</h5>
+ 
+ 	<p>8.  网站负责人携带以上证件资料到我司拍摄幕布照片，或申请我司邮寄幕布，也可自行制作。并将照片转换成JPG格式（不超过100K）发送至我司邮箱，备注您的相关备案信息。</p>
+
+	<h5  style="margin: 40px 0 20px 0;font-weight: bold;">邮寄地址</h5>
+ 
+ 	<p>北京市海淀区中关村南大街9号理工科技大厦808室</p>
+
+	<p>备案专员邮箱：yashu.sun@eayun.com</p>
+
+	<p>联系电话：086-010-6066396</p>
+
+	<p>QQ：1064127799</p>
+ </div>
+
+ <div data-ng-if="apply.isTrue">
+ 	<div>
+ 		<h4>备案进度列表</h4>
+ 		<div class="ey-content-progress">
+			<p>
+			当进展为“初审通过”时，请您准备邮寄相关材料，详情请参见：<a data-ui-sref="app.record.main.question">常见问题</a>
+			</p>
+		</div>
+ 	</div>
+ 	<div>
+ 		<eayun-table data-api="apply.myTable.api" data-ajax-source="apply.myTable.source" data-param="apply.myTable.getParams" data-result="apply.myTable.result">
+ 		<div data-ng-repeat="model in apply.myTable.result">
+ 			<div data-ng-if="model.recordType==1">
+		      <table class="ey-table ey-table-auto">
+		        <thead >
+			        <tr>
+			          <th>主体单位</th>
+			          <th>网站域名</th>
+			          <th>备案类型</th>
+			          <th>当前进展</th>
+			          <th>创建时间</th>
+			          <th>操作</th>
+			        </tr>
+		        </thead>
+		        <tbody>
+		        	<tr>
+		          		<td title="{{model.unitName}}">{{model.unitName}}</td>
+		           		<td><div style="margin-top: 11px;">
+		           			<div data-ng-repeat="web in model.websiteList">
+		           				<p title="{{web.domainName.split(';').join('\n')}}">{{web.domainName.length>20?web.domainName.substring(0,20)+'...':web.domainName}};</p>
+		           			</div></div>
+		           		</td>
+		          		<td>
+		          			<span data-ng-if="model.recordType==1">首次备案</span>
+		          			<span data-ng-if="model.recordType==2">新增网站</span>
+		          			<span data-ng-if="model.recordType==3">新增接入</span>
+		          			<span data-ng-if="model.recordType==4">变更备案</span>
+		          		</td>
+		          		<td>
+		          			<span data-ng-if="model.status==1" style="color: blue;">等待初审</span>
+		          			<span data-ng-if="model.status==2" style="color: blue;">初审通过</span>
+		          			<span data-ng-if="model.status==3" style="color: blue;">初审未通过</span>
+		          			<span data-ng-if="model.status==4" style="color: blue;">复审通过</span>
+		          			<span data-ng-if="model.status==5" style="color: blue;">复审未通过</span>
+		          			<span data-ng-if="model.status==6" style="color: blue;">管局审核</span>
+		          			<span data-ng-if="model.status==7" style="color: blue;">管局未通过</span>
+		          			<span data-ng-if="model.status==8" style="color: blue;">备案成功</span>
+		          		</td>
+		          		<td>{{model.createTime|date : 'yyyy-MM-dd HH:mm:ss'}}</td>
+		          		<td class="col-sm-2">
+		          	  		<a class="ey-btn" data-ui-sref="app.record.unitDetail({applyId:model.applyId})">查看详情</a>
+		          		</td>
+		        	</tr>
+		        </tbody>
+		      </table>
+		      </div>
+		      <div data-ng-if="model.recordType==2">
+		      	<table class="ey-table  ey-table-auto">
+		      	<thead>
+			        <tr>
+			          <th>主体单位</th>
+			          <th>网站域名</th>
+			          <th>备案类型</th>
+			          <th>当前进展</th>
+			          <th>创建时间</th>
+			          <th>操作</th>
+			        </tr>
+		        </thead>
+		        <tbody>
+		        	<tr>
+		          		<td title="{{model.unitName}}">{{model.unitName}}</td>
+		           		<td><div style="margin-top: 11px;">
+		           			<div data-ng-repeat="web in model.websiteList">
+		           				<p title="{{web.domainName.split(';').join('\n')}}">{{web.domainName.length>20?web.domainName.substring(0,20)+'...':web.domainName}};</p>
+		           			</div></div>
+		           		</td>
+		          		<td>
+		          			<span data-ng-if="model.recordType==1">首次备案</span>
+		          			<span data-ng-if="model.recordType==2">新增网站</span>
+		          			<span data-ng-if="model.recordType==3">新增接入</span>
+		          			<span data-ng-if="model.recordType==4">变更备案</span>
+		          		</td>
+		          		<td>
+		          			<span data-ng-if="model.status==1" style="color: blue;">等待初审</span>
+		          			<span data-ng-if="model.status==2" style="color: blue;">初审通过</span>
+		          			<span data-ng-if="model.status==3" style="color: blue;">初审未通过</span>
+		          			<span data-ng-if="model.status==4" style="color: blue;">复审通过</span>
+		          			<span data-ng-if="model.status==5" style="color: blue;">复审未通过</span>
+		          			<span data-ng-if="model.status==6" style="color: blue;">管局审核</span>
+		          			<span data-ng-if="model.status==7" style="color: blue;">管局未通过</span>
+		          			<span data-ng-if="model.status==8" style="color: blue;">备案成功</span>
+		          		</td>
+		          		<td>{{model.createTime|date : 'yyyy-MM-dd HH:mm:ss'}}</td>
+		          		<td class="col-sm-2">
+		          	  		<a class="ey-btn" data-ui-sref="app.record.unitDetail({applyId:model.applyId})">查看详情</a>
+		          		</td>
+		        	</tr>
+		        </tbody>
+		        </table>
+		      </div>
+		      <div data-ng-if="model.recordType==3">
+		      	<table class="ey-table ey-table-record  ey-table-auto">
+		      	<thead>
+			        <tr>
+			          <th>网站备案号</th>
+			          <th>IP</th>
+			          <th>备案类型</th>
+			          <th>当前进展</th>
+			          <th>创建时间</th>
+			          <th>操作</th>
+			        </tr>
+		        </thead>
+		        <tbody>
+		        	<tr>
+		          		<td>
+		          			<div data-ng-repeat="web in model.websiteList">
+		           				<p title="{{web.webRecordNo}}">{{web.webRecordNo}};</p>
+		           			</div>
+		          		</td>
+		           		<td>
+		           			<div data-ng-repeat="web in model.websiteList">
+		           				<div style="margin-top: 11px;">
+			                        <div data-ng-repeat="ips in web.ipList">
+			                            <p>{{ips.ip}};</p>
+			                        </div>
+			                    </div>
+		           			</div>
+		           		</td>
+		          		<td>
+		          			<span data-ng-if="model.recordType==1">首次备案</span>
+		          			<span data-ng-if="model.recordType==2">新增网站</span>
+		          			<span data-ng-if="model.recordType==3">新增接入</span>
+		          			<span data-ng-if="model.recordType==4">变更备案</span>
+		          		</td>
+		          		<td>
+		          			<span data-ng-if="model.status==1" style="color: blue;">等待初审</span>
+		          			<span data-ng-if="model.status==2" style="color: blue;">初审通过</span>
+		          			<span data-ng-if="model.status==3" style="color: blue;">初审未通过</span>
+		          			<span data-ng-if="model.status==4" style="color: blue;">复审通过</span>
+		          			<span data-ng-if="model.status==5" style="color: blue;">复审未通过</span>
+		          			<span data-ng-if="model.status==6" style="color: blue;">管局审核</span>
+		          			<span data-ng-if="model.status==7" style="color: blue;">管局未通过</span>
+		          			<span data-ng-if="model.status==8" style="color: blue;">备案成功</span>
+		          		</td>
+		          		<td>{{model.createTime|date : 'yyyy-MM-dd HH:mm:ss'}}</td>
+		          		<td class="col-sm-2">
+		          	  		<a class="ey-btn" data-ui-sref="app.record.unitDetail({applyId:model.applyId})">查看详情</a>
+		          		</td>
+		        	</tr>
+		        </tbody>
+		        </table>
+		      </div>
+		      <div data-ng-if="model.recordType==4">
+		      	<table class="ey-table  ey-table-auto">
+		      	<thead>
+			        <tr>
+			          <th>主体单位</th>
+			          <th>网站域名</th>
+			          <th>备案类型</th>
+			          <th>当前进展</th>
+			          <th>创建时间</th>
+			          <th>操作</th>
+			        </tr>
+		        </thead>
+		        <tbody>
+		        	<tr>
+		          		<td title="{{model.unitName}}">{{model.unitName}}</td>
+		           		<td><div style="margin-top: 11px;">
+		           			<div data-ng-repeat="web in model.websiteList">
+		           				<p title="{{web.domainName.split(';').join('\n')}}">{{web.domainName.length>20?web.domainName.substring(0,20)+'...':web.domainName}};</p>
+		           			</div></div>
+		           		</td>
+		          		<td>
+		          			<span data-ng-if="model.recordType==1">首次备案</span>
+		          			<span data-ng-if="model.recordType==2">新增网站</span>
+		          			<span data-ng-if="model.recordType==3">新增接入</span>
+		          			<span data-ng-if="model.recordType==4">变更备案</span>
+		          		</td>
+		          		<td>
+		          			<span data-ng-if="model.status==1" style="color: blue;">等待初审</span>
+		          			<span data-ng-if="model.status==2" style="color: blue;">初审通过</span>
+		          			<span data-ng-if="model.status==3" style="color: blue;">初审未通过</span>
+		          			<span data-ng-if="model.status==4" style="color: blue;">复审通过</span>
+		          			<span data-ng-if="model.status==5" style="color: blue;">复审未通过</span>
+		          			<span data-ng-if="model.status==6" style="color: blue;">管局审核</span>
+		          			<span data-ng-if="model.status==7" style="color: blue;">管局未通过</span>
+		          			<span data-ng-if="model.status==8" style="color: blue;">备案成功</span>
+		          		</td>
+		          		<td>{{model.createTime|date : 'yyyy-MM-dd HH:mm:ss'}}</td>
+		          		<td class="col-sm-2">
+		          	  		<a class="ey-btn" data-ui-sref="app.record.unitDetail({applyId:model.applyId})">查看详情</a>
+		          		</td>
+		        	</tr>
+		        </tbody>
+		        </table>
+		      </div>
+		      </div>
+		      <eayun-table-page></eayun-table-page>
+		 </eayun-table>
+		 </form>
+ 	</div>
+ </div>

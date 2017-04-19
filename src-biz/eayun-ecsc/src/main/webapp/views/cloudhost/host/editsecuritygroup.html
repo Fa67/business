@@ -1,0 +1,18 @@
+<div class="modal-header" style="width: 750px;">
+    <span class="modal-title">编辑安全组</span> 
+    <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body">
+	<eayun-select-two-way list-data="groups" text-field="sgName" title="安全组">
+	</eayun-select-two-way>
+</div>
+
+<!-- 按钮区域 -->
+<div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<button type="button" class="ey-btn ey-btn-primary"
+			ng-click="commit()" ng-disabled="checkToken">确定</button>
+		<button type="button" class="ey-btn ey-btn-default"
+			ng-click="cancel()">取 消</button>
+	</div>
+</div>

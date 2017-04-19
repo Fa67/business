@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="vmMonirotDetailGatherJob"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.virtualization.job.VmMonitorDetailGatherJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataAsMap">
+			<map>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="vmMonirotSummaryGatherJob_3min"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.virtualization.job.VmMonitorSummaryGatherJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="interval" value="3min"></entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="vmMonirotSummaryGatherJob_5min"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.virtualization.job.VmMonitorSummaryGatherJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="interval" value="5min"></entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="vmMonirotSummaryGatherJob_10min"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.virtualization.job.VmMonitorSummaryGatherJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="interval" value="10min"></entry>
+			</map>
+		</property>
+	</bean>
+	<bean id="vmMonirotSummaryGatherJob_1h"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.virtualization.job.VmMonitorSummaryGatherJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="interval" value="1h"></entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="vmMonirotSummaryGatherJob_1d"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.virtualization.job.VmMonitorSummaryGatherJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="interval" value="1d"></entry>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="clearMonitorDataGatherJob"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass"
+			value="com.eayun.virtualization.job.ClearMonitorDataGatherJob"></property>
+		<property name="durability" value="true"></property>
+		<property name="jobDataAsMap">
+			<map>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="vmMonirotDetailGatherTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="vmMonirotDetailGatherJob"></property>
+		<property name="cronExpression" value="0 0/1 * * * ? *"></property>
+	</bean>
+
+	<bean id="vmMonirotSummaryGatherTrigger_3min"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="vmMonirotSummaryGatherJob_3min"></property>
+		<property name="cronExpression" value="5 0/3 * * * ? *"></property>
+	</bean>
+	<bean id="vmMonirotSummaryGatherTrigger_5min"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="vmMonirotSummaryGatherJob_5min"></property>
+		<property name="cronExpression" value="5 0/5 * * * ? *"></property>
+	</bean>
+	<bean id="vmMonirotSummaryGatherTrigger_10min"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="vmMonirotSummaryGatherJob_10min"></property>
+		<property name="cronExpression" value="6 0/10 * * * ? *"></property>
+	</bean>
+	<bean id="vmMonirotSummaryGatherTrigger_1h"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="vmMonirotSummaryGatherJob_1h"></property>
+		<property name="cronExpression" value="10 0 0/1 * * ? *"></property>
+	</bean>
+	<bean id="vmMonirotSummaryGatherTrigger_1d"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="vmMonirotSummaryGatherJob_1d"></property>
+		<property name="cronExpression" value="0 4 0 * * ? *"></property><!--每天零点4分执行  -->
+	</bean>
+	<bean id="clearMonitorDataGatherTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="clearMonitorDataGatherJob"></property>
+		<property name="cronExpression" value="0 30 1 * * ? *"></property><!--每天凌晨1点30分执行，清除已删除资源的指标记录  -->
+	</bean>
+
+	<!-- 定时任务调度器 -->
+	<bean class="com.eayun.common.job.EayunSchedulerFactoryBean" id="VmMonitorSchedulerFactory">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+		<property name="configLocation" value="classpath:quartz.properties" />
+		<property name="triggers">
+			<list>
+				<ref bean="vmMonirotSummaryGatherTrigger_3min" />
+				<ref bean="vmMonirotSummaryGatherTrigger_5min" />
+				<ref bean="vmMonirotSummaryGatherTrigger_10min" />
+				<ref bean="vmMonirotSummaryGatherTrigger_1h" />
+				<ref bean="vmMonirotSummaryGatherTrigger_1d" />
+				<ref bean="vmMonirotDetailGatherTrigger" />
+				<ref bean="clearMonitorDataGatherTrigger" />
+			</list>
+		</property>
+	</bean>
+</beans>

@@ -1,0 +1,49 @@
+<div class = "ey-search-bar ey-search-bar-white">
+	<eayun-search-text value="imageName" search="search()" placeholder="请输入名称搜索"></eayun-search-text>
+</div>
+<eayun-table data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams"
+            data-result="myTable.result">
+  <table class="ey-table">
+    <thead>
+    <tr>
+      <th>镜像名称</th>
+      <th>状态</th>
+      <th>系统</th>
+      <th>最低配置</th>
+      <th>创建云主机数</th>
+      <th>创建时间</th>
+      <th>操作</th>
+    </tr>
+    </thead>
+    <tbody><tr data-ng-repeat="image in myTable.result">
+      <td class="click-td" data-ng-click="detail(image)">{{image.imageName}}</td>
+      <td>
+      	<span class ="eayunfont ef-square" data-ng-class="imageStatusClass!=''?imageStatusClass:''" ng-init="imageStatusClass = getImageStatus(image)"></span>
+      	{{image.statusForDis}}
+      </td>
+      <td title="{{image.sysTypeName!='null'?image.sysTypeName:''}}">{{image.sysTypeName!='null'?image.sysTypeName:""}}</td>
+      <td>{{image.minCpu}}核/{{image.minRam>1?image.minRam:1}}GB/{{image.minDisk}}GB</td>
+      <td>{{image.vmNum}}</td>
+      <td>{{image.createTimeForDis}}</td>
+      <td class="ey-table-operation" data-ng-if="buttonPower.isEdit||buttonPower.isTag||buttonPower.delImage">
+      <div class="ey-btn-group">
+            <button class="ey-btn"  data-ng-show="buttonPower.isEdit" 
+                data-ng-disabled="image.imageStatus!='ACTIVE'" data-ng-click="updateImage(image)">编辑
+            </button>
+                <div class="ey-btn ey-btn-more" eayun-toggle="open" data-ng-if="image.imageStatus=='ACTIVE'"> 更多操作 <span class="eayunfont ef-triangle"></span>
+                    <ul class="ey-drop-menu">
+                        <li data-ng-if="buttonPower.isTag&&image.imageStatus=='ACTIVE'" data-ng-click="tagResource('privateImage',image.imageId)">
+                            <a>标签</a>
+                        </li>
+                        <li data-ng-if="buttonPower.delImage&&image.imageStatus!='SAVING'&&image.imageStatus!='QUEUED'" data-ng-click="delImage(image)">
+                            <a class = "ey-text-error">删除</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+          </td>
+      <td data-ng-if="!buttonPower.isEdit&&!buttonPower.isTag&&!buttonPower.delImage">----</td>
+    </tr></tbody>
+  </table>
+  <eayun-table-page></eayun-table-page>
+</eayun-table>

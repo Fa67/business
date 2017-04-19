@@ -1,0 +1,86 @@
+<form class="" name = "usermng">
+  <div class="form-group" style= "margin-left:73px;">
+    <label class="control-label" style= "float: left;padding-top:7px;">账号：</label>
+    <label class = "control-label"style = "font-weight: bold;margin-left:20px;float: left;padding-top:7px;">{{usermodel.userAccount}}</label>
+    <div class="" style= "margin-left:307px;">
+    <button class="ey-btn ey-btn-primary ey-btn-sm" data-ng-click="updatePassword()">修改密码</button>
+    </div>
+  </div>
+  <div class="form-group" style= "margin-left:45px;">
+    <label class="control-label" style= "float: left;">账号说明：</label>
+    <label class = "control-label" ng-show="usermodel.userExplain.length>10" style= "margin-left:20px;margin-top:-10px;">
+    	{{usermodel.userExplain.substring(0,10)}}
+    	<div class="detail-icon ellipsis pointer"
+			ng-mouseenter="openPopBox({value:usermodel.userExplain,type:'descName'})"	
+			ng-mouseleave="closePopBox('descName')"
+			hint="views/cloudhost/volume/volumedescription.html"
+       		hint-show="hintDescShow"
+       		tooltip-class="tooltip-description"
+       		tooltip-placement="bottom">
+       	</div>
+   	</label>
+   	<label class = "control-label" ng-show="usermodel.userExplain.length<=10 || usermodel.userExplain == null" style= "margin-left:20px;">
+    	{{usermodel.userExplain==null||usermodel.userExplain==''?'&nbsp;':usermodel.userExplain}}
+   	</label>
+  </div>
+  <div class="form-group" style= "margin-left:45px;">
+    <label class="control-label" style= "float: left;padding-top:7px;">客户姓名：</label>
+    <div class="" style="margin-left:20px;float: left;" data-ng-class="(usermng.person.$dirty && usermng.person.$invalid) ? 'ey-has-error' : ''">
+    <label class = "control-label" ng-show="personShow && usermodel.userPerson.length>10" style= "margin-top:-2px;">
+    	{{usermodel.userPerson.substring(0,10)}}
+    	<div class="detail-icon ellipsis pointer"
+			ng-mouseenter="openPopBox({value:usermodel.userPerson,type:'PersonName'})"	
+			ng-mouseleave="closePopBox('PersonName')"
+			hint="views/cloudhost/volume/volumedescription.html"
+       		hint-show="PersonDescShow"
+       		tooltip-class="tooltip-description"
+       		tooltip-placement="bottom">
+       	</div>
+   	</label>
+   	<label class = "control-label" data-ng-show="personShow && (usermodel.userPerson.length<=10 || usermodel.userPerson == null)" style= "padding-top:7px;">
+    	{{usermodel.userPerson==null||usermodel.userPerson==''?'未设置':usermodel.userPerson}}
+   	</label>
+      <input type="text" class="ey-form-input"  data-ng-class = "personShow?'hide':'show'" data-ng-model="usermodel.userPerson" maxlength="20" style = "width: 200px;"
+      name = "person" ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/'>
+      <span ng-show="usermng.person.$dirty && usermng.person.$error.pattern && !personShow" style = "line-height:20px;">请输入1-20位字符,支持数字、中英文、下划线、空格</span>
+    </div>
+    <div class=""style="margin-left:335px;padding-top:7px;">
+    	<label class = "control-label">
+		    <a role="button" data-ng-show = "personShow" data-ng-click = "updatePerson()">修改姓名</a>
+		    <a role="button" data-ng-show = "!personShow && usermng.person.$valid" data-ng-click = "commitPerson()">确定</a>
+		    <a role="button" data-ng-class = "usermng.person.$valid?'btn-left':''" data-ng-show = "!personShow" data-ng-click = "cancel()">取消</a>
+	    </label>
+    </div>
+  </div>
+  <br data-ng-show="usermng.person.$dirty && usermng.person.$error.pattern && !personShow">
+  <div class="form-group" style= "margin-left:45px;">
+    <label class="control-label" style= "float: left;">手机号码：</label>
+    <label class = "control-label" style= "float: left;margin-left:20px;">
+    {{usermodel.userPhone==''||usermodel.userPhone==null?'未设置':usermodel.userPhone}}</label>
+    <div class="" style= "margin-left:335px;">
+    	<label class = "control-label">
+	    	<span class="glyphicon" data-ng-class="usermodel.isPhoneValid?'glyphicon-ok color-success':'glyphicon-remove color-error'">
+	    	</span>
+	    	{{usermodel.isPhoneValid ? '已验证':'未验证'}}
+	        <a role="button" style = "margin-left:15px;" data-ng-show="usermodel.isPhoneValid" data-ng-click = "editPhone()">修改</a>
+	        <a role="button" style = "margin-left:15px;" data-ng-show="usermodel.userPhone != '' && usermodel.userPhone != null && !usermodel.isPhoneValid" data-ng-click = "bindingPhone(true)">验证</a>
+	    	<a role="button" style = "margin-left:15px;" data-ng-show="(usermodel.userPhone == '' || usermodel.userPhone == null) && !usermodel.isPhoneValid" data-ng-click = "bindingPhone(false)">绑定</a>
+    	</label>
+    </div>
+  </div>
+  <div class="form-group" style= "margin-left:45px;">
+    <label class="control-label" style= "float: left;">联系邮箱：</label>
+    <label class = "control-label" style= "float: left;margin-left:20px;">
+    {{usermodel.userEmail==''||usermodel.userEmail==null?'未设置':usermodel.userEmail}}</label>
+    <div class="" style= "margin-left:335px;">
+    	<label class = "control-label">
+	    	<span class="glyphicon" data-ng-class="usermodel.isMailValid?'glyphicon-ok color-success':'glyphicon-remove color-error'">
+	    	</span>
+	    	{{usermodel.isMailValid ? '已验证':'未验证'}}
+	    	<a role="button" style = "margin-left:15px;" data-ng-show="!usermodel.isMailValid && usermodel.userEmail != null && usermodel.userEmail != ''" data-ng-click="againSend(usermodel.userEmail)">验证</a><!--重新向邮箱发送邮件  -->
+	    	<a role="button" style = "margin-left:15px;" data-ng-show="usermodel.userEmail != null && usermodel.userEmail != ''" data-ng-click="editEmail()">修改</a>
+	      	<a role="button" style = "margin-left:15px;" data-ng-show="!usermodel.isMailValid && (usermodel.userEmail == null || usermodel.userEmail == '')" data-ng-click="editEmail()">绑定</a>
+    	</label>
+    </div>
+  </div>
+</form>

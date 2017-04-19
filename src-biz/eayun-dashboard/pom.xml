@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>eayun-dashboard</artifactId>
+	<parent>
+		<groupId>com.eayun</groupId>
+		<artifactId>eayun-build</artifactId>
+		<version>1.0.0-RELEASE</version>
+		<relativePath>../../src-intf/eayun-build/pom.xml</relativePath>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.eayun</groupId>
+			<artifactId>eayun-dashboard-intf</artifactId>
+			<version>1.0.0-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>com.eayun</groupId>
+			<artifactId>eayun-log-intf</artifactId>
+			<version>1.0.0-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>com.eayun</groupId>
+			<artifactId>eayun-project-intf</artifactId>
+			<version>1.0.0-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>com.eayun</groupId>
+			<artifactId>eayun-auth-intf</artifactId>
+			<version>1.0.0-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>com.eayun</groupId>
+			<artifactId>eayun-schedule-res-intf</artifactId>
+			<version>1.0.0-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>com.eayun</groupId>
+			<artifactId>eayun-sms-intf</artifactId>
+			<version>1.0.0-RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>com.eayun</groupId>
+			<artifactId>eayun-database-intf</artifactId>
+			<version>1.0.0-RELEASE</version>
+		</dependency>
+	</dependencies>
+</project>

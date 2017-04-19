@@ -1,0 +1,167 @@
+<!-- 详情 -->
+<div class="details" style="font-size: 12px;">
+  <form class="row" name="myForm">
+    <div class="col-lg-12">
+    
+    <div class="details-group">
+        <div class="details-name col-sm-4">所属数据中心：</div>
+        <div class="details-value col-sm-8">
+          {{'null'!=model.dcName?model.dcName:''}}
+        </div>
+      </div>
+      
+      
+      
+      <div class="details-group">
+        <div class="details-name col-sm-4">备份ID：</div>
+        <div class="details-value col-sm-8">
+          {{model.snapId}}
+        </div>
+      </div>
+      
+      
+      <div class="details-group">
+        <div class="details-name">备份名称：</div>
+        <div class="details-value">
+          <span >{{model.snapName}}</span>
+        </div>
+      </div>
+      
+     
+      
+      
+      <div class="details-group">
+        <div class="details-name">状态：</div>
+        <div class="details-value">
+        <span class ="eayunfont ef-square" data-ng-class="snapStatusClass!=''?snapStatusClass:''"></span>
+		{{"null"!=model.statusForDis?model.statusForDis:""}}
+        </div>
+      </div>
+      
+      
+      <div class="details-group">
+        <div class="details-name">计费状态：</div>
+        <div class="details-value">
+		{{'1'==model.payType?'包年包月':'按需付费'}}
+        </div>
+      </div>
+    
+    
+    
+      
+      
+       <div class="details-group">
+        <div class="details-name">备份大小：</div>
+        <div class="details-value">
+		{{model.snapSize}}GB
+        </div>
+      </div>
+    
+    
+    <div class="details-group">
+        <div class="details-name">分类：</div>
+        <div class="details-value">
+		{{'1'==model.snapType?'系统盘备份':'数据盘备份'}}
+        </div>
+      </div>
+    
+    
+      
+      
+      
+      <!-- <div class="details-group">
+        <div class="details-name">云硬盘名称：</div>
+        <div class="details-value">
+		{{"null"==model.volName?"":model.volName}}
+        </div>
+      </div> -->
+      
+      <div class="details-group">
+        <div class="details-name">源硬盘名称：</div>
+        <div class="details-value" data-ng-if="model.volName.length>20">
+         <span>{{model.volName!='null'?model.volName.substring(0,19):''}}</span>
+         <div class="detail-icon ellipsis pointer"
+       	      ng-mouseenter="openPopBox({value:model.volName,type:'volName'})"
+       		  ng-mouseleave="closePopBox('volName')"
+			  hint="views/cloudhost/volume/volumedescription.html"
+       		  hint-show="volNameShow"
+       		  tooltip-class="tooltip-description"
+       		  tooltip-placement="bottom">
+       	  </div>
+        </div>
+        <div class="details-value" data-ng-if="model.volName.length<=20">
+        	<span>{{model.volName!='null'?model.volName:''}}</span>
+        </div>
+      </div>
+      
+      
+      <div class="details-group">
+        <div class="details-name">系统：</div>
+        <div class="details-value">
+		--
+        </div>
+      </div>
+      
+      <div class="details-group">
+        <div class="details-name">最低配置：</div>
+        <div class="details-value">
+		--
+        </div>
+      </div>
+      
+     
+      
+      
+      <div class="details-group">
+        <div class="details-name">创建时间：</div>
+        <div class="details-value">
+         {{model.createTimeForDis}}
+        </div>
+      </div>
+      
+ 
+    <div class="details-group">
+        <div class="details-name">已有标签：</div>
+        <div class="details-value" ng-if="tags.gt2Tags">
+         <span>{{tags.twoTagsString}}</span>
+         <div class="detail-icon ellipsis pointer"
+       	      ng-mouseenter="openPopBox({value:tags.allTagsString,type:'tagName'})"
+       		  ng-mouseleave="closePopBox('tagName')"
+			  hint="views/cloudhost/volume/volumedescription.html"
+       		  hint-show="tagShow"
+       		  tooltip-class="tooltip-description"
+       		  tooltip-placement="bottom">
+       	  </div>
+        </div>
+        <div class="details-value" ng-if="!tags.gt2Tags">
+        	<span>{{tags.allTagsString}}</span>
+        </div>
+      </div>
+      
+      
+      <div class="details-group">
+        <div class="details-name">描述：</div>
+        <div class="details-value" ng-if="model.snapDescription.length>30">
+         <span>{{model.snapDescription.substring(0,29)}}</span>
+         <div class="detail-icon ellipsis pointer"
+       	      ng-mouseenter="openPopBox({value:model.snapDescription,type:'snapDesc'})"
+       		  ng-mouseleave="closePopBox('snapDesc')"
+			  hint="views/cloudhost/volume/volumedescription.html"
+       		  hint-show="snapDescShow"
+       		  tooltip-class="tooltip-description"
+       		  tooltip-placement="bottom">
+       	  </div>
+        </div>
+        <div class="details-value" ng-if="model.snapDescription.length<=30">
+        	<span>{{'null'!=model.snapDescription&&null!=model.snapDescription?model.snapDescription:''}}</span>
+        </div>
+      </div>
+      
+
+      
+   </div>
+  </form>
+</div>
+ <div class="modal-footer" >
+    <!-- <button class="btn btn-default btn-modal" ng-click="cancel()">关闭</button> -->
+  </div> 

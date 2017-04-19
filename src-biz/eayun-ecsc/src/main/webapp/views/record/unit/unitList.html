@@ -1,0 +1,36 @@
+<div class="ey-panel-body">
+	<div class="ey-content-progress ey-margin">
+		<p>变更备案操作无法变更主体信息，只能变更网站信息，若想变更主体，请联系备案专员</p>
+	</div>
+	<h4>请选择已有备案</h4>
+	<div>
+		<eayun-table data-api="unitListornew.myTable.api" data-ajax-source="unitListornew.myTable.source" data-param="unitListornew.myTable.getParams" data-result="unitListornew.myTable.result">
+			<table class="ey-table">
+					<thead >
+						<tr>
+						  <th>主办单位</th>
+						  <th>主体备案号</th>
+						  <th>创建时间</th>
+						  <th class="col-sm-3">操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr data-ng-repeat="model in unitListornew.myTable.result">
+							<td title="{{model.unitName}}">{{model.unitName}}</td>
+							<td title="{{model.recordNo}}">
+							{{model.recordNo}}
+							</td>
+							<td>{{model.createTime|date : 'yyyy-MM-dd HH:mm:ss'}}</td>
+							<td class="col-sm-2">
+								<div class="ey-btn-group">
+									<a class="ey-btn" data-ng-show="buttonPower.isNewWeb" data-ng-click="unitListornew.goNewWeb(model.unitId)">新增网站</a>
+									<a class="ey-btn" data-ng-show="buttonPower.isUpdateWeb" data-ng-click="unitListornew.goChangeWeb(model.unitId)">变更备案</a>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				 </table>
+				<eayun-table-page></eayun-table-page>
+			</eayun-table>
+	</div>
+</div>

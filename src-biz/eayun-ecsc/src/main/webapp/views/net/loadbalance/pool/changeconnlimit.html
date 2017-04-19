@@ -1,0 +1,90 @@
+<div class="modal-header">
+    <span class="modal-title">更改连接数</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 600px;">
+    <form class="ey-form" name="myForm" novalidate>
+            <div class="ey-form-group">
+                <label class="ey-form-label">名称：</label>
+                <span data-ng-bind="::changeConn.pool.poolName"></span>
+            </div>
+
+            <div class="ey-form-group">
+                <label class="ey-form-label">最大连接数：</label>
+
+                <div class="ey-form-radio">
+                    <input id="5k" type="radio" name="connectionLimit" data-ng-change="changeConn.getPrice()"
+                           data-ng-model="changeConn.pool.connectionLimit" value="5000"
+                           data-ng-disabled="changeConn.pool.connectionLimitOld > 5000 && changeConn.pool.payType == '1'">
+                    <label for="5k" style="width: 70px;">5,000</label>
+                    <input id="20k" type="radio" name="connectionLimit" data-ng-change="changeConn.getPrice()"
+                           data-ng-model="changeConn.pool.connectionLimit" value="20000"
+                           data-ng-disabled="changeConn.pool.connectionLimitOld > 20000 && changeConn.pool.payType == '1'">
+                    <label for="20k" style="width: 70px;">20,000</label>
+                    <input id="40k" type="radio" name="connectionLimit" data-ng-change="changeConn.getPrice()"
+                           data-ng-model="changeConn.pool.connectionLimit" value="40000"
+                           data-ng-disabled="changeConn.pool.connectionLimitOld > 40000 && changeConn.pool.payType == '1'">
+                    <label for="40k" style="width: 70px;">40,000</label>
+                    <input id="100k" type="radio" name="connectionLimit" data-ng-change="changeConn.getPrice()"
+                           data-ng-model="changeConn.pool.connectionLimit" value="100000"
+                           data-ng-disabled="changeConn.pool.connectionLimitOld > 100000 && changeConn.pool.payType == '1'">
+                    <label for="100k" style="width: 70px;">100,000</label>
+                    <br>
+                    <input id="200k" type="radio" name="connectionLimit" data-ng-change="changeConn.getPrice()"
+                           data-ng-model="changeConn.pool.connectionLimit" value="200000"
+                           data-ng-disabled="changeConn.pool.connectionLimitOld > 200000 && changeConn.pool.payType == '1'">
+                    <label for="200k" style="width: 70px;">200,000</label>
+                    <input id="500k" type="radio" name="connectionLimit" data-ng-change="changeConn.getPrice()"
+                           data-ng-model="changeConn.pool.connectionLimit" value="500000">
+                    <label for="500k" style="width: 70px;">500,000</label>
+                </div>
+                <span class="ey-text-tip ey-has-error"
+                      style="margin-top: 10px;"
+                      data-ng-show="changeConn.pool.connectionLimit == changeConn.pool.connectionLimitOld">
+                    最大连接数不能等于当前大小
+                </span>
+            </div>
+
+            <div class="ey-form-group">
+                <label class="ey-form-label">付款方式：</label>
+                <span data-ng-bind="changeConn.pool.payType == 1 ? '包年包月' : '按需付费'"></span>
+            </div>
+    </form>
+</div>
+<!-- 按钮区域 -->
+<div class="ey-modal-footer">
+    <p class="ey-text-tip "
+          data-ng-if="changeConn.pool.payType == '1'">
+        注：负载均衡更改连接数时，需支付的费用=（新连接数区间当前每月的价格-旧连接数区间当前每月的价格）*（剩余总天数/30）
+    </p>
+    <div class="ey-btn-group">
+        <span class="ey-font-bold">总价：
+            <span class="ey-color-red" data-ng-if="changeConn.hasGotPrice">￥&nbsp;</span>
+            <span class="ey-font-huger ey-color-red ey-font-bold"
+                  data-ng-if="changeConn.pool.payType == '1' && changeConn.hasGotPrice">
+                {{changeConn.pool.price|thousand}}
+            </span>
+            <span class="ey-color-red ey-font-bold" data-ng-if="!changeConn.hasGotPrice">
+                {{changeConn.priceMsg}}
+            </span>
+            <span class="ey-font-huger ey-color-red ey-font-bold"
+                  data-ng-if="changeConn.pool.payType == '2' && changeConn.hasGotPrice">
+                {{changeConn.pool.price|thousand:true}}
+            </span>
+            <span class="ey-color-default" data-ng-if="changeConn.pool.payType == '2' && changeConn.hasGotPrice">
+                 &nbsp;/小时
+            </span>
+        </span>
+        <button type="button"
+                class="ey-btn ey-btn-primary"
+                data-ng-click="changeConn.commit()"
+                data-ng-disabled="changeConn.pool.connectionLimit == changeConn.pool.connectionLimitOld
+                                || !changeConn.hasGotPrice">
+            确 定
+        </button>
+        <button type="button"
+                class="ey-btn ey-btn-default"
+                data-ng-click="cancel()">
+            取 消
+        </button>
+    </div>
+</div>

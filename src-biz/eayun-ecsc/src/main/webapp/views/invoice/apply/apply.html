@@ -1,0 +1,118 @@
+
+<div class="ey-divider"></div>
+<!-- 子页面展示区 -->
+<div class="clearfix">
+    <div class="ey-panel-body">
+        <h4 class="ey-invoice-title">
+		    
+			<a class="ey-form-label ey-font-normal ey-color-blue ey-font-size-bigger" ng-click="cancel()" href="javascript:void(0);">
+                <span class = "ey-color-blue eayunfont ef-back"></span> 返回
+			</a>
+		    <span class="ey-invoice-line"></span>
+		    <span class = "modal-title">申请发票</span>
+		</h4>
+        <form name="applyForm" novalidate>
+	        <!-- <h4>申请发票</h4> -->
+	        
+	        <p class="ey-font-size-big">请输入开票金额：</p>
+	        <ul class="ey-invoice-apply">
+	            <li>
+	                <div class="ey-form-group">
+	                    <label class="ey-form-label">开票内容：</label>
+	                    <span>云服务费</span>
+	                </div>
+	                <div class="ey-form-group">
+	                    <label class="ey-form-label ey-required">开票金额：</label>
+	                    <span>￥&nbsp;
+	                       <input name="amount"ng-init="apply.amount=''" ng-model="apply.amount" class="ey-form-input ey-form-w4"
+	                           data-ng-pattern="/^((0.0[1-9])|(0.[1-9][0-9]?)|([1-9][0-9]*(.\d{1,2})?))$/"
+	                           data-ajax-valid="validAmount(value)" maxlength="13" required="required"
+	                            data-ng-class="applyForm.amount.$dirty 
+                                && (applyForm.amount.$error.pattern || applyForm.amount.$error.required || applyForm.amount.$error.ajaxValid) ? 'ey-has-error' : ''"/>
+	                    </span><br/>
+	                    <span ng-if="!(applyForm.amount.$viewValue > amount.billableAmount)" class="ey-text-tip" data-ng-class="applyForm.amount.$dirty 
+                                && (applyForm.amount.$error.pattern || applyForm.amount.$error.required || applyForm.amount.$error.ajaxValid) ? 'ey-has-error' : ''">
+                                &nbsp;&nbsp;&nbsp; &nbsp;开票金额介于{{lowerLimit|currency:''}}-500,000.00之间，<br/> &nbsp;&nbsp;&nbsp; &nbsp;精确到分，如10.00。
+                        </span>
+                        <span ng-if="applyForm.amount.$viewValue > amount.billableAmount"
+                            class="ey-text-tip ey-has-error">
+                               &nbsp;&nbsp; &nbsp;请输入大于等于{{lowerLimit|currency:''}}，<br/> &nbsp;&nbsp; &nbsp;且在可开票金额内的数字，精确到分
+                        </span>
+	                </div>
+	            </li>
+	            <li style="min-width:98px;">
+	                <div class="ey-form-group">
+	                <div class="ey-invoice-line"></div>
+	                </div>
+	            </li>
+	            <li>
+	                <div class="ey-form-group ey-text-tip">
+	                    <p>可开票金额</p>
+	                    <p>￥<span class="ey-color-blue ey-font-huger">{{amount.billableAmount|currency:''}}</span></p>
+	                </div>
+	            </li>
+	            <li>
+	                <div class="ey-form-group ey-text-tip">
+	                    <p>= &nbsp; &nbsp;累计金额</p>
+	                    <p>= &nbsp; &nbsp;{{amount.totalAmount|currency:'￥'}}</p>
+	                </div>
+	            </li>
+	            <li>
+	                <div class="ey-form-group ey-text-tip">
+	                    <p>- &nbsp; &nbsp;已开票金额</p>
+	                    <p>- &nbsp; &nbsp;{{amount.invoicedAmount|currency:'￥'}}</p>
+	                </div>
+	            </li>
+	            <li>
+	                <div class="ey-form-group ey-text-tip">
+	                    <p>- &nbsp; &nbsp;冻结金额</p>
+	                    <p>- &nbsp; &nbsp;{{amount.frozenAmount|currency:'￥'}}</p>
+	                </div>
+	            </li>
+	        </ul>
+	        <div class="ey-divider"></div>
+	        <p class="ey-font-size-big">请选择开票信息：</p>
+	        <ul class="ey-invoice-list">
+	            <li ng-repeat="item in invoiceInfoList" ng-class="item.defaultItem == '1' ? 'ey-font-bold' : ''">
+	                <div class="ey-form-radio">
+	                    <input type="radio" name="invoiceInfoId" ng-model="apply.invoiceInfoId" ng-change="apply.changeInvoiceInfo(item)" id="invoice_{{item.id}}" ng-value="item.id"/>
+	                    <label for="invoice_{{item.id}}"></label>
+	                </div>
+	                <span class="ey-form-w6 ey-inline ey-ellipsis"  title="{{item.invoiceTitle}}">{{item.invoiceTitle}}</span>
+	                <span>{{item.invoiceTypeName}}</span>
+	                <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+	                <button class="ey-invoice-btn" ng-if="item.defaultItem == '1'">默认</button>
+	            </li>
+	        </ul>
+	        <div ng-if="invoiceInfoList == null || invoiceInfoList.length <= 0">
+                <span class="ey-text-tip">当前暂无开票信息，请先<a class="ey-color-blue" href="javascript:void(0);" ng-click="apply.toInvoiceInfo()">创建开票信息</a></span>
+            </div>
+	        <div class="ey-divider"></div>
+	        <p class="ey-font-size-big">请选择邮寄地址：</p>
+	        <ul class="ey-invoice-list">
+	            <li ng-repeat="item in deliveryAddressList"  ng-class="item.defaultItem == '1' ? 'ey-font-bold' : ''">
+	                <div class="ey-form-radio">
+	                    <input type="radio" id="address_{{item.id}}" name="deliveryAddressId" ng-change="apply.changeDeliveryAddress(item)" ng-model="apply.deliveryAddressId" ng-value="::item.id" />
+	                    <label for="address_{{item.id}}"  ></label>
+	                </div>
+	                <span class="ey-form-w1 ey-inline ey-ellipsis" title="{{item.receiverName}}" ng-bind="::item.receiverName"></span>
+	                <span class="ey-form-w2 ey-inline ey-ellipsis" ng-bind="::item.receiverTel"></span>
+	                <span class="ey-form-w8 ey-inline ey-ellipsis" title="{{item.address}}" ng-bind="::item.address"></span>
+	                <button class="ey-invoice-btn" ng-if="item.defaultItem == '1'">默认</button>
+	            </li>
+	        </ul>
+	        <div ng-if="deliveryAddressList == null || deliveryAddressList.length <= 0">
+	            <span class="ey-text-tip">当前暂无邮寄地址，请先<a class="ey-color-blue" href="javascript:void(0);" ng-click="apply.toDeliveryAddress()">创建邮寄地址</a></span>
+	        </div>
+	        <div class="ey-btn-group" style="margin-top:40px;">
+	            <button class="ey-btn ey-btn-primary" ng-click="commit()" 
+	               ng-disabled="applyForm.$invalid 
+	               || invoiceInfoList == null || invoiceInfoList.length <= 0 
+	               || deliveryAddressList == null || deliveryAddressList.length <= 0">
+	                                           提交
+	            </button>
+	            <button class="ey-btn ey-btn-default" ng-click="cancel()">取消</button>
+	        </div>
+        </form>
+    </div>
+</div>

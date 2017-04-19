@@ -1,0 +1,72 @@
+<!-- Tab panes -->
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active" id="appCloudhostHDTable">
+    <!-- Form表单 -->
+    <form class="form-inline">
+      <button type="button" class="ey-btn ey-btn-primary ey-btn-sm" ng-show="buttonPower.isCreate"  data-ng-click="addFireWall()"><span class="eayunfont ef-plus" aria-hidden="true"></span>
+        创建防火墙
+      </button>
+      
+     <!--  <div class="input-group has-feedback search-group">
+	  	<input type="text" class="form-control" placeholder="请输入名称搜索" data-ng-model="fwName">
+	  	<span class="form-control-feedback pointer search" data-ng-click="queryFireWall()"></span>
+	  </div> -->
+  
+      <!-- <div class="input-group">
+    <input type="text" class="form-control" ng-model="fwName" placeholder="请输入防火墙名称搜索" style="z-index:0;">
+    <span class="input-group-btn">
+        <button class="btn btn-default" data-ng-click="queryFireWall()"  type="button" style="z-index:0;"><span class="glyphicon glyphicon-search"></span></button>
+      </span>
+  </div> -->
+    </form>
+    <!-- 表格 -->
+
+    <eayun-table data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams"
+                data-result="myTable.result">
+      <table class="ey-table">
+        <thead>
+        <tr>
+          <th>防火墙名称</th>
+          <th>状态</th>
+          <!-- <th>策略</th> -->
+          <th>已有标签</th>
+          <th>创建时间</th>
+          <th class="col-sm-3">操作</th>
+        </tr>
+        </thead>
+        <tbody><tr data-ng-repeat="fire in myTable.result" ng-init="item.tagName=fire.tags">
+          <td data-ui-sref="app.safety.rule({fwpId:fire.fwpId,fwId:fire.fwId})" class="ey-text-link" title="{{fire.fwName}}">{{fire.fwName}}</td>
+           <td>
+          <span class ="state-block" data-ng-class="vmStatusClass!=''?vmStatusClass:''" ng-init="vmStatusClass = getFireWallStatus(fire)"></span>
+          {{fire.statusForDis=='创建中'?'正常':fire.statusForDis}}
+          </td>
+          <!-- <td>{{fire.fwpName}}</td> -->
+          <td ng-show="tags.gt2Tags" ng-init="tags=parseJson(fire.tags)">
+          	<span>{{tags.twoTagsString}}</span>
+          	<div class="tag-icon ellipsis pointer"
+			ng-mouseenter="openTableBox({value:tags.allTagsString,type:'tagName',index:$index})"
+			ng-mouseleave="closeTableBox({type:'tagName',index:$index})"
+			hint="views/directives/ellipsispop.html"
+       		hint-show="hintTagShow[$index]"
+       		tooltip-class="tooltip-tag"
+       		tooltip-placement="bottom">
+       	</div>
+          </td>
+          <td ng-show="!tags.gt2Tags">{{tags.allTagsString}}</td>
+          <td>{{fire.createTime|date : 'yyyy-MM-dd HH:mm:ss'}}</td>
+          <td class="col-sm-2" ng-if="buttonPower.isEdit||buttonPower.isTag||buttonPower.delFireWall">
+          	  <button  class="ey-btn" data-ui-sref="app.safety.rule({fwpId:fire.fwpId,fwId:fire.fwId})">管理</button>
+			  <!-- <button  class="ey-btn" ng-show="buttonPower.isEdit" ng-disabled="'ACTIVE'!=fire.fwStatus" data-ng-click="updateFireWall(fire)">编辑</button> -->
+			  <button  class="ey-btn btn-left" ng-show="buttonPower.isTag" ng-disabled="'ACTIVE'!=fire.fwStatus" data-ng-click="tagResource('firewall',fire.fwId)">标签</button>
+			  <button  class="ey-btn btn-left" ng-show="buttonPower.delFireWall" ng-disabled="'ACTIVE'!=fire.fwStatus && 'ERROR'!=fire.fwStatus" data-ng-click="delFireWall(fire)"><span class="ey-text-error">删除</span></button>
+          </td>
+          <td ng-if="!buttonPower.isEdit&&!buttonPower.isTag&&!buttonPower.delFireWall">
+          	  <button  class="ey-btn" data-ui-sref="app.safety.rule({fwpId:fire.fwpId,fwId:fire.fwId})">管理</button>
+          </td>
+        </tr></tbody>
+      </table>
+      <eayun-table-page></eayun-table-page>
+    </eayun-table>
+  </div>
+  <div role="tabpanel" class="tab-pane" id="appCloudhostHDSnapshot">profile</div>
+</div>

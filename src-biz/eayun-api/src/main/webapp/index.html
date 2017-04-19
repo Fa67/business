@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>API测试页面</title>
+    <link type="text/css" rel="stylesheet" href="style/api.css"/>
+    <link type="text/css" rel="stylesheet" href="style/bootstrap.min.css"/>
+    <script type="text/javascript" src="script/jquery.js"></script>
+    <script type="text/javascript" src="script/bootstrap.min.js"></script>
+    <script type="text/javascript" src="script/angular.min.js"></script>
+    <script type="text/javascript" src="script/api.js"></script>
+    <script type="text/javascript" src="script/base64.js"></script>
+    <script type="text/javascript" src="script/requireJS.js"></script>
+</head>
+
+<body>
+<div ng-app="eayun.api" ng-controller="apiCtrl" class="box clearfix">
+    <div class="box-left">
+        <form name="form" novalidate>
+            <div class="form-group">
+                <label>AK SK：</label>
+
+                <div>
+                    <input type="text" ng-pattern="/[^\u4e00-\u9fa5]/" ng-model="ak" name="ak"
+                           class="form-control" placeholder="请输入AK："/>
+                    <label class="control-label" ng-class="form.ak.$dirty && form.ak.$error.pattern ? 'show' : 'hide'"
+                           style="text-align: left;">
+                        请输入正确AK值
+                    </label>
+                </div>
+                <div>
+                    <input type="text" ng-pattern="/[^\u4e00-\u9fa5]/" name="sk" ng-model="sk"
+                           class="form-control" placeholder="请输入SK："/>
+                    <label class="control-label"
+                           ng-class="form.sk.$dirty && form.sk.$error.pattern ? 'show' : 'hide'"
+                           style="text-align: left;">请输入正确的SK值</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>后台服务地址：</label>
+                <input type="text" name="url" ng-model="url" class="form-control" placeholder="请输入后台服务地址："/>
+                <label class="control-label"
+                       ng-class="form.url.$dirty && form.url.$error.pattern ? 'show' : 'hide'"
+                       style="text-align: left;">请输入正确的URL（http://www.eayun.com）</label>
+            </div>
+            <div class="form-group">
+                <label>获取方式：</label>
+                <label class="radio-inline">
+                    <input type="radio" name="inlineRadioOptions" value="GET" ng-model="method">GET
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="inlineRadioOptions" value="POST" ng-model="method">POST
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="inlineRadioOptions" value="DELETE" ng-model="method">DELETE
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="inlineRadioOptions" value="PUT" ng-model="method">PUT
+                </label>
+            </div>
+            <div class="form-group">
+                <label>API文档：</label><a>点击获取文档</a>
+            </div>
+            <div class="message form-inline">
+                <label>Header参数：</label>
+                <ul class="copy">
+                    <li ng-repeat="reply in api.replies">
+                        <input type="text" ng-model="reply.key" ng-pattern="/[^\u4e00-\u9fa5]/"
+                               name="reply{{$index + 1}}" class="form-control short" placeholder="请输入Key值：">
+                        <input type="text" ng-model="reply.value" ng-pattern="/[^\u4e00-\u9fa5]/"
+                               name="reply{{$index + 1}}" class="long form-control " placeholder="请输入Value值：">
+                        <span class="close" ng-click="api.decrReply($index)" ng-show="api.replies.length>1"></span>
+                    </li>
+                </ul>
+                <button type="button" ng-click="callApi()" class="btn">调用接口</button>
+                <button type="button" ng-click="api.incrReply()" class="btn">添加参数</button>
+            </div>
+            <div class="form-group">
+                <label>header值：</label>
+                <textarea class="form-control" rows="12" ng-model="headers | json" readonly>
+                </textarea>
+            </div>
+        </form>
+    </div>
+    <div class="box-right form-group">
+        <label>request值：</label>
+        <textarea class="form-control ca1" rows="12" ng-model="params">
+        </textarea>
+        <label>response值：</label>
+        <textarea class="form-control" rows="12" ng-model="data | json" readonly>
+        </textarea>
+    </div>
+</div>
+
+</body>
+</html>

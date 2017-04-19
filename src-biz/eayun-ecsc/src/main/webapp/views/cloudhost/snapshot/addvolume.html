@@ -1,0 +1,54 @@
+<form class="form-horizontal" name="myForm">
+  <div class="form-group has-feedback">
+  	 <input type="hidden" data-ng-model="model.diskFrom"> 
+     <input type="hidden" data-ng-model="model.dcId">
+     <input type="hidden" data-ng-model="model.prjId">
+    <input type="hidden" data-ng-model="model.fromSnapId">
+    <label class="col-sm-3 control-label">所属项目：</label>
+    <div class="col-sm-7">
+      <input disabled type="text" class="form-control" name="name" data-ng-model="prjName" placeholder="请输入项目名称" required>
+    </div>
+    
+  </div>
+
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 control-label">云硬盘名称：</label>
+
+    <div class="col-sm-7" data-ng-class="(myForm.name.$dirty && myForm.name.$invalid) ? 'has-error' : ''">
+      <input type="text" class="form-control" style="padding-right:10px;" name="name" data-ng-model="model.volName" placeholder="请输入云硬盘名称" maxlength="63" required  ajax-valid="checkVolumeName(value)">
+      <label class="control-label" ng-show="myForm.name.$dirty && myForm.name.$error.required&&!flag">请输入1-63位字符,支持数字、中英文、下划线、空格</label>
+      <label class="control-label" ng-show="myForm.name.$dirty && myForm.name.$error.ajaxValid&&!flag">云硬盘名称已存在</label>
+      <label class="control-label" ng-if="flag">请输入1-63位字符,支持数字、中英文、下划线、空格</label>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-3 control-label">描述：</label>
+    <div class="col-sm-8">
+      <textarea class="form-control" rows="3" placeholder="请输入描述" data-ng-model="model.volDescription" maxlength="200"></textarea>
+    </div>
+  </div>
+  
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 control-label">云硬盘容量：</label>
+    <div class="col-sm-6 row" data-ng-class="(myForm.size.$dirty && myForm.size.$invalid) ? 'has-error' : ''">
+    	<div class="col-sm-6">
+	   		<input  class="form-control" style="padding-right:10px;" name="size" data-ng-model="model.volSize"  ajax-valid="checkVolumeSize(value)" required>
+	   	</div>
+	   	<div>
+	   		<span class="control-label col-sm-1" style="padding-left: 0px!important;">GB</span>
+	   	</div>
+	   	<div class="col-sm-9">
+	      <label class="control-label" ng-show="myForm.size.$dirty && myForm.size.$error.required&&!isTrue">云硬盘容量不能小于{{minSize}}GB</label>
+	      <label class="control-label" ng-show="myForm.size.$dirty && myForm.size.$error.ajaxValid&&!isTrue">请输入{{minSize}}-2048的正整数</label>
+	      <label class="control-label" ng-show="isTrue">云硬盘容量不能小于{{minSize}}GB</label>
+      </div>
+    </div>
+  </div>
+ 
+ <!--按钮区域 -->
+  <!-- <div class="modal-footer" >
+    <button type="button" class="btn btn-primary btn-modal" ng-click="commit()"  ng-disabled="!myForm.$valid">确  定</button>
+    <button type="button" class="btn btn-default btn-modal" ng-click="cancel()">取  消</button>
+  </div> -->
+</form>

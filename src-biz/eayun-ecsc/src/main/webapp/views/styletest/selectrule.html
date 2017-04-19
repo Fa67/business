@@ -1,0 +1,22 @@
+<div>
+  <div class="pull-left">
+    <label>全部规则</label>
+
+    <div class="list-group-eayun">
+      <div class="list-group-item" data-ng-repeat="item in items">{{item.name}}<span
+        class="glyphicon glyphicon-plus color-blue pointer" data-ng-click="add($index)"></span></div>
+    </div>
+  </div>
+
+  <div class="pull-right">
+    <label>已选择的规则</label>
+
+    <div class="list-group-eayun">
+      <div class="list-group-item" data-ng-repeat="item in selected">{{item.name}}<span
+        class="glyphicon glyphicon-remove color-error pointer" data-ng-click="remove($index)"></span></div>
+    </div>
+  </div>
+  <div class="select-list-md">
+    <span class="glyphicon glyphicon-menu-right" style="font-size: 2em"></span>
+  </div>
+</div>

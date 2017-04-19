@@ -1,0 +1,158 @@
+<div class="panel panel-default clearfix">
+  <div class="panel-body">
+    <h4>云主机列表</h4>
+    <!-- Form表单 -->
+    <form class="form-inline">
+      <button type="button" class="btn btn-primary" data-ng-click="addVM()"><span class="glyphicon glyphicon-plus"
+                                                                                  aria-hidden="true"></span> 新建云主机
+      </button>
+      <div class="input-group has-feedback search-group">
+        <eayun-select type="btn" class="input-group-btn" data-ng-model="name">
+          <eayun-option value="name" text="名称" selected></eayun-option>
+          <eayun-option value="status" text="状态"></eayun-option>
+          <eayun-option value="system" text="系统"></eayun-option>
+        </eayun-select>
+        <input type="text" class="form-control" placeholder="{{name}}">
+        <span class="form-control-feedback pointer search"></span>
+      </div>
+
+      <div class="input-group has-feedback search-group">
+        <input type="text" class="form-control" placeholder="{{name}}">
+        <span class="form-control-feedback pointer search"></span>
+      </div>
+    </form>
+
+    <!-- 详情 -->
+    <div class="details">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="details-group">
+            <div class="details-name">云主机名称：</div>
+            <div class="details-value">
+              <span data-ng-class="isEdit('name')?'hide':'show'">{{vm.name}}</span>
+              <input type="text" class="form-control" data-ng-class="isEdit('name')?'show':'hide'" data-ng-model="vm.name">
+            </div>
+      <span class="badge" data-ng-class="isEdit('name')?'hide':'show'" data-ng-click="edit('name')"><span
+        class="glyphicon glyphicon-pencil"></span> </span>
+      <span class="badge color-success" data-ng-class="isEdit('name')?'show':'hide'" data-ng-click="edit()"><span
+        class="glyphicon glyphicon-ok"></span> </span>
+          </div>
+          <div class="details-group">
+            <div class="details-name">云主机ID：</div>
+            <div class="details-value">
+              {{vm.id}}
+            </div>
+          </div>
+          <div class="details-group">
+            <div class="details-name">状态：</div>
+            <div class="details-value">
+              {{vm.state}}
+            </div>
+          </div>
+          <div class="details-group">
+            <div class="details-name">系统盘：</div>
+            <div class="details-value">
+              {{vm.hd}}GB
+            </div>
+          </div>
+          <div class="details-group">
+            <div class="details-name">VMID：</div>
+            <div class="details-value">
+              {{vm.vmid}}
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="details-group">
+            <div class="details-name">描述：</div>
+            <div class="details-value">
+              <span data-ng-class="isEdit('desc')?'hide':'show'">{{vm.desc || '(暂无)'}}</span>
+              <input data-ng-class="isEdit('desc')?'show':'hide'" type="text" class="form-control" data-ng-model="vm.desc">
+            </div>
+      <span class="badge" data-ng-class="isEdit('desc')?'hide':'show'" data-ng-click="edit('desc')"><span
+        class="glyphicon glyphicon-pencil"></span> </span>
+      <span class="badge" data-ng-class="isEdit('desc')?'show':'hide'" data-ng-click="edit()"><span
+        class="glyphicon glyphicon-ok"></span> </span>
+          </div>
+          <div class="details-group">
+            <div class="details-name">系统：</div>
+            <div class="details-value">
+              {{vm.system}}
+            </div>
+          </div>
+          <div class="details-group">
+            <div class="details-name">CPU：</div>
+            <div class="details-value">
+              {{vm.cpu}}核
+            </div>
+          </div>
+          <div class="details-group">
+            <div class="details-name">内存：</div>
+            <div class="details-value">
+              {{vm.memery}}GB
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 表格 -->
+    <eayun-table data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams"
+                 data-result="myTable.result">
+      <table class="table table-eayun">
+        <thead>
+        <tr>
+          <th>名称</th>
+          <th>
+            <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="name" placeholder="请选择">
+              <eayun-option value="d" text="状态（全部）" selected></eayun-option>
+              <eayun-option value="1" text="正常"></eayun-option>
+              <eayun-option value="2" text="创建中"></eayun-option>
+            </eayun-select>
+          </th>
+          <th width="10%">
+            <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="name" placeholder="请选择">
+              <eayun-option value="d" text="状态（全部）" selected></eayun-option>
+              <eayun-option value="1" text="正常"></eayun-option>
+              <eayun-option value="2" text="创建中"></eayun-option>
+            </eayun-select>
+          </th>
+          <th>
+            <eayun-select type="btn" class="btn-group btn-group-xs" data-ng-model="name" placeholder="请选择">
+              <eayun-option value="d" text="状态（全部）" selected></eayun-option>
+              <eayun-option value="1" text="正常"></eayun-option>
+              <eayun-option value="2" text="创建中"></eayun-option>
+            </eayun-select>
+          </th>
+          <th>内存</th>
+          <th>数据盘</th>
+          <th>所在子网</th>
+          <th>内外IP</th>
+          <th>公网IP</th>
+          <th>创建时间</th>
+          <th>操作</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr data-ng-repeat="vm in myTable.result">
+          <td>{{vm.name}}</td>
+          <td>{{vm.state}}</td>
+          <td>{{vm.system}}</td>
+          <td>{{vm.cpu}}核</td>
+          <td>{{vm.memery}}MB</td>
+          <td>{{vm.hd}}GB</td>
+          <td>{{vm.subnet}}</td>
+          <td>{{vm.privateIp}}</td>
+          <td>{{vm.publicIp}}</td>
+          <td>{{vm.creatTime | date:"yyyy-MM-dd hh:mm:ss"}}</td>
+          <td>
+            <button class="btn btn-default">管理</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <eayun-table-page></eayun-table-page>
+    </eayun-table>
+  </div>
+</div>

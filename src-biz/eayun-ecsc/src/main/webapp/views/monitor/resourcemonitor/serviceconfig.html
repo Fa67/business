@@ -1,0 +1,72 @@
+<div class="panel panel-default clearfix">
+	<div class="panel-body">
+		<br/>
+		<form class="form-inline">
+			<button type="button" class="btn btn-default btn-sm" data-ng-click="">
+				<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;完成编辑
+			</button>
+			<button type="button" class="btn btn-default btn-sm" style="margin-left:15px;" data-ng-click="">
+				<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>&nbsp;&nbsp;取消编辑
+			</button>
+			<button type="button" class="btn btn-primary btn-sm" style="margin-left:15px;" data-ng-click="">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;&nbsp;创建监听服务
+			</button>
+			<a href="#" style="margin-left:15px;">插件兼容环境说明</a>
+		</form>
+		<br/>
+		<eayun-table data-api="alarmMsgTable.api" data-ajax-source="alarmMsgTable.source" data-param="alarmMsgTable.getParams"
+                data-result="alarmMsgTable.result" style="min-height:550px;">
+      <table class="table table-eayun">
+		<thead>
+	        <tr>
+	          <th>服务名称</th>
+	          <th>类型</th>
+	          <th>版本</th>
+	          <th>状态</th>
+	          <th></th>
+	          <th>操作</th>
+	        </tr>
+        </thead>
+        <tbody>
+        <!-- data-ng-repeat="alarmMsg in alarmMsgTable.result" -->
+	        <tr>
+	          <td>- -</td>
+	          <td>内建</td>
+	          <td>SendProxy v0.1</td>
+	          <td>开启</td>
+	          <td></td>
+	          <td>
+	          	<button class="btn btn-tablemng">更换版本</button>
+	          	<button class="btn btn-tablemng btn-left">频率设置</button>
+	          	<button class="btn btn-tabledel btn-left">删  除</button>
+	          </td>
+	        </tr>
+	        <tr>
+	          <td>tomcat8080</td>
+	          <td>Tomcat</td>
+	          <td>TomcatAgent v1.0</td>
+	          <td>关闭</td>
+	          <td></td>
+	          <td>
+	          	<button class="btn btn-tablemng">更换版本</button>
+	          	<button class="btn btn-tablemng btn-left">频率设置</button>
+	          	<button class="btn btn-tabledel btn-left">删  除</button>
+	          </td>
+	        </tr>
+	        <tr>
+	          <td>oracle1800</td>
+	          <td>Oracle</td>
+	          <td>未安装</td>
+	          <td>- -</td>
+	          <td></td>
+	          <td>
+	          	<button class="btn btn-tablemng">更换版本</button>
+	          	<button class="btn btn-tablemng btn-left">频率设置</button>
+	          	<button class="btn btn-tabledel btn-left">删  除</button>
+	          </td>
+	        </tr>
+        </tbody>
+      </table>
+    </eayun-table>
+	</div>
+</div>

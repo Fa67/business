@@ -1,0 +1,196 @@
+<div class="modal-header">
+    <span class="modal-title">编辑VPN</span>
+    <span class="eayunfont ef-close ey-font-huge" data-ng-click="editVpn.cancel()"></span>
+</div>
+<div class="modal-body" style="width: 650px;min-height: 360px;">
+    <div class="ey-step-box">
+        <div class="ey-step" data-ng-class="editVpn.step >= 1?'active':''" data-ng-init="editVpn.step=1">
+            <span>1</span>
+
+            <div></div>
+            <p class="text-left">基本配置</p>
+        </div>
+        <div class="ey-step" data-ng-class="editVpn.step == 2?'active':''">
+            <div></div>
+            <span>2</span>
+
+            <p class="text-right">可选配置</p>
+        </div>
+    </div>
+
+    <form class="ey-form" name="editForm" novalidate>
+    	<fieldset data-ng-if="editVpn.step == 1">
+        <div class="ey-form-group"
+             data-ng-class="editForm.vpnName.$dirty && (editForm.vpnName.$invalid || editVpn.isNameExist) ? 'ey-has-error' : ''">
+            <label class="ey-form-label ey-required">名称：</label>
+            <input class="ey-form-input ey-form-w6" name="vpnName" data-ng-change="editVpn.checkVpnNameExist()"
+                   data-ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/'
+                   data-ng-model="editVpn.vpnModel.vpnName" maxlength="20" placeholder="请输入名称"
+                   required>
+            <span class="ey-text-tip ey-text-error" data-ng-show="editForm.vpnName.$dirty && editForm.vpnName.$invalid">
+                请输入1-20位字符,支持数字、中英文、下划线、空格
+            </span>
+            <span data-ng-show="editForm.vpnName.$dirty && editForm.vpnName.$valid && editVpn.isNameExist">
+                该VPN名称已存在
+            </span>
+        </div>
+        <div class="ey-form-group">
+            <lable class="ey-form-label ey-required">对端网关：</lable>
+            <input type="text" class="ey-form-input ey-form-w1" maxlength="3" data-ng-model="editVpn.$$addr1.val"
+                   data-ng-change="editVpn.checkPeerAddress('1')"
+                   data-ng-class="!editVpn.$$addr1.flag?'ey-has-error':''">
+            <span>.</span>
+            <input type="text" class="ey-form-input ey-form-w1" maxlength="3" data-ng-model="editVpn.$$addr2.val"
+                   data-ng-change="editVpn.checkPeerAddress('2')"
+                   data-ng-class="!editVpn.$$addr2.flag?'ey-has-error':''">
+            <span>.</span>
+            <input type="text" class="ey-form-input ey-form-w1" maxlength="3" data-ng-model="editVpn.$$addr3.val"
+                   data-ng-change="editVpn.checkPeerAddress('3')"
+                   data-ng-class="!editVpn.$$addr3.flag?'ey-has-error':''">
+            <span>.</span>
+            <input type="text" class="ey-form-input ey-form-w1" maxlength="3" data-ng-model="editVpn.$$addr4.val"
+                   data-ng-change="editVpn.checkPeerAddress('4')"
+                   data-ng-class="!editVpn.$$addr4.flag?'ey-has-error':''">
+            <span class="ey-has-error"
+                  data-ng-show="!editVpn.$$addr1.flag || !editVpn.$$addr2.flag || !editVpn.$$addr3.flag || !editVpn.$$addr4.flag">
+                     请输入0-255的整数
+            </span>
+        </div>
+        <!--<div class="ey-form-group"
+             data-ng-class="editForm.peerId.$dirty && editForm.peerId.$error.required?'ey-has-error':''">
+            <lable class="ey-form-label ey-required">对端路由ID：</lable>
+            <input class="ey-form-input ey-form-w4" name="peerId" data-ng-model="editVpn.vpnModel.peerId"
+                   maxlength="200" placeholder="请输入对端路由ID" required>
+            <span class="ey-text-tip ey-text-error" data-ng-show="editForm.peerId.$dirty && editForm.peerId.$error.required">
+               对端路由ID不能为空
+            </span>
+        </div>-->
+        <div class="ey-form-group"
+             data-ng-class="editForm.peerCidrs.$dirty
+                        && (editForm.peerCidrs.$error.required
+                        || (editForm.peerCidrs.$valid
+                        && !editVpn.checkPeerCidrsFlag)) ? 'ey-has-error' : ''">
+            <lable class="ey-form-label ey-required">对端子网：</lable>
+            <textarea class="ey-form-textarea ey-form-w6" name="peerCidrs" maxlength="2000"
+                      placeholder="带有子网掩码的CIDR格式，多个子网时用英文逗号分隔，例如：20.1.0.0/24,21.1.0.0/24。"
+                      data-ng-model="editVpn.vpnModel.peerCidrs" data-ng-change="editVpn.checkPeerCidrs()"
+                      placeholder="请输入对端网段" required></textarea>
+            <span class="ey-text-tip ey-has-error"
+                  data-ng-show="editForm.peerCidrs.$dirty && editForm.peerCidrs.$error.required">
+                对端子网不能为空
+            </span>
+            <span class="ey-text-tip ey-has-error"
+                  data-ng-show="editForm.peerCidrs.$dirty && editForm.peerCidrs.$valid && !editVpn.checkPeerCidrsFlag">
+                子网格式错误。请检查是否有重复子网，以及符号是否正确。
+            </span>
+        </div>
+        <div class="ey-form-group"
+             data-ng-class="editForm.pskKey.$dirty && editForm.pskKey.$invalid ? 'ey-has-error':''">
+            <lable class="ey-form-label ey-required">预共享密钥：</lable>
+            <input class="ey-form-input ey-form-w6" name="pskKey" maxlength="80"
+                   data-ng-model="editVpn.vpnModel.pskKey" placeholder="请输入预共享密钥" required>
+            <span class="ey-text-tip ey-has-error"
+                  data-ng-show="editForm.pskKey.$dirty && editForm.pskKey.$error.required">
+                预共享密钥不能为空
+            </span>
+        </div>
+        </fieldset>
+	<fieldset data-ng-if="editVpn.step == 2">
+        <div class="ey-form-group"
+             data-ng-class="(editForm.mtu.$valid && !editVpn.mtuSixtyEight)|| editForm.mtu.$error.required ? 'ey-has-error' : ''">
+            <label class="ey-form-label ey-required">最大输出单元：</label>
+            <input class="ey-form-input ey-form-w5" name="mtu" maxlength="9" placeholder="请输入最大输出单元"
+                   data-ng-model="editVpn.vpnModel.mtu" data-ng-change="editVpn.checkMtu()" required>
+            <span class="ey-text-tip ey-has-error"
+                  data-ng-show="editForm.mtu.$error.required">
+                最大输出单元不能为空
+            </span>
+            <span class="ey-text-tip ey-has-error"
+                  data-ng-show="editForm.mtu.$valid && !editVpn.mtuSixtyEight">
+                请输入68到999999999的正整数
+            </span>
+        </div>
+        <div class="ey-form-group">
+            <lable class="ey-form-label">失效处理：</lable>
+            <eayun-select class="ey-form-w5" name="dpdAction" data-ng-model="editVpn.vpnModel.dpdAction"
+                          required>
+                <eayun-option value="'hold'" text="保留"></eayun-option>
+                <eayun-option value="'clear'" text="清除"></eayun-option>
+                <!--<eayun-option value="'disabled'" text="禁用"></eayun-option>-->
+                <eayun-option value="'restart'" text="重启"></eayun-option>
+                <!--<eayun-option value="'restart-by-peer'" text="被对端重启"></eayun-option>-->
+            </eayun-select>
+        </div>
+        <div class="ey-form-group"
+             data-ng-class="editForm.dpdInterval.$invalid ? 'ey-has-error' : ''">
+            <lable class="ey-form-label ey-required">检测间隔（秒）：</lable>
+            <input class="ey-form-input ey-form-w5" name="dpdInterval" maxlength="9"
+                   data-ng-change="editVpn.checkInterval()" data-ng-pattern="/^[1-9][0-9]{0,8}$/"
+                   data-ng-model="editVpn.vpnModel.dpdInterval" placeholder="请输入检测间隔" required>
+            <span class="ey-text-tip ey-has-error"
+                  data-ng-show="editForm.dpdInterval.$error.required">
+                检测间隔不能为空
+            </span>
+            <span class="ey-text-tip ey-has-error"
+                  data-ng-show="editForm.dpdInterval.$error.pattern">
+                请输入不大于999999999的正整数
+            </span>
+        </div>
+        <div class="ey-form-group"
+             data-ng-class="(editForm.dpdTimeout.$invalid || (editForm.dpdTimeout.$valid && !editVpn.checkTimeout)) ? 'ey-has-error' : ''">
+            <lable class="ey-form-label ey-required">超时（秒）：</lable>
+            <input class="ey-form-input ey-form-w5" name="dpdTimeout" maxlength="9"
+                   data-ng-pattern="/^[1-9][0-9]{0,8}$/" data-ng-model="editVpn.vpnModel.dpdTimeout"
+                   data-ng-change="editVpn.checkInterval()" placeholder="请输入超时" required>
+            <span class="ey-text-tip ey-has-error"
+                  data-ng-show="editForm.dpdTimeout.$error.required">
+                超时不能为空
+            </span>
+            <span class="ey-text-tip ey-has-error"
+                  data-ng-show="editForm.dpdTimeout.$error.pattern">
+                请输入不大于999999999的正整数
+            </span>
+            <span class="ey-text-tip ey-has-error"
+                  data-ng-show="editForm.dpdTimeout.$valid && !editVpn.checkTimeout">
+                超时应大于检测间隔
+            </span>
+        </div>
+        <div class="ey-form-group">
+            <lable class="ey-form-label">发起状态：</lable>
+            <eayun-select class="ey-form-w5" data-ng-model="editVpn.vpnModel.initiator" name="initiator" required>
+                <eayun-option value="'response-only'" text="只应答"></eayun-option>
+                <eayun-option value="'bi-directional'" text="双向"></eayun-option>
+            </eayun-select>
+        </div>
+      </fieldset>
+    </form>
+</div>
+
+<div class="ey-modal-footer">
+    <div class="ey-btn-group">
+        <button class="ey-btn" data-ng-click="editVpn.step=2" data-ng-if="editVpn.step==1" 
+        		data-ng-disabled="editForm.$invalid
+                                || !editVpn.$$addrTotal
+                                || !editVpn.checkPeerCidrsFlag
+                                || (editVpn.isNameExist && editVpn.step == 1)">
+            下一步
+        </button>
+        <button class="ey-btn" data-ng-click="editVpn.step = 1" data-ng-if="editVpn.step == 2">
+            上一步
+        </button>
+        <button class="ey-btn"
+                data-ng-click="editVpn.commit(editVpn.vpnModel)"
+                data-ng-if="editVpn.step == 2"
+                data-ng-disabled="editForm.$invalid
+                                || !editVpn.$$addrTotal
+                                || !editVpn.checkPeerCidrsFlag
+                                || !editVpn.mtuSixtyEight
+    						    || !editVpn.checkTimeout
+    						    || editVpn.isNameExist">
+            确&nbsp;&nbsp;定
+        </button>
+        <button class="ey-btn ey-btn-default" data-ng-click="editVpn.cancel()">
+            取&nbsp;&nbsp;消
+        </button>
+    </div>
+</div>

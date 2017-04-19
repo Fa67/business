@@ -1,0 +1,72 @@
+<div class="modal-header">
+    <span class="modal-title">创建标签类别</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 600px;">
+    <form class="ey-form " novalidate name="addtaggroup">
+        <div class="ey-form-group ey-required " data-ng-class="(addtaggroup.name.$dirty && addtaggroup.name.$invalid) ? 'ey-has-error' : ''">
+            <label class="ey-form-label ey-required">名称：</label>
+
+            <input type="text" class="ey-form-input ey-form-w6" placeholder="请输入标签类别名称"  name="name"
+                   data-ng-model="taggroupModel.name" required
+                   data-ajax-valid="checkTagGroupName(value)" maxlength=20/>
+
+            <span ng-show="addtaggroup.name.$dirty && addtaggroup.name.$error.required && !nameflag">类别名称不能为空</span>
+            <span ng-show="addtaggroup.name.$dirty && addtaggroup.name.$error.ajaxValid && !nameflag">类别名称已存在</span>
+            <span ng-if="nameflag">请输入1-20位字符,支持数字、中英文、下划线、空格</span>
+        </div>
+
+        <div class="ey-form-group ey-required" data-ng-class="(addtaggroup.abbr.$dirty && addtaggroup.abbr.$invalid) ? 'ey-has-error' : ''">
+            <label class="ey-form-label ey-required">类别简称：</label>
+
+            <input type="text" class="ey-form-input ey-form-w6" placeholder="请输入标签类别简称" name="abbr"
+                   data-ng-model="taggroupModel.abbreviation" required
+                   data-ajax-valid="checkTagGroupAbbr(value)" maxlength=9/>
+            <span ng-show="addtaggroup.abbr.$dirty && addtaggroup.abbr.$error.required && !abbrflag">类别简称不能为空</span>
+            <span ng-show="addtaggroup.abbr.$dirty && addtaggroup.abbr.$error.ajaxValid && !abbrflag">类别简称已存在</span>
+            <span ng-if="abbrflag">请输入1-9位字符,支持数字、中英文、下划线、空格</span>
+        </div>
+
+        <div class="ey-form-group ey-required">
+            <label class="ey-form-label">描述：</label>
+
+            <textarea type="text" class="ey-form-textarea ey-form-w6" placeholder="请输入描述"
+                   data-ng-model="taggroupModel.description" maxlength="200"></textarea>
+        </div>
+
+        <div class="ey-form-group">
+            <label class="ey-form-label">是否启用：</label>
+
+            <div class="ey-form-radio">
+                <input type="radio" id="rdo_enable" name="enabled" value="1" data-ng-model="taggroupModel.enabled">
+                <label for="rdo_enable">是</label>
+            </div>
+
+            <div class="ey-form-radio">
+                <input type="radio" id="rdo_disable" name="enabled" value="0" data-ng-model="taggroupModel.enabled">
+                <label for="rdo_disable">否</label>
+            </div>
+        </div>
+
+        <div class="ey-form-group">
+            <label class="ey-form-label">是否唯一：</label>
+
+            <div class="ey-form-radio">
+                <input type="radio" id="rdo_unique" name="unique" value="1" data-ng-model="taggroupModel.unique">
+                <label for="rdo_unique">是</label>
+            </div>
+            <div class="ey-form-radio">
+                <input type="radio" id="rdo_inunique" name="unique" value="0" data-ng-model="taggroupModel.unique">
+                <label for="rdo_inunique">否</label>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="ey-modal-footer">
+    <div class="ey-btn-group">
+        <button type="button" class="ey-btn ey-btn-primary"
+                ng-click="commit()" ng-disabled="!addtaggroup.$valid">确定</button>
+        <button type="button" class="ey-btn ey-btn-default"
+                ng-click="cancel()">取 消</button>
+    </div>
+</div>

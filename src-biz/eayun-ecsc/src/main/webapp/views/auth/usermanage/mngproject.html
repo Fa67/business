@@ -1,0 +1,52 @@
+<div class="modal-header">
+    <span class="modal-title">管理数据中心</span> 
+    <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style = "width:620px;">
+	<eayun-table>
+	  <table class="table table-eayun">
+	  <tbody>
+	    <tr>
+	      <td>账号</td>
+	      <td>{{usermodel.userAccount}}</td>
+	    </tr>
+	    <tr>
+	      <td>账号说明</td>
+	      <td><div style = "word-wrap:break-all;word-break:break-all;">{{usermodel.userExplain}}</div></td>
+	    </tr>
+	    </tbody>
+	  </table>
+	</eayun-table>
+	<!-- 表格 -->
+	<h5>选择数据中心</h5>
+	<eayun-table data-api="proTable.api" data-ajax-source="proTable.source" data-param="proTable.getParams" data-result="proTable.result">
+	  <table class="ey-table ey-table-auto">
+	    <thead>
+	    <tr>
+	      <th width="10%">
+	      	<div class = "ey-form-checkbox">
+      			<input type="checkbox" data-ng-click = "checkAll()" data-ng-model="proTable.isAllChecked" id = "myAll">
+      			<label for = "myAll"></label>
+  			</div>
+	      </th>
+	      <th>数据中心名称</th>
+	    </tr>
+	    </thead>
+	    <tbody><tr data-ng-repeat="model in proTable.result">
+	      <td>
+	      	<div class = "ey-form-checkbox">
+      			<input type="checkbox" data-ng-model="model.isCheck" data-ng-click = "getChecked()" id = "{{model.projectId}}">
+      			<label for = "{{model.projectId}}"></label>
+  			</div>
+	      </td>
+	      <td>{{model.dcName}}</td>
+	    </tr></tbody>
+	  </table>
+	</eayun-table>
+</div>
+  <div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<button class="ey-btn ey-btn-primary" data-ng-click="commit()" type = "button" data-ng-disabled="!leastOne">确  定</button>
+		<button class="ey-btn ey-btn-default" data-ng-click="cancel()" type = "button">取 消</button>
+	</div>
+</div>

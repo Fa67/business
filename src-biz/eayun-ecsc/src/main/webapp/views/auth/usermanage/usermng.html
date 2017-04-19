@@ -1,0 +1,42 @@
+ <div class="ey-search-bar ey-search-bar-white">
+	 <button type="button" class="ey-btn ey-btn-primary ey-btn-sm" data-ng-click="addUser()" id = "newModel">
+		 <span class="eayunfont ef-plus"></span>
+		 <span>创建用户</span>
+	</button>
+ </div>
+<eayun-table data-api="userMagTable.api" data-ajax-source="userMagTable.source" data-param="userMagTable.getParams" data-result="userMagTable.result">
+  <table class="ey-table ey-table-muliti">
+    <thead>
+    <tr>
+      <th width = "10%">账号</th>
+      <th width = "30%">账号说明</th>
+      <th width = "20%">角色</th>
+      <th width = "20%">数据中心</th>
+      <th width = "20%">操作</th>
+    </tr>
+    </thead>
+
+    <tbody><tr data-ng-repeat="model in userMagTable.result">
+      <td>{{model.userAccount}}</td>
+      <td title = "{{model.userExplain}}">{{model.userExplain}}</td>
+      <td>{{model.roleName}}</td>
+      <td data-ng-show = "model.projectNameList != '' " data-ng-bind-html="model.projectNameList.join('')"></td>
+      <td data-ng-show = "model.projectNameList == '' " style = "color:#999999">暂未关联数据中心，<a role="button" data-ng-click = "manageProject(model.userId,model.userAccount)">去设置</a></td>
+      <td data-ng-show = "model.isAdmin">----</td>
+      <td data-ng-hide = "model.isAdmin" class="ey-table-operation">
+	      <div class="ey-btn-group">
+	        <button class="ey-btn" data-ng-click="manageUser(model.userId)" data-ng-disabled = "model.isAdmin">管理角色</button>
+	        <div class="ey-btn ey-btn-more" eayun-toggle="open"> 更多操作 <span class="eayunfont ef-triangle"></span>
+	            <ul class="ey-drop-menu">
+	                <li data-ng-click="manageProject(model.userId,model.userAccount)"><a>管理数据中心</a></li>
+	                <li data-ng-click="updateUser(model.userId)"><a>编辑</a></li>
+	                <li data-ng-click="resetPassword(model.userId,model.userAccount)"><a>重置密码</a></li>
+	                <li data-ng-click="deleteUser(model)"><a class = "ey-text-error">删除</a></li>
+	            </ul>
+	        </div>
+    	</div>
+      </td>
+    </tr></tbody>
+  </table>
+  <eayun-table-page></eayun-table-page>
+</eayun-table>

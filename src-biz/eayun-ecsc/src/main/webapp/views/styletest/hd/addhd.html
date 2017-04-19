@@ -1,0 +1,106 @@
+<form class="form-horizontal" name="myForm">
+  <div class="form-group">
+    <label class="col-sm-3 control-label">项目名称：</label>
+
+    <div class="col-sm-9">
+      <eayun-select class="form-control" data-ng-model="HD.projectId" placeholder="请选择">
+        <eayun-option value="proj" text="{{proj.name}}" data-ng-repeat="proj in projects"></eayun-option>
+      </eayun-select>
+    </div>
+  </div>
+
+  <div class="form-group has-feedback" data-ng-class="(myForm.name.$dirty && myForm.name.$invalid) ? 'has-error' : ''">
+    <label class="col-sm-3 control-label">云硬盘名称：</label>
+
+    <div class="col-sm-9">
+      <input type="email" class="form-control" name="name" data-ng-model="HD.name" placeholder="请选择" required
+             ajax-valid="ajaxValid(value)">
+      <span class="glyphicon glyphicon-ok form-control-feedback"
+            ng-show="myForm.name.$dirty && myForm.name.$valid"></span>
+      <label class="control-label" ng-show="myForm.name.$dirty && myForm.name.$error.required">云硬盘名称不能为空</label>
+      <label class="control-label" ng-show="myForm.name.$dirty && myForm.name.$error.email">云硬盘名称必须为Email格式</label>
+      <label class="control-label" ng-show="myForm.name.$dirty && myForm.name.$pending.ajaxValid">ajaxValid校验中</label>
+      <label class="control-label" ng-show="myForm.name.$dirty && myForm.name.$error.ajaxValid">ajaxValid校验失败</label>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-3 control-label">描述：</label>
+
+    <div class="col-sm-9">
+      <textarea class="form-control" rows="3" placeholder="描述" data-ng-model="HD.desc"></textarea>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-3 control-label">云硬盘容量{{HD.size}}：</label>
+
+    <div class="col-sm-9">
+      <label class="radio-inline">
+        <input type="radio" ng-model="HD.size" value="500"> 500G
+      </label>
+      <label class="radio-inline">
+        <input type="radio" ng-model="HD.size" value="1024"> 1T
+      </label>
+      <label class="radio-inline">
+        <input type="radio" ng-model="HD.size" value="2048"> 2T
+      </label>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-3 control-label">磁盘格式：</label>
+
+    <div class="col-sm-9">
+      <label class="checkbox-inline">
+        <input type="checkbox" ng-model="HD.FAT"> FAT
+      </label>
+      <label class="checkbox-inline">
+        <input type="checkbox" ng-model="HD.NTFS"> NTFS
+      </label>
+      <label class="checkbox-inline">
+        <input type="checkbox" ng-model="HD.EXT4"> EXT4
+      </label>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-3 control-label">使用时间：</label>
+
+    <div class="col-md-4">
+      <date-time-picker data-init="" data-ng-model="minDate" date-disabled="disabled" show-time="true"
+                        max-date="maxDate"></date-time-picker>
+    </div>
+    <p class="col-sm-1 text-center">--</p>
+
+    <div class="col-md-4">
+      <date-time-picker format="yyyy/MM/dd HH:mm:ss" data-init="[0,1]"  data-ng-model="maxDate" date-disabled="disabled" min-date="minDate" show-time="true"
+                        required></date-time-picker>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-sm-3 control-label">toggle：</label>
+
+    <div class="col-md-9">
+      <div class="btn-group toggle" role="group">
+        <button type="button" class="btn active">1小时</button>
+        <button type="button" class="btn">2小时</button>
+        <button type="button" class="btn">3小时</button>
+        <button type="button" class="btn">1天</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <button class="btn btn-default" ngf-select="uploadFiles($files,$invalidFiles)" multiple>uploadFiles</button>
+    <label data-ng-repeat="file in files" class="col-sm-3 control-label">{{file.name}}</label>
+  </div>
+
+  <div class="form-group text-center">
+    <button class="btn btn-default" ng-click="info()">info</button>
+    <button class="btn btn-default" ng-click="warning()">warning</button>
+    <button class="btn btn-default" ng-click="success()">success</button>
+    <button class="btn btn-default" ng-click="error()">error</button>
+    <button class="btn btn-default" ng-click="reset()">reset</button>
+    <button class="btn btn-default" ng-click="cancel()">ok</button>
+  </div>
+</form>

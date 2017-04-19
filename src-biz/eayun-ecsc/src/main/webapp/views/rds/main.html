@@ -1,0 +1,32 @@
+<div class="ey-nav">
+    <eayun-select ng-cloak
+                  class="ey-form-w3"
+                  data-ng-model="model.projectvoe"
+                  data-ng-if="viewType != 'detail'"
+                  show-length="14">
+        <eayun-option ng-repeat="project in cloudprojectList" value="project" text="{{project.dcName}}"></eayun-option>
+    </eayun-select>
+    <ul class="ey-nav-bread">
+        <li data-ui-sref={{router.router}} data-ng-repeat="router in routerList">{{router.name}}</li>
+        <li>{{routerName}}</li>
+    </ul>
+</div>
+
+<div class="ey-divider"></div>
+
+<div class="ey-panel ey-panel-full" data-ng-if="viewType != 'detail'">
+    <div class="ey-panel-title">
+        <nav class="ey-nav-underline">
+            <a ui-sref-active="active" data-ui-sref="app.rds.instance">MySQL</a>
+            <a ui-sref-active="active" data-ui-sref="app.rds.backup"  data-ng-show = "modulePower.rdsBackupView">备份</a>
+            <a ui-sref-active="active" data-ui-sref="app.rds.config">配置文件</a>
+        </nav>
+    </div>
+    <div class="ey-panel-body">
+        <div data-ui-view=""></div>
+    </div>
+</div>
+
+<div class="ey-panel ey-panel-full" data-ng-if="viewType == 'detail'">
+    <div data-ui-view=""></div>
+</div>

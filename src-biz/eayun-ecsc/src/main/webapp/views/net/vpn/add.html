@@ -1,0 +1,423 @@
+<!-- 步骤控件-->
+<div class="text-center">
+    <div class="step active">
+
+        <span>1</span>
+
+        <div></div>
+        <p class="text-left">基本配置</p>
+    </div>
+    <div class="step" data-ng-class="addVpn.step > 1 ? 'active':''">
+        <div></div>
+        <span>2</span>
+
+        <div></div>
+        <p class="text-center">通道配置</p>
+    </div>
+    <div class="step" data-ng-class="addVpn.step > 2 ? 'active':''">
+        <div></div>
+        <span>3</span>
+
+        <div></div>
+        <p class="text-center">可选配置</p>
+    </div>
+    <div class="step" data-ng-class="addVpn.step > 3 ? 'active':''">
+        <div></div>
+        <span>4</span>
+
+        <p class="text-right">完成配置</p>
+    </div>
+    <span class="ey-font-size-big">
+        总计：￥
+        <span class="ey-font-size-supper ey-color-red">
+            {{addVpn.price | number:3}}
+            <span data-ng-show="addVpn.vpnModel.payType == 2">/小时</span>
+        </span>
+    </span>
+</div>
+<!--step 1-->
+<div data-ng-class="addVpn.step == 1 ? 'show' : 'hidden'">
+    <div class="ey-form-two-column" style="max-width: 700px;height: 500px;">
+        <span class="ey-font-size-big ey-font-bold">本端配置</span>
+        <form class="ey-form" style="height: 200px;">
+            <fieldset>
+                <div class="ey-form-column clearfix">
+                    <div class="ey-form-group ey-form-w12">
+                        <label class="ey-form-label">付款方式：</label>
+                        <eayun-select class="ey-form-select ey-form-w3"
+                                      name="cycleType"
+                                      data-ng-model="addVpn.cycleType"
+                                      data-ng-change="addVpn.changeCycleType()">
+                            <eayun-option data-ng-repeat="cycleType in addVpn.cycleTypeList" value="cycleType.value" text="{{cycleType.text}}"></eayun-option>
+                        </eayun-select>
+
+                        <eayun-select class="ey-form-select ey-form-w3"
+                                      name="buyCycle"
+                                      data-ng-model="addVpn.vpnModel.buyCycle"
+                                      data-ng-change="addVpn.getPrice()"
+                                      data-ng-show="addVpn.cycleType != 'time'">
+                            <eayun-option data-ng-repeat="cycle in addVpn.cycleList" value="cycle.value" text="{{cycle.text}}"></eayun-option>
+                        </eayun-select>
+                    </div>
+                </div>
+                <div class="ey-form-column clearfix">
+
+                    <div class="ey-form-group ey-form-w6">
+                        <label class="ey-form-label">本端网络：</label>
+                        <eayun-select class="ey-form-select ey-form-w3" name="network" data-ng-model="addVpn.network"
+                                      data-ng-change="addVpn.changeNetwork(addVpn.network)">
+                            <eayun-option data-ng-repeat="network in addVpn.networkList" value="network"
+                                          text="{{network.netName}}({{network.gatewayIp}})"></eayun-option>
+                        </eayun-select>
+                    </div>
+
+                    <div class="ey-form-group ey-form-w6">
+
+                        <label class="ey-form-label">本端子网：</label>
+                        <eayun-select class="ey-form-select ey-form-w3" name="subnet" data-ng-model="addVpn.subnet"
+                                      data-ng-change="addVpn.changeSubnet(addVpn.subnet)">
+                            <eayun-option data-ng-repeat="subnet in addVpn.subnetList" value="subnet"
+                                          text="{{subnet.subnetName}}({{subnet.cidr}})"></eayun-option>
+                        </eayun-select>
+                        <!--<span>sdsf</span>-->
+                    </div>
+
+                </div>
+                <div class="ey-form-column clearfix">
+                    <div class="ey-form-group ey-form-w6">
+                        <label class="ey-form-label">名称：</label>
+                        <input class="ey-form-input ey-form-w3" name="vpnName" data-ng-model="addVpn.vpnModel.vpnName">
+                    </div>
+                    <div class="ey-form-group ey-form-w6">
+                        <label class="ey-form-label">预共享密钥：</label>
+                        <input class="ey-form-input ey-form-w3" name="pskKey" data-ng-model="addVpn.vpnModel.pskKey">
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <span class="ey-font-size-big ey-font-bold">对端配置</span>
+
+        <form class=" ey-form" style="height: 220px;">
+            <fieldset>
+                <div class="ey-form-group">
+                    <label class="ey-form-label">对端网关：</label>
+                    <input class="ey-form-input ey-form-w6" name="peerAddress" data-ng-model="addVpn.vpnModel.peerAddress">
+                </div>
+                <div class="ey-form-group">
+                    <label class="ey-form-label">对端路由ID：</label>
+                    <input class="ey-form-input ey-form-w6" name="peerId" data-ng-model="addVpn.vpnModel.peerId">
+                </div>
+                <div class="ey-form-group">
+                    <label class="ey-form-label">对端网段：</label>
+                    <textarea class="ey-form-textarea ey-form-w6" name="peerCidrs"
+                              data-ng-model="addVpn.vpnModel.peerCidrs"></textarea>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+<!--step 2-->
+<div data-ng-class="addVpn.step == 2 ? 'show' : 'hidden'">
+    <div class="ey-form-two-column" style="max-width: 700px;height: 500px;">
+        <span  class="ey-font-size-big ey-font-bold">IKE策略</span>
+
+        <form class="ey-form" style="height: 170px;">
+            <div class="ey-form-column clearfix">
+                <div class="ey-form-group ey-form-w6">
+                    <label class="ey-form-label">加密算法：</label>
+                    <eayun-select class="ey-form-select ey-form-w3" name="ikeEncryption" data-ng-model="addVpn.vpnModel.ikeEncryption">
+                        <eayun-option value="'3des'" text="3DES"></eayun-option>
+                        <eayun-option value="'aes-128'" text="AES-128"></eayun-option>
+                        <eayun-option value="'aes-192'" text="AES-192"></eayun-option>
+                        <eayun-option value="'aes-256'" text="AES-256"></eayun-option>
+                    </eayun-select>
+                </div>
+                <div class="ey-form-group ey-form-w6">
+                    <label class="ey-form-label">版本：</label>
+                    <eayun-select class="ey-form-select ey-form-w3" name="ikeVersion" data-ng-model="addVpn.vpnModel.ikeVersion">
+                        <eayun-option value="'v1'" text="v1"></eayun-option>
+                        <eayun-option value="'v2'" text="v2"></eayun-option>
+                    </eayun-select>
+                </div>
+
+            </div>
+            <div class="ey-form-column clearfix">
+                <div class="ey-form-group ey-form-w6">
+                    <label class="ey-form-label">认证算法：</label>
+                    <span class="ey-form-w3">sha1</span>
+                </div>
+                <div class="ey-form-group ey-form-w6">
+                    <label class="ey-form-label">协商模式：</label>
+                    <span class="ey-form-w3">main</span>
+                </div>
+
+            </div>
+            <div class="ey-form-column clearfix">
+                <div class="ey-form-group ey-form-w6 ">
+                    <label class="ey-form-label">生存周期：</label>
+                    <input class="ey-form-input ey-form-w3" name="ikeLifetime" data-ng-model="addVpn.vpnModel.ikeLifetime">
+                </div>
+                <div class="ey-form-group ey-form-w6">
+                    <label class="ey-form-label">DH算法：</label>
+                    <eayun-select class="ey-form-select ey-form-w3" name="ikeDh" data-ng-model="addVpn.vpnModel.ikeDh">
+                        <eayun-option value="'group2'" text="group2"></eayun-option>
+                        <eayun-option value="'group5'" text="group5"></eayun-option>
+                        <eayun-option value="'group14'" text="group14"></eayun-option>
+                    </eayun-select>
+                </div>
+            </div>
+
+        </form>
+        <span  class="ey-font-size-big ey-font-bold">IPsec策略</span>
+
+        <form class="ey-form" style="height: 170px;">
+            <div class="ey-form-column clearfix">
+                <div class="ey-form-group ey-form-w6">
+                    <label class="ey-form-label">加密算法：</label>
+                    <eayun-select class="ey-form-w3" name="ipsecEncryption" data-ng-model="addVpn.vpnModel.ipsecEncryption">
+                        <eayun-option value="'3des'" text="3DES"></eayun-option>
+                        <eayun-option value="'aes-128'" text="AES-128"></eayun-option>
+                        <eayun-option value="'aes-192'" text="AES-192"></eayun-option>
+                        <eayun-option value="'aes-256'" text="AES-256"></eayun-option>
+                    </eayun-select>
+                </div>
+                <div class="ey-form-group ey-form-w6">
+                    <label class="ey-form-label">传输协议：</label>
+                    <eayun-select class="ey-form-w3" name="ipsecProtocol" data-ng-model="addVpn.vpnModel.ipsecProtocol">
+                        <eayun-option value="'esp'" text="ESP"></eayun-option>
+                        <eayun-option value="'ah'" text="AH"></eayun-option>
+                    </eayun-select>
+                </div>
+
+            </div>
+            <div class="ey-form-column clearfix">
+                <div class="ey-form-group ey-form-w6">
+                    <label class="ey-form-label">认证算法：</label>
+                    <span class="ey-form-w3">sha1</span>
+                </div>
+                <div class="ey-form-group ey-form-w6">
+                    <label class="ey-form-label">封装模式：</label>
+                    <span class="ey-form-w3">隧道模式</span>
+                </div>
+
+            </div>
+            <div class="ey-form-column clearfix">
+                <div class="ey-form-group ey-form-w6">
+                    <label class="ey-form-label">生存周期：</label>
+                    <input class="ey-form-input ey-form-w3" name="ipsecLifetime" data-ng-model="addVpn.vpnModel.ipsecLifetime">
+                </div>
+                <div class="ey-form-group ey-form-w6">
+                    <label class="ey-form-label">DH算法：</label>
+                    <eayun-select class="ey-form-w3" name="ipsecDh" data-ng-model="addVpn.vpnModel.ipsecDh">
+                        <eayun-option value="'group2'" text="group2"></eayun-option>
+                        <eayun-option value="'group5'" text="group5"></eayun-option>
+                        <eayun-option value="'group14'" text="group14"></eayun-option>
+                    </eayun-select>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--step 3-->
+<div data-ng-class="addVpn.step == 3 ? 'show' : 'hidden'">
+    <form class="ey-alert-form-body ey-form" style="height: 500px;">
+        <div class="ey-form-group">
+            <label class="ey-form-label">最大传输单元：</label>
+            <input class="ey-form-input ey-form-w6" name="mtu" data-ng-model="addVpn.vpnModel.mtu">
+        </div>
+        <div class="ey-form-group">
+            <label class="ey-form-label">失效处理：</label>
+            <eayun-select class="ey-form-w6" name="dpdAction" data-ng-model="addVpn.vpnModel.dpdAction">
+                <eayun-option value="'hold'" text="保留"></eayun-option>
+                <eayun-option value="'clear'" text="清除"></eayun-option>
+                <eayun-option value="'disabled'" text="禁用"></eayun-option>
+                <eayun-option value="'restart'" text="重启"></eayun-option>
+            </eayun-select>
+        </div>
+        <div class="ey-form-group">
+            <label class="ey-form-label">检测时间（秒）：</label>
+            <input class="ey-form-input ey-form-w6" name="dpdInterval" data-ng-model="addVpn.vpnModel.dpdInterval">
+        </div>
+        <div class="ey-form-group">
+            <label class="ey-form-label">超时（秒）：</label>
+            <input class="ey-form-input ey-form-w6" name="dpdTimeout" data-ng-model="addVpn.vpnModel.dpdTimeout">
+        </div>
+        <div class="ey-form-group">
+            <label class="ey-form-label">发起状态：</label>
+            <eayun-select class="ey-form-w6" name="initiator" data-ng-model="addVpn.vpnModel.initiator">
+                <eayun-option value="'response-only'" text="只应答"></eayun-option>
+                <eayun-option value="'bi-directional'" text="双向"></eayun-option>
+            </eayun-select>
+        </div>
+    </form>
+</div>
+<!--step 4-->
+<div data-ng-class="addVpn.step == 4 ? 'show' : 'hidden'">
+    <div class="ey-alert-form-body ey-form" style="height: 500px; overflow-y: scroll;">
+        <h4>VPN详情</h4>
+        <!-- 详情 -->
+        <h4>VPN基本配置</h4>
+        <div class="details">
+            <form class="row">
+                <div class="col-sm-6 ">
+                    <div class="details-group">
+                        <div class="details-name">名称：</div>
+                        <div class="details-value">{{addVpn.vpnModel.vpnName}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">本端网络：</div>
+                        <div class="details-value">{{addVpn.vpnModel.networkName + '(' + addVpn.vpnModel.gatewayIp + ')'}}</div>
+                        <!--<div class="details-value">
+                            <span class ="state-block" data-ng-class="vmStatusClass!=''?vmStatusClass:''"></span>
+                            {{netWork.netStatusName}}
+                        </div>
+                        <div>续费</div>-->
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">本端子网：</div>
+                        <div class="details-value">{{addVpn.vpnModel.subnetName + '(' + addVpn.vpnModel.subnetCidr + ')'}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">VPN类型</div>
+                        <div class="details-value">IPsec</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">预共享密钥</div>
+                        <div class="details-value">{{addVpn.vpnModel.pskKey}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">所属数据中心：</div>
+                        <div class="details-value">{{addVpn.vpnModel.dcName}}</div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="details-group">
+                        <div class="details-name">创建时间：</div>
+                        <div class="details-value">{{addVpn.vpnModel.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">状态：</div>
+                        <div class="details-value">{{addVpn.vpnModel.vpnStatus}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">对端网关：</div>
+                        <div class="details-value">{{addVpn.vpnModel.peerAddress}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">对端路由ID：</div>
+                        <div class="details-value">{{addVpn.vpnModel.peerId}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">子网网段：</div>
+                        <div class="details-value">{{addVpn.vpnModel.peerCidrs}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">计费状态</div>
+                        <div class="details-value">{{addVpn.vpnModel.payType}}</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <h4>IKE策略</h4>
+        <div class="details">
+            <form class="row">
+                <div class="col-sm-6 ">
+                    <div class="details-group">
+                        <div class="details-name">版本：</div>
+                        <div class="details-value">{{addVpn.vpnModel.ikeVersion}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">协商模式：</div>
+                        <div class="details-value">{{addVpn.vpnModel.ikeNegotiation}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">认证算法：</div>
+                        <div class="details-value">{{addVpn.vpnModel.ikeAuth}}</div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="details-group">
+                        <div class="details-name">加密算法：</div>
+                        <div class="details-value">{{addVpn.vpnModel.ikeEncryption}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">DH算法：</div>
+                        <div class="details-value">{{addVpn.vpnModel.ikeDh}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">生命周期：</div>
+                        <div class="details-value">{{addVpn.vpnModel.ikeLifetime}}</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <h4>IPsec策略</h4>
+        <div class="details">
+            <form class="row">
+                <div class="col-sm-6 ">
+                    <div class="details-group">
+                        <div class="details-name">传输协议：</div>
+                        <div class="details-value">{{addVpn.vpnModel.ipSecProtocol}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">封装模式：</div>
+                        <div class="details-value">{{addVpn.vpnModel.ipSecEncapsulation}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">认证算法：</div>
+                        <div class="details-value">{{addVpn.vpnModel.ipSecAuth}}</div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="details-group">
+                        <div class="details-name">加密算法：</div>
+                        <div class="details-value">{{addVpn.vpnModel.ipSecEncryption}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">DH算法：</div>
+                        <div class="details-value">{{addVpn.vpnModel.ipSecDh}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">生命周期：</div>
+                        <div class="details-value">{{addVpn.vpnModel.ipSecLifetime}}</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <h4>可选参数</h4>
+        <div class="details">
+            <form class="row">
+                <div class="col-sm-6 ">
+                    <div class="details-group">
+                        <div class="details-name">最大传输单元：</div>
+                        <div class="details-value">{{addVpn.vpnModel.mtu}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">失效处理：</div>
+                        <div class="details-value">{{addVpn.vpnModel.dpdAction}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">检测时间：</div>
+                        <div class="details-value">{{addVpn.vpnModel.dpdInterval}}</div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="details-group">
+                        <div class="details-name">超时：</div>
+                        <div class="details-value">{{addVpn.vpnModel.dpdTimeout}}</div>
+                    </div>
+                    <div class="details-group">
+                        <div class="details-name">发起状态：</div>
+                        <div class="details-value">{{addVpn.vpnModel.initiator}}</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="ey-btn-group">
+    <button class="ey-btn" data-ng-show="addVpn.step < 4" data-ng-click="addVpn.after()">下一步</button>
+    <button class="ey-btn" data-ng-show="addVpn.step > 1" data-ng-click="addVpn.before()">上一步</button>
+    <button class="ey-btn" data-ng-show="addVpn.step == 4" data-ng-click="commit()">完成</button>
+    <button class="ey-btn" data-ng-click="cancel()">取消</button>
+</div>

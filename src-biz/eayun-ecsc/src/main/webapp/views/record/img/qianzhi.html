@@ -1,0 +1,11 @@
+<div class="clearfix" style="max-height:500px;overflow-y: auto;">
+<div data-ng-repeat="webs in model.webs" >
+    <img ng-src="ecsc/record/downRecordFile.do?fileid={{webs.specialFileId}}" style="width: 800px;height:auto" alt="Description"/>
+</div>
+</div>
+
+	<div class="ey-modal-footer ey-margin">
+		<div class="ey-btn-group">
+			<button type="button" class="btn btn-default btn-modal" style="margin: auto;" ng-click="cancel()">关闭</button>
+		</div>
+	</div>

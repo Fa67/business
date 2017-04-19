@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="continuationNoticeJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.eayun.virtualization.job.ContinuationNoticeJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="resourceExpirationNoticeJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.eayun.virtualization.job.ResourceExpirationNoticeJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="resourceExceedNoticeJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.eayun.virtualization.job.ResourceExceedNoticeJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	
+	
+	 <bean id="continuationNotice_1d"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="continuationNoticeJob"></property>
+		<property name="cronExpression" value="0 0 12 * * ? *"></property>
+	</bean> 
+	 <bean id="resourceExpirationNotice_1d"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="resourceExpirationNoticeJob"></property>
+		<property name="cronExpression" value="0 5 0 * * ? *"></property>
+	</bean> 
+	 <bean id="resourceExceedNotice_1h"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="resourceExceedNoticeJob"></property>
+		<property name="cronExpression" value="0 5 0/1 * * ? *"></property>
+	</bean> 
+	
+	
+	
+	
+	
+	
+
+	<!-- 定时任务调度器 -->
+	<bean class="com.eayun.common.job.EayunSchedulerFactoryBean" id="resourceExpireSchedulerFactory">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+		<property name="configLocation" value="classpath:quartz.properties" />
+		<property name="triggers">
+			<list>
+				<ref bean="continuationNotice_1d" />
+				<ref bean="resourceExpirationNotice_1d" />
+				<ref bean="resourceExceedNotice_1h" />
+			</list>
+		</property>
+	</bean>
+</beans>

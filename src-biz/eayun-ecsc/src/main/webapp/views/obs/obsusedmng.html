@@ -1,0 +1,41 @@
+  <div class="ey-search-bar ey-search-bar-white">
+   	<span style="font-size:14px;">时间范围：</span>
+   		<date-range start-date="data.startTime" end-date="data.endTime" max-date="today" data-show-time="false" class="ey-form-w4"></date-range>
+ 	
+ 	<button class="ey-btn ey-btn-default" type="button" style="margin-left:15px;" data-ng-click="queryList()">查&nbsp;&nbsp;询</button>
+  </div>
+<div>
+<div class="panel panel-default" style="margin-bottom:5px;margin-top:10px;" data-ng-show = "showCon">
+	  <div class="panel-heading" style = "height:40px;">
+		  <div class="row">
+		  		<label class = "control-label col-sm-3 color-blue">消费统计</label>
+			    <label class = "control-label col-sm-3" >存储容量：{{storage}}</label>
+			    <label class = "control-label col-sm-2" >下载流量：{{load}}</label>
+			    <label class = "control-label col-sm-2" >CDN流量：{{CDNStr}}</label>
+			    <label class = "control-label col-sm-2" >请求次数：{{request}}</label>
+		  </div>
+	  </div>
+		<div class="panel-body" style = "padding:5px;">
+	  		<eayun-table>
+			    <table class="table-eayun-info ey-table" style = "margin-bottom:0px;border-right:none;box-shadow:none;">
+			      <thead>
+			      <tr>
+			        <th class = "col-sm-3" style="text-align:left;border-right:none;">日期</th>
+			        <th class = "col-sm-3" style="text-align:left;border-right:none;">存储容量</th>
+			        <th class = "col-sm-2" style="text-align:left;border-right:none;">下载流量</th>
+			        <th class = "col-sm-2" style="text-align:left;border-right:none;">CDN流量</th>
+			        <th class = "col-sm-2" style="text-align:left;border-right:none;">请求次数</th>
+			      </tr>
+			      </thead>
+			      <tbody><tr data-ng-repeat="detail in typeList">
+			        <td style="text-align:left;">{{detail.timeDis}}</td>
+			        <td style="text-align:left;">{{detail.usedStorage}}/天</td>
+			        <td style="text-align:left;">{{detail.loadDown}}</td>
+			        <td style="text-align:left;">{{detail.cdnFlowStr}}</td>
+			        <td style="text-align:left;">{{detail.requestCount}}</td>
+			      </tr></tbody>
+			    </table>
+			  </eayun-table>
+		</div>
+	</div>
+</div>

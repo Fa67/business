@@ -1,0 +1,27 @@
+<div class="modal-header">
+    <span class="modal-title">编辑备份</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 600px;">
+<form class="ey-form ey-old-dialog-font" name="myForm" novalidate>
+  <fieldset>
+	<div class="ey-form-group"  data-ng-class="(myForm.snapName.$dirty && (myForm.snapName.$invalid||!checkSnapName))?'ey-has-error' : ''">
+		<label class="ey-form-label ey-required">备份名称：</label>	
+		<input class="ey-form-input ey-form-w6" type="text" placeholder="请输入备份名称" data-ng-model="model.snapName"  name="snapName" data-ng-change="checkSnapshotExist()"
+		data-ng-pattern="/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/" maxlength="20" required>
+		<span class="ey-text-tip ey-has-error" data-ng-if="myForm.snapName.$dirty && myForm.snapName.$invalid">请输入1-20位字符,支持数字、中英文、下划线、空格</span>
+		<span class="ey-text-tip ey-has-error" data-ng-if="myForm.snapName.$dirty && myForm.snapName.$valid&&!checkSnapName">云硬盘备份名称已存在</span>
+	</div>
+ 
+  <div class="ey-form-group">
+       <label class="ey-form-label">描述：</label>	
+	   <textarea class="ey-form-textarea ey-form-w6" data-ng-model="model.snapDescription" placeholder="请输入描述" maxlength="200"></textarea>
+  </div>
+ </fieldset>
+</form>
+</div>
+<div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<button type="button" class="ey-btn ey-btn-primary" data-ng-disabled="!myForm.$valid||!checkSnapName" data-ng-click="commit()">确定</button>
+		<button type="button" class="ey-btn ey-btn-default" data-ng-click="cancel()">取 消</button>
+	</div>
+</div>

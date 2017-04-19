@@ -1,0 +1,49 @@
+<div class="ey-panel-body">
+<div class="ey-search-bar ey-search-bar-white">
+  <button type="button" data-ng-disabled="isStop" class="ey-btn ey-btn-primary ey-btn-sm" ng-click="uploadStorage()" ng-show="objListPermissions.isUploadObj">
+  <span class="eayunfont ef-upload" aria-hidden="true"></span> 上传文件
+  </button>
+  <button type="button" class="ey-btn ey-btn-primary ey-btn-sm" data-ng-disabled="isStop" ng-click="addStorage()" ng-show="objListPermissions.isAddObj" style="margin-left:15px;">
+  <span class="eayunfont ef-plus" aria-hidden="true"></span> 新建文件夹
+  </button>
+  <button type="button" class="ey-btn ey-btn-danger" ng-click="deleteStorageGroup()" ng-show="objListPermissions.isDeleteGroupObj" style="margin-left:15px;">
+  <span class="eayunfont ef-delete" aria-hidden="true"></span> 删&nbsp;&nbsp;除
+  </button>
+  <eayun-search-text value="obsName" class="pull-right" search="getObsStorage()" placeholder="请输入object名称搜索"></eayun-search-text>
+</div>
+<eayun-table data-api="detailTable.api" data-ajax-source="detailTable.source" data-param="detailTable.getParams"
+                data-result="detailTable.result" style="min-height:550px;">
+      <table class="ey-table">
+		<thead>
+	        <tr>
+	          <th style="width:50px;"><input type="checkbox" data-ng-model="detailTable.isAllChecked" data-ng-click="checkAll(detailTable.isAllChecked)"/></th>
+	          <th style="width:400px;">Object名称</th>
+	          <th>文件大小</th>
+	          <th>文件类型</th>
+	          <th>创建时间</th>
+	          <th>操作</th>
+	        </tr>
+        </thead>
+        <tbody><tr data-ng-repeat="model in detailTable.result.data">
+	          <td>
+	          	<input type="checkbox" ng-checked="model.isChecked" ng-click="updateSelection($event,model)">
+	          </td>
+	          <td ng-if="!model.folder" title="{{model.obsShowName}}">{{model.obsShowName}}</td>
+	          <td ng-if="model.folder" class="click-td" ng-click="openFolder(model.obsName)" title="{{model.obsShowName}}">
+	          	{{model.obsShowName}}
+	          </td>
+	          <td ng-if="!model.folder">{{model.size/1024|number:2}}KB</td>
+	          <td ng-if="model.folder">--</td>
+	          <td>{{model.type}}</td>
+	          <td>{{model.createTime}}</td>
+	          <td>
+	          	<div class="ey-btn-group">
+	          	<button class="ey-btn" ng-if="!model.folder&&buttonPower.isObjectDown" type="button" ng-click="getUrl(model)" data-ng-disabled="isStop">获取地址</button>
+	          	<button class="ey-btn" type="button" ng-click="deleteStorage(model)" ng-show="objListPermissions.isDeleteObj"><span class="ey-text-error">删除</span></button>
+	          	</div>
+	          </td>
+	        </tr></tbody>
+      </table>
+      <eayun-table-page></eayun-table-page>
+</eayun-table>
+</div>

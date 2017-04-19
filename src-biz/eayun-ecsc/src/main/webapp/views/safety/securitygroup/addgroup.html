@@ -1,0 +1,69 @@
+
+	<!-- <div class="form-group">
+    <label class="col-sm-3 ey-label">所属项目：</label>
+
+    <div class="col-sm-8" data-ng-class="(myForm.prjName.$dirty && myForm.prjName.$invalid) ? 'has-error' : ''">
+      <eayun-select name="prjName" class="form-control" data-ng-model="model.project" required ng-change="changePrj()">
+        <eayun-option value="project" text="{{project.prjName}}" data-ng-repeat="project in projectList"></eayun-option>
+      </eayun-select>
+      
+     
+      <label class="ey-prompt" ng-show="myForm.prjName.$dirty && myForm.prjName.$error.required">项目不能为空</label>
+    </div>
+  </div>
+ -->
+ <div class="modal-header">
+  <span class="modal-title">创建安全组</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 600px;">
+ <form class="form-horizontal" name="myForm" novalidate>
+ 
+	<div class="ey-form-group" data-ng-class="(myForm.name.$dirty && (myForm.name.$invalid ||( !checkName || !checkNameMoren||!checkNamedefault))) ? 'ey-has-error' : ''">
+		<label class="ey-form-label ey-required">安全组名称：</label>
+
+		<div class="ey-form-w6">
+			<input type="text" class="ey-form-input ey-form-w6" name="name" maxlength="20"
+				data-ng-model="model.name" placeholder="请输入安全组名称"
+				ng-change="checkGroupName()"
+				ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/'
+				required>
+				 <span  class="ey-text-tip ey-has-error"
+					ng-show="myForm.name.$dirty && myForm.name.$valid && !checkName">安全组名称已存在</span>
+				
+				<span 
+				ng-if="myForm.name.$dirty && myForm.name.$valid && !checkNameMoren">安全组名称已存在</span>
+				
+				<span 
+				ng-if="myForm.name.$dirty && myForm.name.$invalid">请输入1-20位字符,支持数字、中英文、下划线、空格</span>
+				
+				<span 
+				ng-if="myForm.name.$dirty && myForm.name.$valid && !checkNamedefault ">不能创建名为default的安全组，请输入其他名称</span>
+				
+
+		</div>
+	</div>
+
+	<div class="ey-form-group">
+		<label class="ey-form-label">描述：</label>
+
+		<div class="">
+			<textarea class="ey-form-textarea ey-form-w6" rows="3" maxlength="200"
+				placeholder="请输入描述" data-ng-model="model.description"></textarea>
+		</div>
+	</div>
+	</form>
+</div>
+
+	<!-- 按钮区域 -->
+	<div class="ey-modal-footer">
+	 <div class="ey-btn-group">
+		<button type="button" class="ey-btn ey-btn-primary btn-modal"
+			ng-click="commit()" ng-disabled="!myForm.$valid || !checkName||!checkNameMoren||!checkNamedefault">确
+			定</button>
+		<button type="button" class="ey-btn ey-btn-default btn-modal"
+			ng-click="cancel()">取 消</button>
+	</div>
+</div>
+
+
+

@@ -1,0 +1,33 @@
+<div>
+  <div class="pull-left">
+    <label>全部规则</label>
+
+    <div class="list-group-eayun">
+      <div class="list-group-item" data-ng-repeat="fwRule in fwRules">{{fwRule.fwrName.length>10?fwRule.fwrName.substring(0,10)+'...':fwRule.fwrName}}<span
+        class="glyphicon glyphicon-plus color-blue pointer" data-ng-click="add(fwRule, $index)"></span></div>
+    </div>
+  </div>
+
+  <div class="pull-right">
+    <label>已选择的规则</label>
+
+    <div class="list-group-eayun">
+      <div class="list-group-item" data-ng-repeat="fwRule in fwRuleUsed">{{fwRule.fwrName.length>10?fwRule.fwrName.substring(0,10)+'...':fwRule.fwrName}}<span
+        class="glyphicon glyphicon-remove color-error pointer" data-ng-click="del(fwRule, $index)"></span></div>
+    </div>
+  </div>
+  <div class="select-list-md">
+    <span class="glyphicon glyphicon-menu-right" style="font-size: 2em"></span>
+  </div>
+  
+  <div class="col-sm-12" style="margin:15px;5px;20px;">
+  	<p><font class="ec_star">*</font>注 : 若需要编辑规则  , 请前往<font class="click-td" data-ng-click="goToFwr()">防火墙规则</font> </p>
+  </div>
+  
+   <!-- 按钮区域 -->
+ <div class="modal-footer ey-btn-group" >
+    <button type="button" class="ey-btn ey-btn-primary btn-modal" ng-click="commit()">确  定</button>
+    <button type="button" class="ey-btn ey-btn-default btn-modal btn-left" ng-click="cancel()">取  消</button>
+  </div>
+</div>
+

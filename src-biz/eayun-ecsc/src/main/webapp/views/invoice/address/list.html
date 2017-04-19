@@ -1,0 +1,38 @@
+<div class="ey-panel-body">
+    <div class="ey-search-bar ey-search-bar-white ey-invoice-title">
+        <button class="ey-btn ey-btn-primary" ng-disabled="list == null || list.length >=5" ng-click="add()"><span class="eayunfont ef-plus"></span>创建邮寄地址</button>
+        &nbsp; &nbsp; &nbsp;<span class="ey-invoice-line"></span>
+        <span class="ey-text-tip">当前还可以创建<span class="ey-color-blue">{{list == null ? 0 : 5 - list.length}}</span>个邮寄地址</span>
+    </div>
+    <eayun-table>
+        <table class="ey-table">
+            <thead>
+            <tr>
+                <th width="10%">收件人姓名 </th>
+                <th width="10%">收件人联系方式</th>
+                <th width="30%">邮寄地址</th>
+                <th width="10%">邮编</th>
+                <th width="15%">创建时间</th>
+                <th width="15%">更新时间</th>
+                <th width="10%">操作</th>
+            </tr>
+            </thead>
+            <tbody><tr ng-repeat="item in list">
+                <td title="{{item.receiverName}}">{{item.receiverName}}</td>
+                <td title="{{item.receiverTel}}">{{item.receiverTel}}</td>
+                <td title="{{item.address}}">{{item.address}}</td>
+                <td title="{{item.zipCode}}">{{item.zipCode}}</td>
+                <td>{{item.createTime |date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td>{{item.updateTime |date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td>
+                    <button class="ey-invoice-btn" ng-if="item.defaultItem == '1'">默认</button>
+                    <button class="ey-btn" ng-if="item.defaultItem != '1'" ng-click="setDefault(item.id)">设为默认</button>
+                    {{item.defaultItem == '1' ? '' : '&nbsp;&nbsp;'}}
+                    <button class="ey-btn" ng-click="edit(item)">编辑</button>
+                    &nbsp;&nbsp;
+                    <button class="ey-btn" ng-click="del(item.id)"><span class="ey-text-error">删除</span></button>
+                </td>
+            </tr></tbody>
+        </table>
+    </eayun-table>
+</div>

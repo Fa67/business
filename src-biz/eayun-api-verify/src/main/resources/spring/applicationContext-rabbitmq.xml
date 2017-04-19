@@ -1,0 +1,69 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xsi:schemaLocation="http://www.springframework.org/schema/rabbit
+           http://www.springframework.org/schema/rabbit/spring-rabbit.xsd
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="rabbitmqConnectionFactory"
+		class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+		<property name="addresses" value="${rabbitmq_address}"></property>
+		<property name="username" value="${rabbitmq_username}" />
+		<property name="password" value="${rabbitmq_password}" />
+		<property name="virtualHost" value="${rabbitmq_vhost}" />
+		<property name="publisherConfirms" value="${rabbitmq_publisher_confirms}" />
+		<property name="channelCacheSize" value="${rabbitmq_channel_cache_size}" />
+	</bean>
+	
+	<bean id="retryTemplate" class="org.springframework.retry.support.RetryTemplate">
+		<property name="backOffPolicy">
+			<bean class="org.springframework.retry.backoff.ExponentialBackOffPolicy">
+				<property name="initialInterval" value="500" />
+				<property name="multiplier" value="10.0" />
+				<property name="maxInterval" value="10000" />
+			</bean>
+		</property>
+	</bean>
+	
+	<rabbit:annotation-driven />
+	
+	<rabbit:admin id="rabbitAdmin" connection-factory="rabbitmqConnectionFactory" />
+
+	<!-- 余额变动监听队列 -->
+	<rabbit:queue name="BALANCE_CHANGE" durable="true" auto-delete="false" exclusive="false" />
+	<!-- OBS计费队列 -->
+	<rabbit:queue name="BILL_OBS_GATHER_SUCCEED" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 新购资源计费队列 -->
+	<rabbit:queue name="BILL_RESOURCE_PURCHASE" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 变配资源计费队列 -->
+	<rabbit:queue name="BILL_RESOURCE_UPGRADE" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 删除资源计费队列 -->
+	<rabbit:queue name="BILL_RESOURCE_DELETE" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 限制资源服务计费队列 -->
+	<rabbit:queue name="BILL_RESOURCE_RESTRICT" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 恢复资源服务计费队列 -->
+	<rabbit:queue name="BILL_RESOURCE_RECOVER" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 客户解冻计费队列 -->
+	<rabbit:queue name="BILL_CUSTOMER_UNBLOCK" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 资源放入回收站计费队列 -->
+	<rabbit:queue name="BILL_RESOURCE_RECYCLE" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 资源在回收站中还原计费队列 -->
+	<rabbit:queue name="BILL_RESOURCE_RESTORE" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 欠费但在保留时长内队列 -->
+	<rabbit:queue name="ARREARAGE_IN_RENTENTIONTIME" durable="true" auto-delete="false" exclusive="false" />
+	<!-- 欠费且在保留时长外队列 -->
+	<rabbit:queue name="ARREARAGE_OUT_RENTENTIONTIME" durable="true" auto-delete="false" exclusive="false" />
+
+	<!-- 消息对象json转换类 -->
+	<bean id="jsonMessageConverter"
+		class="org.springframework.amqp.support.converter.Jackson2JsonMessageConverter" />
+
+	<rabbit:listener-container  
+		connection-factory="rabbitmqConnectionFactory"
+		acknowledge="manual"
+		group ="schedule"
+		concurrency="${rabbitmq_concurrent_consumers}"
+		max-concurrency="${rabbitmq_maxconcurrent_consumers}">
+
+	</rabbit:listener-container>
+</beans>

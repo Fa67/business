@@ -1,0 +1,76 @@
+<div class="row">
+    <form class="ey-form-purchase col-lg-8 ng-pristine ng-valid" name="floatIpForm">
+        <fieldset>
+            <div class="ey-form-group">
+                <label>数据中心：</label>
+                <span class="ey-mark"
+                      data-ng-repeat="data in buyFloatIpCtrl.datacenters"
+                      data-ng-class="payRequired.floatOrder.dcId == data.dcId?'active':''"
+                      data-ng-click="payRequired.selectDc(data)">
+                    {{data.dcName}}
+                </span>
+            </div>
+            <div class="ey-form-group" data-ng-class="floatIpForm.floatNumber.$dirty && floatIpForm.floatNumber.$invalid ? 'ey-has-error' : ''">
+                <label class="ey-form-label ey-required"> 数量：</label>
+                <div class="ey-form-input-group ey-has-suffix ey-form-w3">
+                    <input name="floatNumber"
+                           class="ey-form-input"
+                           data-ng-pattern="/^[1-9][0-9]*$/"
+                           data-ng-model="payRequired.floatOrder.productCount"
+                           data-ng-change="payRequired.getPrice()"
+                           required>
+                    <span class="ey-suffix">个</span>
+                </div>
+                <span class="ey-text-tip ey-text-error"
+                      data-ng-show="floatIpForm.floatNumber.$dirty && floatIpForm.floatNumber.$invalid">
+                    请输入正整数
+                </span>
+            </div>
+        </fieldset>
+    </form>
+    <div class="ey-set">
+        <h5>已选配置</h5>
+        <fieldset>
+            <ul>
+                <li>
+                    数据中心：
+                    <span class="ey-color-default" data-ng-bind="payRequired.floatOrder.dcName"></span>
+                </li>
+                <li>
+                    购买量：
+                    <span class="ey-color-default" data-ng-if="payRequired.floatOrder.productCount > 0">
+                        {{payRequired.floatOrder.productCount}}个
+                    </span>
+                </li>
+            </ul>
+        </fieldset>
+        <fieldset>
+            <p class="ey-font-size-big">
+                总计：
+                <span data-ng-if="payRequired.hasGotPrice">￥</span>
+                <span class="ey-font-size-super ey-color-red"
+                      data-ng-if="payRequired.hasGotPrice">
+                    {{payRequired.floatOrder.price | thousand}}/小时
+                </span>
+                <span class="ey-color-red"
+                      data-ng-if="!payRequired.hasGotPrice"
+                      data-ng-bind="payRequired.priceMsg"></span>
+            </p>
+            <span class="ey-color-red">
+                开通按需付费的云服务，您的账户余额不得低于{{payRequired.floatOrder.$$limit}}元，请充值后再开通，
+                <a class="ey-color-blue pointer" data-ng-click="payRequired.recharge()">立即充值</a>
+            </span>
+        </fieldset>
+        <button class="ey-btn"
+                data-ng-disabled="floatIpForm.$invalid
+                                || !payRequired.hasGotPrice
+                                || payRequired.floatOrder.$$balance < payRequired.floatOrder.$$limit"
+                data-ng-click="payRequired.goToOrder()">立即购买
+        </button>
+        <fieldset data-ng-show="payRequired.floatOrder.$$balance < payRequired.floatOrder.$$limit">
+            <span class="ey-color-red">
+                您的账户余额不足{{payRequired.floatOrder.$$limit}}元，请充值后再开通
+            </span>
+        </fieldset>
+    </div>
+</div>

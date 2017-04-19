@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    
+	<!-- 云资源状态同步 -->
+	<bean id="cloudVolumeRetypeJob"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value=" com.eayun.schedule.job.CloudVolumeRetypeJob"></property>
+		<property name="durability" value="true"></property>
+	</bean> 
+	<bean id="cloudVmJob"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value=" com.eayun.schedule.job.CloudVmJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="cloudVmAttVolJob"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value=" com.eayun.schedule.job.CloudVmAttVolJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="cloudVolumeJob"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value=" com.eayun.schedule.job.CloudVolumeJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="cloudVolumeSnapJob"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value=" com.eayun.schedule.job.CloudVolumeSnapJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="cloudImageJob"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value=" com.eayun.schedule.job.CloudImageJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="cloudFirewallJob"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value=" com.eayun.schedule.job.CloudFirewallJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="cloudLdMemberJob"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value=" com.eayun.schedule.job.CloudLdMemberJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="cloudLdPoolJob"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value=" com.eayun.schedule.job.CloudLdPoolJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="cloudLdVipJob"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value=" com.eayun.schedule.job.CloudLdVipJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="cloudVpnJob" 
+        class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value=" com.eayun.schedule.job.CloudVpnJob"></property>
+        <property name="durability" value="true"></property>
+    </bean>
+	<bean id="cloudRDSInstanceJob" 
+        class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value=" com.eayun.database.instance.job.CloudRDSInstanceJob"></property>
+        <property name="durability" value="true"></property>
+    </bean>
+	<bean id="cloudRDSBackupJob"
+        class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.eayun.database.backup.job.RDSBackupSyncJob"></property>
+        <property name="durability" value="true"></property>
+    </bean>
+	<!-- Trove Log 定时发布 -->
+	<bean id="cloudRDSLogPublishJob"
+		  class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.eayun.database.log.job.CloudRDSLogPublishJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<!-- Trove Log 日志是否发布完成 -->
+	<bean id="cloudRDSLogSyncJob"
+		  class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.eayun.database.log.job.CloudRDSLogSyncJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+
+
+    <bean id="cloudVolumeRetypeTrigger" 
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="cloudVolumeRetypeJob"></property>
+		<property name="cronExpression" value="0 30 0-23 * * ? *"></property>
+	</bean>
+	<bean id="cloudVmTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="cloudVmJob"></property>
+		<property name="cronExpression" value="0/5 * * * * ? *"></property>
+	</bean>
+	<bean id="cloudVmAttVolTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="cloudVmAttVolJob"></property>
+		<property name="cronExpression" value="0/5 * * * * ? *"></property>
+	</bean>
+	<bean id="cloudVolumeTrigger"
+		class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="cloudVolumeJob"></property>
+		<property name="repeatInterval" value="90000"></property>
+	</bean>
+	<bean id="cloudVolumeSnapTrigger"
+		class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="cloudVolumeSnapJob"></property>
+		<property name="repeatInterval" value="90000"></property>
+	</bean>
+	<bean id="cloudImageTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="cloudImageJob"></property>
+		<property name="cronExpression" value="0 0/3 * * * ? *"></property>
+	</bean>
+	<bean id="cloudFirewallTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="cloudFirewallJob"></property>
+		<property name="cronExpression" value="0/5 * * * * ? *"></property>
+	</bean>
+	<bean id="cloudLdMemberTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="cloudLdMemberJob"></property>
+		<property name="cronExpression" value="0/5 * * * * ? *"></property>
+	</bean>
+	<bean id="cloudLdPoolTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="cloudLdPoolJob"></property>
+		<property name="cronExpression" value="0/5 * * * * ? *"></property>
+	</bean>
+	<bean id="cloudLdVipTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="cloudLdVipJob"></property>
+		<property name="cronExpression" value="0/5 * * * * ? *"></property>
+	</bean>
+	<bean id="cloudVpnTrigger"
+        class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="cloudVpnJob"></property>
+        <property name="cronExpression" value="0/5 * * * * ? *"></property>
+    </bean>
+    <bean id="cloudRDSInstanceTrigger"
+        class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="cloudRDSInstanceJob"></property>
+        <property name="cronExpression" value="0/5 * * * * ? *"></property>
+    </bean>
+    <bean id="cloudRDSBackupTrigger"
+          class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="cloudRDSBackupJob"></property>
+        <property name="cronExpression" value="0/5 * * * * ? *"></property>
+    </bean> 
+	<!--RDS Log定时发布 -->
+	<bean id="cloudRDSLogPublishTrigger"
+		  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="cloudRDSLogPublishJob"></property>
+		<property name="cronExpression" value="0 0 0/1 * * ? *"></property>
+	</bean>
+	<!--RDS Log发布是否完成 -->
+	<bean id="cloudRDSLogSyncTrigger"
+		  class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="cloudRDSLogSyncJob"></property>
+		<property name="cronExpression" value="0 0/5 * * * ? *"></property>
+	</bean>
+	
+	<!-- 底层资源同步 -->
+	<bean id="cloudResourceJob"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value=" com.eayun.schedule.job.SyncAllCloudResourceJob"></property>
+		<property name="durability" value="true"></property>
+	</bean>
+	<bean id="cloudResourceTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="cloudResourceJob"></property>
+		<property name="cronExpression" value="0 0 1 * * ? *"></property>
+	</bean>
+	
+	<!-- 定时任务调度器 -->
+	<bean class="com.eayun.common.job.EayunSchedulerFactoryBean" id="CloudSyncSchedulerFactory">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="applicationContextSchedulerContextKey" value="applicationContextKey" />
+		<property name="configLocation" value="classpath:quartz.properties" />
+		<property name="triggers">
+			<list>
+				<!-- 云资源状态同步 -->
+				<ref bean="cloudVolumeRetypeTrigger" />
+				<ref bean="cloudVmTrigger" />
+				<ref bean="cloudVmAttVolTrigger" />
+                <ref bean="cloudVolumeTrigger" />
+                <ref bean="cloudVolumeSnapTrigger" />
+                <ref bean="cloudFirewallTrigger" />
+                <ref bean="cloudImageTrigger" />
+                <ref bean="cloudLdMemberTrigger" />
+                <ref bean="cloudLdPoolTrigger" />
+                <ref bean="cloudLdVipTrigger" />
+                <ref bean="cloudVpnTrigger" />
+				<ref bean="cloudRDSInstanceTrigger"/>
+				<ref bean="cloudRDSBackupTrigger"/>
+				
+				<ref bean="cloudRDSLogPublishTrigger"/>
+				<ref bean="cloudRDSLogSyncTrigger"/>
+				
+				<!-- 底层资源同步 -->
+				<ref bean="cloudResourceTrigger" />
+			</list>
+		</property>
+	</bean>
+</beans>

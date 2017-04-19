@@ -1,0 +1,69 @@
+<div class="modal-header">
+    <span class="modal-title">修改密码</span>
+    <span class="eayunfont ef-close ey-font-huge" data-ng-style="{'cursor':(change.btnWait ? 'not-allowed' : 'pointer')}" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 600px;">
+    <form class="ey-form" name="updatePW" novalidate>
+        <div class="ey-form-group">
+            <label class="ey-form-label">
+                用户名：
+            </label>
+            <span data-ng-bind="change.account.accountName"></span>
+        </div>
+        <div class="ey-form-group"
+             data-ng-class="(updatePW.password.$dirty && change.pwFlag) ? 'ey-has-error' : ''">
+            <label class="ey-form-label ey-required">
+                新密码：
+            </label>
+            <input type="password" class="ey-form-input ey-form-w6"
+                   name="password" placeholder="请输入密码" maxlength="30"
+                   data-ng-model="change.account.password"
+                   data-ng-change="change.checkPW()"
+                   required>
+            <span class="ey-text-tip obs-line-height"
+                  data-ng-class="(updatePW.password.$dirty && change.pwFlag) ? 'ey-has-error' : ''">
+                1.长度必须为8-30个字符之间
+            </span>
+            <span class="ey-text-tip obs-line-height"
+                  data-ng-class="(updatePW.password.$dirty && change.pwFlag) ? 'ey-has-error' : ''">
+                2.只支持数字、大写字母、小写字母中的三项
+            </span>
+            <span class="ey-text-tip obs-line-height"
+                  data-ng-class="(updatePW.password.$dirty && change.pwFlag) ? 'ey-has-error' : ''">
+                3.不支持所有特殊符号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </span>
+        </div>
+        <div class="ey-form-group"
+             data-ng-class="(updatePW.confirm.$dirty && change.confirmFlag) ? 'ey-has-error' : ''">
+            <label class="ey-form-label ey-required">
+                确认新密码：
+            </label>
+            <input type="password" class="ey-form-input ey-form-w6"
+                   name="confirm" placeholder="请输入原密码" maxlength="30"
+                   data-ng-model="change.account.confirm"
+                   data-ng-change="change.checkConfirm()"
+                   required>
+            <span class="ey-text-tip ey-has-error hide"
+                  data-ng-class="(updatePW.confirm.$dirty
+                  && change.confirmFlag) ? 'show' : 'hide'">
+				确认密码与密码输入不一致
+			</span>
+        </div>
+    </form>
+</div>
+<div class="ey-modal-footer ey-btn-group" >
+    <div class="ey-btn-group">
+        <button type="button"
+                class="ey-btn ey-btn-primary"
+                data-ng-click="commit()"
+                data-ng-disabled="change.btnWait || updatePW.$invalid || change.pwFlag || change.confirmFlag">
+            确 定
+        </button>
+        <button type="button"
+                class="ey-btn ey-btn-default"
+                data-ng-click="cancel()"
+                data-ng-disabled="change.btnWait">
+            取 消
+        </button>
+    </div>
+</div>

@@ -1,0 +1,88 @@
+<div class="modal-header">
+	<span class="modal-title">创建Bucket</span><span
+		class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body" style="width: 600px;">
+	<form class="ey-form " novalidate name="myForm">
+			<div class="ey-form-group ey-required"
+				data-ng-class="(myForm.name.$dirty && (myForm.name.$invalid)) ? 'ey-has-error' : ''">
+				<label class="ey-form-label">Bucket名称：</label> 
+				<input class="ey-form-input ey-form-w6" name="name" maxlength="63"
+					data-ng-model="model.name" placeholder="请输入Bucket名称"
+					ng-pattern="/^([a-z0-9]([a-z0-9-]){1,61}[a-z0-9]){1}$/"
+					ng-change="checkBucketName()" required> <span class="ey-text-tip obs-line-height"
+					data-ng-class="(myForm.name.$dirty && (myForm.name.$invalid)) ? 'ey-has-error' : ''">1.只能包含小写字母，数字和短横线</span>
+				<span class="ey-text-tip obs-line-height"
+					data-ng-class="(myForm.name.$dirty && (myForm.name.$invalid)) ? 'ey-has-error' : ''">2.只能以小写字母和数字开头和结尾</span>
+				<span class="ey-text-tip obs-line-height"
+					data-ng-class="(myForm.name.$dirty && (myForm.name.$invalid)) ? 'ey-has-error' : ''">3.Bucket名称的长度限制在3-63之间</span>
+			</div>
+			<div class="ey-form-group">
+				<label class="ey-form-label">Bucket类型 :</label>
+				<eayun-select name="permission" class="ey-form-w6 ey-form-select"
+					data-ng-model="model.permission" required> 
+					<eayun-option
+				value="'Private'" text="私有读写" selected></eayun-option> <eayun-option
+				value="'PublicReadWrite'" text="公有读写"></eayun-option> <eayun-option
+				value="'PublicRead'" text="公有读私有写"></eayun-option> 
+				</eayun-select>
+			</div>
+	</form>
+</div>
+<div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<button class="ey-btn ey-btn-primary" ng-click="commitBucket()" ng-disabled="!myForm.$valid ||!flag">确定</button>
+		<button class="ey-btn ey-btn-default" ng-click="cancel()">取消</button>
+	</div>
+</div>
+<!-- 
+
+<form class="form-horizontal" name="myForm">
+
+
+	<div class="form-group has-feedback">
+		<label class="col-sm-3 control-label">Bucket名称 :</label>
+
+		<div class="col-sm-8"
+			data-ng-class="(myForm.name.$dirty && (myForm.name.$invalid)) ? 'has-error' : ''">
+			<input type="text" class="form-control" name="name" maxlength="63"
+				data-ng-model="model.name" placeholder="请输入Bucket名称" required
+				ng-pattern="/^([a-z0-9]([a-z0-9-]){1,61}[a-z0-9]){1}$/"
+				ng-change="checkBucketName()" style="padding-right:5px;">
+			<p class="control-label" style="text-align:left;">1.只能包含小写字母，数字和短横线</p>
+			<p class="control-label" style="text-align:left;">2.只能以小写字母和数字开头和结尾</p>
+			<p class="control-label" style="text-align:left;">3.Bucket名称的长度限制在3-63之间</p>
+
+		</div>
+	</div>
+
+
+
+	Bucket类型
+	<div class="form-group">
+		<label class="col-sm-3 control-label">Bucket类型 :</label>
+		<div class="col-sm-8"
+			data-ng-class="(myForm.permission.$dirty && myForm.permission.$invalid) ? 'has-error' : ''">
+			<eayun-select name="permission" class="col-sm-12"
+				data-ng-model="model.permission" required> <eayun-option
+				value="'Private'" text="私有读写" selected></eayun-option> <eayun-option
+				value="'PublicReadWrite'" text="公有读写"></eayun-option> <eayun-option
+				value="'PublicRead'" text="公有读私有写"></eayun-option> </eayun-select>
+			js验证协议选择是否为空
+			<label class="control-label"
+				ng-show="myForm.permission.$dirty && myForm.permission.$error.required">请选择一个协议</label>
+		</div>
+	</div>
+
+	按钮区域
+	<div class="modal-footer">
+		<button type="button" class="btn btn-primary btn-modal"
+			ng-click="commitBucket()" ng-disabled="!myForm.$valid ||!flag">确
+			定</button>
+		<button type="button" class="btn btn-default btn-modal"
+			style="margin-left:15px;" ng-click="cancel()">取 消</button>
+	</div>
+
+
+
+</form> -->

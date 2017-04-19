@@ -1,0 +1,89 @@
+<!-- 导航条 -->
+<div class="header">
+  <div class="navbar navbar-default navbar-fixed-top navbar-eayun" role="navigation" data-ng-controller="NavbarCtrl">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target="#js-navbar-collapse" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand">
+              <img class="logo" src="images/logo5.png">
+              <span class="ey-font-size-super">|</span>
+              <span class="ey-font-size-bigger ey-font-bold">管理控制台</span>
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="js-navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dividing"><a></a></li>
+        <li class="pointer" ng-mouseenter="hintShow=true" ng-mouseleave="hintShow=false">
+            <a>
+                <span class="eayunfont ef-workorder ey-text-tip"
+                 hint="views/work/tooltip.html"
+                 hint-show="hintShow"
+                 tooltip-class="tooltip-work"
+                 tooltip-placement="bottom"></span>
+                 <span>工单</span>
+                <div id="reddot" data-ng-show="unHandleWorkCount!=null"></div>
+                <!-- <span class="badge">{{unHandleWorkCount}}</span> -->
+            </a>
+        </li>
+        <li class="dividing"><a></a></li>
+        <li>
+            <a style="cursor:pointer" ui-sref="app.monitor.monitorbar.alarm.list">
+                <span class="eayunfont ef-ring ey-text-tip"></span>
+                <span>报警</span>
+                <div id="alarmdot"></div>
+            </a>
+        </li>
+        <li class="pointer" ng-mouseenter="hintMsgShow=true" ng-mouseleave="hintMsgShow=false">
+            <a style="cursor:pointer" data-ng-if="unreadList.length!=0" ng-mouseover="showMessage();">
+                <span class="eayunfont ef-mail ey-text-tip"
+                 hint="views/message/tooltip.html"
+                 hint-show="hintMsgShow"
+                 tooltip-class="tooltip-work"
+                 tooltip-placement="bottom"></span>
+                <span>消息</span>
+                <div id="reddot" class="hide" data-ng-class="unreadList.length>0 ? 'show' : 'hide'"></div>
+                <!-- <span class="badge">{{unreadCount}}</span> -->
+            </a>
+            <a style="cursor:pointer" data-ng-if="unreadList==0" ui-sref="app.message">
+                <span class="eayunfont ef-mail ey-text-tip"></span><span>消息</span>
+            </a>
+        </li>
+        <!-- <div class="popover bottom" id="message_list" ng-mouseleave="hidden();">
+            <div class="arrow"></div>
+            <div class="popover-content">
+                <p data-ng-repeat="unread in unreadList">
+                    <a ng-click="openMsgDetail(unread)" style="cursor:pointer">{{unread.newsTitle}}<br/></a>
+                </p>
+            </div>
+            <p class="text-right popover-title"><a ui-sref="app.message">查看全部&nbsp;></a></p>
+         </div> -->
+        <li class="dropdown" title={{user.userName}}>
+          <a class="dropdown-toggle text-center" data-toggle="dropdown" role="button">
+            <span class="eayunfont ef-user ey-color-default"></span>
+            <span class="user-name ey-ellipsis">{{user.userName}}</span>
+            <span class="glyphicon glyphicon-menu-down" style="margin:0 0 4px 10px;"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li style="border-top:1px solid #dcdcdc;"><a  role="button" data-ng-click="updatePassword(user.userName)">修改密码</a></li>
+            <li><a  role="button" data-ng-click="logout()">退出</a></li>
+          </ul>
+        </li>
+      </ul>
+      <p class="navbar-text navbar-right date">{{today?today:""| date:"yyyy-MM-dd HH:mm:ss"}}</p>
+    </div>
+  </div>
+</div>
+
+<!-- 下方页面展示区 -->
+<div class="app-view"style="padding-left: 0px;">
+	<div class="ey-panel ey-panel-full ey-order-view">
+    <div class="ey-panel-body clearfix"  data-ui-view=""></div>
+	</div>
+	<footer class="non-line" ng-include="'views/sys/bottom.html'"></footer>
+</div>

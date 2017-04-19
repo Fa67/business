@@ -1,0 +1,71 @@
+<div class="panel-body">
+	<h4>费用概要</h4>
+	<table class="ey-order-table">
+		<tr>
+			<td style="font-weight: bold;">订单编号</td>
+			<td><span ng-bind="::details.model.orderNo"></span></td>
+			<td style="font-weight: bold">产品名称</td>
+			<td><span ng-bind="::details.model.prodName"></span></td>
+		</tr>					     
+		<tr>
+			<td style="font-weight: bold">订单类型</td>
+			<td><span ng-bind="::details.model.orderTypeName"></span></td>
+			<td style="font-weight: bold;">订单状态</td>
+			<td><span ng-bind="::details.model.orderStateName"></span></td>
+		</tr>	
+		<tr>
+			<td style="font-weight: bold;">创建时间</td>
+			<td><span ng-bind="::details.model.createTime|date:'yyyy-MM-dd HH:mm:ss'"></span></td>
+			<td style="font-weight: bold;">完成时间</td>
+			<td><span ng-bind="::details.model.completeTime|date:'yyyy-MM-dd HH:mm:ss'"></span></td>
+		</tr>	
+		<tr>
+			<td style="font-weight: bold;">金额</td>
+			<td colspan="3"><span class="color-blue" style="font-size:14px;font-weight:bold;">￥ <span ng-bind="::details.model.paymentAmount|number:2"></span></span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="details-name" style="width:60%">=（现金支付:￥ {{details.model.thirdPartPayment|number:2}}）+ （余额支付:￥ {{details.model.accountPayment|number:2}}）</span></td>
+		</tr>				     
+	</table>
+	
+	<h4 style="margin-top:30px;">费用详情</h4>
+	<table class="ey-table ey-table-auto">
+		<thead>
+  			<tr>
+		  	<th style="width:170px;">产品名称</th>
+		    <th style="width:100px;">数量</th>
+		    <th style="width:350px;">具体配置</th>
+		   	<th style="width:300px;">起止时间</th>
+		   	<th>付款方式</th>
+		    <th>金额</th>
+		  </tr>
+		</thead>
+		
+	  	<tbody>
+	  		<tr>
+			  	<td><span ng-bind="::details.model.prodName"></span></td>
+			  	<td><span ng-bind="::details.model.prodCount"></span></td>
+			  	<td style="line-height:24px;text-align:left;"><p class="ey-ellipsis" ng-repeat="con in details.config" ng-bind-html="con" title="{{con}}" style="margin:0;"></p></td>
+			  	<td title="{{::details.model.resourceBeginTime|date:'yyyy-MM-dd HH:mm:ss'}} 至 {{::details.model.resourceExpireTime|date:'yyyy-MM-dd HH:mm:ss'}}"><span ng-bind="::details.model.resourceBeginTime|date:'yyyy-MM-dd HH:mm:ss'"></span> 至 <span ng-bind="::details.model.resourceExpireTime|date:'yyyy-MM-dd HH:mm:ss'"></span></td>
+			  	<td><span ng-bind="::details.model.payTypeName"></span></td>
+			  	<td><span class="color-blue" >￥ <span ng-bind="::details.model.paymentAmount|number:2"></span></span></td>
+	  		</tr>
+	  </tbody>
+</table>
+<ul class="ey-order-list">
+        <li class="ey-font-size-bigger">
+            <span>应付款：</span>
+            <span class="ey-text-tip">
+            	￥ 
+            <span class="ey-color-blue ey-font-size-bigger ey-font-bold">{{::details.model.paymentAmount|number:2}}</span>
+            </span>
+        </li>
+        <div class="divider"></div>
+        <li class="ey-font-size-bigger ey-font-bold">
+            <span>实际付款：</span>
+            <span class="ey-text-tip">￥ 
+                <span class="ey-color-blue ey-font-size-superior">
+                    {{::details.model.paymentAmount|number:2}}
+                </span>
+            </span>
+        </li>
+    </ul>
+</div>
+</div>

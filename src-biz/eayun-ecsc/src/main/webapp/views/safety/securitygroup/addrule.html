@@ -1,0 +1,383 @@
+<form class="ey-form ng-valid ng-valid-min ng-valid-max ng-dirty ng-valid-parse" name="myForm" novalidate>
+	<div class="modal-header">
+	     <span class="modal-title">添加规则</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+    </div>
+	<div class="modal-body addrule clearfix" style="min-width: 800px;">
+		<div style="height:420px; width: 480px;">
+			<!-- 协议开始 -->
+			<div class="ey-form-group has-feedback">
+				<label class="ey-form-label ey-required">协议：</label>
+				<div class="ey-form-w3 ey-form-select ey-has-suffix ng-isolate-scope open"
+					data-ng-class="(myForm.protocol.$dirty && myForm.protocol.$invalid) ? 'ey-has-error' : ''">
+					<eayun-select placeholder="--请选择协议--" name="protocol" data-ng-model="model.protocol" ng-change="chektcporicmp()" required>
+					<eayun-option value="'TCP'" text="TCP" selected></eayun-option>
+					 <eayun-option value="'UDP'" text="UDP"></eayun-option> 
+					<eayun-option value="'ICMP'" text="ICMP"></eayun-option>
+					</eayun-select>
+
+
+					<label class="control-label"
+						ng-show="myForm.protocol.$dirty && myForm.protocol.$error.required">协议不能为空</label>
+
+				</div>
+			</div>
+			<!-- 方向 -->
+			<div class="ey-form-group"
+				data-ng-class="(myForm.direction.$dirty && myForm.direction.$invalid) ? 'ey-has-error' : ''"
+				ng-if="model.protocol=='TCP'||model.protocol=='UDP'||model.protocol=='ICMP'||model.protocol=='ALL TCP'||model.protocol=='ALL UDP'||model.protocol=='ALL ICMP'||model.protocol=='其他协议'">
+				<label class="ey-form-label ey-required">方向：</label>
+					<div class="ey-form-radio">
+						
+						<input type="radio" id="direction2" name="direction"  ng-model="model.Direction" value="ingress">
+						<label for="direction2">入方向</label>
+					</div>
+
+					<div class="ey-form-radio">
+						<input type="radio" id="direction1" name="direction" ng-model="model.Direction" value="egress">
+						<label for="direction1">出方向</label>
+					</div>
+					<!--<div class="col-sm-8" >-->
+					<!--<label class="control-label small-size"><input name="trueOrFalse" type="radio" value="1"  ng-model="model.Direction"/>是 </label>-->
+					<!--<label class="control-label small-size"><input name="trueOrFalse" type="radio" value="0" ng-model="dd.sgRule.Direction" ng-checked="true"/>否 </label>-->
+					<!--</div>-->
+
+			</div>
+			<div class="ey-form-w3">
+					<input type="hidden" data-ng-model="model.prjId"> <input
+						type="hidden" data-ng-model="model.dcId"> <input
+						type="hidden" data-ng-model="model.securityGroupId">
+						</div>
+			<!-- 起始端口号 -->
+			<div ng-if="model.protocol=='TCP'||model.protocol=='UDP' ||model.protocol=='ALL TCP'||model.protocol=='ALL UDP'">
+				<div  class="ey-form-group"data-ng-class="(myForm.port_range_min.$dirty && myForm.port_range_min.$invalid ||(small)) ? 'ey-has-error' : ''">
+
+
+				<label class="ey-form-label ey-required">起始端口：</label>
+
+
+					<input type="text" class="ey-form-input ey-form-w3" placeholder="请输入端口号"
+						id="port_range_min" name="port_range_min"
+						data-ng-model="model.port_range_min" required
+						ng-change="smallPort('type')"> <span 
+						ng-if="small">{{minMsg}}</span>
+
+				</div>
+			</div>
+			<!-- 终止端口号 -->
+			<div
+				ng-if="model.protocol=='TCP'||model.protocol=='UDP' ||model.protocol=='ALL TCP'||model.protocol=='ALL UDP'">
+				<div class="ey-form-group"
+
+					data-ng-class="(myForm.port_range_max.$dirty && myForm.port_range_max.$invalid ||(big)) ? 'ey-has-error' : ''">
+					<label class="ey-form-label ey-required">终止端口：</label>
+					<input type="text" class="ey-form-input ey-form-w3" placeholder="请输入端口号"
+						id="port_range_max" name="port_range_max"
+						data-ng-model="model.port_range_max" required
+						ng-change="bigPort('type')"> 
+						<span 
+						ng-if="big">{{maxMsg}}</span>
+				</div>
+			</div>
+			<!-- 选择ICMP协议的时候 出现   类型  -->
+			<div class="ey-form-group has-feedback"
+				ng-if="model.protocol=='ICMP'">
+				<label class="ey-form-label ey-required">ICMP类型：</label>
+				<div class="ey-form-w5 ey-form-select ey-has-suffix ng-isolate-scope open"
+					data-ng-class="(myForm.ICMPType.$dirty && myForm.ICMPType.$invalid) ? 'ey-has-error' : ''">
+
+					<eayun-select placeholder="--请选择协议--" name="ICMPType"
+						class="ey-form-w5"data-ng-model="model.icmptype" ng-change="checktype()" required>
+					<eayun-option value="99" text="所有"></eayun-option> <eayun-option
+						value="0" text="0-回应应答"></eayun-option> <eayun-option value="3"
+						text="3-目的地不可达"></eayun-option> <eayun-option value="4"
+						text="4-源端被关闭"></eayun-option> <eayun-option value="5" text="5-重定向"></eayun-option>
+					<eayun-option value="8" text="8-回应请求"></eayun-option> <eayun-option
+						value="9" text="9-路由建议"></eayun-option> <eayun-option value="10"
+						text="10-路由器请求"></eayun-option> <eayun-option value="11"
+						text="11-超时"></eayun-option> <eayun-option value="12"
+						text="12-参数错误"></eayun-option> <eayun-option value="13"
+						text="13-时间戳请求"></eayun-option> <eayun-option value="14"
+						text="14-时间戳应答"></eayun-option> <eayun-option value="15"
+						text="15-信息请求"></eayun-option> <eayun-option value="16"
+						text="16-信息应答"></eayun-option> <eayun-option value="17"
+						text="17-地址掩码请求"></eayun-option> <eayun-option value="18"
+						text="18-地址掩码应答"></eayun-option> </eayun-select>
+
+				</div>
+			</div>
+			<!-- 选择ICMP协议的时候 出现   编码 -->
+			<div class="ey-form-group has-feedback"ng-if="model.protocol=='ICMP'">
+				<label class="ey-form-label ey-required">ICMP编码：</label>
+				<div class="ey-form-w5 ey-form-select ey-has-suffix ng-isolate-scope open"
+					data-ng-class="(myForm.ICMPCode.$dirty && myForm.ICMPCode.$invalid) ? 'ey-has-error' : ''">
+					
+					<div data-ng-if="model.icmptype==undefined">
+						<eayun-select placeholder="--请选择编码--" name="ICMPCode"
+								class="ey-form-w5" data-ng-model="model.icmpcode">
+						
+					</div>
+					
+					<div data-ng-if="model.icmptype=='99'">
+						<eayun-select placeholder="--请选择编码--" name="ICMPCode"
+							 class="ey-form-w5"data-ng-model="model.icmpcode" required>
+						<eayun-option value="99" text="所有"></eayun-option> </eayun-select>
+					</div>
+
+					<div data-ng-if="model.icmptype=='0'">
+						<eayun-select placeholder="--请选择编码--" name="ICMPCode"
+							class="ey-form-w5" data-ng-model="model.icmpcode" required>
+						<eayun-option value="0" text="0-Echo响应"></eayun-option> </eayun-select>
+					</div>
+
+					<div data-ng-if="model.icmptype=='3'">
+						<eayun-select placeholder="--请选择编码--" name="ICMPCode"
+							class="ey-form-w5" data-ng-model="model.icmpcode" required>
+						<eayun-option value="0" text="0-目标网络不可达"></eayun-option> <eayun-option
+							value="1" text="1-目标主机不可达"></eayun-option> <eayun-option value="2"
+							text="2-目标协议不可达"></eayun-option> <eayun-option value="3"
+							text="3-目标端口不可达"></eayun-option> <eayun-option value="4"
+							text="4-要求分段并设置DF flag标志"></eayun-option> <eayun-option value="5"
+							text="5-源路由失败"></eayun-option> <eayun-option value="6"
+							text="6-未知的目标网络"></eayun-option> <eayun-option value="7"
+							text="7-未知的目标主机"></eayun-option> <eayun-option value="8"
+							text="8-源主机隔离"></eayun-option> <eayun-option value="9"
+							text="9-禁止访问的网络"></eayun-option> <eayun-option value="10"
+							text="10-禁止访问的主机"></eayun-option> <eayun-option value="11"
+							text="11-由于服务类型为TOS，网络不可达"></eayun-option> <eayun-option
+							value="12" text="12-由于服务类型为TOS，主机不可达"></eayun-option> <eayun-option
+							value="13" text="13-网络流量被禁止"></eayun-option> <eayun-option
+							value="14" text="14-主机越权"></eayun-option> <eayun-option value="15"
+							text="15-优先中止生效"></eayun-option> </eayun-select>
+					</div>
+
+
+					<div data-ng-if="model.icmptype=='4'">
+						<eayun-select placeholder="--请选择编码--" name="ICMPCode"
+						class="ey-form-w5" data-ng-model="model.icmpcode" required>
+						<eayun-option value="0" text="0-源端被关闭（基本流量控制）"></eayun-option> </eayun-select>
+					</div>
+
+					<div data-ng-if="model.icmptype=='5'">
+						<eayun-select placeholder="--请选择编码--" name="ICMPCode"
+							class="ey-form-w5" data-ng-model="model.icmpcode" required>
+						<eayun-option value="0" text="0-重定向网络"></eayun-option> <eayun-option
+							value="1" text="1-重定向主机"></eayun-option> <eayun-option value="2"
+							text="2-对服务类型和网络重定向"></eayun-option> <eayun-option value="3"
+							text="3-对服务类型和主机重定向"></eayun-option> </eayun-select>
+					</div>
+
+					<div data-ng-if="model.icmptype=='8'">
+						<eayun-select placeholder="--请选择编码--" name="ICMPCode"
+						class="ey-form-w5" data-ng-model="model.icmpcode" required>
+						<eayun-option value="0" text="0-Echo请求"></eayun-option> </eayun-select>
+					</div>
+
+					<div data-ng-if="model.icmptype=='9'">
+						<eayun-select placeholder="--请选择编码--" name="ICMPCode"
+						class="ey-form-w5" data-ng-model="model.icmpcode" required>
+						<eayun-option value="0" text="0-路由建议"></eayun-option> </eayun-select>
+					</div>
+
+					<div data-ng-if="model.icmptype=='10'">
+						<eayun-select placeholder="--请选择编码--" name="ICMPCode"
+						class="ey-form-w5" data-ng-model="model.icmpcode" required>
+						<eayun-option value="0" text="0-路由发现/选择/请求"></eayun-option> </eayun-select>
+					</div>
+
+					<div data-ng-if="model.icmptype=='11'">
+						<eayun-select placeholder="--请选择编码--" name="ICMPCode"
+						class="ey-form-w5" data-ng-model="model.icmpcode" required>
+						<eayun-option value="0" text="0-TTL在传输中过期"></eayun-option> <eayun-option
+							value="1" text="1-在数据包组装期间生存时间为0"></eayun-option> </eayun-select>
+					</div>
+					<div data-ng-if="model.icmptype=='12'">
+						<eayun-select placeholder="--请选择编码--" name="ICMPCode"
+						class="ey-form-w5"	 data-ng-model="model.icmpcode" required>
+						<eayun-option value="0" text="0-错误的IP首部"></eayun-option> <eayun-option
+							value="1" text="1-缺少必须选项"></eayun-option> <eayun-option value="2"
+							text="2-不支持的长度"></eayun-option> </eayun-select>
+					</div>
+					<div data-ng-if="model.icmptype=='13'">
+						<eayun-select placeholder="--请选择编码--" name="ICMPCode"
+						class="ey-form-w5" data-ng-model="model.icmpcode" required>
+						<eayun-option value="0" text="0-时间戳请求"></eayun-option> </eayun-select>
+					</div>
+					<div data-ng-if="model.icmptype=='14'">
+						<eayun-select placeholder="--请选择编码--" name="ICMPCode"
+						class="ey-form-w5" data-ng-model="model.icmpcode" required>
+						<eayun-option value="0" text="0-时间戳应答"></eayun-option> </eayun-select>
+					</div>
+
+					<div data-ng-if="model.icmptype=='15'">
+						<eayun-select placeholder="--请选择编码--" name="ICMPCode"
+						class="ey-form-w5" data-ng-model="model.icmpcode" required>
+						<eayun-option value="0" text="0-信息请求"></eayun-option> </eayun-select>
+					</div>
+					<div data-ng-if="model.icmptype=='16'">
+						<eayun-select placeholder="--请选择编码--" name="ICMPCode"
+						class="ey-form-w5" data-ng-model="model.icmpcode" required>
+						<eayun-option value="0" text="0-信息应答"></eayun-option> </eayun-select>
+					</div>
+					<div data-ng-if="model.icmptype=='17'">
+						<eayun-select placeholder="--请选择编码--" name="ICMPCode"
+						class="ey-form-w5"	 data-ng-model="model.icmpcode" required>
+						<eayun-option value="0" text="0-地址掩码请求"></eayun-option> </eayun-select>
+					</div>
+					<div data-ng-if="model.icmptype=='18'">
+						<eayun-select placeholder="--请选择编码--" name="ICMPCode"
+						class="ey-form-w5"	 data-ng-model="model.icmpcode" required>
+						<eayun-option value="0" text="0-地址掩码应答"></eayun-option> </eayun-select>
+					</div>
+
+				</div>
+			</div>
+			<!-- 远程开始 -->
+			<div class="ey-form-group"
+				data-ng-class="(myForm.from.$dirty && myForm.from.$invalid) ? 'ey-has-error' : ''">
+				<label class="ey-form-label ey-required">源地址：</label>
+				<div class="ey-form-radio">
+					 <input
+						name="ipchebox" type="radio" data-ng-model="model.from" id="ipchebox2"
+						data-ng-checked="true" value="CIDR" />
+						<label for="ipchebox2">IP地址</label>
+						<input
+						name="ipchebox" type="radio" data-ng-model="model.from" id="ipchebox1"
+						value="SecurityGroup" data-ng-change="querySecurityGroups()" />
+						<label for="ipchebox1">安全组</label>
+				</div>
+
+
+			</div>
+			<div class="ey-form-group"
+				data-ng-class="(myForm.from.$dirty && myForm.from.$invalid) ? 'has-error' : ''">
+				<label class="ey-form-label"></label>
+
+					 <div class="ey-form-w6  ey-has-suffix ng-isolate-scope open col-log-10 "
+					 data-ng-class="myForm.source_ip_address.$dirty && myForm.source_ip_address.$invalid"
+					 ng-if="model.from=='CIDR'">
+					<table>
+						<tbody>
+						<tr class="ey-form-w6">
+							<td class="ey-form-w1" data-ng-class="a1Error?'ey-has-error':''"><input
+									type="text" class="ey-form-input class ey-form-w1" maxlength="3"
+									data-ng-model="model.source_ip_address1"
+									data-ng-change="checkTypeCidr('a1','focus')"
+									data-ng-focus="checkTypeCidr('a1','focus')"
+									data-ng-blur="checkTypeCidr('a1','blur')"></td>
+							<td style="padding:0 5px;">.</td>
+							<td class="ey-form-w1" data-ng-class="a2Error?'ey-has-error':''"><input
+									type="text" class="ey-form-input class ey-form-w1" maxlength="3"
+									data-ng-model="model.source_ip_address2"
+									data-ng-change="checkTypeCidr('a2','focus')"
+									data-ng-focus="checkTypeCidr('a2','focus')"
+									data-ng-blur="checkTypeCidr('a2','blur')"></td>
+							<td style="padding:0 5px;">.</td>
+							<td class="ey-form-w1" data-ng-class="a3Error?'ey-has-error':''"><input
+									type="text" class="ey-form-input class ey-form-w1" maxlength="3"
+									data-ng-model="model.source_ip_address3"
+									data-ng-change="checkTypeCidr('a3','focus')"
+									data-ng-focus="checkTypeCidr('a3','focus')"
+									data-ng-blur="checkTypeCidr('a3','blur')"></td>
+							<td style="padding:0 5px;">.</td>
+							<td class="ey-form-w1" data-ng-class="a4Error?'ey-has-error':''"><input
+									type="text" class="ey-form-input class ey-form-w1" maxlength="3"
+									data-ng-model="model.source_ip_address4"
+									data-ng-change="checkTypeCidr('a4','focus')"
+									data-ng-focus="checkTypeCidr('a4','focus')"
+									data-ng-blur="checkTypeCidr('a4','blur')"></td>
+							<td style="padding:0 5px;">/</td>
+							<td class="ey-form-w1" data-ng-class="a5Error?'ey-has-error':''"><input
+									type="text" class="ey-form-input class ey-form-w1" maxlength="3"
+									data-ng-model="model.source_ip_address5"
+									data-ng-change="checkTypeCidr('a5','focus')"
+									data-ng-focus="checkTypeCidr('a5','focus')"
+									data-ng-blur="checkTypeCidr('a5','blur')"></td>
+						</tr>
+						</tbody>
+					</table>
+						<span class="ey-text-tip ey-font-size"
+							  data-ng-class="!cidraError?'ey-has-error':''">{{sourrange}}</span>
+				</div>
+
+
+
+					<dvi class="ey-form-w6 ey-form-select ey-has-suffix ng-isolate-scope open" ng-if="model.from=='SecurityGroup'"> <eayun-select
+						placeholder="--请选择安全组--" name="remote_group_id"
+						class="" data-ng-model="model.remote_group_id" required>
+					<eayun-option value="item.sgId" text="{{item.sgName=='default'?'默认安全组':item.sgName}}"
+						data-ng-repeat="item in securityGroupItems"></eayun-option> </eayun-select> </dvi>
+
+				</div>
+		</div>
+		<form class="ey-form col-lg-2 ng-valid ng-valid-min ng-valid-max ng-dirty ng-valid-parse">
+			<h5>常用规则</h5>
+			<div class="ey-btn-group">
+				<button type="button" data-ng-class="buttclasstcp?'btn ey-btn-primary btn-modal':'btn ey-btn-default btn-modal'"
+					ng-click="alltcp()" class="ey-btn details-value">ALL TCP </button>
+				<button type="button" data-ng-class="buttclassicmp?'btn ey-btn-primary btn-modal':'btn ey-btn-default btn-modal'"
+					ng-click="allicmp()" class="ey-btn  details-value">ALL ICMP</button>
+			</div>
+			<div  class="ey-btn-group">
+				<button  style="width: 188px" type="button" data-ng-class="buttclassudp?'btn ey-btn-primary btn-modal':'btn ey-btn-default btn-modal'"
+					ng-click="alludp()" class="ey-btn ">ALL UDP</button>
+			</div>
+			<div   class="ey-btn-group">
+				<button type="button" data-ng-class="buttclassdns?'btn ey-btn-primary btn-modal':'btn ey-btn-default btn-modal'"
+						ng-click="dns()" class="ey-btn ">DNS</button>
+				<button type="button" data-ng-class="buttclasshttp?'btn ey-btn-primary btn-modal':'btn ey-btn-default btn-modal'"
+					ng-click="http()" class="ey-btn ">HTTP</button>
+			</div>
+			<div class="ey-btn-group">
+				<button type="button" data-ng-class="buttclasshttps?'btn ey-btn-primary btn-modal':'btn ey-btn-default btn-modal'"
+						ng-click="https()" class="ey-btn ">HTTPS</button>
+				<button type="button" data-ng-class="buttclassimap?'btn ey-btn-primary btn-modal':'btn ey-btn-default btn-modal'"
+					ng-click="imap()" class="ey-btn ">IMAP</button>
+			</div>
+			<div  class="ey-btn-group">
+				<button type="button" data-ng-class="buttclassimaps?'btn ey-btn-primary btn-modal':'btn ey-btn-default btn-modal'"
+						ng-click="imaps()" class="ey-btn " >IMAPS</button>
+				<button type="button" data-ng-class="buttclassladp?'btn ey-btn-primary btn-modal':'btn ey-btn-default btn-modal'"
+					ng-click="ladp()" class="ey-btn " >LDAP</button>
+			</div>
+			<div  class="ey-btn-group" >
+				<button type="button" data-ng-class="buttclassmssql?'btn ey-btn-primary btn-modal':'btn ey-btn-default btn-modal'"
+						ng-click="mssql()" class="ey-btn ">MS SQL</button>
+				<button type="button" data-ng-class="buttclassmysql?'btn ey-btn-primary btn-modal':'btn ey-btn-default btn-modal'"
+					ng-click="mysql()" class="ey-btn ">MYSQL</button>
+			</div>
+			<div  class="ey-btn-group" >
+				<button type="button" data-ng-class="buttclasspop3?'btn ey-btn-primary btn-modal':'btn ey-btn-default btn-modal'"
+						ng-click="pop3()" class="ey-btn ">POP3</button>
+				<button type="button" data-ng-class="buttclasspop3s?'btn ey-btn-primary btn-modal':'btn ey-btn-default btn-modal'"
+					ng-click="pop3s()" class="ey-btn ">POP3S</button>
+			</div>
+			<div  class="ey-btn-group" >
+				<button type="button" data-ng-class="buttclassrdp?'btn ey-btn-primary btn-modal':'btn ey-btn-default btn-modal'"
+						ng-click="rdp()" class="ey-btn ">RDP</button>
+				<button type="button" data-ng-class="buttclasssmtp?'btn ey-btn-primary btn-modal':'btn ey-btn-default btn-modal'"
+					ng-click="smtp()" class="ey-btn ">SMTP</button>
+			</div>
+			<div  class="ey-btn-group">
+				<button type="button" data-ng-class="buttclasssmtps?'btn ey-btn-primary btn-modal':'btn ey-btn-default btn-modal'"
+						ng-click="smtps()" class="ey-btn ">SMTPS</button>
+				<button type="button" data-ng-class="buttclassssh?'btn ey-btn-primary btn-modal':'btn ey-btn-default btn-modal'"
+					ng-click="ssh()" class="ey-btn ">SSH</button>
+
+			</div>
+		</form>
+
+
+</div>
+</form>
+<!-- 按钮区域 -->
+<div class="ey-modal-footer">
+	 <div class="ey-btn-group">
+		<button type="button" class="btn ey-btn-primary btn-modal"
+			ng-click="commit()"
+			ng-disabled="!myForm.$valid ||!cidraError||small||big||commitfag">确
+			定</button>
+		<button type="button" class="btn btn-default btn-modal"
+			style="margin-left: 15px;" ng-click="cancel()">取 消</button>
+	</div>
+</div>
+

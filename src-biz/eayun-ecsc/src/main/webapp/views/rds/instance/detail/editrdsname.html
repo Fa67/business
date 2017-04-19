@@ -1,0 +1,36 @@
+<div>
+	<form name="editRdsNameTable" novalidate="novalidate">
+	<div class="col-md-10" data-ng-class="rdsNameEditable&&(editRdsNameTable.rdsName.$dirty&&(editRdsNameTable.rdsName.$invalid||!checkRdsName)) ? 'ey-has-error' : ''" style="padding-left: 0px;">
+		<input class="ey-form-input" name="rdsName" type="text" maxlength="20" placeholder="请输入云数据库名称" data-ng-model="model.rdsName" ng-change="checkRdsNameExist()"
+		ng-pattern='/^[a-zA-Z0-9]([_a-zA-Z0-9]{0,18}[a-zA-Z0-9])?$/' required>
+		<span class="ey-text-tip ey-text-error hide" style="padding-top:17px;"
+			  data-ng-class="(rdsNameEditable
+							&& editRdsNameTable.rdsName.$dirty
+							&& editRdsNameTable.rdsName.$invalid) ? 'show' : 'hide'">
+			<span>请输入1-20位字符,支持数字、英文、下划线</span>
+		</span>
+		<span class="ey-text-tip ey-text-error hide" style="padding-top:17px;"
+			  data-ng-class="(editRdsNameTable.rdsName.$dirty
+			  				&& editRdsNameTable.rdsName.$valid
+			  				&& !checkRdsName) ? 'show' : 'hide'">
+			<span>实例名称已存在</span>
+		</span>
+	</div>
+	<span class="badge hide"
+		  style="margin-left:10px;background-color:green;color:#ffffff;"
+		  data-ng-class="rdsNameEditable
+					&& (editRdsNameTable.rdsName.$dirty
+					&& (editRdsNameTable.rdsName.$valid
+					&& checkRdsName && checkEditBtn))
+					? 'show' : 'hide'"
+		  data-ng-click="saveEdit('rdsName')">
+      	<span class="glyphicon glyphicon-ok">
+     	</span>
+    </span>
+	<span class="badge" data-ng-click="cancleEdit('rdsName')">
+      	<span class="glyphicon glyphicon-remove">
+      	</span> 
+    </span>
+    </form>
+</div>
+	

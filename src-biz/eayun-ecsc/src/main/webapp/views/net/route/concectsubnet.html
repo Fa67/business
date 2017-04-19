@@ -1,0 +1,41 @@
+<form class="form-horizontal" name="myForm">
+  <div class="form-group">
+    <label class="col-sm-3 control-label">内部网络：</label>
+
+    <div class="col-sm-8" data-ng-class="(myForm.subNetId.$dirty && myForm.subNetId.$invalid) ? 'has-error' : ''">
+      <eayun-select placeholder="请选择内部网络(全部)" name="subNetId" class="form-control" data-ng-model="model.subNetId" required>
+<!--         <eayun-option value="" text="请选择内部网络(全部)" selected></eayun-option> -->
+        <eayun-option value="innerNet.value" text="{{innerNet.text}}" data-ng-repeat="innerNet in InnerNetWorkList"></eayun-option>
+      </eayun-select>
+      <label class="control-label" ng-show="myForm.subNetId.$dirty && myForm.subNetId.$error.required">请选择内部网络</label>
+    </div>
+  </div>
+
+  <div class="form-group has-feedback" data-ng-class="(myForm.routeName.$dirty && myForm.routeName.$invalid) ? 'has-error' : ''">
+    <label class="col-sm-3 control-label">路由名称：</label>
+
+    <div class="col-sm-8">
+      <input type="text" class="form-control" name="routeName" data-ng-model="model.routeName" disabled>
+      
+    </div>
+  </div>
+  <!-- 路由ID-->
+  <div class="form-group has-feedback" data-ng-class="(myForm.routeId.$dirty && myForm.routeId.$invalid) ? 'has-error' : ''">
+    <label class="col-sm-3 control-label">路由ID：</label>
+
+    <div class="col-sm-8">
+      <input type="text" class="form-control" name="routeId" data-ng-model="model.routeId" disabled >
+      
+    </div>
+  </div>
+  
+  
+  <!-- 按钮区域 -->
+  <div class="modal-footer" >
+    <button class="btn btn-primary btn-modal" ng-click="commit()"  ng-disabled="!myForm.$valid">确  定</button>
+    <button class="btn btn-default btn-modal" style="margin-left:13px;" ng-click="cancel()">取  消</button>
+  </div>
+  
+  
+  
+</form>

@@ -1,0 +1,55 @@
+<div class="modal-header" style="width: 600px;">
+    <span class="modal-title">修改子网</span> 
+    <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body">
+	<form class="ey-form " name="myForm" novalidate>
+		<fieldset>
+		  	<div class ="ey-form-group" >
+		  		<label class = "ey-form-label">所在私有网络：</label>
+		  		<span>{{model.netName}}</span>
+		  	</div>
+		  	
+		  	<div class="ey-form-group">
+				<label class="ey-form-label">受管子网：</label>
+				<eayun-select class="ey-form-w6" name="subnetId" data-ng-model="model.subnetId" 
+					placeholder="请选择受管子网" show-format="substrSubnetName(text)" data-ng-change="canChangeVmIp()">
+					<eayun-option value="subnet.subnetId" text = "{{subnet.subnetName+'('+subnet.cidr+')'}}" data-ng-repeat="subnet in subnets"></eayun-option>
+					<eayun-option value="-1" text = "不加入"></eayun-option> 
+				</eayun-select>
+				<div class="dialog-clear-left ey-form-w6" style="line-height: 22px;margin-top: 6px;">
+					<span class="ey-text-tip ey-has-error" data-ng-if = "canChangeVmIpFlag">资源已被占用，云主机需要解绑公网IP，以及解除同负载均衡和端口映射的关联关系</span>
+				</div>
+			</div>
+			
+		  	<div class="ey-form-group" data-ng-class="(myForm.selfSubnetId.$dirty && myForm.selfSubnetId.$invalid) ? 'ey-has-error' : ''">
+				<label class="ey-form-label">自管子网：</label>
+				<div>
+					<eayun-select name="selfSubnetId" class="ey-form-w6" data-ng-model="model.selfSubnetId" placeholder="请选择自管子网" show-format="substrSubnetName(text)">
+						<eayun-option value="subnet.subnetId" text = "{{subnet.subnetName+'('+subnet.cidr+')'}}" data-ng-repeat="subnet in selfSubnets"></eayun-option> 
+						<eayun-option value="-1" text = "不加入"></eayun-option> 
+					</eayun-select>
+				</div>
+				<div class="dialog-clear-left">
+					<span class="ey-text-tip" data-ng-class = "(model.selfSubnetId=='-1' && model.subnetId=='-1')?'ey-has-error':''">受管子网与自管子网至少加入一个</span>
+				</div>
+			</div>
+			<div>
+				<span class="ey-text-tip" style="line-height: 20px">注意：受管子网用于各子网间通信以及与公网通信，自管子网仅用于子网内各主机内部通信。云主机</span><br>
+				<span class="ey-text-tip" style="line-height: 20px">同时加入受管和自管子网后，若无法正常上网或IP地址无法自动获取展示，<a href="http://www.eayun.com/document/faq/ech.html" target="_blank"><span class="ey-text-link">点击此处查看解决办法</span></a>。</span>
+			</div>
+		  	
+		  </fieldset>
+		
+	</form>
+</div>
+
+<!-- 按钮区域 -->
+<div class="ey-modal-footer">
+	<div class="ey-btn-group">
+		<button type="button" class="ey-btn ey-btn-primary" ng-click="commit()" 
+			ng-disabled="(model.selfSubnetId=='-1' && model.subnetId=='-1') || canChangeVmIpFlag ||checkToken">确定</button>
+		<button type="button" class="ey-btn ey-btn-default"
+			ng-click="cancel()">取 消</button>
+	</div>
+</div>

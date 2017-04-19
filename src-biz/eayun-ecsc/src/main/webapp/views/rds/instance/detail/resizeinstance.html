@@ -1,0 +1,79 @@
+<div class="modal-header" style="width: 600px;">
+    <span class="modal-title">升级规格</span> <span class="eayunfont ef-close ey-font-huge" data-ng-click="cancel()"></span>
+</div>
+<div class="modal-body">
+	<form class="ey-form " name="myForm" novalidate>
+		<div class="ey-content-notice" style="margin-left: 20px; margin-right:20px; margin-bottom: 20px;">
+            <ul style="margin-top: 10px;">
+                <li>目前所有规格只能扩容，不支持减少规格。在升级规格期间，尽量要避免大量写操作。<br/>因升级会对数据库服务重启，请在事务低峰时进行。</li>
+            </ul>
+        </div>
+		<div class="ey-form-group">
+			<label class="ey-form-label">当前规格：</label>
+			<span>CPU&nbsp;{{resizeInstance.instance.rdsInstanceCpu}}核&nbsp;&nbsp;&nbsp;&nbsp;内存&nbsp;{{resizeInstance.instance.rdsInstanceRam}}GB &nbsp;&nbsp;&nbsp;&nbsp;存储 &nbsp;&nbsp;&nbsp;&nbsp;
+			{{resizeInstance.instance.volumeTypeName == 'Normal' ? '普通型': resizeInstance.instance.volumeTypeName == 'Medium'?'性能型':''}}&nbsp;&nbsp;|&nbsp;&nbsp;{{resizeInstance.instance.diskSize}}GB</span>
+		</div>
+
+		<div class="ey-form-group">
+			<label class="ey-form-label">目标CPU核数：</label>
+			<div>
+				<span class="ey-mark" 
+					  data-ng-repeat="data in resizeInstance.cpuList"  
+					  data-ng-click="resizeInstance.selectCpu(data)"
+				      data-ng-class="resizeInstance.instance.cpu == data.nodeName.substr(0,data.nodeName.length-1) ? 'active' : ''">{{data.nodeName}}
+			    </span>
+			</div> 
+		</div>
+
+		<div class="ey-form-group">
+			<label class="ey-form-label">目标内存容量：</label> 
+			<div>
+				<span class="ey-mark" 
+				      data-ng-repeat="data in resizeInstance.ramList"  
+				      data-ng-click="resizeInstance.selectRam(data)"
+				      data-ng-class="resizeInstance.instance.ram == data.nodeName.substr(0,data.nodeName.length-2) ? 'active' : ''">{{data.nodeName}}
+			    </span>
+			</div>
+		</div>
+		<div class="ey-form-group">
+                <label class="ey-form-label">目标存储容量：</label>
+				<div data-ng-repeat="data in resizeInstance.volumeTypeList">
+					<div data-ng-if="data.typeName == resizeInstance.instance.volumeTypeName">
+						<eayun-progress-step class="ey-form-w8"
+											 data-ng-model="resizeInstance.instance.volumeSize"
+											 max-value='data.maxSize'
+											 min-value='resizeInstance.instance.diskSize'
+											 total-step='data.maxSize / 100'
+											 precision='1'
+											 format="formate"
+											 parse="parse"
+											 data-ng-change="resizeInstance.changeVolumeSize()"
+											 text="GB" required>
+						</eayun-progress-step>
+					</div>
+				</div>
+                <br/>
+                <span class="ey-text-tip">{{resizeInstance.instance.diskSize}}GB - {{resizeInstance.maxSize}}GB</span><br/>
+        </div>
+	</form>
+</div>
+
+<!-- 按钮区域 -->
+<div class="ey-modal-footer">
+	<p class="ey-text-tip" data-ng-if="resizeInstance.instance.payType == '1'">
+        	注：需支付的费用=（新配置-旧配置）*当前每月的单价*(剩余总天数/30)
+    </p>
+	<div class="ey-btn-group">
+		<span class="ey-font-bold">总价： 
+			<span class="ey-color-red" data-ng-if="resizeInstance.hasGotPrice">￥&nbsp;</span>
+			<span class="ey-font-huger ey-color-red ey-font-bold" data-ng-if="resizeInstance.hasGotPrice">{{resizeInstance.instance.price |number:2}}</span>
+			<span class="ey-color-default" data-ng-if="resizeInstance.hasGotPrice && resizeInstance.instance.payType == '2'">&nbsp;/小时</span>
+			<span data-ng-if="!resizeInstance.hasGotPrice" class="ey-color-red ey-font-bold">{{resizeInstance.priceMsg}}</span>
+		</span>
+		<button type="button" class="ey-btn ey-btn-primary"
+			ng-click="commit()"
+			ng-disabled="!resizeInstance.isResize || resizeInstance.checkBtn">确定</button>
+		<button type="button" class="ey-btn ey-btn-default"
+			ng-click="cancel()">取 消</button>
+	</div>
+</div>

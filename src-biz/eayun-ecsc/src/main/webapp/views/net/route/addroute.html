@@ -1,0 +1,93 @@
+<!-- <style>
+	.info-pro{
+		background-color: #58b8f0!important;
+	}
+	.error-pro{
+		background-color: #ff7272!important;
+	}
+	.progress{
+		height:10px;
+		background-color: #f8f8f8!important;
+	}
+</style> -->
+
+<form class="form-horizontal" name="myForm">
+  <div class="form-group">
+    <label class="col-sm-3 control-label">所属项目：</label>
+
+    <div class="col-sm-8" data-ng-class="(myForm.prjName.$dirty && myForm.prjName.$invalid) ? 'has-error' : ''">
+      <eayun-select name="prjName" class="form-control" data-ng-model="model.project" required ng-change="changeProject()">
+        <eayun-option value="project" text="{{project.prjName}}" data-ng-repeat="project in projectList"></eayun-option>
+      </eayun-select>
+      
+      <!-- js验证项目选择是否为空 -->
+      <label class="control-label hide" data-ng-class="(myForm.prjName.$dirty && myForm.prjName.$error.required) ? 'show' : 'hide'">项目不能为空</label>
+    </div>
+  </div>
+
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 control-label">路由名称：</label>
+
+    <div class="col-sm-8" data-ng-class="(myForm.name.$dirty && myForm.name.$invalid) ? 'has-error' : ''">
+      <input type="text" class="form-control" name="name" maxlength="20" data-ng-model="model.name" placeholder="请输入名称" required
+             ajax-valid="checkRouteName(value)">
+      <label class="control-label" ng-show="myForm.name.$dirty && myForm.name.$error.required &&!flag">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+      <label class="control-label" ng-show="myForm.name.$dirty && myForm.name.$error.ajaxValid && !flag">路由名称已存在</label>
+      <label class="control-label" ng-if="flag">请输入1-20位字符,支持数字、中英文、下划线、空格</label>
+      
+    </div>
+  </div>
+  <!-- 路由带宽开始 -->
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 control-label">路由带宽：</label>
+
+    <div class="col-sm-5" data-ng-class="(myForm.rate.$dirty && myForm.rate.$invalid) ||(countNum>prjBandCount)||(prjBandCount-haveCount<=0) ? 'has-error' : ''">
+      <input type="text" class="form-control" placeholder="请输入大于0的整数" ng-pattern="/^[1-9]\d*$/" name="rate" data-ng-model="model.rate" required data-ng-change="computeBand()" >
+      <!-- 输入框为空的显示 -->
+      <label class="control-label hide" data-ng-class="(myForm.rate.$dirty && myForm.rate.$error.required && prjBandCount-haveCount>0) ? 'show' : 'hide'" style="text-align:left">请输入大于0的整数</label>
+      <label class="control-label hide" data-ng-class="(myForm.rate.$dirty && myForm.rate.$invalid && !myForm.rate.$error.required && prjBandCount-haveCount>0) ? 'show' : 'hide'" style="text-align:left">请输入大于0的整数</label>
+      <label class="control-label hide" data-ng-class="(countNum>prjBandCount && prjBandCount-haveCount>0) ? 'show' : 'hide'" style="text-align:left">不能超过{{prjBandCount-haveCount}}Mbps</label>
+      <label class="control-label hide" data-ng-class="(prjBandCount-haveCount < 0 || prjBandCount-haveCount==0) ? 'show' : 'hide'" ng-if="prjBandCount-haveCount < 0 || prjBandCount-haveCount==0" style="text-align:left">已无可用带宽</label>
+      
+    </div>
+    <div class="col-sm-3"><label class="control-label">Mbps</label></div>
+  </div>
+  <!-- 带宽使用情况 -->
+  <div class="form-group has-feedback">
+    <label class="col-sm-3 control-label">带宽使用情况：</label>
+
+    <div class="col-sm-5" data-ng-class="(count > prjBandCount || count==prjBandCount) ? 'has-error' : ''">
+		<div class="progress" style="margin-top:12px;">
+			<div class="progress-bar" data-ng-class="count/prjBandCount>=0.8 ?'error-pro':'info-pro'" data-role="progressbar" 
+	          		data-aria-valuemax="100" data-ng-style="{'width':(count/prjBandCount)*100+'%'}"
+	          		data-placement="top" tooltip="{{count}}/{{prjBandCount}}">
+	     	</div>
+		</div>
+	</div>
+    <div class="col-sm-4"><label class="control-label">{{count}}/{{prjBandCount}}已使用</label></div>
+  </div>
+  
+  <!-- 设置路由外网网关 后续产品去掉这个字段-->
+  <!-- <div class="form-group">
+    <label class="col-sm-3 control-label">设置路由外网网关：</label>
+
+    <div class="col-sm-9" data-ng-class="(myForm.netName.$dirty && myForm.netName.$invalid) ? 'has-error' : ''">
+      <eayun-select name="netName" class="form-control" data-ng-model="model.outNetId" required>
+        <eayun-option value="" text="请选择路由外网网关(全部)" selected></eayun-option>
+        <eayun-option value="'空'" text="空" ></eayun-option>
+        <eayun-option value="outNet.value" text="{{outNet.text}}" data-ng-repeat="outNet in outNetWorkList"></eayun-option>
+      </eayun-select>
+      
+      <label class="control-label" ng-show="myForm.netName.$dirty && myForm.netName.$error.required">网关不能为空</label>
+    </div>
+  </div> -->
+  
+  <!-- 按钮区域 -->
+  <div class="modal-footer" >
+    <button type="button" class="btn btn-primary btn-modal" ng-click="commit()"  ng-disabled="!myForm.$valid ||countNum>prjBandCount">确  定</button>
+    <button type="button" class="btn btn-default btn-modal" style="margin-left:15px;" ng-click="cancel()">取  消</button>
+  </div>
+  
+  
+  
+</form>

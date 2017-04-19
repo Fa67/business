@@ -1,0 +1,113 @@
+<div class="modal-header">
+    <span class="modal-title" ng-if="info.id == null || info.id == ''">创建开票信息</span>
+    <span class="modal-title" ng-if="info.id != null && info.id!=''">编辑开票信息</span>
+    <span class="eayunfont ef-close ey-font-huge"  ng-click="cancel()"></span>
+</div>
+<form name="editForm" novalidate>
+<div class="modal-body ey-form" style="width: 684px;">
+    
+    <div class="ey-form-group">
+        <label class="ey-form-label">发票类型：</label>
+        <div class="ey-form-radio">
+            <input type="radio" id="ordinary" ng-model="info.invoiceType" value="1"/>
+            <label for="ordinary">增值税普通发票</label>
+        </div>
+        <div class="ey-form-radio">
+            <input type="radio" id="special" ng-model="info.invoiceType" value="2"/>
+            <label for="special">增值税专用发票</label>
+        </div>
+    </div>
+    <div class="ey-form-group" data-ng-class="(editForm.invoiceTitle.$dirty && editForm.invoiceTitle.$invalid) ? 'ey-has-error' : ''">
+        <label class="ey-form-label ey-required">发票抬头：</label>
+        <input class="ey-form-input ey-form-w8" type="text" name="invoiceTitle" ng-model="info.invoiceTitle" ng-maxlength="500" maxlength="500" required placeholder="企业全称或其它有效抬头"/>
+        <span class="ey-color-red" ng-show="editForm.invoiceTitle.$dirty && editForm.invoiceTitle.$invalid">请输入有效的发票抬头</span>
+    </div>
+    <div ng-if="info.invoiceType == 2">
+        <div class="ey-form-group" data-ng-class="(editForm.baseBankName.$dirty && editForm.baseBankName.$invalid) ? 'ey-has-error' : ''">
+            <label class="ey-form-label ey-required">基本开户银行名称：</label>
+            <input class="ey-form-input ey-form-w8" type="text" name="baseBankName" ng-model="info.baseBankName" ng-maxlength="500" maxlength="500" required  placeholder="开户银行及支行名称，如招商银行双榆树支行"/>
+            <span class="ey-color-red" ng-show="editForm.baseBankName.$dirty && editForm.baseBankName.$invalid">请输入有效的基本开户银行名称</span>
+        </div>
+        <div class="ey-form-group" data-ng-class="(editForm.baseBankAccount.$dirty && editForm.baseBankAccount.$invalid) ? 'ey-has-error' : ''">
+            <label class="ey-form-label ey-required">基本开户账号：</label>
+            <input class="ey-form-input ey-form-w8" type="text" name="baseBankAccount" ng-model="info.baseBankAccount" ng-maxlength="500" maxlength="500" required  placeholder="公司开户许可证上的银行账号"/>
+            <span class="ey-color-red" ng-show="editForm.baseBankAccount.$dirty && editForm.baseBankAccount.$invalid">请输入有效的基本开户账号</span>
+        </div>
+        <div class="ey-form-group" data-ng-class="(editForm.taxAccount.$dirty && editForm.taxAccount.$invalid) ? 'ey-has-error' : ''">
+            <label class="ey-form-label ey-required">税务登记证号：</label>
+            <input class="ey-form-input ey-form-w8" type="text" name="taxAccount" ng-model="info.taxAccount" ng-maxlength="500" maxlength="500" required placeholder="公司税务登记证上的编号，通常18位"/>
+            <span class="ey-color-red" ng-show="editForm.taxAccount.$dirty && editForm.taxAccount.$invalid">请输入有效的税务登记证号</span>
+        </div>
+        <div class="ey-form-group" data-ng-class="(editForm.regAddress.$dirty && editForm.regAddress.$invalid) ? 'ey-has-error' : ''">
+            <label class="ey-form-label ey-required">注册场所地址：</label>
+            <input class="ey-form-input ey-form-w8" type="text" name="regAddress" ng-model="info.regAddress" ng-maxlength="500" maxlength="500" required  placeholder="公司营业执照上的注册地址"/>
+            <span class="ey-color-red" ng-show="editForm.regAddress.$dirty && editForm.regAddress.$invalid">请输入有效的注册场所地址</span>
+        </div>
+        <div class="ey-form-group" data-ng-class="(editForm.regTel.$dirty && editForm.regTel.$invalid) ? 'ey-has-error' : ''">
+            <label class="ey-form-label ey-required">注册固定电话：</label>
+            <input class="ey-form-input ey-form-w8" type="text" name="regTel" ng-model="info.regTel" ng-maxlength="500" maxlength="500" required  placeholder="公司有效联系方式，区号+电话号"/>
+            <span class="ey-color-red" ng-show="editForm.regTel.$dirty && editForm.regTel.$invalid">请输入有效的注册固定电话</span>
+        </div>
+        <div class="ey-form-group ey-inline">
+            <label class="ey-form-label ey-required" style="width:210px;">营业执照副本扫描件：</label>
+            <input class="ey-form-input ey-form-w8" type="text" ng-model="info.bizLicenseFileId" style="display: none;" required/>
+            <div class="ey-invoice-img" ng-if="info.bizLicenseFileId == null || info.bizLicenseFileId === ''">
+                <span class="eayunfont ef-paperclip"></span>
+                <!-- <p class="ey-color-default">单击上传附件</p> -->
+                <button type="button" class="ey-color-default"
+                        ngf-select="edit.uploadFiles($file,'biz')" ngf-pattern="'.'+fileTypes.join(',.')"  accept="{{'.'+fileTypes.join(',.')}}">
+                        单击上传附件
+                </button>
+            </div>
+            <div class="ey-invoice-img" ng-if="info.bizLicenseFileId != null && info.bizLicenseFileId!=''">
+                <span class="eayunfont ef-close" ng-click="edit.removeFile('biz')"></span>
+                <img alt="" ng-src="invoice/info/image.do?fileId={{info.bizLicenseFileId}}" style="width: 80px;height: 80px;">
+            </div>
+        </div>
+        <div class="ey-form-group ey-inline" style="margin-left:-18px;">
+            <label class="ey-form-label ey-required" style="width:218px;">一般纳税人资格证扫描件：</label>
+            <input class="ey-form-input ey-form-w8" type="text" ng-model="info.taxpayerLicenseFileId" ng-hide="true" required/>
+            <div class="ey-invoice-img" ng-if="info.taxpayerLicenseFileId == null || info.taxpayerLicenseFileId === ''">
+                <span class="eayunfont ef-paperclip"></span>
+                <!-- <p class="ey-color-default">单击上传附件</p> -->
+                <button type="button" class="ey-color-default"
+                        ngf-select="edit.uploadFiles($file,'tax')" ngf-pattern="'.'+fileTypes.join(',.')"  accept="{{'.'+fileTypes.join(',.')}}">
+                        单击上传附件
+                </button>
+            </div>
+            <div class="ey-invoice-img" ng-if="info.taxpayerLicenseFileId != null && info.taxpayerLicenseFileId != ''">
+                <span class="eayunfont ef-close" ng-click="edit.removeFile('tax')"></span>
+                <img alt="" ng-src="invoice/info/image.do?fileId={{info.taxpayerLicenseFileId}}" style="width: 80px;height: 80px;">
+            </div>
+        </div>
+        <div class="ey-form-group">
+            <label class="ey-form-label ey-required">银行开户许可证扫描件：</label>
+            <input class="ey-form-input ey-form-w8" type="text" ng-model="info.bankLicenseFileId" ng-hide="true" required/>
+            <div class="ey-invoice-img" ng-if="info.bankLicenseFileId == null || info.bankLicenseFileId === ''">
+                <span class="eayunfont ef-paperclip"></span>
+                <!-- <p class="ey-color-default">单击上传附件</p> -->
+                <button type="button" class="ey-color-default"
+                        ngf-select="edit.uploadFiles($file,'bank')" ngf-pattern="'.'+fileTypes.join(',.')"  accept="{{'.'+fileTypes.join(',.')}}">
+                        单击上传附件
+                </button>
+            </div>
+            <div class="ey-invoice-img"  ng-if="info.bankLicenseFileId != null && info.bankLicenseFileId != ''">
+                <span class="eayunfont ef-close" ng-click="edit.removeFile('bank')"></span>
+                <img alt="" ng-src="invoice/info/image.do?fileId={{info.bankLicenseFileId}}" style="width: 80px;height: 80px;">
+            </div>
+        </div>
+        <div class="ey-form-group">
+                <label class="ey-form-label"></label>
+                <p class="ey-text-tip">单张图片大小不可超过2M,支持JPG和PNG格式</p>
+        </div>
+    </div>
+    
+</div>
+<div class="ey-modal-footer">
+    <div class="ey-btn-group">
+        <button class="ey-btn ey-btn-primary" ng-disabled="editForm.$invalid" ng-click="commit()">确定</button>
+        <button class="ey-btn ey-btn-default" ng-click="cancel()">取消</button>
+    </div>
+</div>
+</form>
+

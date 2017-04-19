@@ -1,0 +1,52 @@
+<form class="ey-search-bar ey-search-bar-white">
+    <button class="ey-btn ey-btn-primary"
+            data-ng-click="database.create()"
+            data-ng-if="database.modulePower.dbCreate"
+            data-ng-disabled="!((database.instance.rdsStatus == 'ACTIVE'
+                            || database.instance.rdsStatus == 'RESTART_REQUIRED')
+                            && database.instance.chargeState == '0')">
+        <span class="eayunfont ef-plus"></span>
+        <span>创建数据库</span>
+    </button>
+</form>
+
+<eayun-table data-api="database.table.api" data-ajax-source="database.table.source" data-param="database.table.getParams"
+             data-result="database.table.result">
+    <table class="ey-table-muliti">
+        <thead>
+        <tr>
+            <th>数据库名称</th>
+            <th>
+                <eayun-table-filter list-data="database.charList" text-field="key" item-clicked="database.changeCharSet($item, $event)"></eayun-table-filter>
+            </th>
+            <th>可访问账号</th>
+            <th>备注</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody><tr data-ng-repeat="db in database.table.result">
+            <td data-ng-bind="db.databaseName" title="{{db.databaseName}}"></td>
+            <td data-ng-bind="db.characterSet"></td>
+            <td>
+                <span data-ng-bind-html="db.accessAccountList|multiline:5"></span>
+            </td>
+            <td data-ng-bind="database.showRemark(db.remark)" title="{{db.remark}}"></td>
+            <td class="ey-table-operation">
+                <div class="ey-btn-group">
+                    <button class="ey-btn"
+                            data-ng-click="database.delete(db)"
+                            data-ng-if="database.modulePower.dbDelete"
+                            data-ng-disabled="!((db.status == 'ACTIVE'
+                                            || db.status == 'RESTART_REQUIRED')
+                                            && database.instance.chargeState == '0')">
+                        <span class="ey-text-error">删除</span>
+                    </button>
+                    <span data-ng-if="!database.modulePower.dbDelete">
+                        ----
+                    </span>
+                </div>
+            </td>
+        </tr></tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

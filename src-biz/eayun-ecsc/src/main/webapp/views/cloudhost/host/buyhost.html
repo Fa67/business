@@ -1,0 +1,468 @@
+<ul class="ey-nav-bread">
+	<li data-ui-sref="app.cloud.cloudhost.host">云主机</li>
+	<li>创建云主机</li>
+</ul>
+<nav class="ey-nav-online">
+	<a data-ng-click="buyVm('1')" ng-class="model.payType=='1'?'active':''">包年包月</a>
+	<a data-ng-click="buyVm('2')" ng-class="model.payType=='2'?'active':''">按需付费</a>
+</nav>
+<div class="row">
+	<form class="ey-form-purchase col-lg-8" name="myForm" novalidate="novalidate">
+		<fieldset>
+			<legend>数据中心</legend>
+			<div class="ey-form-group">
+				<label>数据中心：</label>	
+				<span class="ey-mark ey-mark-width" ng-repeat="data in datacenters" ng-class="model.dcId == data.dcId?'active':''" data-ng-click="selectDc(data)">{{data.dcName}}</span>
+			</div>
+		</fieldset>
+		<fieldset>
+			<legend>网络</legend>
+			<div class="ey-form-group">
+				<label class="ey-form-label ey-required">私有网络：</label>
+				<eayun-select class="ey-form-w6" placeholder="请选择网络" data-ng-model="model.network" required data-ng-change = "selectNetwork()">
+					<eayun-option ng-repeat="data in netList" value="data" text="{{data.netName}}"></eayun-option>
+				</eayun-select>
+				<span data-ng-if = "netList.length ==0">您还没有私有网络，<a class="ey-color-blue pointer" data-ui-sref="app.net.netbar.net">立即创建</a>？</span>
+			</div>
+			<div class="ey-form-group">
+				<label class="ey-form-label ey-required">受管子网：</label>
+				<eayun-select class="ey-form-w6" placeholder="请选择受管子网" data-ng-model="model.subnet" required show-format="substrSubnetName(text)">
+					<eayun-option ng-repeat="data in subnetList" value="data" text="{{data.subnetName+'('+data.cidr+')'}}"></eayun-option>
+				</eayun-select>
+				<span class="ey-text-tip col-lg-6" style="line-height: 20px">受管子网用于各子网间通信以及与公网通信，自管子网仅用于子网内各主机内部通信。云主机同时加入受管和自管子网后，若无法正常上网或IP地址无法自动获取展示，<a href="http://www.eayun.com/document/faq/ech.html" target="_blank"><span class="ey-text-link">点击此处查看解决办法</span></a>。</span>
+			</div>
+			<div class="ey-form-group">
+				<label class="ey-form-label ey-required">自管子网：</label>
+				<eayun-select class="ey-form-w6" placeholder="请选择自管子网" data-ng-model="model.selfSubnet" required show-format="substrSubnetName(text)">
+					<eayun-option value="'-1'" text="不加入子网"></eayun-option>
+					<eayun-option ng-repeat="data in selfSubnetList" value="data" text="{{data.subnetName+'('+data.cidr+')'}}"></eayun-option>
+				</eayun-select>
+			</div>
+			<div class="ey-form-group">
+				<label>公网IP：</label>
+				<div class="ey-form-checkbox">
+					<input type="checkbox" id="check1" data-ng-model="model.isBuyFloatIp" data-ng-change="selectBuyFloatIp()"
+					ng-disabled ="subnetList.length==0 || !subnetList || model.network.gatewayIp == 'null' " >
+					<label for="check1">购买公网IP
+						<span>如无需公网访问，可暂不购买</span>
+					</label>
+					<p class="ey-has-error vm-buy-error" data-ng-if="floatIpQuotaMsg">{{floatIpQuotaMsg}}</p>
+				</div>
+			</div>
+		</fieldset>
+		
+		<fieldset>
+			<legend>镜像</legend>
+			<div class="ey-form-group">
+				<label>镜像类型：</label>	
+				<span class="ey-mark ey-mark-width" ng-class="model.vmFrom=='publicImage'?'active':''" data-ng-click="selectVmFrom('publicImage')">公共镜像</span>
+				<span class="ey-mark ey-mark-width" ng-class="model.vmFrom=='privateImage'?'active':''" data-ng-click="selectVmFrom('privateImage')">自定义镜像</span>
+				<span class="ey-mark ey-mark-width" ng-class="model.vmFrom=='marketImage'?'active':''" data-ng-click="selectVmFrom('marketImage')">市场镜像</span>
+			</div>
+			
+			<div class="ey-form-group" ng-if="model.vmFrom=='publicImage'">
+				<label>操作系统：</label>	
+				<div class="ey-operate">
+					<span class="eayunfont ey-system" ng-repeat="data in osList"  data-ng-click="selectOs(data)"
+					ng-class="data.icon +' '+(data.nodeId == model.os.nodeId?'active':'')"></span>
+					
+					<div class="ey-operate-content">
+						<span ng-if="imageList.length==0">当前暂无可选项</span>
+						<div>
+							<ul>
+								<li ng-repeat="data in imageList" data-ng-click="selectImage(data)" ng-class="data.imageId == model.image.imageId?'active':''">{{data.imageName}}</li>
+							</ul>
+						</div>
+					</div>
+					<p class="ey-text-tip">基于此镜像创建云主机，其系统盘大小为{{model.disk}}GB</p>
+					<!-- <p class="ey-has-error vm-buy-error" data-ng-if="volCapacityQuotaMsg">{{volCapacityQuotaMsg}}</p> -->
+				</div>
+			</div>
+			
+			<div class="ey-form-group" ng-if="model.vmFrom=='privateImage'">
+				<label>来源镜像类型：</label>	
+				<div class="ey-operate">
+					<span class="ey-mark ey-mark-width" ng-class="model.sourceType=='all'?'active':''" data-ng-click="selectPrivateImage('all')">全部</span>
+					<span class="ey-mark ey-mark-width" ng-class="model.sourceType=='1'?'active':''" data-ng-click="selectPrivateImage('1')" style="margin:2px -2px;">公共镜像</span>
+					<span class="ey-mark ey-mark-width" ng-class="model.sourceType=='3'?'active':''" data-ng-click="selectPrivateImage('3')">市场镜像</span>
+					
+					<div class="ey-operate-content">
+						<span ng-if="imageList.length==0">当前暂无可选项</span>
+						<div>
+							<ul>
+								<li ng-repeat="data in imageList" data-ng-click="selectImage(data)" ng-class="data.imageId == model.image.imageId?'active':''">{{data.imageName}}</li>
+							</ul>
+						</div>
+					</div>
+					<p class="ey-text-tip">基于此镜像创建云主机，其系统盘大小为{{model.disk}}GB</p>
+					<!-- <p class="ey-has-error vm-buy-error" data-ng-if="volCapacityQuotaMsg">{{volCapacityQuotaMsg}}</p> -->
+				</div>
+			</div>
+			
+			<div class="ey-form-group" ng-if="model.vmFrom=='marketImage'">
+				<label>业务类别：</label>	
+				<div class="ey-operate">
+					<span class="ey-mark ey-mark-width" ng-class="model.professionType=='all'?'active':''" data-ng-click="selectMarketImage()" style="margin-right:-2px;">全部</span>
+					<span class="ey-mark ey-mark-width" ng-repeat="data in professionTypeList"  data-ng-click="selectMarketImage(data)"
+					ng-class="data.nodeId == model.professionType?'active':''">{{data.nodeName}}</span>
+					
+					<div class="ey-operate-content">
+						<span ng-if="imageList.length==0">当前暂无可选项</span>
+						<div>
+							<ul>
+								<li ng-repeat="data in imageList" data-ng-click="selectImage(data)" ng-class="data.imageId == model.image.imageId?'active':''">{{data.imageName}}</li>
+							</ul>
+						</div>
+					</div>
+					<p class="ey-text-tip">基于此镜像创建云主机，其系统盘大小为{{model.disk}}GB</p>
+					<!-- <p class="ey-has-error vm-buy-error" data-ng-if="volCapacityQuotaMsg">{{volCapacityQuotaMsg}}</p> -->
+				</div>
+			</div>
+			
+		</fieldset>
+		
+		<fieldset>
+			<legend>主机规格</legend>
+			<div class="ey-form-group">
+				<label>CPU：</label>	
+				<span class="ey-mark" ng-repeat="data in cpuList"  data-ng-click="selectCpu(data)"
+				ng-class="model.cpu == data.nodeName.substr(0,data.nodeName.length-1) ? 'active' : ''">{{data.nodeName}}</span>
+			</div>
+			
+			<div class="ey-form-group">
+				<label>内存：</label>	
+				<div>
+					<span class="ey-mark" ng-repeat="data in ramList"  data-ng-click="selectRam(data)"
+					ng-class="model.ram == data.nodeName.substr(0,data.nodeName.length-2) ? 'active' : ''">{{data.nodeName}}</span>
+					<p class="ey-has-error vm-buy-error" data-ng-if="cpuQuotaMsg">{{cpuQuotaMsg}}</p>
+				</div>
+			</div>
+		</fieldset>
+		
+		
+		
+		<fieldset>
+			<legend>云硬盘</legend>
+			
+			<div class="ey-form-group">
+			   <label class="ey-form-label">系统盘类型：</label>
+				   <div class="ey-form-radio" data-ng-repeat="data in volumeTypeList">
+				     <input id="sys_{{$index}}"  type="radio" name="radioOne"  value="{{data.typeId}}" data-ng-model="model.sysTypeId" data-ng-click="selectSysType(data)">
+				     <label for="sys_{{$index}}">{{data.volumeTypeAs}}</label>
+				   </div>
+				   <div class="ey-form-group" data-ng-if="typeSure">
+				     <label>&nbsp;</label>
+				     <span class="ey-text-tip ey-has-error">服务器异常，请稍后重试或联系客服</span>
+			       </div>	   
+		    </div>
+		    
+		    <div class="ey-form-group">
+			   <label>系统盘容量：</label>	
+				<span>{{model.disk}}GB</span>  
+				<div class="ey-form-group" data-ng-if="volCapacityQuotaMsg&&model.dataDisk<=0">
+				   <label>&nbsp;</label>
+				  <span class="ey-text-tip ey-has-error">{{volCapacityQuotaMsg}}</span>
+			    </div>
+		    </div>
+		    
+		    <div class="ey-form-group">
+			   <label class="ey-form-label">数据盘类型：</label>
+				   <div class="ey-form-radio" data-ng-repeat="data in volumeTypeList">
+				     <input id="data_{{$index}}"  type="radio" name="radioTwo"  value="{{data.typeId}}" data-ng-model="model.dataTypeId" data-ng-click="selectDataType(data)">
+				     <label for="data_{{$index}}">{{data.volumeTypeAs}}</label>
+				   </div>
+		    </div>
+		    
+		    <div class="ey-form-group"  data-ng-class="(volCapacityQuotaMsg&&model.dataDisk>0)?'ey-has-error' : ''" data-ng-if="volumeTypeList.length>0">
+                <label class="ey-form-label">数据盘容量：</label>
+	                <div class="ey-form-w8" data-ng-repeat="type in volumeTypeList">
+		             <div data-ng-if="model.dataDiskType==type.volumeType">
+		                 <eayun-progress-step   data-ng-model="model.dataDisk" max-value="type.maxSize" min-value="0"  total-step="type.maxSize/100" precision="1" format="formate" parse="parse" on-value-change="changeSize($value)" text="GB" required></eayun-progress-step>
+		                 <span class="ey-has-error" style="float: right;" data-ng-if="volCapacityQuotaMsg&&model.dataDisk>0">{{volCapacityQuotaMsg}}</span>
+		                 <p class="ey-text-tip">0GB-{{type.maxSize}}GB</p>
+	                 </div>
+	                </div>
+	                <div class="ey-form-group">
+					  <label>&nbsp;</label>
+					  <span class="ey-text-tip">容量设置为0，表示您暂不购买数据盘</span>
+				    </div>
+           </div> 
+           
+           
+          <div class="ey-form-group"  data-ng-class="(volCapacityQuotaMsg&&model.dataDisk>0)?'ey-has-error' : ''"  data-ng-if="volumeTypeList.length<=0">
+                <label class="ey-form-label">数据盘容量：</label>
+                <div class="ey-form-w8">
+                 <eayun-progress-step   data-ng-model="model.dataDisk" max-value="5000" min-value="0"  total-step="50" precision="1" format="formate" parse="parse" on-value-change="changeSize($value)" text="GB" required></eayun-progress-step>
+                 <span class="ey-has-error" style="float: right;" data-ng-if="volCapacityQuotaMsg&&model.dataDisk>0">{{volCapacityQuotaMsg}}</span>
+                 <p class="ey-text-tip">0GB-5000GB</p>
+                </div>
+                <div class="ey-form-group" >
+				  <label>&nbsp;</label>
+				  <span class="ey-text-tip">容量设置为0，表示您暂不购买数据盘</span>
+			    </div>
+          </div>
+          
+			  
+		</fieldset>
+		
+		
+		
+		<fieldset>
+			<legend>安全信息</legend>
+			<div class="ey-form-group">
+				<label>用户名：</label>	
+				<span class="ey-text-tip">{{model.username}}</span>
+			</div>
+			<div class="ey-form-group">
+			   <label class="ey-form-label"> </label>
+			   <div class="ey-form-radio">
+				     <input id="pwdType"  type="radio" name="loginType"  value="pwd" data-ng-model="model.loginType">
+				     <label for="pwdType">设置密码</label>
+			   </div>
+			   <div class="ey-form-radio" data-ng-if="model.image.osType =='0007002002002'">
+				     <input id="SSHType"  type="radio" name="loginType"  
+				     	value="ssh" data-ng-model="model.loginType" data-ng-click = "querySecretKeyList()">
+				     <label for="SSHType">关联SSH密钥</label>
+			   </div>
+			   
+		    </div>
+		    <div class="ey-form-group" data-ng-if ="model.loginType=='ssh'" style="margin-bottom: 0px;">
+		    	<label class="ey-form-label"></label>
+			   <div class="ey-form-group ey-content-notice col-lg-12">
+			   		<p >我们强烈建议您，在选择SSH密钥登录云主机后，请在云主机内设置禁止密码登录，以最大限度保证您的云主机避免暴力破解等网络攻击</p>
+			   </div>
+		    </div>
+			<div class="ey-form-group" data-ng-if = "model.loginType=='pwd'"
+				data-ng-class="(isPwdOnFocus && checkPasswordFlag)?'ey-has-error' : ''">
+				<label class="ey-form-label ey-required">密码：</label>	
+				
+				<div class="ey-form-group ey-form-w6" style="margin-bottom:0;float:left;">
+					<input class="ey-form-input ey-form-w6"  type="password" placeholder="请输入密码" 
+					name="vmPassword" ng-focus="focus('pwd')" ng-blur="passBlur()"
+					data-ng-model="model.password" maxlength="30" required>
+					<span ng-if="isPwdOnFocus && checkPasswordFlag" class="ey-text-tip ey-has-error">密码不符合规则</span>
+				</div>
+				<span class="ey-text-tip col-lg-6">8-30个字符，且同时包含数字、大写字母、小写字母和特殊字符中的三项</span>
+				
+			</div>
+			
+			<div class="ey-form-group"  data-ng-if = "model.loginType=='pwd'"
+				data-ng-class="(isRePwdOnFocus)? 'ey-has-error' : ''">
+				<label class="ey-form-label ey-required">确认密码：</label>	
+				<input class="ey-form-input ey-form-w6" type="password" placeholder="请输入确认密码" 
+				data-ng-model="model.repassword" name="repassword" maxlength="30" ng-focus="focus('rePwd')" ng-blur="repassBlur()" required>
+				<span class="ey-text-tip ey-has-error" data-ng-if="isRePwdOnFocus">确认密码与密码输入不一致</span>
+			</div>
+			
+			<div class="ey-form-group"  data-ng-if ="model.loginType=='ssh'">
+				<label class="ey-form-label ey-required">SSH名称：</label>
+				<eayun-select class="ey-form-w6" placeholder="请选择SSH密钥" data-ng-model="model.secretKey" required>
+					<eayun-option ng-repeat="data in secretKeyList" value="data.secretkeyId" text="{{data.secretkeyName}}"></eayun-option>
+				</eayun-select>
+				<span class="ey-text-tip col-lg-6">若没有合适的SSH密钥，你可以点击此处<a class="ey-color-blue pointer" data-ui-sref="app.safety.safetybar.secretkeylist"> 立即创建</a>？</span>
+			</div>
+			
+			<div class="ey-form-group" data-ng-class="((isEdit || myForm.vmName.$dirty) && (myForm.vmName.$invalid||!checkVmName))?'ey-has-error' : ''">
+				<label class="ey-form-label ey-required">主机名称：</label>	
+				<div>
+					<input class="ey-form-input ey-form-w6" type="text" placeholder="请输入主机名称" data-ng-model="model.vmName"  name="vmName" data-ng-change="checkVmNameExist(value)"
+					ng-pattern='/^[\u4e00-\u9fa5a-zA-Z0-9]([\u4e00-\u9fa5_a-zA-Z0-9\s]{0,18}[\u4e00-\u9fa5a-zA-Z0-9]){0,1}$/' maxlength="{{vmMaxlength}}" required>
+					<span class="ey-text-tip">添加多台云主机时会自动为主机名称后添加编号，
+						<span ng-mouseenter="hintShow=true" ng-mouseleave="hintShow=false">
+							<span class ="ey-text-link" hint="views/cloudhost/host/buyvmtip.html" 
+		                      hint-show="hintShow"
+		                      tooltip-class="tooltip-work"
+		                      tooltip-placement="bottom">示例</span>
+						</span>
+					</span>
+					<p data-ng-if="(isEdit || myForm.vmName.$dirty) && myForm.vmName.$invalid" style="margin-bottom:0;">请输入1-{{vmMaxlength}}位字符,支持数字、中英文、下划线、空格</p>
+					<p data-ng-if="(isEdit || myForm.vmName.$dirty) && myForm.vmName.$valid&&!checkVmName" style="margin-bottom:0;">云主机名称已存在</p>
+				</div>
+			</div>
+			
+			<div class="ey-form-group">
+				<label>安全组：</label>
+				<eayun-select class="ey-form-w6" ng-model="model.sgId" placeholder="请选择安全组" required>
+					<eayun-option ng-repeat="data in sgList" value="data.sgId" text="{{data.sgName}}"></eayun-option>
+				</eayun-select>
+				<span class="ey-text-tip col-lg-6">创建主机时仅可选择内置的安全组，云主机创建成功后可根据实际需求进行调整</span>
+			</div>
+		</fieldset>
+		
+		<fieldset>
+			<legend>购买量</legend>
+			<div class="ey-form-group" data-ng-class="((isEdit || myForm.number.$dirty)&& (myForm.number.$invalid || countQuotaMsg != '' || model.number>20))?'ey-has-error' : ''">
+				<label>主机数量：</label>
+				<div class="ey-form-input-group ey-has-suffix ey-form-w3">
+					<input class = "ey-form-input" type="number" name="number" data-ng-pattern='/^[1-9][0-9]*$/' placeholder="请输入数量" data-ng-model="model.number" 
+	                ng-change="checkVmNum()"  required>
+					<span class="ey-suffix">台</span>
+				</div>
+				<span class="ey-text-tip ey-has-error" data-ng-if="(isEdit || myForm.number.$dirty) && myForm.number.$invalid">请输入1-20之间的正整数</span>
+				<span class="ey-text-tip ey-has-error" data-ng-if="(isEdit || myForm.number.$dirty) && myForm.number.$valid && model.number>20">批量购买数量不能超过20台</span>
+				<span class="ey-text-tip ey-has-error" data-ng-if="countQuotaMsg != '' && model.number<21">{{countQuotaMsg}}</span>
+			</div>
+			
+			<div class="ey-form-group" data-ng-if="model.payType == '1'">
+				<label>付款方式：</label>
+				<eayun-select class="ey-form-w3" placeholder="请选择周期类型" data-ng-model="model.cycleType" required data-ng-change="changeCycleType()">
+					<eayun-option ng-repeat="data in cycleTypeList" value="data.nodeId" text="{{data.nodeName}}"></eayun-option>
+				</eayun-select>
+				<eayun-select class="ey-form-w3" placeholder="请选择购买时长" data-ng-model="model.buyCycle" required data-ng-change="calcBuyCycle()">
+					<eayun-option ng-repeat="data in cycleList" value="data.nodeNameEn" text="{{data.nodeName}}"></eayun-option>
+				</eayun-select>
+			</div>
+		</fieldset>
+	</form>
+	<div class="ey-set">
+		<h5>已选配置</h5>
+		<fieldset>
+			<ul>
+				<li>
+					数据中心：
+					<span class="ey-color-default">{{model.dcName}}</span>
+				</li>
+				<li>
+					私有网络：
+					<span class="ey-color-default" title="{{model.netName}}">{{model.netName}}</span>
+				</li>
+				<li>
+					受管子网：
+					<span class="ey-color-default" title="{{model.subnet?(model.subnet.subnetName+'('+model.subnet.cidr+')'):''}}">
+						<span class="ey-set-ellipsis">{{model.subnet?('('+model.subnet.cidr+')'):''}}</span>
+						<span class="ey-set-ellipsis" style="width: 60px;">{{model.subnet?(model.subnet.subnetName):''}}</span>
+					</span>
+				</li>
+				<li>
+					自管子网：
+					<span class="ey-color-default" title="{{model.selfSubnet?(model.selfSubnet=='-1'?'不加入子网':(model.selfSubnet.subnetName+'('+model.selfSubnet.cidr+')')):''}}">
+						<span class="ey-set-ellipsis" ng-if="model.selfSubnet!='-1'">{{model.selfSubnet?('('+model.selfSubnet.cidr+')'):''}}</span>
+						<span class="ey-set-ellipsis"style="width: 60px;" ng-if="model.selfSubnet!='-1'">{{model.selfSubnet?model.selfSubnet.subnetName:''}}</span>
+						<span ng-if="model.selfSubnet=='-1'">不加入子网</span>
+					</span>
+				</li>
+				<li>公网IP:
+					<span class="ey-color-default">{{model.isBuyFloatIp?'已购买':'未购买'}}</span>
+				</li>
+				<li>主机规格：
+					<span class="ey-color-default">{{model.cpu}}核| {{model.ram}}GB</span>
+				</li>
+				<li>系统盘：
+					<span class="ey-color-default">{{model.sysTypeAs}}{{model.disk}}GB</span>
+				</li>
+				<li>数据盘：
+					<span class="ey-color-default" data-ng-if="model.dataDisk>0">{{model.dataTypeAs}}{{model.dataDisk}}GB</span>
+					<span class="ey-color-default" data-ng-if="model.dataDisk<=0">未购买</span>
+				</li>
+				<li>镜像：
+					<span class="ey-color-default" title="{{model.image.imageName}}">{{model.image.imageName}}</span>
+				</li>
+				<li>购买量：
+					<span class="ey-color-default">{{(model.payType == '1'?(model.buyCycle>11?(model.buyCycle/12+'年'):(model.buyCycle+'个月'))+'×':'')+model.number}}台</span>
+				</li>
+			</ul>
+		</fieldset>
+		
+		<fieldset data-ng-if="model.payType == '1'">
+			<h6>费用明细</h6>
+			<ul>
+				<li>
+					规格：
+					<span class="ey-color-red" data-ng-if="!priceError"><span class="ey-color-default">￥&nbsp;</span>{{specPrice|number:2}}</span>
+					<span class="ey-color-red" data-ng-if="priceError">--</span>
+				</li>
+				<li>
+					系统盘：
+					<span class="ey-color-red" data-ng-if="!priceError"><span class="ey-color-default">￥&nbsp;</span>{{sysDiskPrice|number:2}}</span>
+					<span class="ey-color-red" data-ng-if="priceError">--</span>
+				</li>
+				<li>
+					数据盘：
+					<span class="ey-color-red" data-ng-if="!priceError"><span class="ey-color-default">￥&nbsp;</span>{{dataDiskPrice|number:2}}</span>
+					<span class="ey-color-red" data-ng-if="priceError">--</span>
+				</li>
+				<li>
+					镜像：
+					<span class="ey-color-red" data-ng-if="!priceError"><span class="ey-color-default">￥&nbsp;</span>{{imagePrice|number:2}}</span>
+					<span class="ey-color-red" data-ng-if="priceError">--</span>
+				</li>
+				<li>
+					公网IP：
+					<span class="ey-color-red" data-ng-if="!priceError"><span class="ey-color-default">￥&nbsp;</span>{{floatPrice|number:2}}</span>
+					<span class="ey-color-red" data-ng-if="priceError">--</span>
+				</li>
+			</ul>
+			<p class="ey-font-size-big">
+				总计：
+				<span class="ey-font-size-big ey-text-tip ey-color-default" data-ng-if="!priceError">￥&nbsp;</span>
+				<span class="ey-font-size-super ey-color-red" data-ng-if="!priceError">{{priceDetails.totalPrice | number:2}}</span>
+				<span class="ey-color-red" data-ng-if="priceError">{{priceError}}</span>
+			</p>
+		</fieldset>
+		<fieldset data-ng-if="model.payType == '2'">
+			<h6>费用明细</h6>
+			<ul>
+				<li>
+					规格：
+					<span>
+						<span class="ey-color-red" data-ng-if="!priceError"><span class="ey-color-default">￥&nbsp;</span>{{specPrice|number:2}}</span>
+						<span class="ey-color-default" data-ng-if="!priceError" >&nbsp;/小时</span>
+						<span class="ey-color-red" data-ng-if="priceError">--</span>
+					</span>
+				</li>
+				<li>
+					系统盘：
+					<span>
+						<span class="ey-color-red" data-ng-if="!priceError"><span class="ey-color-default">￥&nbsp;</span>{{sysDiskPrice|number:2}}</span>
+						<span class="ey-color-default" data-ng-if="!priceError">&nbsp;/小时</span>
+						<span class="ey-color-red" data-ng-if="priceError">--</span>
+					</span>
+				</li>
+				<li>
+					数据盘：
+					<span>
+						<span class="ey-color-red" data-ng-if="!priceError"><span class="ey-color-default">￥&nbsp;</span>{{dataDiskPrice|number:2}}</span>
+						<span class="ey-color-default" data-ng-if="!priceError">&nbsp;/小时</span>
+						<span class="ey-color-red" data-ng-if="priceError">--</span>
+					</span>
+				</li>
+				<li>
+					镜像：
+					<span>
+						<span class="ey-color-red" data-ng-if="!priceError"><span class="ey-color-default">￥&nbsp;</span>{{imagePrice|number:2}}</span>
+						<span class="ey-color-default" data-ng-if="!priceError">&nbsp;/小时</span>
+						<span class="ey-color-red" data-ng-if="priceError">--</span>
+					</span>
+				</li>
+				<li>
+					公网IP：
+					<span>
+						<span class="ey-color-red" data-ng-if="!priceError"><span class="ey-color-default">￥&nbsp;</span>{{floatPrice|number:2}}</span>
+						<span class="ey-color-default" data-ng-if="!priceError">&nbsp;/小时</span>
+						<span class="ey-color-red" data-ng-if="priceError">--</span>
+					</span>
+				</li>
+			</ul>
+			<p class="ey-font-size-big">
+				总计：
+				<span class="ey-font-size-big ey-text-tip ey-color-default" data-ng-if="!priceError">￥&nbsp;</span>
+				<span class="ey-font-size-super ey-color-red" data-ng-if="!priceError">{{priceDetails.totalPrice | number:2}}</span>
+				<span class="ey-color-default" data-ng-if="!priceError">&nbsp;/小时</span>
+				<span class="ey-color-red" data-ng-if="priceError">{{priceError}}</span>
+			</p>
+			<span class="ey-color-red" data-ng-if="model.payType == '2'">
+				开通按需付费的云服务，您的账户余额不得低于{{payAfpterPayment}}元，请充值后再开通，
+				<a class="ey-color-blue pointer" data-ng-click="recharge()">立即充值</a>
+			</span>
+		</fieldset>
+		<button class="ey-btn ey-btn-primary" ng-disabled="myForm.$invalid || !checkVmName || priceError ||
+			(model.loginType == 'pwd' && (checkPasswordFlag || (model.password != model.repassword))) ||isNSF||typeSure || volCapacityQuotaMsg || countQuotaMsg || cpuQuotaMsg || 
+			floatIpQuotaMsg || !model.image.imageId || cpuList.length == 0 || ramList.length == 0
+			||(project&&((model.number*(model.dataDisk+model.disk))>(project.diskCapacity - project.usedDiskCapacity)))" data-ng-click="commitBuyVm()"
+		>立即购买</button>
+		<fieldset data-ng-if="model.payType == '2' && isNSF">
+			<span class="ey-color-red">您的账户余额不足{{payAfpterPayment}}元，请充值后操作</span>
+		</fieldset>
+	</div>
+</div>
+

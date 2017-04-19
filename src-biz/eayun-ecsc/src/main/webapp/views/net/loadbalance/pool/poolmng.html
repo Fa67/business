@@ -1,0 +1,162 @@
+<!-- Form表单 -->
+<div class="ey-search-bar ey-search-bar-white">
+    <button class="ey-btn ey-btn-primary" data-ng-click="buyPool()" data-ng-show="buttonPower.isAdd">
+        <span class="eayunfont ef-plus" aria-hidden="true"></span>
+        <span>创建负载均衡器</span>
+    </button>
+    <eayun-search-text value="poolName" search="search()" placeholder="请输入名称搜索"></eayun-search-text>
+</div>
+
+<!-- 表格 -->
+<eayun-auto-refresh refresh="refresh" interval="5000"></eayun-auto-refresh>
+<eayun-table data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams"
+             data-result="myTable.result">
+    <table class="ey-table-muliti">
+        <thead>
+        <tr>
+            <th style="width: 80px;">名称</th>
+            <th style="width: 110px;">状态</th>
+            <th style="width: 110px;">模式</th>
+            <th style="width: 130px;">IP地址</th>
+            <th style="width: 130px;">配置</th>
+            <th style="width: 80px;">成员数量</th>
+            <th style="width: 90px;">计费状态</th>
+            <th style="width: 150px;">创建时间</th>
+            <th width="180px">操作</th>
+        </tr>
+        </thead>
+
+        <tbody><tr data-ng-repeat="item in myTable.result">
+            <td class="click-td" data-ng-click="detailPool(item)"
+                data-ng-bind="::item.poolName" title="{{item.poolName}}"></td>
+            <td style="text-align: left;">
+                <span class="state-block" data-ng-class="poolStatusClass!=''?poolStatusClass:''"
+                      ng-init="poolStatusClass = getPoolStatus(item)"></span>
+                {{item.statusForPool}}
+            </td>
+            <td  data-ng-bind="::item.mode=='1'?'主备模式':'普通模式'" title="{{item.mode=='1'?'主备模式':'普通模式'}}"></td>
+            <td>
+                    <span ng-show="item.subnetIp" title="受管子网：{{item.subnetIp}}">受管子网：{{item.subnetIp}}</span><br/>
+                    <span style="width:100%;" class="ey-ellipsis ey-inline"   ng-show="item.floatIp" title="公网：{{item.floatIp}}">公网：{{item.floatIp}}</span>
+            </td>
+            <td title="{{item.poolProtocol}}：{{item.vipPort}}
+健康检查：{{item.monitorStatus}}">
+                <span ng-show="item.poolProtocol&&item.vipPort!=0">{{item.poolProtocol}} ：
+                    <span>{{item.vipPort}}</span>
+                </span><br>
+                <span>健康检查：
+                    <span>{{item.monitorStatus}}</span>
+                </span>
+            </td>
+            <td data-ng-bind="::item.count"></td>
+            <!--<td class="" ng-show="tags.gt2Tags" ng-init="tags=poolJson(item.tagName)">
+                <span>{{tags.twoTagsString}}</span>
+
+                <div class="tag-icon ellipsis pointer"
+                     ng-mouseenter="openTableBox({value:tags.allTagsString,type:'tagName',index:$index})"
+                     ng-mouseleave="closeTableBox({type:'tagName',index:$index})"
+                     hint="views/directives/ellipsispop.html"
+                     hint-show="hintTagShow[$index]"
+                     tooltip-class="tooltip-tag"
+                     tooltip-placement="bottom">
+                </div>
+            </td>
+            <td class="" ng-show="!tags.gt2Tags">{{tags.allTagsString}}</td>-->
+            <td>
+                <span>{{item.payTypeStr}}</span><br/>
+                <span style="width:100%;" class="ey-ellipsis ey-inline" data-ng-show="item.payType == 1" title="{{item.payTypeStr}}
+到期时间：{{item.endTime|date:'yyyy-MM-dd HH:mm:ss'}}">
+                    到期时间：{{item.endTime|date:'yyyy-MM-dd HH:mm:ss'}}
+                </span>
+            </td>
+            <td>{{item.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+            <td class="ey-table-operation">
+                <div class="ey-btn-group">
+                    <button class="ey-btn" type="button" data-ng-click="bindFloatIp(item)"
+                            data-ng-disabled="item.chargeState != '0'"
+                            data-ng-show="item.vipId&&!item.floatIp && buttonPower.isBind">绑定公网IP
+                    </button>
+                    <button class="ey-btn" type="button" data-ng-click="unbundingFloatIp(item)"
+                            data-ng-disabled="item.chargeState != '0'"
+                            data-ng-show="item.vipId&&item.floatIp && buttonPower.isBind">解绑公网IP
+                    </button>
+                    <div class="ey-btn ey-btn-more"
+                         ng-show="buttonPower.isTag||buttonPower.isDelete"
+                         eayun-toggle="open">
+                        更多操作
+                        <span class="eayunfont ef-triangle"></span>
+                        <ul class="ey-drop-menu">
+                            <!--<li data-ng-click="editPool(item)"
+                                data-ng-show="buttonPower.isEdit">
+                                <a role="button">
+                                    编辑
+                                </a>
+                            </li>-->
+                            <li data-ng-click="bindMonitor(item)"
+                                data-ng-if="item.chargeState == '0'"
+                                data-ng-show="buttonPower.isSetDetachHealthMonitor ">
+                                <a role="button">
+                                   	关联健康检查
+                                </a>
+                            </li>
+                              <li data-ng-click="unBindMonitor(item)"
+                                data-ng-if="item.chargeState == '0'&&item.checkMonitor"
+                                data-ng-show="buttonPower.isSetDetachHealthMonitor ">
+                                <a role="button">
+                                   	解除健康检查关联
+                                </a>
+                            </li>
+                            <li data-ng-click="addMember(item)"
+                                data-ng-if="item.chargeState == '0'"
+                                data-ng-show="buttonPower.isAddMember">
+                                <a role="button">
+                                    添加成员
+                                </a>
+                            </li>
+                            <li data-ng-click="tagResource('ldPool',item.poolId)"
+                                data-ng-if="item.chargeState == '0'"
+                                data-ng-show="buttonPower.isTag">
+                                <a role="button"
+                                   style="font-size:12px;">
+                                    标签
+                                </a>
+                            </li>
+                            <li data-ng-show="buttonPower.isRenew && item.payType == 1"
+                                data-ng-click="renewLoadBalancer(item)"
+                                style="font-size:12px;">
+                                <a role="button">
+                                    续费
+                                </a>
+                            </li>
+                            <li data-ng-show="buttonPower.isChange"
+                                data-ng-if="item.chargeState == '0'"
+                                data-ng-click="changeConnectionLimit(item)"
+                                style="font-size:12px;">
+                                <a role="button">
+                                    更改连接数
+                                </a>
+                            </li>
+                            <li data-ng-show="buttonPower.isDelete"
+                                data-ng-if="!(item.payType == '1' && item.chargeState == '0')"
+                                data-ng-click="deletePool(item)">
+                                <a class="ey-text-error">
+                                    删除
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <span data-ng-show="!buttonPower.isChange
+                                 && !buttonPower.isSetDetachHealthMonitor
+                                 && !buttonPower.isBind
+                                 && !buttonPower.isAddMember
+                                 && !buttonPower.isTag
+                                 && !buttonPower.isRenew
+                                 && !buttonPower.isDelete">
+                    ----
+                </span>
+            </td>
+        </tr></tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>

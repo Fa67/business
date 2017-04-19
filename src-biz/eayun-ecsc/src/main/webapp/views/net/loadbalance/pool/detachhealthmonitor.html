@@ -1,0 +1,25 @@
+<form class="form-horizontal" name="myForm" novalidate>
+  <div class="form-group">
+    <label class="col-sm-3 control-label">健康检查：</label>
+
+    <div class="col-sm-8" data-ng-class="(myForm.monitorName.$dirty && myForm.monitorName.$invalid) ? 'has-error' : ''">
+      <eayun-select placeholder="--请选择健康检查--" name="monitorName" class="form-control" data-ng-model="model.monitor" required>
+<!--         <eayun-option value="" text="--请选择监控--" selected></eayun-option> -->
+        <eayun-option value="monitor" text="{{monitor.text}}" data-ng-repeat="monitor in monitorList"></eayun-option>
+      </eayun-select>
+      
+      <!-- js验证项目选择是否为空 -->
+      <label class="control-label" ng-show="myForm.monitorName.$dirty && myForm.monitorName.$error.required">请选择监控</label>
+    </div>
+  </div>
+
+  
+  <!-- 按钮区域 -->
+  <div class="modal-footer" >
+    <button class="btn btn-primary btn-modal" ng-click="commit()"  ng-disabled="!myForm.$valid">确  定</button>
+    <button class="btn btn-default btn-modal" style="margin-left:13px;" ng-click="cancel()">取  消</button>
+  </div>
+  
+  
+  
+</form>

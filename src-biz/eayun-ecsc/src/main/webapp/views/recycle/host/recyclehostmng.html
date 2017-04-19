@@ -1,0 +1,55 @@
+<!-- Form表单 -->
+<div class="ey-search-bar ey-search-bar-white">
+	  <eayun-search-text search="search($value,$event)" placeholder="请输入名称搜索"></eayun-search-text>
+</div>
+<!-- 表格 -->
+<eayun-table data-api="myTable.api" data-ajax-source="myTable.source" data-param="myTable.getParams" data-result="myTable.result">
+  <table class="ey-table-muliti">
+    <thead>
+    <tr>
+      <th>名称</th>
+      <th class="recycle-vm-table-status">状态</th>
+      <th>配置</th>
+      <th class="recycle-vm-table-ips">IP地址</th>
+      <!-- <th>数据中心</th> -->
+      <th>
+      	<eayun-table-filter list-data="dcList" text-field="dcName" item-clicked="selectDc($item, $event)"></eayun-table-filter>
+      </th>
+      <th class="recycle-vm-table-date">时间</th>
+      <th class="recycle-vm-table-btn">操作</th>
+    </tr>
+    </thead>
+
+    <tbody><tr data-ng-repeat="vm in myTable.result">
+      <td class="click-td" data-ng-click="detail(vm)" title="{{vm.vmName}}">{{vm.vmName}}</td>
+      <td>
+      	 <span class ="eayunfont ef-square" data-ng-class="vmStatusClass!=''?vmStatusClass:''" ng-init="vmStatusClass = checkVmStatus(vm)">
+	     </span>
+      	{{vm.vmStatusStr}}
+      	</td>
+      <td style="text-align: left;">
+      	<span>{{vm.cpus}}核\{{vm.rams/1024}}GB\{{vm.disks}}GB</span><br>
+      	<span>{{vm.sysType}}</span>
+      </td>
+      <td style="text-align: left;">
+      	<span>受管子网：{{vm.vmIp=='null' ? '未分配':vm.vmIp}}<br></span>
+      	<span>自管子网：{{vm.selfIp=='null' ? '未分配':vm.selfIp}}</span>
+      </td>
+      <td>{{vm.dcName}}</td>
+      <td>
+      	<span>{{'创建时间：'+(vm.createTime|date:'yyyy-MM-dd HH:mm:ss')}}<br></span>
+      	<span>{{'删除时间：'+(vm.deleteTime|date:'yyyy-MM-dd HH:mm:ss')}}</span>
+      </td>
+      <td>
+	      <div class="ey-btn-group">
+	        <button class="ey-btn" data-ng-click="deleteVm(vm)" data-ng-if="vmListPermissions.isDelete" ng-disabled="vm.vmStatus != 'SOFT_DELETED'">
+	        	<span class="ey-text-error">删除</span>
+	        </button>
+	        <button class="ey-btn" data-ng-click="restoreVm($event,vm)" data-ng-if="vmListPermissions.isRestore" ng-disabled="vm.vmStatus != 'SOFT_DELETED'">恢复</button>
+	        <span data-ng-if="!(vmListPermissions.isRestore || vmListPermissions.isDelete)">----</span>
+	      </div>
+      </td>
+    </tr></tbody>
+  </table>
+  <eayun-table-page></eayun-table-page>
+</eayun-table>

@@ -1,0 +1,330 @@
+<ul class="ey-nav-bread">
+	<li data-ui-sref="app.rds.backup" data-ng-if="buyInstance.instance.backupId">备份</li>
+    <li data-ui-sref="app.rds.instance" data-ng-if="!buyInstance.instance.backupId">MySQL</li>
+    <li>创建MySQL实例</li>
+</ul>
+<nav class="ey-nav-online">
+    <a data-ng-class="buyInstance.instance.payType == '1' ? 'active' : ''" data-ng-click="buyInstance.typeChoose('1')">包年包月</a>
+    <a data-ng-class="buyInstance.instance.payType == '2' ? 'active' : ''" data-ng-click="buyInstance.typeChoose('2')">按需付费</a>
+</nav>
+
+<div class="row">
+	<form class="ey-form-purchase col-lg-8" name="myForm" novalidate="novalidate">
+		<fieldset>
+			<legend>数据中心</legend>
+			<div class="ey-form-group">
+				<label>数据中心：</label>	
+				<span class="ey-mark ey-mark-width" 
+					  data-ng-repeat="data in buyInstance.datacenters"
+					  ng-class="buyInstance.instance.dcId == data.dcId?'active':''" 
+					  data-ng-click="buyInstance.selectDcPrj(data)">{{data.dcName}}
+			    </span>
+			</div>
+		</fieldset>
+		<fieldset>
+			<legend>网络</legend>
+			<div class="ey-form-group">
+				<label class="ey-form-label ey-required">私有网络：</label>
+				<eayun-select class="ey-form-w6" 
+							  placeholder="请选择私有网络"
+							  data-ng-model="buyInstance.instance.netId" 
+							  required 
+							  data-ng-change = "buyInstance.changeNetwork()">
+					<eayun-option ng-repeat="data in buyInstance.networkList" value="data.netId" text="{{data.netName}}({{data.gatewayIp}})"></eayun-option>
+				</eayun-select>
+				<span data-ng-if = "buyInstance.networkList.length == 0">请创建一个私有网络，并确保已有的私有网络已设置网关。<a class="ey-color-blue pointer" data-ui-sref="app.net.netbar.net">点击查看</a></span>
+			</div>
+			<div class="ey-form-group">
+				<label class="ey-form-label ey-required">受管子网：</label>
+				<eayun-select class="ey-form-w6" 
+							  placeholder="请选择受管子网" 
+							  data-ng-model="buyInstance.instance.subnetId" 
+							  required
+							  data-ng-change = "buyInstance.changeSubnet()"
+							  >
+					<eayun-option ng-repeat="subnet in buyInstance.subnetList" 
+								  value="subnet.subnetId" 
+								  text="{{subnet.subnetName}}({{subnet.cidr}})">
+					</eayun-option>
+				</eayun-select>
+				<span data-ng-if = "buyInstance.subnetList.length == 0 && buyInstance.networkList.length > 0">请创建一个受管子网，并确保已有的受管子网已连接路由。<a class="ey-color-blue pointer" data-ng-click="buyInstance.goNetDetailPage()">点击查看</a></span>
+			</div>
+		</fieldset>
+		
+		<fieldset>
+			<legend>版本</legend>
+			<div class="ey-form-group">
+				<label class="ey-form-label ey-required">版本号：</label>
+				<span class="ey-mark ey-mark-width" 
+					  data-ng-model="buyInstance.instance.versionId"
+					  ng-repeat="data in buyInstance.versionList" 
+					  ng-class="buyInstance.instance.versionId == data.versionId?'active':''" 
+					  data-ng-click="buyInstance.selectVersion(data)"
+					  required
+					  data-ng-if="!buyInstance.instance.backupId">{{data.versionName}}{{buyInstance.instance.backupId}}
+				</span>
+				<span data-ng-if="buyInstance.instance.backupId">{{buyInstance.instance.versionName}}</span>
+			</div>
+			<div class="ey-form-group">
+				<label class="ey-form-label ey-required">配置文件：</label>
+				<eayun-select class="ey-form-w6" 
+							  placeholder="请选择配置文件" 
+							  data-ng-if="!buyInstance.instance.backupId"
+							  data-ng-model="buyInstance.instance.configId" 
+							  required 
+							  >
+					<eayun-option ng-repeat="data in buyInstance.configList" value="data.configId" text="{{data.configName}}"></eayun-option>
+				</eayun-select>
+				<span data-ng-if="buyInstance.instance.backupId">{{buyInstance.instance.configName}}</span>
+			</div>
+		</fieldset>
+		
+		<fieldset>
+			<legend>规格</legend>
+			<div class="ey-form-group">
+				<label>CPU：</label>	
+				<span class="ey-mark" 
+					  ng-repeat="data in buyInstance.cpuList"  
+					  data-ng-click="buyInstance.selectCpu(data)"
+					  data-ng-model="buyInstance.instance.cpu"
+					  ng-class="buyInstance.instance.cpu == data.nodeName.substr(0,data.nodeName.length-1) ? 'active' : ''">
+					  {{data.nodeName}}
+			    </span>
+			</div>
+			
+			<div class="ey-form-group">
+				<label>内存：</label>	
+				<div>
+					<span class="ey-mark" 
+						  ng-repeat="data in buyInstance.ramList"  
+						  data-ng-click="buyInstance.selectRam(data)"
+						  data-ng-model="buyInstance.instance.ram"
+						  ng-class="buyInstance.instance.ram == data.nodeName.substr(0,data.nodeName.length-2) ? 'active' : ''">
+						  {{data.nodeName}}
+				    </span>
+				</div>
+			</div>
+			
+			<div class="ey-form-group">
+			   <label class="ey-form-label">存储类型：</label>
+				   <div class="ey-form-radio" data-ng-repeat="data in buyInstance.volumeTypeList">
+				     <input id="sys_{{$index}}"  
+				     		type="radio" 
+				     		name="radioOne"  
+				     		value="{{data.typeId}}"
+							required
+				     		data-ng-model="buyInstance.instance.volumeType"
+				     		data-ng-click="buyInstance.selectVolumeType(data)" />
+				     <label for="sys_{{$index}}">{{data.volumeTypeAs}}</label>
+				   </div>	   
+		    </div>
+		    
+		    <div class="ey-form-group">
+                <label>存储容量：</label>
+				<div data-ng-repeat="data in buyInstance.volumeTypeList">
+					<div data-ng-if="data.typeName == buyInstance.instance.volumeTypeName">
+						<eayun-progress-step class="ey-form-w8"
+											 data-ng-model="buyInstance.instance.volumeSize"
+											 max-value='data.maxSize'
+											 min-value='10'
+											 total-step='data.maxSize / 100'
+											 precision='1'
+											 format="formate"
+											 parse="parse"
+											 data-ng-change="buyInstance.changeVolumeSize($value)"
+											 text="GB" required>
+						</eayun-progress-step>
+					</div>
+				</div>
+				<span class="ey-text-tip ey-has-error" data-ng-if="buyInstance.instance.volumeSize < buyInstance.instance.backupSize">新实例存储容量不能小于当前备份大小({{buyInstance.instance.backupSize}}GB)</span>
+                
+           </div>
+           <span style="padding-left:126px;" 
+           		 class="ey-text-tip"
+           		 >10GB - {{buyInstance.maxSize}}GB</span>
+           
+		</fieldset>
+		
+		<fieldset>
+			<legend>安全信息</legend>
+			
+			<div class="ey-form-group" data-ng-class="(myForm.rdsName.$dirty && (myForm.rdsName.$invalid || !buyInstance.checkRdsName))
+			|| (!myForm.rdsName.$dirty && myForm.rdsName.$valid && !buyInstance.checkRdsName)?'ey-has-error' : ''">
+				<label class="ey-form-label ey-required">实例名称：</label>
+				<div>
+					<input class="ey-form-input ey-form-w6" 
+						   type="text" 
+						   placeholder="请输入实例名称" 
+						   data-ng-model="buyInstance.instance.rdsName"  
+						   name="rdsName" 
+						   data-ng-change="buyInstance.checkRdsNameExist(value)"
+						   ng-pattern='/^[a-zA-Z0-9]([_a-zA-Z0-9]{0,18}[a-zA-Z0-9])?$/'
+						   maxlength="20" required>
+					<p data-ng-if="myForm.rdsName.$dirty && myForm.rdsName.$invalid" style="margin-bottom:0;">请输入1-20位字符,支持数字、英文、下划线</p>
+					<p data-ng-if="myForm.rdsName.$valid && !buyInstance.checkRdsName" style="margin-bottom:0;">实例名称已存在</p>
+					<span class="ey-text-tip ey-has-error" data-ng-if="!buyInstance.checkQuota">{{buyInstance.checkQuotaMsg}}</span>
+				</div>
+			</div>
+			
+			<div class="ey-form-group">
+				<label >管理员账号：</label>	
+				
+				<span class="ey-text-tip col-lg-6">root</span>
+			</div>
+
+			<div class="ey-form-group"
+				 data-ng-class="(buyInstance.isPwdOnFocus && buyInstance.checkPasswordFlag)?'ey-has-error' : ''">
+				<label class="ey-form-label ey-required">密码：</label>
+				<div class="ey-form-group ey-form-w6" style="margin-bottom:0;float:left;">
+					<input class="ey-form-input ey-form-w6"  type="password" placeholder="请输入密码"
+						   name="rdsPassword" ng-focus="buyInstance.focus('pwd')" ng-blur="buyInstance.passBlur()"
+						   data-ng-model="buyInstance.instance.password" maxlength="30" required>
+					<span ng-if="buyInstance.isPwdOnFocus && buyInstance.checkPasswordFlag" class="ey-text-tip ey-has-error">密码不符合规则</span>
+				</div>
+				<span class="ey-text-tip ey-form-w8">格式：8-30个字符，且同时包含数字、大写字母、小写字母中的三项</span>
+			</div>
+			<div class="ey-form-group"
+				 data-ng-class="(buyInstance.isRePwdOnFocus)? 'ey-has-error' : ''">
+				<label class="ey-form-label ey-required">确认密码：</label>
+				<input class="ey-form-input ey-form-w6" type="password" placeholder="请输入确认密码"
+					   data-ng-model="buyInstance.instance.repassword" name="repassword" maxlength="30" ng-focus="buyInstance.focus('rePwd')" ng-blur="buyInstance.repassBlur()" required>
+				<span class="ey-text-tip ey-has-error" data-ng-if="buyInstance.isRePwdOnFocus">确认密码与密码输入不一致</span>
+			</div>
+
+		</fieldset>
+		
+		<fieldset data-ng-if="buyInstance.instance.payType == '1'">
+			<legend>购买时长</legend>
+			<div class="ey-form-group">
+				<label>付款方式：</label>
+				<eayun-select class="ey-form-w3" 
+							  placeholder="请选择周期类型" 
+							  data-ng-model="buyInstance.instance.cycleType" 
+							  required 
+							  data-ng-change="buyInstance.changeCycleType()">
+					<eayun-option ng-repeat="data in buyInstance.cycleTypeList" value="data.nodeId" text="{{data.nodeName}}"></eayun-option>
+				</eayun-select>
+				<eayun-select class="ey-form-w3" 
+							  placeholder="请选择购买时长" 
+							  data-ng-model="buyInstance.instance.buyCycle" 
+							  required 
+							  data-ng-change="buyInstance.calcBuyCycle()">
+					<eayun-option ng-repeat="data in buyInstance.cycleList" value="data.nodeNameEn" text="{{data.nodeName}}"></eayun-option>
+				</eayun-select>
+			</div>
+		</fieldset>
+	</form>
+	<div class="ey-set">
+		<h5>已选配置</h5>
+		<fieldset>
+			<ul>
+				<li>
+					数据中心：
+					<span class="ey-color-default" title="{{buyInstance.instance.dcName}}">{{buyInstance.instance.dcName}}</span>
+				</li>
+				<li>
+					私有网络：
+					<span class="ey-color-default" title="{{buyInstance.instance.netName}}">{{buyInstance.instance.netName}}</span>
+				</li>
+				<li>
+					受管子网：
+					<span class="ey-color-default" title="{{buyInstance.instance.subnetId?(buyInstance.instance.subnetName+'('+buyInstance.instance.subnetCidr+')'):''}}">
+						<span class="ey-set-ellipsis">{{buyInstance.instance.subnetId?('('+buyInstance.instance.subnetCidr+')'):''}}</span>
+						<span class="ey-set-ellipsis" style="width: 60px;">{{buyInstance.instance.subnetId?(buyInstance.instance.subnetName):''}}</span>
+					</span>
+				</li>
+				<li>实例规格：
+					<span class="ey-color-default">{{buyInstance.instance.cpu}}核| {{buyInstance.instance.ram}}GB</span>
+				</li>
+				<li>存储空间：
+					<span class="ey-color-default">{{buyInstance.instance.volumeTypeName == 'Normal'?'普通型':'性能型'}}  {{buyInstance.instance.volumeSize}}GB</span>
+				</li>
+				<li>购买量：
+					<span class="ey-color-default" data-ng-if="buyInstance.instance.payType == '1'">
+						{{(buyInstance.instance.payType == '1'?(buyInstance.instance.buyCycle>11?(buyInstance.instance.buyCycle/12+'年'):(buyInstance.instance.buyCycle+'个月'))+'×':'')}} 1台
+					</span>
+					<span class="ey-color-default" data-ng-if="buyInstance.instance.payType == '2'">
+                        1台
+                    </span>
+				</li>
+			</ul>
+		</fieldset>
+		
+		<fieldset data-ng-if="buyInstance.instance.payType == '1'">
+			<h6>费用明细</h6>
+			<ul>
+				<li>
+					实例规格：
+					<span class="ey-color-red" 
+						  data-ng-if="buyInstance.hasGotPrice">
+						  <span class="ey-color-default">￥&nbsp;</span>{{buyInstance.priceDetails.cpuPrice | number:2}}
+					</span>
+					<span class="ey-color-red" data-ng-if="!buyInstance.hasGotPrice">--</span>
+				</li>
+				<li>
+					存储空间：
+					<span class="ey-color-red" 
+						  data-ng-if="buyInstance.hasGotPrice">
+						  <span class="ey-color-default">￥&nbsp;</span>{{buyInstance.priceDetails.dataDiskPrice | number:2}}
+					</span>
+					<span class="ey-color-red" data-ng-if="!buyInstance.hasGotPrice">--</span>
+				</li>
+			</ul>
+			<p class="ey-font-size-big">
+				总计：
+				<span class="ey-font-size-big ey-text-tip ey-color-default" data-ng-if="buyInstance.hasGotPrice">￥&nbsp;</span>
+				<span class="ey-font-size-super ey-color-red" data-ng-if="buyInstance.hasGotPrice">{{buyInstance.priceDetails.totalPrice | number:2}}</span>
+				<span class="ey-color-red" data-ng-if="!buyInstance.hasGotPrice">{{buyInstance.priceMsg}}</span>
+			</p>
+		</fieldset>
+		<fieldset data-ng-if="buyInstance.instance.payType == '2'">
+			<h6>费用明细</h6>
+			<ul>
+				<li>
+					实例规格：
+					<span>
+						<span class="ey-color-red" 
+						      data-ng-if="buyInstance.hasGotPrice">
+						      <span class="ey-color-default">￥&nbsp;</span>{{buyInstance.priceDetails.cpuPrice |number:2}}
+						</span>
+						<span class="ey-color-default" data-ng-if="buyInstance.hasGotPrice" >&nbsp;/小时</span>
+						<span class="ey-color-red" data-ng-if="!buyInstance.hasGotPrice">--</span>
+					</span>
+				</li>
+				<li>
+					存储空间：
+					<span>
+						<span class="ey-color-red" 
+							  data-ng-if="buyInstance.hasGotPrice">
+							  <span class="ey-color-default">￥&nbsp;</span>{{buyInstance.priceDetails.dataDiskPrice |number:2}}
+						</span>
+						<span class="ey-color-default" data-ng-if="buyInstance.hasGotPrice">&nbsp;/小时</span>
+						<span class="ey-color-red" data-ng-if="!buyInstance.hasGotPrice">--</span>
+					</span>
+				</li>
+			</ul>
+			<p class="ey-font-size-big">
+				总计：
+				<span class="ey-font-size-big ey-text-tip ey-color-default" data-ng-if="buyInstance.hasGotPrice">￥&nbsp;</span>
+				<span class="ey-font-size-super ey-color-red" data-ng-if="buyInstance.hasGotPrice">{{buyInstance.priceDetails.totalPrice | number:2}}</span>
+				<span class="ey-color-default" data-ng-if="buyInstance.hasGotPrice">&nbsp;/小时</span>
+				<span class="ey-color-red" data-ng-if="!buyInstance.hasGotPrice">{{buyInstance.priceMsg}}</span>
+			</p>
+			<span class="ey-color-red" data-ng-if="buyInstance.instance.payType == '2'">
+				开通按需付费的云服务，您的账户余额不得低于{{buyInstance.payAfpterPayment}}元，请充值后再开通，
+				<a class="ey-color-blue pointer" data-ng-click="buyInstance.recharge()">立即充值</a>
+			</span>
+		</fieldset>
+		<button class="ey-btn ey-btn-primary" 
+				data-ng-disabled="myForm.$invalid || !buyInstance.hasGotPrice || buyInstance.isNSF 
+				|| !buyInstance.checkRdsName || !buyInstance.checkQuota || buyInstance.checkPasswordFlag
+				|| buyInstance.isRePwdOnFocus
+				|| (buyInstance.instance.volumeSize < buyInstance.instance.backupSize)"
+				data-ng-click="buyInstance.commitBuyRds()">立即购买
+		</button>
+		<fieldset data-ng-if="buyInstance.instance.payType == '2' && buyInstance.isNSF">
+			<span class="ey-color-red">您的账户余额不足{{buyInstance.payAfpterPayment}}元，请充值后操作</span>
+		</fieldset>
+	</div>
+</div>
+

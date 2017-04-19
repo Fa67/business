@@ -1,0 +1,27 @@
+<h4>机柜列表</h4>
+<from class="form-inline">
+<button Type="button" class="btn btn-primary btn-sm"
+	data-ng-click="addMachineBox()">
+	<span "glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;增添机柜
+</button>
+
+</from>
+<eayun-table data-api="machineboxTable.api"  data-ajax-source="machineboxTable.source" data-param=" machineboxTable.params" data-result="machineboxTable.result">
+  <table class="table table-eayun">
+  <thread>
+    <tr>
+      <th class="col-sm-1"> 机柜名称</th>
+      <th class="col-sm-3">总容量(U)</th>
+      <th class="col-sm-1">已用容量(U)</th>
+      <th class="col-sm-3">可用容量(U)</th>
+      <th class="col-sm-3">所属数据中心</th>
+      <th class="col-sm-3">操作</th>
+    </tr>
+  </thread>
+  <tbody>
+    <tr data-ng-repeat="machineboxTable.result" >
+     <td>{{model.}}</td>
+    </tr>
+  </tbody>
+  </table>
+</eayun-table>

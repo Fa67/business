@@ -1,0 +1,100 @@
+<!-- 表格 -->
+<div class="ey-search-bar ey-search-bar-white">
+    <button class="ey-btn ey-btn-primary"
+            data-ui-sref="buy.buyFloatIp"
+            data-ng-if="buttonPower.isAdd">
+        <span class="eayunfont ef-plus"></span>
+        <span>申请弹性公网IP</span>
+    </button>
+</div>
+<eayun-table data-api="IpTable.api" data-ajax-source="IpTable.source" data-param="IpTable.getParams"
+             data-result="IpTable.result">
+    <table class="ey-table-muliti">
+        <thead>
+        <tr>
+            <th>公网IP</th>
+            <th style="width: 110px;">状态</th>
+            <th>绑定对象</th>
+            <th style="width: 155px;">创建时间</th>
+            <th style="width: 215px;">计费状态</th>
+            <th>标签</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+
+        <tbody><tr data-ng-repeat="item in IpTable.result" ng-init="item.tagName = item.tagsName">
+            <td data-ng-bind="::item.floIp"></td>
+            <td style="text-align: left;">
+                <span class="eayunfont ef-square" data-ng-class="floStatusClass != '' ? floStatusClass : ''"
+                      ng-init="floStatusClass = checkFloatIpStatus(item)"></span> {{item.chargeStateName}}
+            </td>
+            <td data-ng-if="item.resourceId != 'null'">
+                <span  title="{{item.resourceName}}">{{item.resourceName}}<br></span>
+                <span>内网IP：{{item.vmIp}}</span>
+            </td>
+            <td data-ng-if="item.resourceId == 'null'"></td>
+            <td data-ng-bind="::(item.createTime|date:'yyyy-MM-dd HH:mm:ss')"></td>
+            <td>
+                <span data-ng-bind="item.payType=='1'?'包年包月':'按需付费'"></span><br>
+                <span data-ng-if="item.payType=='1'" data-ng-bind="::('到期时间：'+(item.endTime|date:'yyyy-MM-dd HH:mm:ss'))"></span>
+            </td>
+
+            <td ng-show="tags.gt2Tags" ng-init="tags=floatJson(item.tagsName)">
+                <span>{{tags.twoTagsString}}</span>
+                <div class="tag-icon ellipsis pointer"
+                     ng-mouseenter="openTableBox({value:tags.allTagsString,type:'tagName',index:$index})"
+                     ng-mouseleave="closeTableBox({type:'tagName',index:$index})"
+                     hint="views/directives/ellipsispop.html"
+                     hint-show="hintTagShow[$index]"
+                     tooltip-class="tooltip-tag"
+                     tooltip-placement="bottom">
+                </div>
+            </td>
+            <td ng-show="!tags.gt2Tags">{{tags.allTagsString}}</td>
+            <td class="ey-table-operation">
+                <div class="ey-btn-group">
+                    <button class="ey-btn" data-ng-click="bindingResource(item)"
+                            data-ng-disabled="item.chargeState != '0'"
+                            data-ng-show="item.resourceId=='null' && buttonPower.isBind">绑定
+                    </button>
+                    <button class="ey-btn" data-ng-click="unbundingResource(item)"
+                            data-ng-show="item.resourceId!='null' && buttonPower.isBind">解绑
+                    </button>
+                    <!--<button class="ey-btn" data-ng-click="releaseFloatIp(item)"
+                            data-ng-show="item.resourceId=='null' && buttonPower.isRelease">释放
+                    </button>-->
+                    <div class="ey-btn ey-btn-more" eayun-toggle="open"
+                         data-ng-show="buttonPower.isTag
+                                    || buttonPower.isRelease
+                                    || buttonPower.isRenew">
+                        更多操作
+                        <span class="eayunfont ef-triangle"></span>
+                        <ul class="ey-drop-menu">
+                            <li data-ng-show="buttonPower.isRenew && item.payType=='1'"
+                                data-ng-click="renewFloatIp(item)">
+                                <a>续费</a>
+                            </li>
+                            <li data-ng-show="buttonPower.isTag"
+                                data-ng-if="item.chargeState == '0'"
+                                data-ng-click="tagResource('floatIP',item.floId)">
+                                <a>标签</a>
+                            </li>
+                            <li data-ng-show="buttonPower.isRelease"
+                                data-ng-if="!(item.payType == '1' && item.chargeState == '0')"
+                                data-ng-click="releaseFloatIp(item)">
+                                <a class="ey-text-error">释放</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <span data-ng-show="!buttonPower.isBind
+                                     && !buttonPower.isTag
+                                     && !buttonPower.isRelease
+                                     && !buttonPower.isRenew">
+                        ----
+                    </span>
+                </div>
+            </td>
+        </tr></tbody>
+    </table>
+    <eayun-table-page></eayun-table-page>
+</eayun-table>
